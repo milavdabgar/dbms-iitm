@@ -1,5 +1,5 @@
 \frametitle{From Clause}
-\begin{itemize}
+\begin{itemize}[<+->]
         \item The \texttt{from} clause lists the relations involved in the query
         \item Corresponds to the Cartesian product operation of the relational algebra
         \item Find the Cartesian product \texttt{instructor $\times$ teaches}:

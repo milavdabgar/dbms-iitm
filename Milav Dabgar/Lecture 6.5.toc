@@ -1,2 +1,2 @@
-\beamer@sectionintoc {1}{Database Design Process}{5}{0}{1}
-\beamer@sectionintoc {2}{Temporal Databases}{15}{0}{2}
+\beamer@sectionintoc {1}{Database Design Process}{8}{0}{1}
+\beamer@sectionintoc {2}{Temporal Databases}{62}{0}{2}

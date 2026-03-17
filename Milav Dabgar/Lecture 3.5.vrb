@@ -1,5 +1,8 @@
 \frametitle{Trigger to Maintain \texttt {credits\_earned} value}
-\begin{lstlisting}[language=SQL]
+\begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Update student total credits upon grade update
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 create trigger credits_earned after update of grade on (takes)
 referencing new row as nrow
 referencing old row as orow
@@ -15,4 +18,6 @@ begin atomic
     )
     where student.id = nrow.id;
 end;
-    \end{lstlisting}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}

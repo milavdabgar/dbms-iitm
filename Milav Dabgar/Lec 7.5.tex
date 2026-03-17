@@ -1,4 +1,4 @@
-﻿\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
 
 % --- Theme Setup ---
 \usetheme{Madrid}
@@ -39,22 +39,24 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Learnt how to accessing PostgreSQL database from Python
         \item Learnt to build Python Web Application with PostgreSQL and Flask
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To explore the Rapid Application Development Process
-        \item To understand the issues in Application Performance and Security
-        \item To understand the similarity and differences between how Mobile Apps and Web Applications
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To explore the Rapid Application Development Process
+            \item To understand the issues in Application Performance and Security
+            \item To understand the similarity and differences between Mobile Apps and Web Applications
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Rapid Application Development
         \item Application Performance and Security
         \item Mobile Apps
@@ -72,56 +74,45 @@
 \end{frame}
 
 \begin{frame}{Rapid Application Development}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A lot of effort is required to develop Web application interfaces, especially the rich interaction functionality associated with Web 2.0 applications
         \item Several approaches to speed up application development
         \begin{itemize}
-            \item Function library to generate user-interface elements
-            \item Drag-and-drop features in an IDE to create user-interface elements
-            \item Automatically generate code for user interface from a declarative specification
+            \item[$\triangleright$] Function library to generate user-interface elements
+            \item[$\triangleright$] Drag-and-drop features in an IDE to create user-interface elements
+            \item[$\triangleright$] Automatically generate code for user interface from a declarative specification
         \end{itemize}
-        \item Used as part of \textbf{Rapid Application Development (RAD)} tools even before Web
-        \item RAD Software is an agile model that focuses on fast prototyping and quick feedback in app development to ensure speedier delivery and an efficient result
-        \item App development has 4 phases: business modeling, data modeling, process modeling, and testing \& turnover: Defining the requirements, Prototyping, Receiving feedback and Finalizing the software
-        \item With RAD, the time between prototypes and iterations is short, and integration occurs since inception.
+        \item RAD Software is an agile model that focuses on fast prototyping and quick feedback
+        \item App development has 4 phases: business modeling, data modeling, process modeling, and testing \& turnover
+        \item With RAD, the time between prototypes and iterations is short, and integration occurs since inception
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Rapid Application Development (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Web application development frameworks}
         \begin{itemize}
-            \item \textbf{Java Server Faces (JSF)}
-            \begin{itemize}
-                \item $\triangleright$ A set of APIs for representing UI components and managing their state, handling events and input validation, defining page navigation, and supporting internationalization and accessibility
-                \item $\triangleright$ JSP custom tag library for expressing a JSF interface within a JSP page
-            \end{itemize}
-            \item \textbf{Ruby on Rails}
-            \begin{itemize}
-                \item $\triangleright$ Allows easy creation of simple CRUD (create, read, update and delete) interfaces by code generation from database schema or object model
-            \end{itemize}
+            \item[$\triangleright$] \textbf{Java Server Faces (JSF):} APIs for representing UI components, managing state, handling events, input validation, and page navigation
+            \item[$\triangleright$] \textbf{Ruby on Rails:} Easy creation of CRUD interfaces by code generation from database schema or object model
         \end{itemize}
         \item \textbf{RAD Platforms and Tools}
         \begin{itemize}
-            \item G Suite
-            \item Google App Engine
-            \item Microsoft Azure
-            \item Amazon Elastic Compute Cloud (EC2)
-            \item AWS Elastic Beanstalk
+            \item[$\triangleright$] G Suite, Google App Engine
+            \item[$\triangleright$] Microsoft Azure, Amazon EC2, AWS Elastic Beanstalk
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{ASP.NET and Visual Studio}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item ASP.NET provides a variety of controls that are interpreted at server, and generate HTML code
         \item Visual Studio provides drag-and-drop development using these controls
         \begin{itemize}
-            \item For example, menus and list boxes can be associated with \texttt{DataSet} object
+            \item[$\triangleright$] For example, menus and list boxes can be associated with \texttt{DataSet} object
         \end{itemize}
         \item Validator controls (constraints) can be added to form input fields
         \begin{itemize}
-            \item $\triangleright$ JavaScript to enforce constraints at client, and separately enforced at server
+            \item[$\triangleright$] JavaScript to enforce constraints at client, and separately enforced at server
         \end{itemize}
         \item User actions such as selecting a value from a menu can be associated with actions at server
         \item DataGrid provides convenient way of displaying SQL query results in tabular format
@@ -139,27 +130,21 @@
 \end{frame}
 
 \begin{frame}{Application Performance}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Performance is an issue for popular Web sites
         \begin{itemize}
-            \item May be accessed by millions of users every day, thousands of requests per second at peak time
+            \item[$\triangleright$] May be accessed by millions of users every day, thousands of requests per second at peak time
         \end{itemize}
         \item Caching techniques used to reduce cost of serving pages by exploiting commonalities between requests
         \item At the server site:
         \begin{itemize}
-            \item $\triangleright$ Caching of JDBC connections between servlet requests
-            \begin{itemize}
-                \item a.k.a. connection pooling
-            \end{itemize}
-            \item $\triangleright$ Caching results of database queries
-            \begin{itemize}
-                \item Cached results must be updated if underlying database changes
-            \end{itemize}
-            \item $\triangleright$ Caching of generated HTML
+            \item[$\triangleright$] Caching of JDBC connections between servlet requests (connection pooling)
+            \item[$\triangleright$] Caching results of database queries (must be updated if underlying database changes)
+            \item[$\triangleright$] Caching of generated HTML
         \end{itemize}
         \item At the client's network
         \begin{itemize}
-            \item $\triangleright$ Caching of pages by Web proxy
+            \item[$\triangleright$] Caching of pages by Web proxy
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -189,35 +174,34 @@
 \end{frame}
 
 \begin{frame}{Application Security (2): Password Leakage}
-    \begin{itemize}
-        \item Never store passwords, such as database passwords, in clear text in scripts that may be accessible to users
+    \begin{alertblock}{Warning}
+        Never store passwords in clear text in scripts that may be accessible to users
+    \end{alertblock}
+    \begin{itemize}[<+->]
         \item For example, in files in a directory accessible to a web server
         \begin{itemize}
-            \item $\triangleright$ Normally, web server will execute, but not provide source of script files such as \texttt{file.jsp} or \texttt{file.php}, but source of editor backup files such as \texttt{file.jsp\~{}}, or \texttt{.file.jsp.swp} may be served
+            \item[$\triangleright$] Web server will execute but not provide source of script files such as \texttt{file.jsp}, but source of editor backup files such as \texttt{file.jsp\~{}} may be served
         \end{itemize}
         \item Restrict access to database server from IPs of machines running application servers
         \begin{itemize}
-            \item Most databases allow restriction of access by source IP address
+            \item[$\triangleright$] Most databases allow restriction of access by source IP address
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Application Security (3): Authentication}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Single factor authentication such as passwords too risky for critical applications
         \begin{itemize}
-            \item guessing of passwords, sniffing of packets if passwords are not encrypted
-            \item passwords reused by user across sites
-            \item spyware which captures password
+            \item[$\triangleright$] Vulnerable to: guessing, packet sniffing, password reuse across sites, spyware
         \end{itemize}
-        \item Two-factor authentication
+        \item \textbf{Two-factor authentication}
         \begin{itemize}
-            \item For example, password plus one-time password sent by SMS
-            \item For example, password plus one-time password devices
+            \item[$\triangleright$] Password plus one-time password sent by SMS
+            \item[$\triangleright$] Password plus hardware one-time password device
             \begin{itemize}
-                \item $\triangleright$ device generates a new pseudo-random number every minute, and displays to user
-                \item $\triangleright$ user enters the current number as password
-                \item $\triangleright$ application server generates same sequence of pseudo-random numbers to check that the number is correct.
+                \item device generates a new pseudo-random number every minute
+                \item application server generates same sequence to verify
             \end{itemize}
         \end{itemize}
     \end{itemize}
@@ -243,36 +227,32 @@ where takes.ID = syscontext.user_id()
 \end{frame}
 
 \begin{frame}{Application Security (5): Application-Level Authorization}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Currently, authorization is done entirely in application
         \begin{itemize}
-            \item Entire application code has access to entire database
-            \item large surface area, making protection harder
+            \item[$\triangleright$] Entire application code has access to entire database -- large surface area, making protection harder
         \end{itemize}
         \item Alternative: fine-grained (row-level) authorization schemes
         \begin{itemize}
-            \item extensions to SQL authorization proposed but not currently implemented
-            \item Oracle Virtual Private Database (VPD) allows predicates to be added transparently to all SQL queries, to enforce fine-grained authorization
-            \begin{itemize}
-                \item $\triangleright$ For example, add \texttt{ID = sys\_context.user\_id()} to all queries on \texttt{student} relation if user is a student
-            \end{itemize}
+            \item[$\triangleright$] Extensions to SQL authorization proposed but not currently implemented
+            \item[$\triangleright$] Oracle Virtual Private Database (VPD) allows predicates to be added transparently to all SQL queries
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Application Security (6): Audit Trails}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Applications must log actions to an audit trail, to detect who carried out an update, or accessed some sensitive data
         \item Audit trails used after-the-fact to
         \begin{itemize}
-            \item detect security breaches
-            \item repair damage caused by security breach
-            \item trace who carried out the breach
+            \item[$\triangleright$] detect security breaches
+            \item[$\triangleright$] repair damage caused by security breach
+            \item[$\triangleright$] trace who carried out the breach
         \end{itemize}
         \item Audit trails needed at
         \begin{itemize}
-            \item Database level, and at
-            \item Application level
+            \item[$\triangleright$] Database level, and at
+            \item[$\triangleright$] Application level
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -288,7 +268,7 @@ where takes.ID = syscontext.user_id()
 \end{frame}
 
 \begin{frame}{Challenges in Web Application Development}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item User Interface and User Experience
         \item Scalability
         \item Performance
@@ -310,95 +290,82 @@ where takes.ID = syscontext.user_id()
 \end{frame}
 
 \begin{frame}{What is a Mobile App?}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A type of application software designed to run on a mobile device, such as a smartphone or tablet computer
-        \item Developed specifically for use on small, wireless computing devices, such as smartphones and tablets
-        \item Designed with consideration for the demands and constraints of the devices and also to take advantage of any specialized capabilities
+        \item Designed with consideration for device demands and constraints, and to take advantage of specialized capabilities
+        \item \textbf{Constraints:}
         \begin{itemize}
-            \item - Form Factor - influences display and navigation
-            \item - Limited Memory
-            \item - Limited Computing Power
-            \item - Limited Power
-            \item - Limited Bandwidth
+            \item[$\triangleright$] Form Factor -- influences display and navigation
+            \item[$\triangleright$] Limited Memory, Computing Power, and Battery
+            \item[$\triangleright$] Limited Bandwidth
         \end{itemize}
-        \item \dots
+        \item \textbf{Advantages:}
         \begin{itemize}
-            \item[+] Availability of sensors like accelerometer
-            \item[+] Availability of touchscreen - Gesture-based Navigation
+            \item[$\triangleright$] Availability of sensors like accelerometer
+            \item[$\triangleright$] Touchscreen -- Gesture-based Navigation
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Mobile Website vis-\`a-vis Mobile App}
-    \begin{itemize}
-        \item \textbf{Mobile Website}
-        \begin{itemize}
-            \item Similar to any other website in that it consists of browser-based HTML pages
-            \item Can display text content, data, images and video
-            \item Typically accessed over WiFi or 3G or 4G networks
-            \item Designed for the smaller handheld display and touch-screen interface
-            \item Can also access mobile-specific features such as click-to-call (to dial a phone number) or location-based mapping
-        \end{itemize}
-        \item \textbf{Mobile Apps}
-        \begin{itemize}
-            \item Actual applications that are downloaded and installed on the mobile device
-            \item Users download apps from device-specific portals such as App Store, Google Play Store
-            \item The app may
+    \begin{columns}[T]
+        \column{0.5\textwidth}
+        \begin{block}{Mobile Website}
             \begin{itemize}
-                \item $\triangleright$ pull content and data from the Internet, in similar fashion to a website, or
-                \item $\triangleright$ download the content so that it can be accessed without an Internet connection
+                \item Browser-based HTML pages
+                \item Accessed over WiFi/3G/4G
+                \item Designed for small touch-screen
+                \item Can use click-to-call and location mapping
             \end{itemize}
-        \end{itemize}
-    \end{itemize}
-    \small Source: \url{https://www.slideshare.net/hassandar18/architecture-of-mobile-software-applications?from_action=save}
+        \end{block}
+        \column{0.5\textwidth}
+        \begin{exampleblock}{Mobile Apps}
+            \begin{itemize}
+                \item Downloaded and installed on device
+                \item From App Store, Google Play, etc.
+                \item Can pull content from Internet or work offline
+            \end{itemize}
+        \end{exampleblock}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Architecture of Mobile App}
-    \begin{itemize}
-        \item Typically 3 tier
+    \begin{itemize}[<+->]
+        \item Typically \textbf{3-tier architecture}
         \begin{itemize}
-            \item Presentation
-            \item Business
-            \item Data
+            \item[$\triangleright$] Presentation, Business, Data layers
         \end{itemize}
         \item Data Layer is often split between:
         \begin{itemize}
-            \item Local Data
-            \item Remote Data
+            \item[$\triangleright$] Local Data (on-device storage)
+            \item[$\triangleright$] Remote Data (server/cloud)
         \end{itemize}
-        \item Needs customization for platform
-        \begin{itemize}
-            \item Android
-            \item iOS
-            \item Windows
-        \end{itemize}
+        \item Needs customization for platform: Android, iOS, Windows
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Types of Mobile Apps}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Native Apps}: Completely written in the native language of a platform
         \begin{itemize}
-            \item iOS $\rightarrow$ Objective-C; Android $\rightarrow$ Java or C/C++
-            \item Platform specific (heavily dependent on OS)
+            \item[$\triangleright$] iOS $\rightarrow$ Objective-C; Android $\rightarrow$ Java or C/C++
+            \item[$\triangleright$] Platform specific (heavily dependent on OS)
         \end{itemize}
-        \item \textbf{Web Apps}: Run completely inside of a Web browser.
+        \item \textbf{Web Apps}: Run completely inside of a Web browser
         \begin{itemize}
-            \item Features interfaces built with HTML or CSS
-            \item Powered via Web programming languages $\rightarrow$ Ruby on Rails, JavaScript, PHP, or Python
-            \item Portable across any phone, tablet, or computer
+            \item[$\triangleright$] Interfaces built with HTML/CSS, powered by Ruby on Rails, JavaScript, PHP, or Python
+            \item[$\triangleright$] Portable across any phone, tablet, or computer
         \end{itemize}
-        \item \textbf{Hybrid Apps}: Combines attributes of both native and Web apps.
+        \item \textbf{Hybrid Apps}: Combines attributes of both native and Web apps
         \begin{itemize}
-            \item Attempts to use redundant, common code that can be used across platforms, and
-            \item Tailors required attributes to the native system
+            \item[$\triangleright$] Uses common cross-platform code while tailoring native-specific attributes
         \end{itemize}
     \end{itemize}
     \small Source: \url{https://www.slideshare.net/hassandar18/architecture-of-mobile-software-applications?from_action=save}
 \end{frame}
 
 \begin{frame}{Design Issues}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Determine Device
         \item Note Device Resources - memory, power, speed
         \item Consider Bandwidth
@@ -413,11 +380,13 @@ where takes.ID = syscontext.user_id()
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Understood the steps in the Rapid Application Development Process
-        \item Exposed to the issues in Application Performance and Application Security
-        \item Learnt the distinctive features of Mobile Apps
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Understood the steps in the Rapid Application Development Process
+            \item Exposed to the issues in Application Performance and Application Security
+            \item Learnt the distinctive features of Mobile Apps
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

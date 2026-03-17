@@ -39,7 +39,7 @@
 \end{frame}
 
 \begin{frame}{Week Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Identified the features of good relational design
         \item Familiarized with the First Normal Form
         \item Introduced the notion and the theory of functional dependencies
@@ -50,18 +50,20 @@
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To Understand the Normal Forms and their Importance in Relational Design
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To Understand the Normal Forms and their Importance in Relational Design
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Normal Forms
         \begin{itemize}
-            \item 1NF
-            \item 2NF
-            \item 3NF
+            \item[$\triangleright$] 1NF
+            \item[$\triangleright$] 2NF
+            \item[$\triangleright$] 3NF
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -77,35 +79,35 @@
 \end{frame}
 
 \begin{frame}{Normalization or Schema Refinement}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Normalization or Schema Refinement is a technique of organizing the data in the database
         \item A systematic approach of decomposing tables to eliminate data redundancy and undesirable characteristics
         \begin{itemize}
-            \item Insertion Anomaly
-            \item Update Anomaly
-            \item Deletion Anomaly
+            \item[$\triangleright$] Insertion Anomaly
+            \item[$\triangleright$] Update Anomaly
+            \item[$\triangleright$] Deletion Anomaly
         \end{itemize}
         \item Most common technique for the Schema Refinement is decomposition.
         \item \textbf{Goal of Normalization:} Eliminate Redundancy
         \item Redundancy refers to repetition of same data or duplicate copies of same data stored in different locations
         \item Normalization is used for mainly two purpose:
         \begin{itemize}
-            \item Eliminating redundant (useless) data
-            \item Ensuring data dependencies make sense, that is, data is logically stored
+            \item[$\triangleright$] Eliminating redundant (useless) data
+            \item[$\triangleright$] Ensuring data dependencies make sense, that is, data is logically stored
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Anomalies}
     \textbf{Employees' Skills}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item a) \textbf{Update Anomaly}: Employee 519 is shown as having different addresses on different records
         \item b) \textbf{Insertion Anomaly}: Until the new faculty member, Dr. Newsome, is assigned to teach at least one course, his details cannot be recorded in Faculty and Their Courses
         \item c) \textbf{Deletion Anomaly}: All information about Dr. Giddens is lost if he temporarily ceases to be assigned to any courses.
     \end{itemize}
     \vspace{0.5em}
     \textbf{Resolution:} Decompose the Schema
-    \begin{itemize}
+    \begin{itemize}[<+(3)->]
         \item a) Update: \texttt{(ID, Address)}, \texttt{(ID, Skill)}
         \item b) Insert: \texttt{(ID, Name, Hire Date)}, \texttt{(ID, Code)}
         \item c) Delete: \texttt{(ID, Name, Hire Date)}, \texttt{(ID, Code)}
@@ -113,26 +115,26 @@
 \end{frame}
 
 \begin{frame}{Desirable Properties of Decomposition}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Lossless Join Decomposition Property}
         \begin{itemize}
-            \item It should be possible to reconstruct the original table
+            \item[$\triangleright$] It should be possible to reconstruct the original table
         \end{itemize}
         \item \textbf{Dependency Preserving Property}
         \begin{itemize}
-            \item No functional dependency (or other constraints should get violated)
+            \item[$\triangleright$] No functional dependency (or other constraints should get violated)
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Normalization and Normal Forms}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A normal form specifies a set of conditions that the relational schema must satisfy in terms of its constraints - they offer varied levels of guarantee for the design
         \item Normalization rules are divided into various normal forms. Most common normal forms are:
         \begin{itemize}
-            \item First Normal Form (1NF)
-            \item Second Normal Form (2NF)
-            \item Third Normal Form (3NF)
+            \item[$\triangleright$] First Normal Form (1NF)
+            \item[$\triangleright$] Second Normal Form (2NF)
+            \item[$\triangleright$] Third Normal Form (3NF)
         \end{itemize}
         \item Informally, a relational database relation is often described as `normalized' if it meets third normal form. Most 3NF relations are free of insertion, update, and deletion anomalies.
     \end{itemize}
@@ -140,7 +142,7 @@
 
 \begin{frame}{Normalization and Normal Forms (Continued)}
     Additional Normal Forms:
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Elementary Key Normal Form (EKNF)
         \item Boyce-codd Normal Form (BCNF)
         \item Multivalued Dependencies And Fourth Normal Form (4NF)
@@ -162,10 +164,12 @@
 \end{frame}
 
 \begin{frame}{1NF: First Normal Form}
-    \begin{itemize}
-        \item A relation is in First Normal Form if and only if all underlying domains contain atomic values only (doesn't have multivalued attributes (MVA))
-        \item Example: \texttt{STUDENT(Sid, Sname, Cname)}
-    \end{itemize}
+    \begin{block}{Definition}
+        \begin{itemize}[<+->]
+            \item A relation is in First Normal Form if and only if all underlying domains contain atomic values only (doesn't have multivalued attributes (MVA))
+            \item Example: \texttt{STUDENT(Sid, Sname, Cname)}
+        \end{itemize}
+    \end{block}
     \vspace{0.5em}
     \begin{columns}
         \column{0.45\textwidth}
@@ -229,34 +233,35 @@
 \end{frame}
 
 \begin{frame}{1NF (2): Drawbacks}
-    \textbf{Drawbacks:}
-    \begin{itemize}
-        \item \textbf{Deletion Anomaly:} If we delete \texttt{<S3, 40, Rohtak, P1, 245>}, then we lose the information that S3 lives in Rohtak.
-        \item \textbf{Insertion Anomaly:} We cannot insert a Supplier S5 located in Karnal, until S5 supplies at least one part.
-        \item \textbf{Update Anomaly:} If Supplier S1 moves from Delhi to Kanpur, then it is difficult to update all the tuples having SID as S1 and City as Delhi.
-    \end{itemize}
-    \vspace{1em}
+    \begin{alertblock}{Drawbacks of 1NF}
+        \begin{itemize}[<+->]
+            \item \textbf{Deletion Anomaly:} If we delete \texttt{<S3, 40, Rohtak, P1, 245>}, then we lose the information that S3 lives in Rohtak.
+            \item \textbf{Insertion Anomaly:} We cannot insert a Supplier S5 located in Karnal, until S5 supplies at least one part.
+            \item \textbf{Update Anomaly:} If Supplier S1 moves from Delhi to Kanpur, then it is difficult to update all the tuples having SID as S1 and City as Delhi.
+        \end{itemize}
+    \end{alertblock}
+    \vspace{0.5em}
     \textit{Normalization is a method to reduce redundancy. However, sometimes 1NF increases redundancy.}
 \end{frame}
 
 \begin{frame}{1NF (3): Possible Redundancy}
     \textbf{When LHS is not a Superkey:}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Let $X \rightarrow Y$ be a non trivial FD over $R$ with $X$ is not a superkey of $R$, then redundancy exist between $X$ and $Y$ attribute set.
         \item Hence in order to identify the redundancy, we need not to look at the actual data, it can be identified by given functional dependency.
         \item Example: $X \rightarrow Y$ and $X$ is not a Candidate Key
         \begin{itemize}
-            \item $\Rightarrow X$ can duplicate
-            \item $\Rightarrow$ Corresponding $Y$ value would duplicate also.
+            \item[$\triangleright$] $\Rightarrow X$ can duplicate
+            \item[$\triangleright$] $\Rightarrow$ Corresponding $Y$ value would duplicate also.
         \end{itemize}
     \end{itemize}
     \vspace{0.5em}
     \textbf{When LHS is a Superkey:}
-    \begin{itemize}
+    \begin{itemize}[<+(4)->]
         \item If $X \rightarrow Y$ is a non trivial FD over $R$ with $X$ is a superkey of $R$, then redundancy does not exist between $X$ and $Y$ attribute set.
         \item Example: $X \rightarrow Y$ and $X$ is a Candidate Key $\Rightarrow X$ cannot duplicate
         \begin{itemize}
-            \item $\Rightarrow$ Corresponding $Y$ value may or may not duplicate.
+            \item[$\triangleright$] $\Rightarrow$ Corresponding $Y$ value may or may not duplicate.
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -272,21 +277,23 @@
 \end{frame}
 
 \begin{frame}{2NF: Second Normal Form}
-    \begin{itemize}
-        \item Relation $R$ is in Second Normal Form (2NF) only iff:
-        \begin{itemize}
-            \item $R$ is in 1NF and
-            \item $R$ contains no Partial Dependency
+    \begin{block}{Definition of 2NF}
+        \begin{itemize}[<+->]
+            \item Relation $R$ is in Second Normal Form (2NF) only iff:
+            \begin{itemize}
+                \item[$\triangleright$] $R$ is in 1NF and
+                \item[$\triangleright$] $R$ contains no Partial Dependency
+            \end{itemize}
         \end{itemize}
-    \end{itemize}
+    \end{block}
     \vspace{0.5em}
     \textbf{Partial Dependency:}
-    \begin{itemize}
+    \begin{itemize}[<+(2)->]
         \item Let $R$ be a relational Schema and $X, Y, A$ be the attribute sets over $R$ where $X$: Any Candidate Key, $Y$: Proper Subset of Candidate Key, and $A$: Non Prime Attribute
         \item If $Y \rightarrow A$ exists in $R$, then $R$ is not in 2NF.
     \end{itemize}
     $(Y \rightarrow A)$ is a Partial dependency only if:
-    \begin{itemize}
+    \begin{itemize}[<+(4)->]
         \item $Y$: Proper subset of Candidate Key
         \item $A$: Non Prime Attribute
         \item \textit{A prime attribute of a relation is an attribute that is a part of a candidate key of the relation}
@@ -347,12 +354,13 @@
 \end{frame}
 
 \begin{frame}{2NF (3): Drawbacks}
-    \textbf{Drawbacks:}
-    \begin{itemize}
-        \item \textbf{Deletion Anomaly}: If we delete a tuple in Sup City, then we not only loose the information about a supplier, but also loose the status value of a particular city.
-        \item \textbf{Insertion Anomaly}: We cannot insert a City and its status until a supplier supplies at least one part.
-        \item \textbf{Update Anomaly}: If the status value for a city is changed, then we will face the problem of searching every tuple for that city.
-    \end{itemize}
+    \begin{alertblock}{Drawbacks}
+        \begin{itemize}[<+->]
+            \item \textbf{Deletion Anomaly}: If we delete a tuple in Sup City, then we not only loose the information about a supplier, but also loose the status value of a particular city.
+            \item \textbf{Insertion Anomaly}: We cannot insert a City and its status until a supplier supplies at least one part.
+            \item \textbf{Update Anomaly}: If the status value for a city is changed, then we will face the problem of searching every tuple for that city.
+        \end{itemize}
+    \end{alertblock}
 \end{frame}
 
 \section{3NF}
@@ -367,30 +375,32 @@
 
 \begin{frame}{3NF: Third Normal Form}
     Let $R$ be the relational schema.
-    \begin{itemize}
-        \item \textbf{[E. F. Codd, 1971]} $R$ is in 3NF only if:
-        \begin{itemize}
-            \item $R$ should be in 2NF
-            \item $R$ should not contain transitive dependencies (OR, Every non-prime attribute of $R$ is non-transitively dependent on every key of $R$)
+    \begin{block}{Definitions}
+        \begin{itemize}[<+->]
+            \item \textbf{[E. F. Codd, 1971]} $R$ is in 3NF only if:
+            \begin{itemize}
+                \item[$\triangleright$] $R$ should be in 2NF
+                \item[$\triangleright$] $R$ should not contain transitive dependencies (OR, Every non-prime attribute of $R$ is non-transitively dependent on every key of $R$)
+            \end{itemize}
+            \item \textbf{[Carlo Zaniolo, 1982]} Alternately, $R$ is in 3NF iff for each of its functional dependencies $X \rightarrow A$, at least one of the following conditions holds:
+            \begin{itemize}
+                \item[$\triangleright$] $X$ contains $A$ (that is, $A$ is a subset of $X$, meaning $X \rightarrow A$ is trivial functional dependency), or
+                \item[$\triangleright$] $X$ is a superkey, or
+                \item[$\triangleright$] Every element of $A - X$, the set difference between $A$ and $X$, is a prime attribute (i.e., each attribute in $A - X$ is contained in some candidate key)
+            \end{itemize}
+            \item \textbf{[Simple Statement]} A relational schema $R$ is in 3NF if for every FD $X \rightarrow A$ associated with $R$ either:
+            \begin{itemize}
+                \item[$\triangleright$] $A \subseteq X$ (that is, the FD is trivial) or
+                \item[$\triangleright$] $X$ is a superkey of $R$ or
+                \item[$\triangleright$] $A$ is part of some candidate key (not just superkey!)
+            \end{itemize}
+            \item A relation in 3NF is naturally in 2NF
         \end{itemize}
-        \item \textbf{[Carlo Zaniolo, 1982]} Alternately, $R$ is in 3NF iff for each of its functional dependencies $X \rightarrow A$, at least one of the following conditions holds:
-        \begin{itemize}
-            \item $X$ contains $A$ (that is, $A$ is a subset of $X$, meaning $X \rightarrow A$ is trivial functional dependency), or
-            \item $X$ is a superkey, or
-            \item Every element of $A - X$, the set difference between $A$ and $X$, is a prime attribute (i.e., each attribute in $A - X$ is contained in some candidate key)
-        \end{itemize}
-        \item \textbf{[Simple Statement]} A relational schema $R$ is in 3NF if for every FD $X \rightarrow A$ associated with $R$ either:
-        \begin{itemize}
-            \item $A \subseteq X$ (that is, the FD is trivial) or
-            \item $X$ is a superkey of $R$ or
-            \item $A$ is part of some candidate key (not just superkey!)
-        \end{itemize}
-        \item A relation in 3NF is naturally in 2NF
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{3NF (2): Transitive Dependency}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A transitive dependency is a functional dependency which holds by virtue of transitivity. A transitive dependency can occur only in a relation that has three or more attributes.
         \item Let $A$, $B$, and $C$ designate three distinct attributes (or distinct collections of attributes) in the relation. Suppose all three of the following conditions hold:
         \begin{enumerate}
@@ -404,12 +414,12 @@
 
 \begin{frame}{3NF (3): Transitive Dependency}
     \textbf{Example of transitive dependency}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The functional dependency \texttt{\{Book\} $\rightarrow$ \{Author Nationality\}} applies; that is, if we know the book, we know the author's nationality. Furthermore:
         \begin{itemize}
-            \item \texttt{\{Book\} $\rightarrow$ \{Author\}}
-            \item \texttt{\{Author\}} does not $\rightarrow$ \texttt{\{Book\}}
-            \item \texttt{\{Author\} $\rightarrow$ \{Author Nationality\}}
+            \item[$\triangleright$] \texttt{\{Book\} $\rightarrow$ \{Author\}}
+            \item[$\triangleright$] \texttt{\{Author\}} does not $\rightarrow$ \texttt{\{Book\}}
+            \item[$\triangleright$] \texttt{\{Author\} $\rightarrow$ \{Author Nationality\}}
         \end{itemize}
         \item Therefore \texttt{\{Book\} $\rightarrow$ \{Author Nationality\}} is a transitive dependency.
         \item Transitive dependency occurred because a non-key attribute (Author) was determining another non-key attribute (Author Nationality).
@@ -434,7 +444,7 @@
 
 \begin{frame}{3NF (4): Example}
     \textbf{Example:} \texttt{Sup\_City(SID, Status, City)} (already in 2NF)
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Functional Dependencies:} \texttt{SID $\rightarrow$ Status}, \texttt{SID $\rightarrow$ City}, \texttt{City $\rightarrow$ Status}
         \item \textbf{Transitive Dependency:} \texttt{SID $\rightarrow$ Status} \{As \texttt{SID $\rightarrow$ City} and \texttt{City $\rightarrow$ Status}\}
     \end{itemize}
@@ -455,9 +465,11 @@
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item To Understand the Normal Forms and their Importance in Relational Design
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item To Understand the Normal Forms and their Importance in Relational Design
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

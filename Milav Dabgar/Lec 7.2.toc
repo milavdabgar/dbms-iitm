@@ -1,3 +1,3 @@
-\beamer@sectionintoc {1}{Web Fundamentals}{5}{0}{1}
-\beamer@sectionintoc {2}{Scripting}{16}{0}{2}
-\beamer@sectionintoc {3}{Servlets}{24}{0}{3}
+\beamer@sectionintoc {1}{Web Fundamentals}{11}{0}{1}
+\beamer@sectionintoc {2}{Scripting}{70}{0}{2}
+\beamer@sectionintoc {3}{Servlets}{96}{0}{3}

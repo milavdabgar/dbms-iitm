@@ -39,21 +39,23 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Understood multi-valued dependencies to handle attributes that can have multiple values
         \item Learnt Fourth Normal Form and decomposition to 4NF
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To summarize the database design process
-        \item To explore the issues with temporal data
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To summarize the database design process
+            \item To explore the issues with temporal data
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Database-Design Process
         \item Modeling Temporal Data
     \end{itemize}
@@ -70,18 +72,22 @@
 \end{frame}
 
 \begin{frame}{Design Goals}
-    \begin{itemize}
-        \item Goal for a relational database design is:
-        \begin{itemize}
-            \item BCNF / 4NF
-            \item Lossless join
-            \item Dependency preservation
+    \begin{block}{Goals for Relational Database Design}
+        \begin{itemize}[<+->]
+            \item Goal for a relational database design is:
+            \begin{itemize}
+                \item[$\triangleright$] BCNF / 4NF
+                \item[$\triangleright$] Lossless join
+                \item[$\triangleright$] Dependency preservation
+            \end{itemize}
+            \item If we cannot achieve this, we accept one of
+            \begin{itemize}
+                \item[$\triangleright$] Lack of dependency preservation
+                \item[$\triangleright$] Redundancy due to use of 3NF
+            \end{itemize}
         \end{itemize}
-        \item If we cannot achieve this, we accept one of
-        \begin{itemize}
-            \item Lack of dependency preservation
-            \item Redundancy due to use of 3NF
-        \end{itemize}
+    \end{block}
+    \begin{itemize}[<+->]
         \item Interestingly, SQL does not provide a direct way of specifying functional dependencies other than superkeys.
         \item Can specify FDs using assertions, but they are expensive to test, (and currently not supported by any of the widely used databases!)
         \item Even if we had a dependency preserving decomposition, using SQL we would not be able to efficiently test a functional dependency whose left hand side is not a key
@@ -89,33 +95,33 @@
 \end{frame}
 
 \begin{frame}{Further Normal Forms}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Further NFs
         \begin{itemize}
-            \item Elementary Key Normal Form (EKNF)
-            \item Essential Tuple Normal Form (ETNF)
-            \item Join Dependencies And Fifth Normal Form (5 NF)
-            \item Sixth Normal Form (6NF)
-            \item Domain/Key Normal Form (DKNF)
+            \item[$\triangleright$] Elementary Key Normal Form (EKNF)
+            \item[$\triangleright$] Essential Tuple Normal Form (ETNF)
+            \item[$\triangleright$] Join Dependencies And Fifth Normal Form (5 NF)
+            \item[$\triangleright$] Sixth Normal Form (6NF)
+            \item[$\triangleright$] Domain/Key Normal Form (DKNF)
         \end{itemize}
         \item Join dependencies generalize multivalued dependencies
         \begin{itemize}
-            \item lead to project-join normal form (PJNF) (also called fifth normal form)
+            \item[$\triangleright$] lead to project-join normal form (PJNF) (also called fifth normal form)
         \end{itemize}
         \item A class of even more general constraints, leads to a normal form called domain-key normal form.
         \item Problem with these generalized constraints: are hard to reason with, and no set of sound and complete set of inference rules exists.
         \begin{itemize}
-            \item Hence rarely used
+            \item[$\triangleright$] Hence rarely used
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Overall Database Design Process}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item We have assumed schema $R$ is given
         \begin{itemize}
-            \item $R$ could have been generated when converting E-R diagram to a set of tables
-            \item $R$ could have been a single relation containing all attributes that are of interest (universal relation)
+            \item[$\triangleright$] $R$ could have been generated when converting E-R diagram to a set of tables
+            \item[$\triangleright$] $R$ could have been a single relation containing all attributes that are of interest (universal relation)
         \end{itemize}
         \item Normalization breaks $R$ into smaller relations
         \item $R$ could have been the result of some ad hoc design of relations, which we then test/convert to normal form
@@ -123,54 +129,56 @@
 \end{frame}
 
 \begin{frame}{ER Model and Normalization}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item When an E-R diagram is carefully designed, identifying all entities correctly, the tables generated from the E-R diagram should not need further normalization
         \item However, in a real (imperfect) design, there can be functional dependencies from non-key attributes of an entity to other attributes of the entity
         \item Example: an employee entity with attributes \texttt{department\_name} and \texttt{building}, and a functional dependency \texttt{department\_name $\rightarrow$ building}
         \begin{itemize}
-            \item Good design would have made \texttt{department} an entity
+            \item[$\triangleright$] Good design would have made \texttt{department} an entity
         \end{itemize}
         \item Functional dependencies from non-key attributes of a relationship set possible, but rare - most relationships are binary
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Denormalization for Performance}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item May want to use non-normalized schema for performance
         \item For example, displaying prereqs along with course\_id, and title requires join of course with prereq
         \begin{itemize}
-            \item \texttt{Course(course\_id, title, ...)}
-            \item \texttt{Prerequisite(course\_id, prereq)}
+            \item[$\triangleright$] \texttt{Course(course\_id, title, ...)}
+            \item[$\triangleright$] \texttt{Prerequisite(course\_id, prereq)}
         \end{itemize}
         \item \textbf{Alternative 1:} Use denormalized relation containing attributes of course as well as prereq with all above attributes: \texttt{Course(course\_id, title, prereq, ...)}
         \begin{itemize}
-            \item faster lookup
-            \item extra space and extra execution time for updates
-            \item extra coding work for programmer and possibility of error in extra code
+            \item[$\triangleright$] faster lookup
+            \item[$\triangleright$] extra space and extra execution time for updates
+            \item[$\triangleright$] extra coding work for programmer and possibility of error in extra code
         \end{itemize}
         \item \textbf{Alternative 2:} Use a materialized view defined as \texttt{Course $\bowtie$ Prerequisite}
         \begin{itemize}
-            \item Benefits and drawbacks same as above, except no extra coding work for programmer and avoids possible errors
+            \item[$\triangleright$] Benefits and drawbacks same as above, except no extra coding work for programmer and avoids possible errors
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Other Design Issues}
-    \begin{itemize}
-        \item Some aspects of database design are not caught by normalization
-        \item Examples of bad database design, to be avoided:
-        \item Instead of \texttt{earnings(company\_id, year, amount)}, use
-        \begin{itemize}
-            \item \texttt{earnings\_2004}, \texttt{earnings\_2005}, \texttt{earnings\_2006}, etc., all on the schema \texttt{(company\_id, earnings)}.
-            \item $\triangleright$ Above are in BCNF, but make querying across years difficult and needs new table each year
+    \begin{alertblock}{Bad Database Design Patterns}
+        \begin{itemize}[<+->]
+            \item Some aspects of database design are not caught by normalization
+            \item Examples of bad database design, to be avoided:
+            \item Instead of \texttt{earnings(company\_id, year, amount)}, use
+            \begin{itemize}
+                \item[$\triangleright$] \texttt{earnings\_2004}, \texttt{earnings\_2005}, \texttt{earnings\_2006}, etc., all on the schema \texttt{(company\_id, earnings)}.
+                \item[$\triangleright$] Above are in BCNF, but make querying across years difficult and needs new table each year
+            \end{itemize}
+            \item \texttt{company\_year(company\_id, earnings\_2004, earnings\_2005, earnings\_2006)}
+            \begin{itemize}
+                \item[$\triangleright$] Also in BCNF, but also makes querying across years difficult and requires new attribute each year.
+                \item[$\triangleright$] Is an example of a \textbf{crosstab}, where values for one attribute become column names
+                \item[$\triangleright$] Used in spreadsheets, and in data analysis tools
+            \end{itemize}
         \end{itemize}
-        \item \texttt{company\_year(company\_id, earnings\_2004, earnings\_2005, earnings\_2006)}
-        \begin{itemize}
-            \item $\triangleright$ Also in BCNF, but also makes querying across years difficult and requires new attribute each year.
-            \item $\triangleright$ Is an example of a \textbf{crosstab}, where values for one attribute become column names
-            \item $\triangleright$ Used in spreadsheets, and in data analysis tools
-        \end{itemize}
-    \end{itemize}
+    \end{alertblock}
 \end{frame}
 
 \begin{frame}{LIS Example for 4NF}
@@ -270,58 +278,58 @@
 \end{frame}
 
 \begin{frame}{Temporal Databases}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Some data may be inherently historical because they include time-dependent/time-varying data, such as:
         \begin{itemize}
-            \item Medical Records
-            \item Judicial records
-            \item Share prices
-            \item Exchange rates
-            \item Interest rates
-            \item Company profits
-            \item etc.
+            \item[$\triangleright$] Medical Records
+            \item[$\triangleright$] Judicial records
+            \item[$\triangleright$] Share prices
+            \item[$\triangleright$] Exchange rates
+            \item[$\triangleright$] Interest rates
+            \item[$\triangleright$] Company profits
+            \item[$\triangleright$] etc.
         \end{itemize}
         \item The desire to model such data means that we need to store not only the respective value but also an associated date or a time period for which the value is valid. Typical queries expressed informally might include:
         \begin{itemize}
-            \item Give me last month's history of the Dollar-Pound Sterling exchange rate.
-            \item Give me the share prices of the NYSE on October 17, 1996.
+            \item[$\triangleright$] Give me last month's history of the Dollar-Pound Sterling exchange rate.
+            \item[$\triangleright$] Give me the share prices of the NYSE on October 17, 1996.
         \end{itemize}
         \item Temporal databases provide a uniform and systematic way of dealing with historical data
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Temporal Data}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Temporal data have an association time interval during which the data are valid.
         \item A snapshot is the value of the data at a particular point in time
         \item In practice, database designers may add start and end time attributes to relations
         \begin{itemize}
-            \item For example, \texttt{course(course\_id, course\_title)} is replaced by \texttt{course(course\_id, course\_title, start, end)}
+            \item[$\triangleright$] For example, \texttt{course(course\_id, course\_title)} is replaced by \texttt{course(course\_id, course\_title, start, end)}
         \end{itemize}
         \item Constraint: no two tuples can have overlapping valid times and are Hard to enforce efficiently
         \item Foreign key references may be to current version of data, or to data at a point in time
         \begin{itemize}
-            \item $\triangleright$ For example, student transcript should refer to course information at the time the course was taken
+            \item[$\triangleright$] For example, student transcript should refer to course information at the time the course was taken
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Temporal Database Theory}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Model of Temporal Domain}: Single-dimensional linearly ordered which may be
         \begin{itemize}
-            \item Discrete or dense
-            \item Bounded or unbounded
-            \item Single dimensional or multi-dimensional
-            \item Linear or non-linear
-            \item Timestamp Model
+            \item[$\triangleright$] Discrete or dense
+            \item[$\triangleright$] Bounded or unbounded
+            \item[$\triangleright$] Single dimensional or multi-dimensional
+            \item[$\triangleright$] Linear or non-linear
+            \item[$\triangleright$] Timestamp Model
         \end{itemize}
         \item Temporal ER model by adding valid time to
         \begin{itemize}
-            \item Attributes: address of an instructor at different points in time
-            \item Entities: time duration when a student entity exists
-            \item Relationships: time during which a student attended a course
-            \item \textit{But no accepted standard}
+            \item[$\triangleright$] Attributes: address of an instructor at different points in time
+            \item[$\triangleright$] Entities: time duration when a student entity exists
+            \item[$\triangleright$] Relationships: time during which a student attended a course
+            \item[$\triangleright$] \textit{But no accepted standard}
         \end{itemize}
         \item Temporal Functional Dependency Theory
         \item Temporal Logic
@@ -330,30 +338,30 @@
 \end{frame}
 
 \begin{frame}{Modeling Temporal Data: Uni / Bi Temporal}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item There are two different aspects of time in temporal databases.
         \begin{itemize}
-            \item \textbf{Valid Time}: Time period during which a fact is true in real world, provided to the system.
-            \item \textbf{Transaction Time}: Time period during which a fact is stored in the database, based on transaction serialization order and is the timestamp generated automatically by the system.
+            \item[$\triangleright$] \textbf{Valid Time}: Time period during which a fact is true in real world, provided to the system.
+            \item[$\triangleright$] \textbf{Transaction Time}: Time period during which a fact is stored in the database, based on transaction serialization order and is the timestamp generated automatically by the system.
         \end{itemize}
         \item \textbf{Temporal Relation} is one where each tuple has associated time; either valid time or transaction time or both associated with it.
         \begin{itemize}
-            \item \textbf{Uni-Temporal Relations}: Has one axis of time, either Valid Time or Transaction Time.
-            \item \textbf{Bi-Temporal Relations}: Has both axis of time Valid time and Transaction time. It includes Valid Start Time, Valid End Time, Transaction Start Time, Transaction End Time.
+            \item[$\triangleright$] \textbf{Uni-Temporal Relations}: Has one axis of time, either Valid Time or Transaction Time.
+            \item[$\triangleright$] \textbf{Bi-Temporal Relations}: Has both axis of time Valid time and Transaction time. It includes Valid Start Time, Valid End Time, Transaction Start Time, Transaction End Time.
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Modeling Temporal Data: Example (1)}
     \textbf{Example}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Let's see an example of a person, John:
         \begin{itemize}
-            \item $\triangleright$ John was born on April 3, 1992 in Chennai.
-            \item $\triangleright$ His father registered his birth after three days on April 6, 1992.
-            \item $\triangleright$ John did his entire schooling and college in Chennai.
-            \item $\triangleright$ He got a job in Mumbai and shifted to Mumbai on June 21, 2015.
-            \item $\triangleright$ He registered his change of address only on Jan 10, 2016.
+            \item[$\triangleright$] John was born on April 3, 1992 in Chennai.
+            \item[$\triangleright$] His father registered his birth after three days on April 6, 1992.
+            \item[$\triangleright$] John did his entire schooling and college in Chennai.
+            \item[$\triangleright$] He got a job in Mumbai and shifted to Mumbai on June 21, 2015.
+            \item[$\triangleright$] He registered his change of address only on Jan 10, 2016.
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -373,7 +381,7 @@
     \bottomrule
     \end{tabular}
     \end{table}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item In a non-temporal database, John's address is entered as Chennai from 1992. When he registers his new address in 2016, the database gets updated and the address field now shows his Mumbai address. The previous Chennai address details will not be available. So, it will be difficult to find out exactly when he was living in Chennai and when he moved to Mumbai.
     \end{itemize}
 \end{frame}
@@ -424,17 +432,17 @@
 
 \begin{frame}{Modeling Temporal Data: Summary}
     \textbf{Advantages}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The main advantages of this bi-temporal relations is that it provides historical and roll back information.
         \begin{itemize}
-            \item $\triangleright$ Historical Information - Valid Time.
-            \item $\triangleright$ Rollback Information - Transaction Time.
+            \item[$\triangleright$] Historical Information - Valid Time.
+            \item[$\triangleright$] Rollback Information - Transaction Time.
         \end{itemize}
         \item For example, you can get the result for a query on John's history, like: Where did John live in the year 2001? The result for this query can be got with the valid time entry. The transaction time entry is important to get the rollback information.
     \end{itemize}
     \vspace{0.5em}
     \textbf{Disadvantages}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item More storage
         \item Complex query processing
         \item Complex maintenance including backup and recovery
@@ -442,10 +450,12 @@
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Discussed aspects of the database design process
-        \item Studied the issues with temporal data
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Discussed aspects of the database design process
+            \item Studied the issues with temporal data
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

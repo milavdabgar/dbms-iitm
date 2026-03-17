@@ -39,20 +39,22 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Identified the features of good relational design
         \item Familiarized with the First Normal Form
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To Introduce Functional Dependencies
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To Introduce Functional Dependencies
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Functional Dependencies
     \end{itemize}
 \end{frame}
@@ -68,32 +70,34 @@
 \end{frame}
 
 \begin{frame}{Goal: Devise a Theory for Good Relations}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Decide whether a particular relation R is in 'good' form.
         \item In the case that a relation R is not in 'good' form, decompose it into a set of relations $\{R_1, R_2, \dots, R_n\}$ such that
         \begin{itemize}
-            \item each relation is in good form
-            \item the decomposition is a lossless-join decomposition
+            \item[$\triangleright$] each relation is in good form
+            \item[$\triangleright$] the decomposition is a lossless-join decomposition
         \end{itemize}
         \item The theory is based on:
         \begin{itemize}
-            \item Functional dependencies
-            \item Multivalued dependencies
-            \item Other dependencies
+            \item[$\triangleright$] Functional dependencies
+            \item[$\triangleright$] Multivalued dependencies
+            \item[$\triangleright$] Other dependencies
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Functional Dependencies}
-    \begin{itemize}
-        \item Constraints on the set of legal relations
-        \item Require that the value for a certain set of attributes determines uniquely the value for another set of attributes
-        \item A functional dependency is a generalization of the notion of a key
-    \end{itemize}
+    \begin{block}{Definition}
+        \begin{itemize}[<+->]
+            \item Constraints on the set of legal relations
+            \item Require that the value for a certain set of attributes determines uniquely the value for another set of attributes
+            \item A functional dependency is a generalization of the notion of a key
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Functional Dependencies (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Let R be a relation schema $\alpha \subseteq R$ and $\beta \subseteq R$
         \item The functional dependency or FD
         \[ \alpha \rightarrow \beta \]
@@ -108,12 +112,12 @@
 \end{frame}
 
 \begin{frame}{Functional Dependencies (3)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $K$ is a superkey for relation schema $R$ if and only if $K \rightarrow R$
         \item $K$ is a candidate key for $R$ if and only if
         \begin{itemize}
-            \item $K \rightarrow R$ and
-            \item for no $\alpha \subset K$, $\alpha \rightarrow R$
+            \item[$\triangleright$] $K \rightarrow R$ and
+            \item[$\triangleright$] for no $\alpha \subset K$, $\alpha \rightarrow R$
         \end{itemize}
         \item Functional dependencies allow us to express constraints that cannot be expressed using superkeys. Consider the schema:
         \begin{center}
@@ -133,41 +137,41 @@
 \end{frame}
 
 \begin{frame}{Functional Dependencies (4)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item We use functional dependencies to:
         \begin{itemize}
-            \item test relations to see if they are legal under a given set of functional dependencies.
-            \item $\triangleright$ If a relation $r$ is legal under a set $F$ of functional dependencies, we say that $r$ satisfies $F$
-            \item specify constraints on the set of legal relations
-            \item $\triangleright$ We say that $F$ holds on $R$ if all legal relations on $R$ satisfy the set of functional dependencies $F$
+            \item[$\triangleright$] test relations to see if they are legal under a given set of functional dependencies.
+            \item[$\triangleright$] If a relation $r$ is legal under a set $F$ of functional dependencies, we say that $r$ satisfies $F$
+            \item[$\triangleright$] specify constraints on the set of legal relations
+            \item[$\triangleright$] We say that $F$ holds on $R$ if all legal relations on $R$ satisfy the set of functional dependencies $F$
         \end{itemize}
         \item \textbf{Note}: A specific instance of a relation schema may satisfy a functional dependency even if the functional dependency does not hold on all legal instances
         \begin{itemize}
-            \item For example, a specific instance of \texttt{instructor} may, by chance, satisfy \texttt{name $\rightarrow$ ID}
-            \item In such cases we do not say that $F$ holds on $R$
+            \item[$\triangleright$] For example, a specific instance of \texttt{instructor} may, by chance, satisfy \texttt{name $\rightarrow$ ID}
+            \item[$\triangleright$] In such cases we do not say that $F$ holds on $R$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Functional Dependencies (5)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A functional dependency is trivial if it is satisfied by all instances of a relation
         \item Example:
         \begin{itemize}
-            \item $\triangleright$ \texttt{ID, name $\rightarrow$ ID}
-            \item $\triangleright$ \texttt{name $\rightarrow$ name}
+            \item[$\triangleright$] \texttt{ID, name $\rightarrow$ ID}
+            \item[$\triangleright$] \texttt{name $\rightarrow$ name}
         \end{itemize}
         \item In general, $\alpha \rightarrow \beta$ is trivial if $\beta \subseteq \alpha$.
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Functional Dependencies (6)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Functional dependencies are:
         \begin{itemize}
-            \item \texttt{StudentID $\rightarrow$ Semester}
-            \item \texttt{StudentID, Lecture $\rightarrow$ TA}
-            \item \texttt{\{StudentID, Lecture\} $\rightarrow$ \{TA, Semester\}}
+            \item[$\triangleright$] \texttt{StudentID $\rightarrow$ Semester}
+            \item[$\triangleright$] \texttt{StudentID, Lecture $\rightarrow$ TA}
+            \item[$\triangleright$] \texttt{\{StudentID, Lecture\} $\rightarrow$ \{TA, Semester\}}
         \end{itemize}
     \end{itemize}
     \begin{center}
@@ -184,12 +188,12 @@
 \end{frame}
 
 \begin{frame}{Functional Dependencies (7)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Functional dependencies are:
         \begin{itemize}
-            \item \texttt{EmployeeID $\rightarrow$ EmployeeName}
-            \item \texttt{EmployeeID $\rightarrow$ DepartmentID}
-            \item \texttt{DepartmentID $\rightarrow$ DepartmentName}
+            \item[$\triangleright$] \texttt{EmployeeID $\rightarrow$ EmployeeName}
+            \item[$\triangleright$] \texttt{EmployeeID $\rightarrow$ DepartmentID}
+            \item[$\triangleright$] \texttt{DepartmentID $\rightarrow$ DepartmentName}
         \end{itemize}
     \end{itemize}
     \begin{center}
@@ -205,16 +209,18 @@
 \end{frame}
 
 \begin{frame}{Functional Dependencies (9): Closure of a Set of FDs}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $F = \{A \rightarrow B, B \rightarrow C\}$
         \item $F^+ = \{A \rightarrow B, B \rightarrow C, A \rightarrow C\}$
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Introduced the notion of Functional Dependencies
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Introduced the notion of Functional Dependencies
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

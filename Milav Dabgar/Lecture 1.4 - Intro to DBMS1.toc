@@ -1,6 +1,6 @@
-\beamer@sectionintoc {1}{Levels of Abstraction}{5}{0}{1}
-\beamer@sectionintoc {2}{Schema and Instance}{8}{0}{2}
-\beamer@sectionintoc {3}{Data Models}{12}{0}{3}
-\beamer@sectionintoc {4}{DDL and DML}{17}{0}{4}
-\beamer@sectionintoc {5}{SQL}{20}{0}{5}
-\beamer@sectionintoc {6}{Database Design}{22}{0}{6}
+\beamer@sectionintoc {1}{Levels of Abstraction}{11}{0}{1}
+\beamer@sectionintoc {2}{Schema and Instance}{17}{0}{2}
+\beamer@sectionintoc {3}{Data Models}{32}{0}{3}
+\beamer@sectionintoc {4}{DDL and DML}{48}{0}{4}
+\beamer@sectionintoc {5}{SQL}{63}{0}{5}
+\beamer@sectionintoc {6}{Database Design}{71}{0}{6}

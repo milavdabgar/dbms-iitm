@@ -1,2 +1,2 @@
-\beamer@sectionintoc {1}{Relational Operators}{5}{0}{1}
-\beamer@sectionintoc {2}{Aggregation Operators}{18}{0}{2}
+\beamer@sectionintoc {1}{Relational Operators}{18}{0}{1}
+\beamer@sectionintoc {2}{Aggregation Operators}{36}{0}{2}

@@ -39,7 +39,7 @@
 \end{frame}
 
 \begin{frame}{Week Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Discussed relational algebra with examples
         \item Introduced tuple relational and domain relational calculus
         \item Illustrated equivalence of algebra and calculus
@@ -52,14 +52,16 @@
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To identify the features of good relational design
-        \item To familiarize with the First Normal Form
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To identify the features of good relational design
+            \item To familiarize with the First Normal Form
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Features of Good Relational Design
         \item Atomic Domains and First Normal Form
     \end{itemize}
@@ -76,7 +78,7 @@
 \end{frame}
 
 \begin{frame}{Good Relational Design}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Reflects real-world structure of the problem
         \item Can represent all expected data over time
         \item Avoids redundant storage of data items
@@ -109,7 +111,7 @@
     \end{tabular}
     }
     \end{center}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item ID : Key
         \item building, budget : Redundant Information
         \item name, salary, dept\_name : No Redundant Information
@@ -159,7 +161,7 @@
     \begin{center}
         % Missing image removed
     \end{center}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Consider combining relations
         \item \texttt{sec\_class(sec\_id, building, room\_number)} and
         \item \texttt{section(course\_id, sec\_id, semester, year)}
@@ -180,7 +182,7 @@
 \end{frame}
 
 \begin{frame}{Redundancy and Anomaly}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Redundancy}: having multiple copies of same data in the database.
         \item This problem arises when a database is not normalized
         \item It leads to anomalies
@@ -188,8 +190,8 @@
         \item These problems occur in poorly planned, un-normalised databases where all the data is stored in one table (a flat-file database)
     \end{itemize}
     \vspace{1em}
-    There can be three kinds of anomalies:
-    \begin{itemize}
+    \uncover<6->{There can be three kinds of anomalies:}
+    \begin{itemize}[<+->]
         \item Insertions Anomaly
         \item Deletion Anomaly
         \item Update Anomaly
@@ -197,27 +199,27 @@
 \end{frame}
 
 \begin{frame}{Redundancy and Anomaly (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Insertions Anomaly}
         \begin{itemize}
-            \item When the insertion of a data record is not possible without adding some additional unrelated data to the record
-            \item We cannot add an Instructor in \texttt{instructor\_with\_department} if the department does not have a building or budget
+            \item[$\triangleright$] When the insertion of a data record is not possible without adding some additional unrelated data to the record
+            \item[$\triangleright$] We cannot add an Instructor in \texttt{instructor\_with\_department} if the department does not have a building or budget
         \end{itemize}
         \item \textbf{Deletion Anomaly}
         \begin{itemize}
-            \item When deletion of a data record results in losing some unrelated information that was stored as part of the record that was deleted from a table
-            \item We delete the last Instructor of a Department from \texttt{instructor\_with\_department}, we lose building and budget information
+            \item[$\triangleright$] When deletion of a data record results in losing some unrelated information that was stored as part of the record that was deleted from a table
+            \item[$\triangleright$] We delete the last Instructor of a Department from \texttt{instructor\_with\_department}, we lose building and budget information
         \end{itemize}
         \item \textbf{Update Anomaly}
         \begin{itemize}
-            \item When a data is changed, which could involve many records having to be changed, leading to the possibility of some changes being made incorrectly
-            \item When the budget changes for a Department having a large number of Instructors in \texttt{instructor\_with\_department}, application may miss some of them
+            \item[$\triangleright$] When a data is changed, which could involve many records having to be changed, leading to the possibility of some changes being made incorrectly
+            \item[$\triangleright$] When the budget changes for a Department having a large number of Instructors in \texttt{instructor\_with\_department}, application may miss some of them
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Redundancy and Anomaly (3)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item We have observed the following:
         \item \textbf{Redundancy $\Rightarrow$ Anomaly}
         \item Relations \texttt{instructor} and \texttt{department} is better than \texttt{instructor\_with\_department}
@@ -246,7 +248,7 @@
 \end{frame}
 
 \begin{frame}{Decomposition}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Suppose we had started with \texttt{inst\_dept}. How would we know to split up (decompose) it into \texttt{instructor} and \texttt{department}?
         \item Write a rule `if there were a schema (\texttt{dept\_name}, \texttt{building}, \texttt{budget}), then \texttt{dept\_name} would be a candidate key'
         \item Denote as a functional dependency: \texttt{dept\_name} $\rightarrow$ \texttt{building}, \texttt{budget}
@@ -256,7 +258,7 @@
 \end{frame}
 
 \begin{frame}{Decomposition (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Not all decompositions are good
         \item Suppose we decompose 
         \item \texttt{employee(ID, name, street, city, salary)} into \texttt{employee1(ID, name)} and \texttt{employee2(name, street, city, salary)}
@@ -273,7 +275,7 @@
 \end{frame}
 
 \begin{frame}{Decomposition (4): Lossless-Join Decomposition}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Lossless Join Decomposition
         \item Decomposition of $R = (A, B, C)$ into $R_1 = (A, B)$, $R_2 = (B, C)$
     \end{itemize}
@@ -285,13 +287,15 @@
 \end{frame}
 
 \begin{frame}{Decomposition (5): Lossless-Join Decomposition}
-    \begin{itemize}
-        \item Lossless Join Decomposition is a decomposition of a relation $R$ into relations $R_1, R_2$ such that if we perform natural join of two smaller relations it will return the original relation
-    \end{itemize}
-    \[ R_1 \cup R_2 = R, \quad R_1 \cap R_2 \neq \phi \]
-    \[ \forall r \in R, \quad r_1 = \Pi_{R_1}(r), \quad r_2 = \Pi_{R_2}(r) \]
-    \[ r_1 \bowtie r_2 = r \]
-    \begin{itemize}
+    \begin{block}{Definition}
+        \begin{itemize}[<+->]
+            \item Lossless Join Decomposition is a decomposition of a relation $R$ into relations $R_1, R_2$ such that if we perform natural join of two smaller relations it will return the original relation
+        \end{itemize}
+        \[ R_1 \cup R_2 = R, \quad R_1 \cap R_2 \neq \phi \]
+        \[ \forall r \in R, \quad r_1 = \Pi_{R_1}(r), \quad r_2 = \Pi_{R_2}(r) \]
+        \[ r_1 \bowtie r_2 = r \]
+    \end{block}
+    \begin{itemize}[<+->]
         \item This is effective in removing redundancy from databases while preserving the original data
         \item In other words by lossless decomposition it becomes feasible to reconstruct the relation $R$ from decomposed tables $R_1$ and $R_2$ by using Joins
     \end{itemize}
@@ -308,16 +312,24 @@
 \end{frame}
 
 \begin{frame}{First Normal Form (1NF)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A domain is atomic if its elements are considered to be indivisible units
         \item Examples of non-atomic domains:
-        \item $\triangleright$ Set of names, composite attributes
-        \item $\triangleright$ Identification numbers like CS101 that can be broken up into parts
-        \item A relational schema R is in First Normal Form (1NF) if
+        \begin{itemize}
+            \item[$\triangleright$] Set of names, composite attributes
+            \item[$\triangleright$] Identification numbers like CS101 that can be broken up into parts
+        \end{itemize}
+    \end{itemize}
+    \uncover<4->{
+    \begin{block}{Definition of 1NF}
+        A relational schema R is in First Normal Form (1NF) if:
         \begin{itemize}
             \item the domains of all attributes of R are atomic
             \item the value of each attribute contains only a single value from that domain
         \end{itemize}
+    \end{block}
+    }
+    \begin{itemize}[<+(4)->]
         \item Non-atomic values complicate storage and encourage redundant (repeated) storage of data
         \item Example: Set of accounts stored with each customer, and set of owners stored with each account
         \item We assume all relations are in first normal form
@@ -325,13 +337,15 @@
 \end{frame}
 
 \begin{frame}{First Normal Form (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Atomicity is actually a property of how the elements of the domain are used
         \item Strings would normally be considered indivisible
         \item Suppose that students are given roll numbers which are strings of the form CS0012 or EE1127
         \item If the first two characters are extracted to find the department, the domain of roll numbers is not atomic
         \item Doing so is a bad idea
-        \item $\triangleright$ Leads to encoding of information in application program rather than in the database
+        \begin{itemize}
+            \item[$\triangleright$] Leads to encoding of information in application program rather than in the database
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -349,7 +363,7 @@
     789 & John & Doe & 555-808-9633 \\ \hline
     \end{tabular}
     \end{center}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A telephone number is composite
         \item Telephone number is multi-valued
     \end{itemize}
@@ -369,17 +383,19 @@
     789 & John & Doe & 555-808-9633 & \\ \hline
     \end{tabular}
     \end{center}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item is in 1NF if telephone number is not considered composite
         \item However, conceptually, we have two attributes for the same concept
-        \item $\triangleright$ Arbitrary and meaningless ordering of attributes
-        \item $\triangleright$ How to search telephone numbers
-        \item $\triangleright$ Why only two numbers?
+        \begin{itemize}
+            \item[$\triangleright$] Arbitrary and meaningless ordering of attributes
+            \item[$\triangleright$] How to search telephone numbers
+            \item[$\triangleright$] Why only two numbers?
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{First Normal Form (5)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Is the following in 1NF?
         \item Duplicated information
         \item ID is no more the key. Key is (ID, Telephone Number)
@@ -399,7 +415,7 @@
 \end{frame}
 
 \begin{frame}{First Normal Form (6)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Better to have 2 relations:
         \item One-to-Many relationship between parent and child relations
         \item Incidentally, satisfies 2NF and 3NF
@@ -411,10 +427,12 @@
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Identified the features of good relational design
-        \item Familiarized with the First Normal Form
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Identified the features of good relational design
+            \item Familiarized with the First Normal Form
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

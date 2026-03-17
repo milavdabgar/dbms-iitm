@@ -1,2 +1,2 @@
-\beamer@sectionintoc {1}{Join Expressions}{5}{0}{1}
-\beamer@sectionintoc {2}{Views}{18}{0}{2}
+\beamer@sectionintoc {1}{Join Expressions}{8}{0}{1}
+\beamer@sectionintoc {2}{Views}{54}{0}{2}

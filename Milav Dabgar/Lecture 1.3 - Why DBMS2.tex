@@ -13,6 +13,8 @@
 \usepackage{amssymb}
 \usepackage{longtable}
 \usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{mindmap,trees,shadows,arrows.meta,positioning,shapes.geometric,calc,chains}
 
 % --- Title Information ---
 \title{Module 03}
@@ -42,7 +44,7 @@
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item File handling by Python viz-a-viz DBMS - Bank Transaction example
         \item Parameterized Comparison
     \end{itemize}
@@ -60,22 +62,25 @@
 \end{frame}
 
 \begin{frame}{Case study: A bank transaction}
-    \textbf{Banking Transaction System} \\
-    Consider a simple banking system where a person can open a new account, transfer fund to an existing account and check the history of all her transactions till date.
+    \begin{exampleblock}{Banking Transaction System}
+        Consider a simple banking system where a person can open a new account, transfer fund to an existing account and check the history of all her transactions till date.
+    \end{exampleblock}
     
-    \vspace{1em}
-    The application performs the following checks:
-    \begin{itemize}
-        \item If the account balance is not enough, it will not allow the fund transfer
-        \item If the account numbers are not correct, it will flash a message and terminate the transaction.
-        \item If a transaction is successful, it prints a confirmation message.
-    \end{itemize}
+    \uncover<2->{
+        \vspace{1em}
+        The application performs the following checks:
+        \begin{itemize}[<+->]
+            \item If the account balance is not enough, it will not allow the fund transfer
+            \item If the account numbers are not correct, it will flash a message and terminate the transaction.
+            \item If a transaction is successful, it prints a confirmation message.
+        \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}{Case study: A bank transaction (2)}
     We will use this banking transaction system to compare various features of a file-based (spreadsheet/.csv files) implementation viz-a-viz a DBMS-based implementation
     
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Account details are stored in
         \begin{itemize}
             \item \texttt{Accounts.csv} for file-based implementation
@@ -328,105 +333,125 @@ else:
 \end{frame}
 
 \begin{frame}{Scalability}
-    \textbf{File handling via Python}
-    \begin{itemize}
-        \item \textbf{Number of records:} As the \# of records increases, the efficiency of flat files reduces:
-        \begin{itemize}
-            \item the time spent in searching for the right records
-            \item the limitations of the OS in handling huge files
-        \end{itemize}
-        \item \textbf{Structural Change:} To add an attribute, initializing the new attribute of each record with a default value has to be done by program. It is very difficult to detect and maintain relationships between entities if and when an attribute has to be removed.
-    \end{itemize}
-    
-    \vspace{1em}
-    \textbf{DBMS}
-    \begin{itemize}
-        \item \textbf{Number of records:} Databases are built to efficiently scale up when the \# of records increase drastically.
-        \begin{itemize}
-            \item In-built mechanisms, like indexing, for quick access of right data.
-        \end{itemize}
-        \item \textbf{Structural Change:} During adding an attribute, a default value can be defined that holds for all existing records - the new attribute gets initialized with the default value. During deletion, constraints are used either not to allow the removal or ensure its safe removal
-    \end{itemize}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{alertblock}{File handling via Python}
+                \begin{itemize}[<+->]
+                    \item \textbf{Number of records:} As the \# of records increases, efficiency reduces (OS limitations).
+                    \item \textbf{Structural Change:} Initializing new attributes or deleting existing ones is manual and error-prone.
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \uncover<3->{
+                \begin{exampleblock}{DBMS}
+                    \begin{itemize}[<+->]
+                        \item \textbf{Number of records:} Built to scale efficiently via indexing.
+                        \item \textbf{Structural Change:} Seamlessly add default values or use constraints to handle safe removal.
+                    \end{itemize}
+                \end{exampleblock}
+            }
+        \end{column}
+    \end{columns}
 \end{frame}
+    
 
 \begin{frame}{Time and Efficiency}
-    \textbf{File handling via Python}
-    \begin{itemize}
-        \item The effort needed to implement a file handler is quite less in Python
-        \item In order to process a 1GB file, a program in Python would typically take few seconds.
-    \end{itemize}
-    
-    \vspace{1em}
-    \textbf{DBMS}
-    \begin{itemize}
-        \item The effort to install and configure a DB in a DB server is expensive \& time consuming
-        \item In order to process a 1GB file, an SQL query would typically take few milliseconds.
-        \item If the number of records is very small, the overhead in installing and configuring a database will be much more than the time advantage obtained from executing the queries.
-        \item However, if the number of records is really large, then the time required in the initialization process of a database will be negligible as compared to the time saved in using SQL queries.
-    \end{itemize}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{alertblock}{File handling via Python}
+                \begin{itemize}[<+->]
+                    \item Low effort to implement file handlers
+                    \item Processing a 1GB file might take \textbf{seconds}
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \uncover<3->{
+                \begin{exampleblock}{DBMS}
+                    \begin{itemize}[<+->]
+                        \item Expensive \& time consuming to configure
+                        \item Processing a 1GB file takes \textbf{milliseconds}
+                        \item High volume $\rightarrow$ Initialization time becomes negligible vs query time saved.
+                    \end{itemize}
+                \end{exampleblock}
+            }
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Persistence, Robustness, Security}
-    \textbf{File handling via Python}
-    \begin{itemize}
-        \item \textbf{Persistence:} Data processed using in-memory data structures stay in the memory during processing. After updates, these are manually updated to the file on disk
-        \item \textbf{Robustness:} Ensuring consistency, reliability and sanity is manual via multiple checks. On a system crash, a transaction may cause inconsistency or loss of data.
-        \item \textbf{Security:} Extremely difficult to implement granular security in file systems. Authentication is at the OS level.
-    \end{itemize}
-    
-    \vspace{1em}
-    \textbf{Database Management Systems (DBMS)}
-    \begin{itemize}
-        \item \textbf{Persistence:} Data persistence is ensured via automatic, system mechanisms. The programmer does not have to worry about the data getting lost due to manual errors
-        \item \textbf{Robustness:} Backup, recovery \& restore need minimum manual intervention. The backup and recovery plan can be devised for automatic recovery on a crash
-        \item \textbf{Security:} DBMS provides user-specific access at the database level with restriction for to view only access
-    \end{itemize}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \begin{alertblock}{File handling via Python}
+                \begin{itemize}[<+->]
+                    \item \textbf{Persistence:} Manual writes to disk
+                    \item \textbf{Robustness:} Crashes lead to inconsistency
+                    \item \textbf{Security:} OS level authentication only
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \uncover<5->{
+                \begin{exampleblock}{DBMS}
+                    \begin{itemize}[<+->]
+                        \item \textbf{Persistence:} Automatic system logs
+                        \item \textbf{Robustness:} Built-in rollback and recovery
+                        \item \textbf{Security:} Granular, user-specific access
+                    \end{itemize}
+                \end{exampleblock}
+            }
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Programmer's Productivity}
-    \textbf{File handling via Python}
-    \begin{itemize}
-        \item \textbf{Building the file handler:} Since the constraints within and across entities have to be enforced manually, the effort involved in building a file handling application is huge
-        \item \textbf{Maintenance:} To maintain the consistency of data, one must regularly check for sanity of data and the relationships between entities during inserts, updates and deletes
-        \item \textbf{Handling huge data:} As the data grows beyond the capacity of the file handler, more efforts are needed
-    \end{itemize}
-    
-    \vspace{1em}
-    \textbf{DBMS}
-    \begin{itemize}
-        \item \textbf{Configuring the database:} The installation and configuration of a database is specialized job of a DBA. A programmer, on the other hand, is saved the trouble
-        \item \textbf{Maintenance:} DBMS has in-built mechanisms to ensure consistency and sanity of data being inserted, updated or deleted. The programmer does not need to do such checks
-        \item \textbf{Handling huge data:} DBMS can handle even terabytes of data - Programmer does not have to worry
-    \end{itemize}
+    \vspace{-1em}
+    \begin{columns}[t]
+        \begin{column}{0.5\textwidth}
+            \begin{alertblock}{File handling via Python}
+                \begin{itemize}[<+->]
+                    \item Constraints enforced manually
+                    \item High effort validating logic during inserts/updates
+                    \item Massive effort scaling for big data
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \uncover<5->{
+                \begin{exampleblock}{DBMS}
+                    \begin{itemize}[<+->]
+                        \item Configured by specialised DBA
+                        \item In-built constraints handle sanity inherently
+                        \item Seamless handling of terabytes of data
+                    \end{itemize}
+                \end{exampleblock}
+            }
+        \end{column}
+    \end{columns}
 \end{frame}
 
-\begin{frame}{Arithmetic Operations}
-    \textbf{File handling via Python}
-    \begin{itemize}
-        \item \textbf{Extensive support for arithmetic and logical operations:} Extensive arithmetic and logical operations can be performed on data using Python. These include complex numerical calculations and recursive computations.
-    \end{itemize}
-    
-    \vspace{1em}
-    \textbf{DBMS}
-    \begin{itemize}
-        \item \textbf{Limited support for arithmetic and logical operations:} SQL provides limited arithmetic and logical operations. Any other complex computation has to be done outside the SQL.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Costs and Complexity}
-    \textbf{File handling via Python}
-    \begin{itemize}
-        \item File systems are cheaper to install and use. No specialized hardware, software or personnel are required to maintain filesystems.
-    \end{itemize}
-    
-    \vspace{1em}
-    \textbf{DBMS}
-    \begin{itemize}
-        \item Large databases are served by dedicated database servers need large storage and processing power
-        \item DBMSs are expensive software that have to be installed and regularly updated
-        \item Databases are inherently complex and need specialized people to work on it like \textbf{DBA}
-        \item The above factors lead to \textbf{huge costs in implementing and maintaining database management systems}
-    \end{itemize}
+\begin{frame}{Cost Vs Complexity}
+    \begin{columns}[t]
+        \begin{column}{0.5\textwidth}
+            \begin{alertblock}{File handling via Python}
+                \begin{itemize}[<+->]
+                    \item \textbf{Pros:} Extensive math support in Python
+                    \item \textbf{Cost:} Cheap setup without dedicated specialists
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \uncover<4->{
+                \begin{exampleblock}{DBMS}
+                    \begin{itemize}[<+->]
+                        \item \textbf{Cons:} SQL has limited advanced arithmetic logic
+                        \item \textbf{Cost:} Expensive servers, licenses, and DBAs required
+                    \end{itemize}
+                \end{exampleblock}
+            }
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Module Summary}

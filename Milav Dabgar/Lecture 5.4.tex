@@ -39,20 +39,22 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Introduced the theory of functional dependencies
         \item Discussed issues in 'good' design in the context of functional dependencies
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To Learn Algorithms for Properties of Functional Dependencies
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To Learn Algorithms for Properties of Functional Dependencies
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Algorithms for Functional Dependencies
     \end{itemize}
 \end{frame}
@@ -68,92 +70,93 @@
 \end{frame}
 
 \begin{frame}{Attribute Set Closure}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $R = (A, B, C, G, H, I)$
         \item $F = \{A \rightarrow B, A \rightarrow C, CG \rightarrow H, CG \rightarrow I, B \rightarrow H\}$
         \item $(AG)^+$
         \begin{itemize}
-            \item a) result = $AG$
-            \item b) result = $ABCG$ \quad ($A \rightarrow C$ and $A \rightarrow B$)
-            \item c) result = $ABCGH$ \quad ($CG \rightarrow H$ and $CG \subseteq AGBC$)
-            \item d) result = $ABCGHI$ \quad ($CG \rightarrow I$ and $CG \subseteq AGBCH$)
+            \item[$\triangleright$] a) result = $AG$
+            \item[$\triangleright$] b) result = $ABCG$ \quad ($A \rightarrow C$ and $A \rightarrow B$)
+            \item[$\triangleright$] c) result = $ABCGH$ \quad ($CG \rightarrow H$ and $CG \subseteq AGBC$)
+            \item[$\triangleright$] d) result = $ABCGHI$ \quad ($CG \rightarrow I$ and $CG \subseteq AGBCH$)
         \end{itemize}
         \item Is $AG$ a candidate key?
         \begin{itemize}
-            \item a) Is $AG$ a super key?
-            \item i) Does $AG \rightarrow R$? == Is $(AG)^+ \supseteq R$
-            \item b) Is any subset of $AG$ a superkey?
-            \item i) Does $A \rightarrow R$? == Is $(A)^+ \supseteq R$
-            \item ii) Does $G \rightarrow R$? == Is $(G)^+ \supseteq R$
+            \item[$\triangleright$] a) Is $AG$ a super key?
+            \item[$\triangleright$] i) Does $AG \rightarrow R$? == Is $(AG)^+ \supseteq R$
+            \item[$\triangleright$] b) Is any subset of $AG$ a superkey?
+            \item[$\triangleright$] i) Does $A \rightarrow R$? == Is $(A)^+ \supseteq R$
+            \item[$\triangleright$] ii) Does $G \rightarrow R$? == Is $(G)^+ \supseteq R$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Attribute Set Closure: Uses}
     There are several uses of the attribute closure algorithm:
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Testing for superkey}:
         \begin{itemize}
-            \item To test if $\alpha$ is a superkey, we compute $\alpha^+$, and check if $\alpha^+$ contains all attributes of $R$.
+            \item[$\triangleright$] To test if $\alpha$ is a superkey, we compute $\alpha^+$, and check if $\alpha^+$ contains all attributes of $R$.
         \end{itemize}
         \item \textbf{Testing functional dependencies}
         \begin{itemize}
-            \item To check if a functional dependency $\alpha \rightarrow \beta$ holds (or, in other words, is in $F^+$), just check if $\beta \subseteq \alpha^+$.
-            \item That is, we compute $\alpha^+$ by using attribute closure, and then check if it contains $\beta$.
-            \item Is a simple and cheap test, and very useful
+            \item[$\triangleright$] To check if a functional dependency $\alpha \rightarrow \beta$ holds (or, in other words, is in $F^+$), just check if $\beta \subseteq \alpha^+$.
+            \item[$\triangleright$] That is, we compute $\alpha^+$ by using attribute closure, and then check if it contains $\beta$.
+            \item[$\triangleright$] Is a simple and cheap test, and very useful
         \end{itemize}
         \item \textbf{Computing closure of $F$}
         \begin{itemize}
-            \item For each $\gamma \subseteq R$, we find the closure $\gamma^+$, and for each $S \subseteq \gamma^+$, we output a functional dependency $\gamma \rightarrow S$.
+            \item[$\triangleright$] For each $\gamma \subseteq R$, we find the closure $\gamma^+$, and for each $S \subseteq \gamma^+$, we output a functional dependency $\gamma \rightarrow S$.
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Extraneous Attributes}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Consider a set $F$ of FDs and the FD $\alpha \rightarrow \beta$ in $F$.
         \item Attribute A is \textbf{extraneous in $\alpha$} if $A \in \alpha$ and $F$ logically implies $(F - \{\alpha \rightarrow \beta\}) \cup \{(\alpha - A) \rightarrow \beta\}$.
         \item Attribute A is \textbf{extraneous in $\beta$} if $A \in \beta$ and the set of FDs $(F - \{\alpha \rightarrow \beta\}) \cup \{\alpha \rightarrow (\beta - A)\}$ logically implies $F$.
         \item Note: Implication in the opposite direction is trivial in each of the cases above, since a 'stronger' functional dependency always implies a weaker one
         \item Example: Given $F = \{A \rightarrow C, AB \rightarrow C\}$
         \begin{itemize}
-            \item $B$ is extraneous in $AB \rightarrow C$ because $\{A \rightarrow C, AB \rightarrow C\}$ logically implies $A \rightarrow C$ (that is, the result of dropping $B$ from $AB \rightarrow C$).
-            \item $A^+ = AC$ in $\{A \rightarrow C, AB \rightarrow C\}$
+            \item[$\triangleright$] $B$ is extraneous in $AB \rightarrow C$ because $\{A \rightarrow C, AB \rightarrow C\}$ logically implies $A \rightarrow C$ (that is, the result of dropping $B$ from $AB \rightarrow C$).
+            \item[$\triangleright$] $A^+ = AC$ in $\{A \rightarrow C, AB \rightarrow C\}$
         \end{itemize}
         \item Example: Given $F = \{A \rightarrow C, AB \rightarrow CD\}$
         \begin{itemize}
-            \item $C$ is extraneous in $AB \rightarrow CD$ since $AB \rightarrow C$ can be inferred even after deleting $C \circ (AB)^+ = ABCD$ in $\{A \rightarrow C, AB \rightarrow D\}$
+            \item[$\triangleright$] $C$ is extraneous in $AB \rightarrow CD$ since $AB \rightarrow C$ can be inferred even after deleting $C \circ (AB)^+ = ABCD$ in $\{A \rightarrow C, AB \rightarrow D\}$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Extraneous Attributes (2): Tests}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Consider a set $F$ of functional dependencies and the functional dependency $\alpha \rightarrow \beta$ in $F$.
         \item To test if attribute $A \in \alpha$ is extraneous in $\alpha$
         \begin{itemize}
-            \item a) Compute $(\{\alpha\} - A)^+$ using the dependencies in $F$
-            \item b) Check that $(\{\alpha\} - A)^+$ contains $\beta$; if it does, $A$ is extraneous in $\alpha$
+            \item[$\triangleright$] a) Compute $(\{\alpha\} - A)^+$ using the dependencies in $F$
+            \item[$\triangleright$] b) Check that $(\{\alpha\} - A)^+$ contains $\beta$; if it does, $A$ is extraneous in $\alpha$
         \end{itemize}
         \item To test if attribute $A \in \beta$ is extraneous in $\beta$
         \begin{itemize}
-            \item a) Compute $\alpha^+$ using only the dependencies in $F' = (F - \{\alpha \rightarrow \beta\}) \cup \{\alpha \rightarrow (\beta - A)\}$,
-            \item b) Check that $\alpha^+$ contains $A$; if it does, $A$ is extraneous in $\beta$
+            \item[$\triangleright$] a) Compute $\alpha^+$ using only the dependencies in $F' = (F - \{\alpha \rightarrow \beta\}) \cup \{\alpha \rightarrow (\beta - A)\}$,
+            \item[$\triangleright$] b) Check that $\alpha^+$ contains $A$; if it does, $A$ is extraneous in $\beta$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Equivalence of Sets of Functional Dependencies}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Let $F$ \& $G$ are two functional dependency sets.
         \item These two sets $F$ \& $G$ are \textbf{equivalent} if $F^+ = G^+$. That is: $(F^+ = G^+) \Leftrightarrow (F^+ \Rightarrow G \text{ and } G^+ \Rightarrow F)$
         \item Equivalence means that every functional dependency in $F$ can be inferred from $G$, and every functional dependency in $G$ can be inferred from $F$
         \item $F$ and $G$ are equal only if
         \begin{itemize}
-            \item \textbf{$F$ covers $G$}: Means that all functional dependency of $G$ are logically members of functional dependency set $F \Rightarrow F^+ \supseteq G$.
-            \item \textbf{$G$ covers $F$}: Means that all functional dependency of $F$ are logically members of functional dependency set $G \Rightarrow G^+ \supseteq F$.
+            \item[$\triangleright$] \textbf{$F$ covers $G$}: Means that all functional dependency of $G$ are logically members of functional dependency set $F \Rightarrow F^+ \supseteq G$.
+            \item[$\triangleright$] \textbf{$G$ covers $F$}: Means that all functional dependency of $F$ are logically members of functional dependency set $G \Rightarrow G^+ \supseteq F$.
         \end{itemize}
     \end{itemize}
+    \uncover<5->{
     \begin{center}
     \begin{tabular}{|l|l|l|l|l|}
     \hline
@@ -163,84 +166,94 @@
     Result & F=G & & G-F & No Comparison \\ \hline
     \end{tabular}
     \end{center}
+    }
 \end{frame}
 
 \begin{frame}{Canonical Cover}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Sets of FDs may have redundant dependencies that can be inferred from the others
         \item Can we have some kind of 'optimal' or 'minimal' set of FDs to work with?
-        \item A \textbf{Canonical Cover} for $F$ is a set of dependencies $F_c$ such that ALL the following properties are satisfied:
+    \end{itemize}
+    \uncover<3->{
+    \begin{block}{Canonical Cover}
+        A \textbf{Canonical Cover} for $F$ is a set of dependencies $F_c$ such that ALL the following properties are satisfied:
         \begin{itemize}
             \item $F^+ = F_c^+$. Or,
-            \item $\triangleright$ $F$ logically implies all dependencies in $F_c$
-            \item $\triangleright$ $F_c$ logically implies all dependencies in $F$
+            \begin{itemize}
+                \item $F$ logically implies all dependencies in $F_c$
+                \item $F_c$ logically implies all dependencies in $F$
+            \end{itemize}
             \item No functional dependency in $F_c$ contains an extraneous attribute
             \item Each left side of functional dependency in $F_c$ is unique. That is, there are no two dependencies $\alpha_1 \rightarrow \beta_1$ and $\alpha_2 \rightarrow \beta_2$ such that $\alpha_1 = \alpha_2$
         \end{itemize}
+    \end{block}
+    }
+    \begin{itemize}[<+(3)->]
         \item Intuitively, a Canonical cover of $F$ is a \textbf{minimal set of FDs}
         \begin{itemize}
-            \item Equivalent to $F$
-            \item Having no redundant FDs
-            \item No redundant parts of FDs
-            \item Minimal / Irreducible Set of Functional Dependencies
+            \item[$\triangleright$] Equivalent to $F$
+            \item[$\triangleright$] Having no redundant FDs
+            \item[$\triangleright$] No redundant parts of FDs
+            \item[$\triangleright$] Minimal / Irreducible Set of Functional Dependencies
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Canonical Cover (2): Example}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item For example: $A \rightarrow C$ is redundant in: $\{A \rightarrow B, B \rightarrow C, A \rightarrow C\}$
         \item Parts of a functional dependency may be redundant
         \item For example: on RHS: $\{A \rightarrow B, B \rightarrow C, A \rightarrow CD\}$ can be simplified to $\{A \rightarrow B, B \rightarrow C, A \rightarrow D\}$
         \begin{itemize}
-            \item In the forward: (1) $A \rightarrow CD \Rightarrow A \rightarrow C$ and $A \rightarrow D$ (2) $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C$
-            \item In the reverse: (1) $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C$ (2) $A \rightarrow C, A \rightarrow D \Rightarrow A \rightarrow CD$
+            \item[$\triangleright$] In the forward: (1) $A \rightarrow CD \Rightarrow A \rightarrow C$ and $A \rightarrow D$ (2) $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C$
+            \item[$\triangleright$] In the reverse: (1) $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C$ (2) $A \rightarrow C, A \rightarrow D \Rightarrow A \rightarrow CD$
         \end{itemize}
         \item For example: on LHS: $\{A \rightarrow B, B \rightarrow C, AC \rightarrow D\}$ can be simplified to $\{A \rightarrow B, B \rightarrow C, A \rightarrow D\}$
         \begin{itemize}
-            \item In the forward: (1) $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C \Rightarrow A \rightarrow AC$ (2) $A \rightarrow AC, AC \rightarrow D \Rightarrow A \rightarrow D$
-            \item In the reverse: $A \rightarrow D \Rightarrow AC \rightarrow D$
+            \item[$\triangleright$] In the forward: (1) $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C \Rightarrow A \rightarrow AC$ (2) $A \rightarrow AC, AC \rightarrow D \Rightarrow A \rightarrow D$
+            \item[$\triangleright$] In the reverse: $A \rightarrow D \Rightarrow AC \rightarrow D$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Canonical Cover (3): RHS}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $\{A \rightarrow B, B \rightarrow C, A \rightarrow CD\} \Rightarrow \{A \rightarrow B, B \rightarrow C, A \rightarrow D\}$
         \begin{itemize}
-            \item (1) $A \rightarrow CD \Rightarrow A \rightarrow C$ and $A \rightarrow D$
-            \item (2) $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C$
-            \item $A^+ = ABCD$
+            \item[$\triangleright$] (1) $A \rightarrow CD \Rightarrow A \rightarrow C$ and $A \rightarrow D$
+            \item[$\triangleright$] (2) $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C$
+            \item[$\triangleright$] $A^+ = ABCD$
         \end{itemize}
         \item $\{A \rightarrow B, B \rightarrow C, A \rightarrow D\} \Rightarrow \{A \rightarrow B, B \rightarrow C, A \rightarrow CD\}$
         \begin{itemize}
-            \item $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C$
-            \item $A \rightarrow C, A \rightarrow D \Rightarrow A \rightarrow CD$
-            \item $A^+ = ABCD$
+            \item[$\triangleright$] $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C$
+            \item[$\triangleright$] $A \rightarrow C, A \rightarrow D \Rightarrow A \rightarrow CD$
+            \item[$\triangleright$] $A^+ = ABCD$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Canonical Cover (4): LHS}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $\{A \rightarrow B, B \rightarrow C, AC \rightarrow D\} \Rightarrow \{A \rightarrow B, B \rightarrow C, A \rightarrow D\}$
         \begin{itemize}
-            \item $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C \Rightarrow A \rightarrow AC$
-            \item $A \rightarrow AC, AC \rightarrow D \Rightarrow A \rightarrow D$
-            \item $A^+ = ABCD$
+            \item[$\triangleright$] $A \rightarrow B, B \rightarrow C \Rightarrow A \rightarrow C \Rightarrow A \rightarrow AC$
+            \item[$\triangleright$] $A \rightarrow AC, AC \rightarrow D \Rightarrow A \rightarrow D$
+            \item[$\triangleright$] $A^+ = ABCD$
         \end{itemize}
         \item $\{A \rightarrow B, B \rightarrow C, A \rightarrow D\} \Rightarrow \{A \rightarrow B, B \rightarrow C, AC \rightarrow D\}$
         \begin{itemize}
-            \item $A \rightarrow D \Rightarrow AC \rightarrow D$
-            \item $AC^+ = ABCD$
+            \item[$\triangleright$] $A \rightarrow D \Rightarrow AC \rightarrow D$
+            \item[$\triangleright$] $AC^+ = ABCD$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Canonical Cover (5)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item To compute a canonical cover for $F$:
     \end{itemize}
+    \vspace{1em}
     \begin{verbatim}
 repeat
     Use the union rule to replace any dependencies in F
@@ -252,57 +265,57 @@ repeat
         If an extraneous attribute is found, delete it from alpha -> beta
 until F does not change
     \end{verbatim}
-    \begin{itemize}
+    \begin{itemize}[<+(1)->]
         \item Note: Union rule may become applicable after some extraneous attributes have been deleted, so it has to be re-applied
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Canonical Cover (6): Example}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $R = (A, B, C)$
         \item $F = \{A \rightarrow BC, B \rightarrow C, A \rightarrow B, AB \rightarrow C\}$
         \item Combine $A \rightarrow BC$ and $A \rightarrow B$ into $A \rightarrow BC$
         \item Set is now $\{A \rightarrow BC, B \rightarrow C, AB \rightarrow C\}$
         \item $A$ is extraneous in $AB \rightarrow C$
         \begin{itemize}
-            \item Check if the result of deleting $A$ from $AB \rightarrow C$ is implied by the other dependencies
-            \item $\triangleright$ Yes: in fact, $B \rightarrow C$ is already present!
+            \item[$\triangleright$] Check if the result of deleting $A$ from $AB \rightarrow C$ is implied by the other dependencies
+            \item[$\triangleright$] $\triangleright$ Yes: in fact, $B \rightarrow C$ is already present!
         \end{itemize}
         \item Set is now $\{A \rightarrow BC, B \rightarrow C\}$
         \item $C$ is extraneous in $A \rightarrow BC$
         \begin{itemize}
-            \item Check if $A \rightarrow C$ is logically implied by $A \rightarrow B$ and the other dependencies
-            \item $\triangleright$ Yes: using transitivity on $A \rightarrow B$ and $B \rightarrow C$.
-            \item Can use attribute closure of $A$ in more complex cases
+            \item[$\triangleright$] Check if $A \rightarrow C$ is logically implied by $A \rightarrow B$ and the other dependencies
+            \item[$\triangleright$] $\triangleright$ Yes: using transitivity on $A \rightarrow B$ and $B \rightarrow C$.
+            \item[$\triangleright$] Can use attribute closure of $A$ in more complex cases
         \end{itemize}
         \item The canonical cover is: $A \rightarrow B, B \rightarrow C$
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Practice Problems on Functional Dependencies}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Find if a given functional dependency is implied from a set of Functional Dependencies:
         \item a) For: $A \rightarrow BC, CD \rightarrow E, E \rightarrow C, D \rightarrow AEH, ABH \rightarrow BD, DH \rightarrow BC$
         \begin{itemize}
-            \item i) Check: $BCD \rightarrow H$
-            \item ii) Check: $AED \rightarrow C$
+            \item[$\triangleright$] i) Check: $BCD \rightarrow H$
+            \item[$\triangleright$] ii) Check: $AED \rightarrow C$
         \end{itemize}
         \item b) For: $AB \rightarrow CD, AF \rightarrow D, DE \rightarrow F, C \rightarrow G, F \rightarrow E, G \rightarrow A$
         \begin{itemize}
-            \item i) Check: $CF \rightarrow DF$
-            \item ii) Check: $BG \rightarrow E$
-            \item iii) Check: $AF \rightarrow G$
-            \item iv) Check: $AB \rightarrow EF$
+            \item[$\triangleright$] i) Check: $CF \rightarrow DF$
+            \item[$\triangleright$] ii) Check: $BG \rightarrow E$
+            \item[$\triangleright$] iii) Check: $AF \rightarrow G$
+            \item[$\triangleright$] iv) Check: $AB \rightarrow EF$
         \end{itemize}
         \item c) For: $A \rightarrow BC, B \rightarrow E, CD \rightarrow EF$
         \begin{itemize}
-            \item i) Check: $AD \rightarrow F$
+            \item[$\triangleright$] i) Check: $AD \rightarrow F$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Practice Problems on Functional Dependencies (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Find Super Key using Functional Dependencies:
         \item a) Relational Schema $R(ABCDE)$. Functional dependencies: $AB \rightarrow C, DE \rightarrow B, CD \rightarrow E$
         \item b) Relational Schema $R(ABCDE)$. Functional dependencies: $AB \rightarrow C, C \rightarrow D, B \rightarrow EA$
@@ -310,7 +323,7 @@ until F does not change
 \end{frame}
 
 \begin{frame}{Practice Problems on Functional Dependencies (3)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Find Candidate Key using Functional Dependencies:
         \item a) Relational Schema $R(ABCDE)$. Functional dependencies: $AB \rightarrow C, DE \rightarrow B, CD \rightarrow E$
         \item b) Relational Schema $R(ABCDE)$. Functional dependencies: $AB \rightarrow C, C \rightarrow D, B \rightarrow EA$
@@ -318,7 +331,7 @@ until F does not change
 \end{frame}
 
 \begin{frame}{Practice Problems on Functional Dependencies (4)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Find Prime and Non Prime Attributes using Functional Dependencies:
         \item a) $R(ABCDEF)$ having FDs $\{AB \rightarrow C, C \rightarrow D, D \rightarrow E, F \rightarrow B, E \rightarrow F\}$
         \item b) $R(ABCDEF)$ having FDs $\{AB \rightarrow C, C \rightarrow DE, E \rightarrow F, C \rightarrow B\}$
@@ -336,23 +349,23 @@ until F does not change
 \end{frame}
 
 \begin{frame}{Practice Problems on Functional Dependencies (5)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Check the Equivalence of a Pair of Sets of Functional Dependencies:
         \item a) Consider the two sets $F$ and $G$ with their FDs as below:
         \begin{itemize}
-            \item i) $F: A \rightarrow C, AC \rightarrow D, E \rightarrow AD, E \rightarrow H$
-            \item ii) $G: A \rightarrow CD, E \rightarrow AH$
+            \item[$\triangleright$] i) $F: A \rightarrow C, AC \rightarrow D, E \rightarrow AD, E \rightarrow H$
+            \item[$\triangleright$] ii) $G: A \rightarrow CD, E \rightarrow AH$
         \end{itemize}
         \item b) Consider the two sets $P$ and $Q$ with their FDs as below:
         \begin{itemize}
-            \item i) $P: A \rightarrow B, AB \rightarrow C, D \rightarrow ACE$
-            \item ii) $Q: A \rightarrow BC, D \rightarrow AE$
+            \item[$\triangleright$] i) $P: A \rightarrow B, AB \rightarrow C, D \rightarrow ACE$
+            \item[$\triangleright$] ii) $Q: A \rightarrow BC, D \rightarrow AE$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Practice Problems on Functional Dependencies (6)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Find the Minimal Cover or Irreducible Sets or Canonical Cover of a Set of Functional Dependencies:
         \item a) $AB \rightarrow CD, BC \rightarrow D$
         \item b) $ABCD \rightarrow E, E \rightarrow D, AC \rightarrow D, A \rightarrow B$
@@ -360,9 +373,11 @@ until F does not change
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Studied Algorithms for Properties of Functional Dependencies
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Studied Algorithms for Properties of Functional Dependencies
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

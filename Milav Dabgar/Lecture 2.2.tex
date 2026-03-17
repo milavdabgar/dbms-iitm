@@ -30,7 +30,7 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Basic notions of modeling introduced
         \item Attributes and their Types
         \item Schema and Instance
@@ -40,14 +40,16 @@
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To understand relational algebra
-        \item To familiarize with the operators of relational algebra
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To understand relational algebra
+            \item To familiarize with the operators of relational algebra
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Operations}
         \begin{itemize}
             \item Select
@@ -74,45 +76,46 @@
 \end{frame}
 
 \begin{frame}{Basic Properties of Relations}
-    \textbf{A relation is a set. Hence,}
-    \begin{itemize}
-        \item \textbf{Ordering of rows / tuples is inconsequential}
-    \end{itemize}
-    \begin{center}
-        \begin{tabular}{|l|l|}
-        \hline
-        \textbf{A} & \textbf{B} \\ \hline
-        a1 & b1 \\ \hline
-        a1 & b2 \\ \hline
-        a2 & b1 \\ \hline
-        a2 & b2 \\ \hline
-        \end{tabular}
-        \quad \textit{is same as:} \quad
-        \begin{tabular}{|l|l|}
-        \hline
-        \textbf{A} & \textbf{B} \\ \hline
-        a1 & b1 \\ \hline
-        a2 & b1 \\ \hline
-        a2 & b2 \\ \hline
-        a1 & b2 \\ \hline
-        \end{tabular}
-    \end{center}
-
-    \vspace{1em}
-    \begin{itemize}
-        \item \textbf{All rows / tuples must be distinct}
-    \end{itemize}
-    \begin{center}
-        \begin{tabular}{|l|l|}
-        \hline
-        \textbf{A} & \textbf{B} \\ \hline
-        a1 & b1 \\ \hline
-        a1 & b2 \\ \hline
-        a1 & b2 \\ \hline
-        a1 & b1 \\ \hline
-        \end{tabular}
-        \quad \textit{is not valid}
-    \end{center}
+    \begin{block}{A relation is a set. Hence,}
+        \begin{itemize}[<+->]
+            \item \textbf{Ordering of rows / tuples is inconsequential}
+        \end{itemize}
+        \begin{center}
+            \begin{tabular}{|l|l|}
+            \hline
+            \textbf{A} & \textbf{B} \\ \hline
+            a1 & b1 \\ \hline
+            a1 & b2 \\ \hline
+            a2 & b1 \\ \hline
+            a2 & b2 \\ \hline
+            \end{tabular}
+            \quad \textit{is same as:} \quad
+            \begin{tabular}{|l|l|}
+            \hline
+            \textbf{A} & \textbf{B} \\ \hline
+            a1 & b1 \\ \hline
+            a2 & b1 \\ \hline
+            a2 & b2 \\ \hline
+            a1 & b2 \\ \hline
+            \end{tabular}
+        \end{center}
+    \end{block}
+    
+    \uncover<2->{
+        \begin{alertblock}{All rows / tuples must be distinct}
+            \begin{center}
+                \begin{tabular}{|l|l|}
+                \hline
+                \textbf{A} & \textbf{B} \\ \hline
+                a1 & b1 \\ \hline
+                a1 & b2 \\ \hline
+                a1 & b2 \\ \hline
+                a1 & b1 \\ \hline
+                \end{tabular}
+                \quad \textit{is not valid}
+            \end{center}
+        \end{alertblock}
+    }
 \end{frame}
 
 \begin{frame}{Select Operation - selection of rows (tuples)}
@@ -217,15 +220,17 @@
 \end{frame}
 
 \begin{frame}{Joining two relations - Natural Join}
-    \begin{itemize}
-        \item Let $r$ and $s$ be relations on schemas $R$ and $S$ respectively. Then, the \textbf{natural join} of relations $R$ and $S$ is a relation on schema $R \cup S$ obtained as follows:
-        \item Consider each pair of tuples $t_r$ from $r$ and $t_s$ from $s$.
-        \item If $t_r$ and $t_s$ have the same value on each of the attributes in $R \cap S$, add a tuple $t$ to the result, where
-        \begin{itemize}
-            \item[$\triangleright$] $t$ has the same value as $t_r$ on $r$
-            \item[$\triangleright$] $t$ has the same value as $t_s$ on $s$
+    \begin{block}{Definition}
+        \begin{itemize}[<+->]
+            \item Let $r$ and $s$ be relations on schemas $R$ and $S$ respectively. Then, the \textbf{natural join} of relations $R$ and $S$ is a relation on schema $R \cup S$ obtained as follows:
+            \item Consider each pair of tuples $t_r$ from $r$ and $t_s$ from $s$.
+            \item If $t_r$ and $t_s$ have the same value on each of the attributes in $R \cap S$, add a tuple $t$ to the result, where
+            \begin{itemize}
+                \item[$\triangleright$] $t$ has the same value as $t_r$ on $r$
+                \item[$\triangleright$] $t$ has the same value as $t_s$ on $s$
+            \end{itemize}
         \end{itemize}
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Natural Join Example}
@@ -254,15 +259,17 @@
 \end{frame}
 
 \begin{frame}{Aggregate Operators}
-    \begin{itemize}
-        \item Can we compute:
-        \begin{itemize}
-            \item \textbf{SUM}
-            \item \textbf{AVG}
-            \item \textbf{MAX}
-            \item \textbf{MIN}
+    \begin{exampleblock}{Common Functions}
+        \begin{itemize}[<+->]
+            \item Can we compute:
+            \begin{itemize}
+                \item \textbf{SUM}
+                \item \textbf{AVG}
+                \item \textbf{MAX}
+                \item \textbf{MIN}
+            \end{itemize}
         \end{itemize}
-    \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}{Notes about Relational Languages}

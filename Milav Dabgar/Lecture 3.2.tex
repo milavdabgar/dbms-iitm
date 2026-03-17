@@ -38,20 +38,22 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item SQL Examples Practiced
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To understand nested subquery in SQL
-        \item To understand processes for data modification
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To understand nested subquery in SQL
+            \item To understand processes for data modification
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Nested Subqueries
         \item Modifications of the Database
     \end{itemize}
@@ -69,24 +71,26 @@
 \end{frame}
 
 \begin{frame}[fragile]{Nested Subqueries}
-    \begin{itemize}
-        \item SQL provides a mechanism for the nesting of subqueries
-        \item A subquery is a \texttt{select}-\texttt{from}-\texttt{where} expression that is nested within another query
-        \item The nesting can be done in the following SQL query
-        \begin{lstlisting}[language=SQL]
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item SQL provides a mechanism for the nesting of subqueries
+            \item A subquery is a \texttt{select}-\texttt{from}-\texttt{where} expression that is nested within another query
+            \item The nesting can be done in the following SQL query
+            \begin{lstlisting}[language=SQL]
 select A1, A2, ..., An 
 from r1, r2, ..., rm
 where P
-        \end{lstlisting}
-        \textbf{as follows:}
-        \begin{itemize}
-            \item \texttt{Ai} can be replaced by a subquery that generates a single value
-            \item \texttt{ri} can be replaced by any valid subquery
-            \item \texttt{P} can be replaced with an expression of the form:
-            \item \texttt{B <operation> (subquery)}
-            \item where \texttt{B} is an attribute and \texttt{<operation>} to be defined later
+            \end{lstlisting}
+            \textbf{as follows:}
+            \begin{itemize}
+                \item[$\triangleright$] \texttt{Ai} can be replaced by a subquery that generates a single value
+                \item[$\triangleright$] \texttt{ri} can be replaced by any valid subquery
+                \item[$\triangleright$] \texttt{P} can be replaced with an expression of the form:
+                \item[$\triangleright$] \texttt{B <operation> (subquery)}
+                \item[$\triangleright$] where \texttt{B} is an attribute and \texttt{<operation>} to be defined later
+            \end{itemize}
         \end{itemize}
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \section{Subqueries in the Where Clause}
@@ -101,20 +105,23 @@ where P
 \end{frame}
 
 \begin{frame}{Subqueries in the Where Clause}
-    \begin{itemize}
-        \item Typical use of subqueries is to perform tests:
-        \begin{itemize}
-            \item For set membership
-            \item For set comparisons
-            \item For set cardinality
+    \begin{block}{Usage}
+        \begin{itemize}[<+->]
+            \item Typical use of subqueries is to perform tests:
+            \begin{itemize}
+                \item[$\triangleright$] For set membership
+                \item[$\triangleright$] For set comparisons
+                \item[$\triangleright$] For set cardinality
+            \end{itemize}
         \end{itemize}
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Set Membership}
-    \begin{itemize}
-        \item Find courses offered in Fall 2009 and in Spring 2010. (\texttt{intersect} example)
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Find courses offered in Fall 2009 and in Spring 2010. (\texttt{intersect} example)
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 select distinct course_id 
 from section 
 where semester = 'Fall' and year = 2009 and 
@@ -122,9 +129,9 @@ where semester = 'Fall' and year = 2009 and
           (select course_id 
            from section 
            where semester = 'Spring' and year = 2010);
-        \end{lstlisting}
-        \item Find courses offered in Fall 2009 but not in Spring 2010. (\texttt{except} example)
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+            \end{lstlisting}
+            \item Find courses offered in Fall 2009 but not in Spring 2010. (\texttt{except} example)
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 select distinct course_id 
 from section 
 where semester = 'Fall' and year = 2009 and 
@@ -132,35 +139,39 @@ where semester = 'Fall' and year = 2009 and
           (select course_id 
            from section 
            where semester = 'Spring' and year = 2010);
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Set Membership (2)}
-    \begin{itemize}
-        \item Find the total number of (distinct) students who have taken course sections taught by the instructor with ID 10101
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Find the total number of (distinct) students who have taken course sections taught by the instructor with ID 10101
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 select count(distinct ID) 
 from takes 
 where (course_id, sec_id, semester, year) in 
           (select course_id, sec_id, semester, year 
            from teaches 
            where teaches.ID = 10101);
-        \end{lstlisting}
-        \item Note: Above query can be written in simpler manner. The formulation above is simply to illustrate SQL features.
-    \end{itemize}
+            \end{lstlisting}
+            \item Note: Above query can be written in simpler manner. The formulation above is simply to illustrate SQL features.
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Set Comparison - 'some' Clause}
-    \begin{itemize}
-        \item Find names of instructors with salary greater than that of \textbf{some} (at least one) instructor in the Biology department
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Find names of instructors with salary greater than that of \textbf{some} (at least one) instructor in the Biology department
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 select distinct T.name 
 from instructor as T, instructor as S 
 where T.salary > S.salary and S.dept_name = 'Biology';
-        \end{lstlisting}
-        \item Same query using \texttt{some} clause
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+            \end{lstlisting}
+            \item Same query using \texttt{some} clause
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 select name 
 from instructor 
 where salary > some ( 
@@ -168,26 +179,30 @@ where salary > some (
           from instructor 
           where dept_name = 'Biology' 
       );
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}{Definition of 'some' Clause}
-    \begin{itemize}
-        \item $F \langle comp \rangle \textbf{ some } r \Leftrightarrow \exists t \in r \text{ such that } (F \langle comp \rangle t)$
-        \vspace{0.5em}
-        
-        Where $\langle comp \rangle$ can be: $<, \le, >, \ge, =, \neq$
-        \vspace{1em}
-        \item \texttt{some} represents existential quantification
-        \item Example: $\texttt{5 < some (0, 5, 6)} = \texttt{true}$
-    \end{itemize}
+    \begin{block}{Definition}
+        \begin{itemize}[<+->]
+            \item $F \langle comp \rangle \textbf{ some } r \Leftrightarrow \exists t \in r \text{ such that } (F \langle comp \rangle t)$
+            \vspace{0.5em}
+            
+            Where $\langle comp \rangle$ can be: $<, \le, >, \ge, =, \neq$
+            \vspace{1em}
+            \item \texttt{some} represents existential quantification
+            \item Example: $\texttt{5 < some (0, 5, 6)} = \texttt{true}$
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Set Comparison - 'all' Clause}
-    \begin{itemize}
-        \item Find the names of all instructors whose salary is greater than the salary of \textbf{all} instructors in the Biology department
-        \begin{lstlisting}[language=SQL]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Find the names of all instructors whose salary is greater than the salary of \textbf{all} instructors in the Biology department
+            \begin{lstlisting}[language=SQL]
 select name 
 from instructor 
 where salary > all ( 
@@ -195,37 +210,43 @@ where salary > all (
           from instructor 
           where dept_name = 'Biology' 
       );
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}{Definition of 'all' Clause}
-    \begin{itemize}
-        \item $F \langle comp \rangle \textbf{ all } r \Leftrightarrow \forall t \in r \text{ such that } (F \langle comp \rangle t)$
-        \vspace{0.5em}
-        
-        Where $\langle comp \rangle$ can be: $<, \le, >, \ge, =, \neq$
-        \vspace{1em}
-        \item \texttt{all} represents universal quantification
-        \item Example: $\texttt{5 < all (0, 5, 6)} = \texttt{false}$
-        \item Example: $\texttt{5 < all (6, 10)} = \texttt{true}$
-    \end{itemize}
+    \begin{block}{Definition}
+        \begin{itemize}[<+->]
+            \item $F \langle comp \rangle \textbf{ all } r \Leftrightarrow \forall t \in r \text{ such that } (F \langle comp \rangle t)$
+            \vspace{0.5em}
+            
+            Where $\langle comp \rangle$ can be: $<, \le, >, \ge, =, \neq$
+            \vspace{1em}
+            \item \texttt{all} represents universal quantification
+            \item Example: $\texttt{5 < all (0, 5, 6)} = \texttt{false}$
+            \item Example: $\texttt{5 < all (6, 10)} = \texttt{true}$
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Test for Empty Relations: 'exists'}
-    \begin{itemize}
-        \item The \texttt{exists} construct returns the value \textbf{true} if the argument subquery is nonempty
-        \vspace{1em}
-        \item $\textbf{exists } r \Leftrightarrow r \neq \emptyset$
-        \vspace{0.5em}
-        \item $\textbf{not exists } r \Leftrightarrow r = \emptyset$
-    \end{itemize}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item The \texttt{exists} construct returns the value \textbf{true} if the argument subquery is nonempty
+            \vspace{1em}
+            \item $\textbf{exists } r \Leftrightarrow r \neq \emptyset$
+            \vspace{0.5em}
+            \item $\textbf{not exists } r \Leftrightarrow r = \emptyset$
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Use of 'exists' Clause}
-    \begin{itemize}
-        \item Yet another way of specifying the query "Find all courses taught in both the Fall 2009 semester and in the Spring 2010 semester"
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Yet another way of specifying the query "Find all courses taught in both the Fall 2009 semester and in the Spring 2010 semester"
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 select course_id 
 from section as S 
 where semester = 'Fall' and year = 2009 and 
@@ -235,16 +256,18 @@ where semester = 'Fall' and year = 2009 and
           where semester = 'Spring' and year = 2010 
             and S.course_id = T.course_id 
       );
-        \end{lstlisting}
-        \item \textbf{Correlation name} - variable \texttt{S} in the outer query
-        \item \textbf{Correlated subquery} - the inner query
-    \end{itemize}
+            \end{lstlisting}
+            \item \textbf{Correlation name} - variable \texttt{S} in the outer query
+            \item \textbf{Correlated subquery} - the inner query
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Use of 'not exists' Clause}
-    \begin{itemize}
-        \item Find all students who have taken all courses offered in the Biology department.
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Find all students who have taken all courses offered in the Biology department.
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 select distinct S.ID, S.name 
 from student as S 
 where not exists ( 
@@ -256,20 +279,22 @@ where not exists (
            from takes as T 
            where S.ID = T.ID) 
       );
-        \end{lstlisting}
-        \item First nested query lists all courses offered in Biology
-        \item Second nested query lists all courses a particular student took
-        \item Note: $X - Y = \emptyset \Leftrightarrow X \subseteq Y$
-        \item Note: Cannot write this query using \texttt{= all} and its variants
-    \end{itemize}
+            \end{lstlisting}
+            \item First nested query lists all courses offered in Biology
+            \item Second nested query lists all courses a particular student took
+            \item Note: $X - Y = \emptyset \Leftrightarrow X \subseteq Y$
+            \item Note: Cannot write this query using \texttt{= all} and its variants
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Test for Absence of Duplicate Tuples: 'unique'}
-    \begin{itemize}
-        \item The \texttt{unique} construct tests whether a subquery has any duplicate tuples in its result
-        \item The \texttt{unique} construct evaluates to 'true' if a given subquery contains no duplicates
-        \item Find all courses that were offered at most once in 2009
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item The \texttt{unique} construct tests whether a subquery has any duplicate tuples in its result
+            \item The \texttt{unique} construct evaluates to 'true' if a given subquery contains no duplicates
+            \item Find all courses that were offered at most once in 2009
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 select T.course_id 
 from course as T 
 where unique ( 
@@ -277,8 +302,9 @@ where unique (
           from section as R 
           where T.course_id = R.course_id and R.year = 2009 
       );
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \section{Subqueries in the From Clause}
@@ -293,34 +319,37 @@ where unique (
 \end{frame}
 
 \begin{frame}[fragile]{Subqueries in the From Clause}
-    \begin{itemize}
-        \item SQL allows a subquery expression to be used in the \texttt{from} clause
-        \item Find the average instructors' salaries of those departments where the average salary is greater than \$42,000
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item SQL allows a subquery expression to be used in the \texttt{from} clause
+            \item Find the average instructors' salaries of those departments where the average salary is greater than \$42,000
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 select dept_name, avg_salary 
 from (select dept_name, avg(salary) as avg_salary 
       from instructor 
       group by dept_name) 
 where avg_salary > 42000;
-        \end{lstlisting}
-        \item Note that we do not need to use the \texttt{having} clause
-        \item Another way to write above query:
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+            \end{lstlisting}
+            \item Note that we do not need to use the \texttt{having} clause
+            \item Another way to write above query:
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 select dept_name, avg_salary 
 from (select dept_name, avg(salary) 
       from instructor 
       group by dept_name) 
       as dept_avg (dept_name, avg_salary) 
 where avg_salary > 42000;
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{With Clause}
-    \begin{itemize}
-        \item The \texttt{with} clause provides a way of defining a temporary relation whose definition is available only to the query in which the \texttt{with} clause occurs
-        \item Find all departments with the maximum budget
-        \begin{lstlisting}[language=SQL]
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item The \texttt{with} clause provides a way of defining a temporary relation whose definition is available only to the query in which the \texttt{with} clause occurs
+            \item Find all departments with the maximum budget
+            \begin{lstlisting}[language=SQL]
 with max_budget(value) as ( 
     select max(budget) 
     from department 
@@ -328,14 +357,16 @@ with max_budget(value) as (
 select department.name 
 from department, max_budget 
 where department.budget = max_budget.value;
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Complex Queries using With Clause}
-    \begin{itemize}
-        \item Find all departments where the total salary is greater than the average of the total salary at all departments
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Find all departments where the total salary is greater than the average of the total salary at all departments
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 with dept_total (dept_name, value) as (
     select dept_name, sum(salary) 
     from instructor 
@@ -348,8 +379,9 @@ dept_total_avg(value) as (
 select dept_name 
 from dept_total, dept_total_avg 
 where dept_total.value > dept_total_avg.value;
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \section{Subqueries in the Select Clause}
@@ -364,19 +396,21 @@ where dept_total.value > dept_total_avg.value;
 \end{frame}
 
 \begin{frame}[fragile]{Scalar Subquery}
-    \begin{itemize}
-        \item Scalar subquery is one which is used where a single value is expected
-        \item List all departments along with the number of instructors in each department
-        \begin{lstlisting}[language=SQL]
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item Scalar subquery is one which is used where a single value is expected
+            \item List all departments along with the number of instructors in each department
+            \begin{lstlisting}[language=SQL]
 select dept_name, 
        (select count(*) 
         from instructor 
         where department.dept_name = instructor.dept_name) 
         as num_instructors 
 from department;
-        \end{lstlisting}
-        \item Runtime error if subquery returns more than one result tuple
-    \end{itemize}
+            \end{lstlisting}
+            \item Runtime error if subquery returns more than one result tuple
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \section{Modifications of the Database}
@@ -391,97 +425,108 @@ from department;
 \end{frame}
 
 \begin{frame}{Modification of the Database}
-    \begin{itemize}
-        \item Deletion of tuples from a given relation
-        \item Insertion of new tuples into a given relation
-        \item Updating of values in some tuples in a given relation
-    \end{itemize}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item Deletion of tuples from a given relation
+            \item Insertion of new tuples into a given relation
+            \item Updating of values in some tuples in a given relation
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Deletion}
-    \begin{itemize}
-        \item Delete all instructors
-        \begin{lstlisting}[language=SQL]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Delete all instructors
+            \begin{lstlisting}[language=SQL]
 delete from instructor;
-        \end{lstlisting}
-        \item Delete all instructors from the Finance department
-        \begin{lstlisting}[language=SQL]
+            \end{lstlisting}
+            \item Delete all instructors from the Finance department
+            \begin{lstlisting}[language=SQL]
 delete from instructor where dept_name = 'Finance';
-        \end{lstlisting}
-        \item Delete all tuples in the \texttt{instructor} relation for those instructors associated with a department located in the Watson building
-        \begin{lstlisting}[language=SQL]
+            \end{lstlisting}
+            \item Delete all tuples in the \texttt{instructor} relation for those instructors associated with a department located in the Watson building
+            \begin{lstlisting}[language=SQL]
 delete from instructor 
 where dept_name in (
           select dept_name 
           from department 
           where building = 'Watson'
       );
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Deletion (2)}
-    \begin{itemize}
-        \item Delete all instructors whose salary is less than the average salary of instructors
-        \begin{lstlisting}[language=SQL]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Delete all instructors whose salary is less than the average salary of instructors
+            \begin{lstlisting}[language=SQL]
 delete from instructor 
 where salary < (
           select avg(salary) 
           from instructor
       );
-        \end{lstlisting}
-        \item \textbf{Problem}: as we delete tuples from \texttt{instructor}, the average salary changes
-        \item \textbf{Solution used in SQL}:
-        \begin{enumerate}
-            \item First, compute \texttt{avg (salary)} and find all tuples to delete
-            \item Next, delete all tuples found above (without recomputing avg or retesting the tuples)
-        \end{enumerate}
-    \end{itemize}
+            \end{lstlisting}
+            \item \textbf{Problem}: as we delete tuples from \texttt{instructor}, the average salary changes
+            \item \textbf{Solution used in SQL}:
+            \begin{enumerate}
+                \item First, compute \texttt{avg (salary)} and find all tuples to delete
+                \item Next, delete all tuples found above (without recomputing avg or retesting the tuples)
+            \end{enumerate}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Insertion}
-    \begin{itemize}
-        \item Add a new tuple to \texttt{course}
-        \begin{lstlisting}[language=SQL]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Add a new tuple to \texttt{course}
+            \begin{lstlisting}[language=SQL]
 insert into course 
 values ('CS-437', 'Database Systems', 'Comp. Sci.', 4);
-        \end{lstlisting}
-        \item or equivalently:
-        \begin{lstlisting}[language=SQL]
+            \end{lstlisting}
+            \item or equivalently:
+            \begin{lstlisting}[language=SQL]
 insert into course (course_id, title, dept_name, credits) 
 values ('CS-437', 'Database Systems', 'Comp. Sci.', 4);
-        \end{lstlisting}
-        \item Add a new tuple to \texttt{student} with \texttt{tot\_creds} set to null
-        \begin{lstlisting}[language=SQL]
+            \end{lstlisting}
+            \item Add a new tuple to \texttt{student} with \texttt{tot\_creds} set to null
+            \begin{lstlisting}[language=SQL]
 insert into student 
 values ('3003', 'Green', 'Finance', null);
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Insertion (2)}
-    \begin{itemize}
-        \item Add all instructors to the \texttt{student} relation with \texttt{tot\_creds} set to 0
-        \begin{lstlisting}[language=SQL]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Add all instructors to the \texttt{student} relation with \texttt{tot\_creds} set to 0
+            \begin{lstlisting}[language=SQL]
 insert into student 
 select ID, name, dept_name, 0 
 from instructor;
-        \end{lstlisting}
-        \item The \texttt{select from where} statement is evaluated fully before any of its results are inserted into the relation
-        \item Otherwise queries like
-        \begin{lstlisting}[language=SQL]
+            \end{lstlisting}
+            \item The \texttt{select from where} statement is evaluated fully before any of its results are inserted into the relation
+            \item Otherwise queries like
+            \begin{lstlisting}[language=SQL]
 insert into table1 
 select * from table1;
-        \end{lstlisting}
-        would cause problem
-    \end{itemize}
+            \end{lstlisting}
+            would cause problem
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Updates}
-    \begin{itemize}
-        \item Increase salaries of instructors whose salary is over \$100,000 by 3\%, and all others by a 5\%
-        \item Write two \texttt{update} statements:
-        \begin{lstlisting}[language=SQL]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Increase salaries of instructors whose salary is over \$100,000 by 3\%, and all others by a 5\%
+            \item Write two \texttt{update} statements:
+            \begin{lstlisting}[language=SQL]
 update instructor 
 set salary = salary * 1.03 
 where salary > 100000; 
@@ -489,29 +534,33 @@ where salary > 100000;
 update instructor 
 set salary = salary * 1.05 
 where salary <= 100000;
-        \end{lstlisting}
-        \item \textbf{The order is important}
-        \item Can be done better using the \texttt{case} statement (next slide)
-    \end{itemize}
+            \end{lstlisting}
+            \item \textbf{The order is important}
+            \item Can be done better using the \texttt{case} statement (next slide)
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Case Statement for Conditional Updates}
-    \begin{itemize}
-        \item Same query as before but with \texttt{case} statement
-        \begin{lstlisting}[language=SQL]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Same query as before but with \texttt{case} statement
+            \begin{lstlisting}[language=SQL]
 update instructor 
 set salary = case
     when salary <= 100000 then salary * 1.05 
     else salary * 1.03
 end;
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Updates with Scalar Subqueries}
-    \begin{itemize}
-        \item Recompute and update \texttt{tot\_creds} value for all students
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Recompute and update \texttt{tot\_creds} value for all students
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 update student S 
 set tot_creds = (
     select sum(credits) 
@@ -521,23 +570,26 @@ set tot_creds = (
       and takes.grade <> 'F' 
       and takes.grade is not null
 );
-        \end{lstlisting}
-        \item Sets \texttt{tot\_creds} to null for students who have not taken any course
-        \item Instead of \texttt{sum (credits)}, use:
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+            \end{lstlisting}
+            \item Sets \texttt{tot\_creds} to null for students who have not taken any course
+            \item Instead of \texttt{sum (credits)}, use:
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 case 
     when sum(credits) is not null then sum(credits) 
     else 0 
 end
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Introduced nested subquery in SQL
-        \item Introduced data modification
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Introduced nested subquery in SQL
+            \item Introduced data modification
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

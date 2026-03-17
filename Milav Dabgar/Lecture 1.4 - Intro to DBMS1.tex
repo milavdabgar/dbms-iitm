@@ -13,6 +13,8 @@
 \usepackage{amssymb}
 \usepackage{longtable}
 \usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{mindmap,trees,shadows,arrows.meta,positioning,shapes.geometric,calc,chains}
 
 % --- Title Information ---
 \title{Module 04}
@@ -44,7 +46,7 @@
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Levels of Abstraction
         \item Schema \& Instance
         \item Data Models
@@ -67,24 +69,32 @@
 \end{frame}
 
 \begin{frame}[fragile]{Levels of Abstraction}
-    \begin{itemize}
-        \item \textbf{Physical level:} describes how a record (for example, instructor) is stored
-        \item \textbf{Logical level:} describes data stored in database, and the relationships among the data fields
-    \end{itemize}
+    \begin{block}{Physical and Logical Levels}
+        \begin{itemize}[<+->]
+            \item \textbf{Physical level:} describes how a record (for example, instructor) is stored
+            \item \textbf{Logical level:} describes data stored in database, and the relationships among the data fields
+        \end{itemize}
+    \end{block}
     
-    \begin{verbatim}
+    \begin{exampleblock}{Example: Logical Level}<3->
+\begin{verbatim}
 type instructor = record
     ID        : string;
     name      : string;
     dept_name : string;
     salary    : integer;
 end;
-    \end{verbatim}
+\end{verbatim}
+    \end{exampleblock}
     
-    \begin{itemize}
-        \item \textbf{View level:} application programs hide details of data types
-        \item Views can also hide information (such as an employee's salary) for security purposes
-    \end{itemize}
+    \uncover<4->{
+        \begin{block}{View Level}
+            \begin{itemize}[<+->]
+                \item \textbf{View level:} application programs hide details of data types
+                \item Views can also hide information (such as an employee's salary) for security purposes
+            \end{itemize}
+        \end{block}
+    }
 \end{frame}
 
 \begin{frame}{View of Data (An architecture for a database system)}
@@ -105,7 +115,7 @@ end;
 \end{frame}
 
 \begin{frame}{Schemas and Instances}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Similar to type of a variable and value of the variable at run-time in programming languages
         \item \textbf{Schema}
         \begin{itemize}
@@ -118,65 +128,75 @@ end;
         \end{itemize}
     \end{itemize}
     
-    \vspace{1em}
-    \begin{center}
-        \begin{adjustbox}{max width=\textwidth}
-        \begin{tabular}{|l|l|l|l|l|l|}
-        \hline
-        $\triangleright$ \textbf{Customer Schema} & Customer ID & Account \# & Aadhaar ID & Mobile \# & \\ \hline
-        $\triangleright$ \textbf{Account Schema} & Account \# & Account Type & Interest Rate & Min. Bal. & Balance \\ \hline
-        \end{tabular}
-        \end{adjustbox}
-    \end{center}
+    \uncover<4->{
+        \vspace{1em}
+        \begin{center}
+            \begin{adjustbox}{max width=\textwidth}
+            \begin{tabular}{|l|l|l|l|l|l|}
+            \hline
+            $\triangleright$ \textbf{Customer Schema} & Customer ID & Account \# & Aadhaar ID & Mobile \# & \\ \hline
+            $\triangleright$ \textbf{Account Schema} & Account \# & Account Type & Interest Rate & Min. Bal. & Balance \\ \hline
+            \end{tabular}
+            \end{adjustbox}
+        \end{center}
+    }
 \end{frame}
 
 \begin{frame}{Schemas and Instances (2)}
-    \begin{itemize}
-        \item \textbf{Instance}
-        \begin{itemize}
+    \begin{block}{Instance}
+        \begin{itemize}[<+->]
             \item The actual content of the database at a particular point in time
             \item Analogous to the value of a variable
         \end{itemize}
-    \end{itemize}
+    \end{block}
     
-    \vspace{0.5em}
-    \textbf{Customer Instance}
-    \begin{center}
-        \begin{adjustbox}{max width=\textwidth}
-        \begin{tabular}{|l|l|l|l|l|}
-        \hline
-        \textbf{Name} & \textbf{Customer ID} & \textbf{Account \#} & \textbf{Aadhaar ID} & \textbf{Mobile \#} \\ \hline
-        Pavan Laha & 6728 & 917322 & 182719289372 & 9830100291 \\ \hline
-        Lata Kala & 8912 & 827183 & 918291204829 & 7189203928 \\ \hline
-        Nand Prabhu & 6617 & 372912 & 127837291021 & 8892021892 \\ \hline
-        \end{tabular}
-        \end{adjustbox}
-    \end{center}
+    \uncover<3->{
+        \vspace{0.5em}
+        \textbf{Customer Instance}
+        \begin{center}
+            \begin{adjustbox}{max width=\textwidth}
+            \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            \textbf{Name} & \textbf{Customer ID} & \textbf{Account \#} & \textbf{Aadhaar ID} & \textbf{Mobile \#} \\ \hline
+            Pavan Laha & 6728 & 917322 & 182719289372 & 9830100291 \\ \hline
+            Lata Kala & 8912 & 827183 & 918291204829 & 7189203928 \\ \hline
+            Nand Prabhu & 6617 & 372912 & 127837291021 & 8892021892 \\ \hline
+            \end{tabular}
+            \end{adjustbox}
+        \end{center}
+    }
     
-    \vspace{0.5em}
-    \textbf{Account Instance}
-    \begin{center}
-        \begin{adjustbox}{max width=\textwidth}
-        \begin{tabular}{|l|l|l|l|l|}
-        \hline
-        \textbf{Account \#} & \textbf{Account Type} & \textbf{Interest Rate} & \textbf{Min. Bal.} & \textbf{Balance} \\ \hline
-        917322 & Savings & 4.0\% & 5000 & 7812 \\ \hline
-        372912 & Current & 0.0\% & & 291820 \\ \hline
-        827183 & Term Deposit & & 10000 & 100000 \\ \hline
-        \end{tabular}
-        \end{adjustbox}
-    \end{center}
+    \uncover<4->{
+        \vspace{0.5em}
+        \textbf{Account Instance}
+        \begin{center}
+            \begin{adjustbox}{max width=\textwidth}
+            \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            \textbf{Account \#} & \textbf{Account Type} & \textbf{Interest Rate} & \textbf{Min. Bal.} & \textbf{Balance} \\ \hline
+            917322 & Savings & 4.0\% & 5000 & 7812 \\ \hline
+            372912 & Current & 0.0\% & & 291820 \\ \hline
+            827183 & Term Deposit & & 10000 & 100000 \\ \hline
+            \end{tabular}
+            \end{adjustbox}
+        \end{center}
+    }
 \end{frame}
 
 \begin{frame}{Schema and Instances}
-    \begin{itemize}
-        \item \textbf{Physical Data Independence} -- the ability to modify the physical schema without changing the logical schema
-        \begin{itemize}
+    \begin{block}{Physical Data Independence}
+        \begin{itemize}[<+->]
+            \item \textbf{Definition:} The ability to modify the physical schema without changing the logical schema
             \item Analogous to independence of Interface and Implementation in Object-Oriented Systems
             \item Applications depend on the logical schema
         \end{itemize}
-        \item In general, the interfaces between the various levels and components should be well defined so that changes in some parts do not seriously influence others.
-    \end{itemize}
+    \end{block}
+    
+    \uncover<4->{
+        \begin{alertblock}{Design Principle}
+            In general, the interfaces between the various levels and components should be well defined so that changes in some parts do not seriously influence others.
+        \end{alertblock}
+    }
 \end{frame}
 
 \section{Data Models}
@@ -191,30 +211,29 @@ end;
 \end{frame}
 
 \begin{frame}{Data Models}
-    \begin{itemize}
-        \item A collection of tools for describing
-        \begin{itemize}
-            \item Data
-            \item Data relationships
-            \item Data semantics
-            \item Data constraints
+    \begin{block}{Definition}
+        A collection of tools for describing Data, Data relationships, Data semantics, and Data constraints.
+    \end{block}
+    
+    \uncover<2->{
+        \begin{itemize}[<+->]
+            \item \textbf{Relational model} (we focus in this course)
+            \item \textbf{Entity-Relationship data model} (mainly for database design)
+            \item \textbf{Object-based data models} (Object-oriented and Object-relational)
+            \item \textbf{Other older models}
+            \begin{itemize}
+                \item Network model
+                \item Hierarchical model
+            \end{itemize}
+            \item \textbf{Recent models for Semi-structured or Unstructured data}
+            \begin{itemize}
+                \item Converted to easily manageable formats
+                \item Content Addressable Storage (CAS) with metadata descriptors
+                \item XML format
+                \item DBMS which supports BLOBs
+            \end{itemize}
         \end{itemize}
-        \item Relational model (we focus in this course)
-        \item Entity-Relationship data model (mainly for database design)
-        \item Object-based data models (Object-oriented and Object-relational)
-        \item Other older models
-        \begin{itemize}
-            \item Network model
-            \item Hierarchical model
-        \end{itemize}
-        \item Recent models for Semi-structured or Unstructured data
-        \begin{itemize}
-            \item Converted to easily manageable formats
-            \item Content Addressable Storage (CAS) with metadata descriptors
-            \item XML format
-            \item DBMS which supports BLOBs
-        \end{itemize}
-    \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}{Data Models (2)}
@@ -224,7 +243,7 @@ end;
 \end{frame}
 
 \begin{frame}{Relational Model}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item All the data is stored in various tables
         \item Example of tabular data in the relational model
     \end{itemize}
@@ -305,7 +324,7 @@ end;
 \end{frame}
 
 \begin{frame}[fragile]{Data Definition Language (DDL)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Specification notation for defining the database schema
         \item Example:
     \end{itemize}
@@ -317,41 +336,41 @@ create table instructor (
     salary      numeric(8,2)
 )
     \end{verbatim}
-    \begin{itemize}
-        \item DDL compiler generates a set of table templates stored in a data dictionary
-        \item Data dictionary contains metadata (that is, data about data)
-        \begin{itemize}
-            \item Database schema
-            \item Integrity constraints
+    \uncover<3->{
+        \begin{itemize}[<+->]
+            \item DDL compiler generates a set of table templates stored in a data dictionary
+            \item Data dictionary contains metadata (that is, data about data)
             \begin{itemize}
-                \item[$\triangleright$] Primary key (ID uniquely identifies instructors)
-            \end{itemize}
-            \item Authorization
-            \begin{itemize}
-                \item[$\triangleright$] Who can access what
+                \item Database schema
+                \item Integrity constraints (e.g., Primary key: ID uniquely identifies instructors)
+                \item Authorization (Who can access what)
             \end{itemize}
         \end{itemize}
-    \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}{Data Manipulation Language (DML)}
-    \begin{itemize}
-        \item Language for accessing and manipulating the data organized by the appropriate data model
-        \item DML: also known as Query Language
-        \item Two classes of languages
-        \begin{itemize}
-            \item \textbf{Pure} -- used for proving properties about computational power and for optimization
+    \begin{block}{Definition}
+        Language for accessing and manipulating the data organized by the appropriate data model. Also known as Query Language.
+    \end{block}
+    
+    \uncover<2->{
+        \begin{itemize}[<+->]
+            \item Two classes of languages
             \begin{itemize}
-                \item[$\triangleright$] \textbf{Relational Algebra (we focus in this course)}
-                \item[$\triangleright$] Tuple relational calculus
-                \item[$\triangleright$] Domain relational calculus
-            \end{itemize}
-            \item \textbf{Commercial} -- used in commercial systems
-            \begin{itemize}
-                \item[$\triangleright$] \textbf{SQL is the most widely used commercial language}
+                \item \textbf{Pure} -- used for proving properties about computational power and for optimization
+                \begin{itemize}
+                    \item[$\triangleright$] \textbf{Relational Algebra (we focus in this course)}
+                    \item[$\triangleright$] Tuple relational calculus
+                    \item[$\triangleright$] Domain relational calculus
+                \end{itemize}
+                \item \textbf{Commercial} -- used in commercial systems
+                \begin{itemize}
+                    \item[$\triangleright$] \textbf{SQL is the most widely used commercial language}
+                \end{itemize}
             \end{itemize}
         \end{itemize}
-    \end{itemize}
+    }
 \end{frame}
 
 \section{SQL}
@@ -366,7 +385,7 @@ create table instructor (
 \end{frame}
 
 \begin{frame}{SQL}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The most widely used commercial language
         \item SQL is \textbf{NOT} a Turing Machine equivalent language
         \begin{itemize}
@@ -394,17 +413,11 @@ create table instructor (
 
 \begin{frame}{Database Design}
     The process of designing the general structure of the database:
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Logical Design} -- Deciding on the database schema. Database design requires that we find a good collection of relation schema
         \begin{itemize}
-            \item Business decision
-            \begin{itemize}
-                \item[$\triangleright$] What attributes should we record in the database?
-            \end{itemize}
-            \item Computer Science decision
-            \begin{itemize}
-                \item[$\triangleright$] What relation schemas should we have and how should the attributes be distributed among the various relation schemas?
-            \end{itemize}
+            \item \textbf{Business decision:} What attributes should we record in the database?
+            \item \textbf{Computer Science decision:} What relation schemas should we have and how should the attributes be distributed among the various relation schemas?
         \end{itemize}
         \item \textbf{Physical Design} -- Deciding on the physical layout of the database
     \end{itemize}

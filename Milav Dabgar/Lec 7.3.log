@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2025.12.30)  17 MAR 2026 17:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2026.3.17)  17 MAR 2026 23:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -10,25 +10,24 @@ L3 programming layer <2025-12-24>
 Document Class: beamer 2026/01/22 v3.77 A class for typesetting presentations
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbasemodes.
-sty
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+sty (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.s
+ty
 Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count271
+\etb@tempcnta=\count275
 )
 \beamer@tempbox=\box53
-\beamer@tempcount=\count272
-\c@beamerpauses=\count273
+\beamer@tempcount=\count276
+\c@beamerpauses=\count277
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbasedecode
 .sty
-\beamer@slideinframe=\count274
-\beamer@minimum=\count275
+\beamer@slideinframe=\count278
+\beamer@minimum=\count279
 \beamer@decode@box=\box54
 )
 \beamer@commentbox=\box55
-\beamer@modecount=\count276
-)
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+\beamer@modecount=\count280
+) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
 )
 \headdp=\dimen148
@@ -54,45 +53,43 @@ Package: iftex 2024/12/12 v1.0g TeX engine tests
 \beamer@sectionbox=\box59
 \beamer@logobox=\box60
 \beamer@linebox=\box61
-\beamer@sectioncount=\count277
-\beamer@subsubsectionmax=\count278
-\beamer@subsectionmax=\count279
-\beamer@sectionmax=\count280
-\beamer@totalheads=\count281
-\beamer@headcounter=\count282
-\beamer@partstartpage=\count283
-\beamer@sectionstartpage=\count284
-\beamer@subsectionstartpage=\count285
-\beamer@animationtempa=\count286
-\beamer@animationtempb=\count287
-\beamer@xpos=\count288
-\beamer@ypos=\count289
-\beamer@ypos@offset=\count290
-\beamer@showpartnumber=\count291
-\beamer@currentsubsection=\count292
-\beamer@coveringdepth=\count293
-\beamer@sectionadjust=\count294
-\beamer@toclastsection=\count295
-\beamer@tocsectionnumber=\count296
+\beamer@sectioncount=\count281
+\beamer@subsubsectionmax=\count282
+\beamer@subsectionmax=\count283
+\beamer@sectionmax=\count284
+\beamer@totalheads=\count285
+\beamer@headcounter=\count286
+\beamer@partstartpage=\count287
+\beamer@sectionstartpage=\count288
+\beamer@subsectionstartpage=\count289
+\beamer@animationtempa=\count290
+\beamer@animationtempb=\count291
+\beamer@xpos=\count292
+\beamer@ypos=\count293
+\beamer@ypos@offset=\count294
+\beamer@showpartnumber=\count295
+\beamer@currentsubsection=\count296
+\beamer@coveringdepth=\count297
+\beamer@sectionadjust=\count298
+\beamer@toclastsection=\count299
+\beamer@tocsectionnumber=\count300
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbaseoption
-s.sty
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+s.sty (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.s
+ty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
 \KV@toks@=\toks17
 ))
 \beamer@paperwidth=\skip50
 \beamer@paperheight=\skip51
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 )
-\Gm@cnth=\count297
-\Gm@cntv=\count298
-\c@Gm@tempcnt=\count299
+\Gm@cnth=\count301
+\Gm@cntv=\count302
+\c@Gm@tempcnt=\count303
 \Gm@bindingoffset=\dimen164
 \Gm@wd@mp=\dimen165
 \Gm@odd@mp=\dimen166
@@ -102,7 +99,6 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layouthoffset=\dimen170
 \Gm@layoutvoffset=\dimen171
 \Gm@dimlist=\toks18
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/pgf/math\pgfmath.sty
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfrcs.st
@@ -118,8 +114,8 @@ y
 \pgfutil@abb=\box62
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfrcs.
-code.tex
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf\pgf.revision.tex)
+code.tex (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf\pgf.revi
+sion.tex)
 Package: pgfrcs 2025-08-29 v3.1.11a (3.1.11a)
 ))
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfkeys.s
@@ -145,15 +141,15 @@ code.tex
 \pgf@ya=\dimen179
 \pgf@yb=\dimen180
 \pgf@yc=\dimen181
-\c@pgf@counta=\count300
-\c@pgf@countb=\count301
-\c@pgf@countc=\count302
-\c@pgf@countd=\count303
+\c@pgf@counta=\count304
+\c@pgf@countb=\count305
+\c@pgf@countc=\count306
+\c@pgf@countd=\count307
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathparse
 r.code.tex
 \pgfmath@dimen=\dimen182
-\pgfmath@count=\count304
+\pgfmath@count=\count308
 \pgfmath@box=\box63
 \pgfmath@toks=\toks23
 \pgfmath@stack@operand=\toks24
@@ -181,19 +177,16 @@ ions.integerarithmetics.code.tex)
 code.tex)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfloat
 .code.tex
-\c@pgfmathroundto@lastzeros=\count305
-)))
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/base\size11.clo
+\c@pgfmathroundto@lastzeros=\count309
+))) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/base\size11.clo
 File: size11.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgfcore.
-sty
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+sty (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.s
+ty
 Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
 Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
 Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
 )
@@ -201,10 +194,10 @@ Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
 fg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: xetex.def on input line 106.
+Package graphics Info: Driver file: pdftex.def on input line 106.
 
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\xetex.def
-File: xetex.def 2025/11/01 v5.0p Graphics/color driver for xetex
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen183
 \Gin@req@width=\dimen184
@@ -226,54 +219,47 @@ Package: pgfsys 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@yd=\dimen194
 \w@pgf@writea=\write3
 \r@pgf@reada=\read2
-\c@pgf@counta=\count306
-\c@pgf@countb=\count307
-\c@pgf@countc=\count308
-\c@pgf@countd=\count309
+\c@pgf@counta=\count310
+\c@pgf@countb=\count311
+\c@pgf@countc=\count312
+\c@pgf@countd=\count313
 \t@pgf@toka=\toks26
 \t@pgf@tokb=\toks27
 \t@pgf@tokc=\toks28
-\pgf@sys@id@count=\count310
+\pgf@sys@id@count=\count314
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgf.c
 fg
 File: pgf.cfg 2025-08-29 v3.1.11a (3.1.11a)
 )
-Driver file for pgf: pgfsys-xetex.def
+Driver file for pgf: pgfsys-pdftex.def
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
-s-xetex.def
-File: pgfsys-xetex.def 2025-08-29 v3.1.11a (3.1.11a)
-
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
-s-dvipdfmx.def
-File: pgfsys-dvipdfmx.def 2025-08-29 v3.1.11a (3.1.11a)
+s-pdftex.def
+File: pgfsys-pdftex.def 2025-08-29 v3.1.11a (3.1.11a)
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
 s-common-pdf.def
 File: pgfsys-common-pdf.def 2025-08-29 v3.1.11a (3.1.11a)
-)
-\pgfsys@objnum=\count311
 )))
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
 ssoftpath.code.tex
 File: pgfsyssoftpath.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfsyssoftpath@smallbuffer@items=\count312
-\pgfsyssoftpath@bigbuffer@items=\count313
+\pgfsyssoftpath@smallbuffer@items=\count315
+\pgfsyssoftpath@bigbuffer@items=\count316
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
 sprotocol.code.tex
 File: pgfsysprotocol.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-))
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+)) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
 Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
-Package xcolor Info: Driver file: xetex.def on input line 274.
+Package xcolor Info: Driver file: pdftex.def on input line 274.
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
 Package xcolor Info: Model `RGB' extended on input line 1365.
 Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
 Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
@@ -326,7 +312,7 @@ File: pgfcorescopes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgfpic=\box64
 \pgf@hbox=\box65
 \pgf@layerbox@main=\box66
-\pgf@picture@serial@count=\count314
+\pgf@picture@serial@count=\count317
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 egraphicstate.code.tex
@@ -361,8 +347,8 @@ File: pgfcorearrows.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 eshade.code.tex
 File: pgfcoreshade.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \pgf@max=\dimen274
-\pgf@sys@shading@range@num=\count315
-\pgf@shadingcount=\count316
+\pgf@sys@shading@range@num=\count318
+\pgf@shadingcount=\count319
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 eimage.code.tex
@@ -392,14 +378,12 @@ File: pgfcorerdf.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\xxcolor.s
 ty
 Package: xxcolor 2003/10/24 ver 0.1
-\XC@nummixins=\count317
-\XC@countmixins=\count318
-)
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/base\atbegshi-ltx.sty
+\XC@nummixins=\count320
+\XC@countmixins=\count321
+) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/base\atbegshi-ltx.sty
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
-)
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
+) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
 Package: hyperref 2025-07-12 v7.01o Hypertext links for LaTeX
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
@@ -412,7 +396,6 @@ Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.s
 ty
 Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
 Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
 )
@@ -427,14 +410,11 @@ Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 )
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode not found.
-))
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
+Package pdftexcmds Info: \pdfdraftmode found.
+)) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
-)
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
+) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
 Package: nameref 2025-06-21 v2.57 Cross-referencing by name of section
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 )
@@ -445,7 +425,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
-\c@section@level=\count319
+\c@section@level=\count322
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.s
 ty
@@ -453,16 +433,20 @@ Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
 )
 )
 \@linkdim=\dimen275
-\Hy@linkcounter=\count320
-\Hy@pagecounter=\count321
- (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
+\Hy@linkcounter=\count323
+\Hy@pagecounter=\count324
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
 File: pd1enc.def 2025-07-12 v7.01o Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
 ) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count322
- (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
+\Hy@SavedSpaceFactor=\count325
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
 File: puenc.def 2025-07-12 v7.01o Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
 )
 Package hyperref Info: Option `bookmarks' set `true' on input line 4066.
 Package hyperref Info: Option `bookmarksopen' set `true' on input line 4066.
@@ -474,15 +458,13 @@ Package hyperref Info: Plain pages OFF on input line 4210.
 Package hyperref Info: Backreferencing OFF on input line 4215.
 Package hyperref Info: Implicit mode OFF; no redefinition of LaTeX internals.
 Package hyperref Info: Bookmarks ON on input line 4462.
-\c@Hy@tempcnt=\count323
-
+\c@Hy@tempcnt=\count326
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4801.
 \XeTeXLinkMargin=\dimen276
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 
@@ -491,7 +473,7 @@ Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count324
+\Fld@menulength=\count327
 \Field@Width=\dimen277
 \Fld@charsize=\dimen278
 Package hyperref Info: Hyper figures OFF on input line 6078.
@@ -501,20 +483,16 @@ Package hyperref Info: backreferencing OFF on input line 6093.
 Package hyperref Info: Link coloring OFF on input line 6098.
 Package hyperref Info: Link coloring with OCG OFF on input line 6103.
 Package hyperref Info: PDF/A mode OFF on input line 6108.
-\Hy@abspage=\count325
-
+\Hy@abspage=\count328
 
 Package hyperref Message: Stopped early.
 
 )
-Package hyperref Info: Driver (autodetected): hxetex.
- (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hxetex.def
-File: hxetex.def 2025-07-12 v7.01o Hyperref driver for XeTeX
-\pdfm@box=\box68
-\c@Hy@AnnotLevel=\count326
-\HyField@AnnotCount=\count327
-\Fld@listcount=\count328
-\c@bookmark@seq@number=\count329
+Package hyperref Info: Driver (autodetected): hpdftex.
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
+File: hpdftex.def 2025-07-12 v7.01o Hyperref driver for pdfTeX
+\Fld@listcount=\count329
+\c@bookmark@seq@number=\count330
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfil
 echeck.sty
@@ -571,36 +549,36 @@ ty)
 eens.sty)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbaseoverla
 y.sty
-\beamer@argscount=\count330
+\beamer@argscount=\count331
 \beamer@lastskipcover=\skip52
-\beamer@trivlistdepth=\count331
+\beamer@trivlistdepth=\count332
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbasetitle.
 sty)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbasesectio
 n.sty
-\c@lecture=\count332
-\c@part=\count333
-\c@section=\count334
-\c@subsection=\count335
-\c@subsubsection=\count336
+\c@lecture=\count333
+\c@part=\count334
+\c@section=\count335
+\c@subsection=\count336
+\c@subsubsection=\count337
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbaseframe.
 sty
-\beamer@framebox=\box69
-\beamer@frametitlebox=\box70
-\beamer@zoombox=\box71
-\beamer@zoomcount=\count337
-\beamer@zoomframecount=\count338
+\beamer@framebox=\box68
+\beamer@frametitlebox=\box69
+\beamer@zoombox=\box70
+\beamer@zoomcount=\count338
+\beamer@zoomframecount=\count339
 \beamer@frametextheight=\dimen279
-\c@subsectionslide=\count339
+\c@subsectionslide=\count340
 \beamer@frametopskip=\skip53
 \beamer@framebottomskip=\skip54
 \beamer@frametopskipautobreak=\skip55
 \beamer@framebottomskipautobreak=\skip56
 \beamer@envbody=\toks30
 \framewidth=\dimen280
-\c@framenumber=\count340
+\c@framenumber=\count341
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbaseverbat
 im.sty
@@ -608,8 +586,8 @@ im.sty
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbaseframes
 ize.sty
-\beamer@splitbox=\box72
-\beamer@autobreakcount=\count341
+\beamer@splitbox=\box71
+\beamer@autobreakcount=\count342
 \beamer@autobreaklastheight=\dimen281
 \beamer@frametitletoks=\toks31
 \beamer@framesubtitletoks=\toks32
@@ -617,13 +595,13 @@ ize.sty
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbaseframec
 omponents.sty
 \beamer@colheight=\skip57
-\beamer@footins=\box73
+\beamer@footins=\box72
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbasecolor.
 sty)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbasenotes.
 sty
-\beamer@frameboxcopy=\box74
+\beamer@frameboxcopy=\box73
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbasetoc.st
 y)
@@ -635,8 +613,8 @@ tes.sty
 plates.sty
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbaseboxes.
 sty
-\bmb@box=\box75
-\bmb@colorbox=\box76
+\bmb@box=\box74
+\bmb@colorbox=\box75
 \bmb@boxwidth=\dimen282
 \bmb@boxheight=\dimen283
 \bmb@prevheight=\dimen284
@@ -648,14 +626,14 @@ sty
 \beamer@blockheadheight=\dimen289
 ))
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbaselocals
-tructure.sty
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/tools\enumerate.sty
+tructure.sty (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/tools\enum
+erate.sty
 Package: enumerate 2023/07/04 v3.00 enumerate extensions (DPC)
 \@enLab=\toks34
 )
 \beamer@bibiconwidth=\skip58
-\c@figure=\count342
-\c@table=\count343
+\c@figure=\count343
+\c@table=\count344
 \abovecaptionskip=\skip59
 \belowcaptionskip=\skip60
 )
@@ -666,40 +644,36 @@ tionsymbols.tex)
 \beamer@section@min@dim=\dimen290
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbasetheore
-ms.sty
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+ms.sty (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.
+sty
 Package: amsmath 2025/07/09 v2.17z AMS math features
 \@mathmargin=\skip61
-
 For additional information on amsmath, use the `?' option.
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
 Package: amstext 2024/11/17 v2.01 AMS text
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks35
 \ex@=\dimen291
-))
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+)) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen292
-)
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
-\inf@bad=\count344
+\inf@bad=\count345
 LaTeX Info: Redefining \frac on input line 233.
-\uproot@=\count345
-\leftroot@=\count346
+\uproot@=\count346
+\leftroot@=\count347
 LaTeX Info: Redefining \overline on input line 398.
 LaTeX Info: Redefining \colon on input line 409.
-\classnum@=\count347
-\DOTSCASE@=\count348
+\classnum@=\count348
+\DOTSCASE@=\count349
 LaTeX Info: Redefining \ldots on input line 495.
 LaTeX Info: Redefining \dots on input line 498.
 LaTeX Info: Redefining \cdots on input line 619.
-\Mathstrutbox@=\box77
-\strutbox@=\box78
+\Mathstrutbox@=\box76
+\strutbox@=\box77
 LaTeX Info: Redefining \big on input line 721.
 LaTeX Info: Redefining \Big on input line 722.
 LaTeX Info: Redefining \bigg on input line 723.
@@ -707,20 +681,20 @@ LaTeX Info: Redefining \Bigg on input line 724.
 \big@size=\dimen293
 LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
-\macc@depth=\count349
+\macc@depth=\count350
 LaTeX Info: Redefining \bmod on input line 904.
 LaTeX Info: Redefining \pmod on input line 909.
 LaTeX Info: Redefining \smash on input line 939.
 LaTeX Info: Redefining \relbar on input line 969.
 LaTeX Info: Redefining \Relbar on input line 970.
-\c@MaxMatrixCols=\count350
+\c@MaxMatrixCols=\count351
 \dotsspace@=\muskip18
-\c@parentequation=\count351
-\dspbrk@lvl=\count352
+\c@parentequation=\count352
+\dspbrk@lvl=\count353
 \tag@help=\toks36
-\row@=\count353
-\column@=\count354
-\maxfields@=\count355
+\row@=\count354
+\column@=\count355
+\maxfields@=\count356
 \andhelp@=\toks37
 \eqnshift@=\dimen294
 \alignsep@=\dimen295
@@ -734,8 +708,7 @@ LaTeX Info: Redefining \Relbar on input line 970.
 \mathdisplay@stack=\toks39
 LaTeX Info: Redefining \[ on input line 2950.
 LaTeX Info: Redefining \] on input line 2951.
-)
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amscls\amsthm.sty
+) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amscls\amsthm.sty
 Package: amsthm 2020/05/29 v2.20.6
 \thm@style=\toks40
 \thm@bodyfont=\toks41
@@ -747,7 +720,7 @@ Package: amsthm 2020/05/29 v2.20.6
 \thm@headsep=\skip66
 \dth@everypar=\toks45
 )
-\c@theorem=\count356
+\c@theorem=\count357
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerbasethemes
 .sty))
@@ -773,8 +746,8 @@ orchid.sty)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerinnertheme
 rounded.sty)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beameroutertheme
-infolines.sty))
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
+infolines.sty)) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/booktab
+s\booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \heavyrulewidth=\dimen302
 \lightrulewidth=\dimen303
@@ -786,47 +759,46 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \cmidrulesep=\dimen309
 \cmidrulekern=\dimen310
 \defaultaddspace=\dimen311
-\@cmidla=\count357
-\@cmidlb=\count358
+\@cmidla=\count358
+\@cmidlb=\count359
 \@aboverulesep=\dimen312
 \@belowrulesep=\dimen313
-\@thisruleclass=\count359
-\@lastruleclass=\count360
+\@thisruleclass=\count360
+\@lastruleclass=\count361
 \@thisrulewidth=\dimen314
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\adjustbox.sty
 Package: adjustbox 2025/02/26 v1.3c Adjusting TeX boxes (trim, clip, ...)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/xkeyval\xkeyval.sty
 Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
-
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\xkeyval.tex
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\xkvutils.tex
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\xkeyval.tex (
+C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\xkvutils.tex
 \XKV@toks=\toks46
 \XKV@tempa@toks=\toks47
 )
-\XKV@depth=\count361
+\XKV@depth=\count362
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
-))
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\adjcalc.sty
+)) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\adjcalc.st
+y
 Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back
 -ends (calc, etex, pgfmath)
-)
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\trimclip.sty
+) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\trimclip.st
+y
 Package: trimclip 2025/02/21 v1.2a Trim and clip general TeX material
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/collectbox\collectbox.s
 ty
 Package: collectbox 2022/10/17 v0.4c Collect macro arguments as boxes
-\collectedbox=\box79
+\collectedbox=\box78
 )
 \tc@llx=\dimen315
 \tc@lly=\dimen316
 \tc@urx=\dimen317
 \tc@ury=\dimen318
-Package trimclip Info: Using driver 'tc-xetex.def'.
+Package trimclip Info: Using driver 'tc-pdftex.def'.
 
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\tc-xetex.def
-File: tc-xetex.def 2019/01/04 v2.2 Clipping driver for xetex
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/adjustbox\tc-pdftex.def
+File: tc-pdftex.def 2025/02/26 v2.3 Clipping driver for pdftex
 ))
 \adjbox@Width=\dimen319
 \adjbox@Height=\dimen320
@@ -839,38 +811,36 @@ File: tc-xetex.def 2019/01/04 v2.2 Clipping driver for xetex
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/ifoddpage\ifoddpage.sty
 Package: ifoddpage 2022/10/18 v1.2 Conditionals for odd/even page detection
-\c@checkoddpage=\count362
+\c@checkoddpage=\count363
 ) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/varwidth\varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
-\@vwid@box=\box80
-\sift@deathcycles=\count363
+\@vwid@box=\box79
+\sift@deathcycles=\count364
 \@vwid@loff=\dimen327
 \@vwid@roff=\dimen328
 )
 ==> First Aid for varwidth.sty applied!
 ) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
-\lst@mode=\count364
-\lst@gtempboxa=\box81
+\lst@mode=\count365
+\lst@gtempboxa=\box80
 \lst@token=\toks48
-\lst@length=\count365
+\lst@length=\count366
 \lst@currlwidth=\dimen329
-\lst@column=\count366
-\lst@pos=\count367
+\lst@column=\count367
+\lst@pos=\count368
 \lst@lostspace=\dimen330
 \lst@width=\dimen331
-\lst@newlines=\count368
-\lst@lineno=\count369
+\lst@newlines=\count369
+\lst@lineno=\count370
 \lst@maxwidth=\dimen332
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstpatch.sty
 File: lstpatch.sty 2025/11/14 1.11b (Carsten Heinz)
-)
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
 File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
-\c@lstnumber=\count370
-\lst@skipnumbers=\count371
-\lst@framebox=\box82
-)
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
+\c@lstnumber=\count371
+\lst@skipnumbers=\count372
+\lst@framebox=\box81
+) (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
 File: listings.cfg 2025/11/14 1.11b listings configuration
 ))
 Package: listings 2025/11/14 1.11b (Carsten Heinz)
@@ -882,7 +852,6 @@ Package: listings 2025/11/14 1.11b (Carsten Heinz)
     so I'm assuming it got fixed.
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
-
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
 Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
 \caption@tempdima=\dimen333
@@ -900,22 +869,22 @@ sto
 File: caption-beamer.sto 2022/01/06 v2.0c Adaption of the caption package to th
 e beamer document classes (AR)
 ))
-\c@caption@flags=\count372
-\c@continuedfloat=\count373
+\c@caption@flags=\count373
+\c@continuedfloat=\count374
 Package caption Info: hyperref package is loaded.
 Package caption Info: Hyperref support is turned off
 (caption)             because hyperref has stopped early.
 Package caption Info: listings package is loaded.
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\tikz.
+sty (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.
 sty
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.sty
 Package: pgf 2025-08-29 v3.1.11a (3.1.11a)
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
 shapes.code.tex
 File: pgfmoduleshapes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfnodeparttextbox=\box83
+\pgfnodeparttextbox=\box82
 )
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
 plot.code.tex
@@ -948,7 +917,7 @@ Package: tikz 2025-08-29 v3.1.11a (3.1.11a)
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
 aryplothandlers.code.tex
 File: pgflibraryplothandlers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@plot@mark@count=\count374
+\pgf@plot@mark@count=\count375
 \pgfplotmarksize=\dimen345
 )
 \tikz@lastx=\dimen346
@@ -959,34 +928,32 @@ File: pgflibraryplothandlers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 \tikz@lastmovetoy=\dimen351
 \tikzleveldistance=\dimen352
 \tikzsiblingdistance=\dimen353
-\tikz@figbox=\box84
-\tikz@figbox@bg=\box85
-\tikz@tempbox=\box86
-\tikz@tempbox@bg=\box87
-\tikztreelevel=\count375
-\tikznumberofchildren=\count376
-\tikznumberofcurrentchild=\count377
-\tikz@fig@count=\count378
+\tikz@figbox=\box83
+\tikz@figbox@bg=\box84
+\tikz@tempbox=\box85
+\tikz@tempbox@bg=\box86
+\tikztreelevel=\count376
+\tikznumberofchildren=\count377
+\tikznumberofcurrentchild=\count378
+\tikz@fig@count=\count379
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
 matrix.code.tex
 File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfmatrixcurrentrow=\count379
-\pgfmatrixcurrentcolumn=\count380
-\pgf@matrix@numberofcolumns=\count381
+\pgfmatrixcurrentrow=\count380
+\pgfmatrixcurrentcolumn=\count381
+\pgf@matrix@numberofcolumns=\count382
 )
-\tikz@expandcount=\count382
+\tikz@expandcount=\count383
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
 z/libraries\tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 )))
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-xet
-ex.def
-File: l3backend-xetex.def 2025-10-09 L3 backend support: XeTeX
-\g__graphics_track_int=\count383
-\g__pdfannot_backend_int=\count384
-\g__pdfannot_backend_link_int=\count385
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
+tex.def
+File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count384
 ) (Lec 7.3.aux)
 \openout1 = `"Lec 7.3.aux"'.
 
@@ -1000,8 +967,6 @@ LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
 LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
@@ -1010,23 +975,22 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
-
 *geometry* driver: auto-detecting
-*geometry* detected driver: xetex
+*geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
-* driver: xetex
+* driver: pdftex
 * paper: custom
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: includehead includefoot 
-* h-part:(L,W,R)=(10.95pt, 433.34409pt, 10.95pt)
+* h-part:(L,W,R)=(10.95003pt, 433.34402pt, 10.95003pt)
 * v-part:(T,H,B)=(0.0pt, 256.0748pt, 0.0pt)
 * \paperwidth=455.24408pt
 * \paperheight=256.0748pt
-* \textwidth=433.34409pt
+* \textwidth=433.34402pt
 * \textheight=227.62207pt
-* \oddsidemargin=-61.31999pt
-* \evensidemargin=-61.31999pt
+* \oddsidemargin=-61.31996pt
+* \evensidemargin=-61.31996pt
 * \topmargin=-72.26999pt
 * \headheight=14.22636pt
 * \headsep=0.0pt
@@ -1045,6 +1009,32 @@ LaTeX Font Info:    ... okay on input line 34.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
+
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
+ii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count385
+\scratchdimen=\dimen354
+\scratchbox=\box87
+\nofMPsegments=\count386
+\nofMParguments=\count387
+\everyMPshowfont=\toks51
+\MPscratchCnt=\count388
+\MPscratchDim=\dimen355
+\MPnumerator=\count389
+\makeMPintoPDFobject=\count390
+\everyMPtoPDFconversion=\toks52
+)
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
+ase.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.c
+fg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
 Package hyperref Info: Link coloring OFF on input line 34.
 (Lec 7.3.out) (Lec 7.3.out)
 \@outlinefile=\write5
@@ -1057,41 +1047,51 @@ LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmr/m/n on input line 34.
+(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 34.
 LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/lmss/b/n on input line 34.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> TU/lmss/b/n on input line 34.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 34.
 LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 34.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/lmss/m/n on input line 34.
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 34.
 LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/lmss/m/it on input line 34.
+(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> TU/lmss/m/it on input line 34.
+(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 34.
 LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 34.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 34.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 34.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  TU/lmss/m/n --> TU/lmss/b/n on input line 34.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 34.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  TU/lmss/m/it --> TU/lmss/b/it on input line 34.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/b/n --> TU/lmr/b/n on input line 34.
+(Font)                  OT1/cmss/b/n --> OT1/cmr/b/n on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  TU/lmss/b/n --> TU/lmss/b/n on input line 34.
+(Font)                  OT1/cmss/b/n --> OT1/cmss/b/n on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  TU/lmss/m/n --> TU/lmss/b/n on input line 34.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  TU/lmss/m/it --> TU/lmss/b/it on input line 34.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 34.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  TU/lmtt/m/n --> TU/lmtt/b/n on input line 34.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/b/n on input line 34.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 34.
+LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
+(Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 3
+4.
+LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
+(Font)                  OT1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 3
+4.
+LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
+(Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
+ut line 34.
 
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/translator\translator-b
 asic-dictionary-English.dict
@@ -1117,761 +1117,945 @@ Dictionary: translator-numbers-dictionary, Language: English
 heorem-dictionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
-\c@lstlisting=\count386
+\c@lstlisting=\count391
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
- (Lec 7.3.nav)
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 34--34
- [][]  \TU/lmss/m/n/6 ([])  
+(Lec 7.3.nav)
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 34--34
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 39--39
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 39--39
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [1
 
-]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 47--47
- [][]  \TU/lmss/m/n/6 ([])  
+{C:/Users/milav/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 47--47
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [2
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 53--53
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [3
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 59--59
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [4
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 69--69
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 55--55
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [5
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 97--97
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 61--61
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 97.
 
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 97.
-
-
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <9> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 97.
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <6> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 97.
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 97.
-
-
-! LaTeX Error: Too deeply nested.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.97 \end{frame}
-                
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [6
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 103--103
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 71--71
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <14.4> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 103.
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 103.
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <7> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 103.
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [7
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 123--123
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 88--88
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
+LaTeX Font Info:    Trying to load font information for U+msa on input line 88.
 
-Overfull \vbox (21.0463pt too high) detected at line 123
- []
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 88.
 
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on inp
+ut line 88.
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/sansmathaccent\ot1mathk
+erncmss.fd
+File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
+thkerncmss.
+)
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [8
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 125--125
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 144--144
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb
-Overfull \hbox (15.0583pt too wide) in paragraph at lines 18--18
-[]\TU/lmtt/m/n/10.95 cursor.execute("create table rvtest (col1 int, col2 float,
- col3 varchar(10))")[] 
- []
-
-)
-Overfull \vbox (25.89545pt too high) detected at line 144
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [9
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 160--160
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \vbox (14.5429pt too high) detected at line 160
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [10
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 170--170
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [11
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 172--172
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 199--199
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb
-Overfull \hbox (89.79204pt too wide) in paragraph at lines 27--27
-[]    \TU/lmtt/m/n/10.95 String connectionUrl = "jdbc:sqlserver://<server>:<por
-t>;databaseName=AdventureWorks;";[] 
- []
-
-)
-Overfull \vbox (135.00551pt too high) detected at line 199
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [12
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 201--201
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 221--221
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb
-Overfull \hbox (38.05331pt too wide) in paragraph at lines 20--20
-[]  \TU/lmtt/m/n/10.95 private static void displayRow(String title, ResultSet r
-s) throws SQLException {[] 
- []
-
-
-Overfull \hbox (43.80202pt too wide) in paragraph at lines 20--20
-[]      \TU/lmtt/m/n/10.95 System.out.println(rs.getString("ProductID") + " : "
- + rs.getString("Name"));[] 
- []
-
-
-Overfull \hbox (302.49574pt too wide) in paragraph at lines 20--20
-[]    \TU/lmtt/m/n/10.95 stmt.execute("if exists (select * from sys.objects whe
-re name = 'Product_JDBC_Sample')" + "drop table Product_JDBC_Sample");[] 
- []
-
-
-Overfull \hbox (112.78705pt too wide) in paragraph at lines 20--20
-[]    \TU/lmtt/m/n/10.95 sql = "INSERT Product_JDBC_Sample VALUES ('Adjustable 
-Time','AR-5381')"; stmt.execute(sql);[] 
- []
-
-
-Overfull \hbox (124.28455pt too wide) in paragraph at lines 20--20
-[]    \TU/lmtt/m/n/10.95 sql = "INSERT Product_JDBC_Sample VALUES ('ML Bottom B
-racket','BB-8107')"; stmt.execute(sql);[] 
- []
-
-
-Overfull \hbox (147.27954pt too wide) in paragraph at lines 20--20
-[]    \TU/lmtt/m/n/10.95 sql = "INSERT Product_JDBC_Sample VALUES ('Mountain-50
-0 Black','BK-M18B-44')"; stmt.execute(sql);[] 
- []
-
-)
-Overfull \vbox (39.80547pt too high) detected at line 221
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [13
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 236--236
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \vbox (63.46536pt too high) detected at line 236
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [14
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 242--242
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [15
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 257--257
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 94--94
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [16
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 259--259
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 274--274
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb)
-Overfull \vbox (11.80544pt too high) detected at line 274
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 108--108
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [17
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 276--276
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 293--293
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb)
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [18
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 295--295
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 310--310
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb)
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [19
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 312--312
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 325--325
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb)
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [20
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 327--327
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 336--336
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb)
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [21
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 338--338
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 356--356
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb)
-Overfull \vbox (18.40544pt too high) detected at line 356
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [22
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 367--367
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [23
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 369--369
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 110--110
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 \openout4 = `"Lec 7.3.vrb"'.
 
 
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 397--397
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 129--129
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 (Lec 7.3.vrb
-Overfull \hbox (107.0383pt too wide) in paragraph at lines 28--28
-[]\TU/lmtt/m/n/10.95 // This macro prints the message in the SQLCA if the retur
-n code is 0 and the SQLCODE is not 0[] 
+Overfull \hbox (15.05362pt too wide) in paragraph at lines 18--18
+[]\OT1/cmtt/m/n/10.95 cursor.execute("create table rvtest (col1 int, col2 float
+, col3 varchar(10))")[] 
  []
 
 )
-Overfull \vbox (148.60551pt too high) detected at line 397
+Overfull \vbox (42.52357pt too high) detected at line 129
  []
 
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [24
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 399--399
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 421--421
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb
-Overfull \hbox (153.02829pt too wide) in paragraph at lines 22--22
-[]\TU/lmtt/m/n/10.95 // If the return code is not 0 or the SQLCODE is not expec
-ted, an error occurred and must be recorded.[] 
- []
-
-)
-Overfull \vbox (67.00548pt too high) detected at line 421
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 143--143
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [25
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 423--423
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 449--449
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb
-Overfull \hbox (32.30457pt too wide) in paragraph at lines 26--26
-[]  \TU/lmtt/m/n/10.95 EXEC SQL SELECT SNAME, AGE into :sname, :sage FROM ONE.S
-AILOR WHERE sid = :sid;[] 
- []
-
-
-Overfull \hbox (15.05832pt too wide) in paragraph at lines 26--26
-[]  \TU/lmtt/m/n/10.95 printf("Sailor %s's age is %d.\nExecuted Successfully\nB
-ye\n", sname, sage);[] 
- []
-
-)
-Overfull \vbox (121.4055pt too high) detected at line 449
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [26
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 451--451
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 476--476
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 7.
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 7.
-)
-Overfull \vbox (7.16823pt too high) detected at line 476
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [27
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 478--478
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 489--489
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb)
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [28
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 496--496
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [29
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 498--498
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 526--526
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb
-Overfull \hbox (250.75699pt too wide) in paragraph at lines 28--28
-[]    \TU/lmtt/m/n/10.95 try { Class.forName("com.ibm.db2.jdbc.app.DB2Driver").
-newInstance(); } catch (Exception e) { e.printStackTrace(); }[] 
- []
-
-
-Overfull \hbox (101.28955pt too wide) in paragraph at lines 28--28
-[]      \TU/lmtt/m/n/10.95 App_Cursor1 cursor1; App_Cursor2 cursor2; String str
-1 = null, str2 = null; long count1;[] 
- []
-
-)
-Overfull \vbox (148.60551pt too high) detected at line 526
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [30
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 536--536
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [31
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 538--538
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 562--562
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb
-Overfull \hbox (43.80206pt too wide) in paragraph at lines 24--24
-[]\TU/lmtt/m/n/10.95 // display the result set. cursor1.next() returns false wh
-en there are no more rows[] 
- []
-
-)
-Overfull \vbox (94.20549pt too high) detected at line 562
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 152--152
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [32
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 572--572
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [33
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 574--574
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-\openout4 = `"Lec 7.3.vrb"'.
-
-
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 600--600
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-(Lec 7.3.vrb
-Overfull \hbox (43.80206pt too wide) in paragraph at lines 26--26
-[]\TU/lmtt/m/n/10.95 // display the result set. cursor2.next() returns false wh
-en there are no more rows[] 
- []
-
-)
-Overfull \vbox (121.4055pt too high) detected at line 600
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [34
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 609--609
- [][]  \TU/lmss/m/n/6 ([])  
- []
-
-
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [35
 
 ]
-Overfull \hbox (204.45624pt too wide) in paragraph at lines 620--620
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 154--154
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 181--181
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb
+Overfull \hbox (89.78656pt too wide) in paragraph at lines 27--27
+[]    \OT1/cmtt/m/n/10.95 String connectionUrl = "jdbc:sqlserver://<server>:<po
+rt>;databaseName=AdventureWorks;";[] 
+ []
+
+)
+Overfull \vbox (135.00139pt too high) detected at line 181
  []
 
 
-Overfull \hbox (204.45624pt too wide) has occurred while \output is active
- [][]  \TU/lmss/m/n/6 ([])  
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
  []
 
 [36
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 183--183
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 203--203
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb
+Overfull \hbox (38.04837pt too wide) in paragraph at lines 20--20
+[]  \OT1/cmtt/m/n/10.95 private static void displayRow(String title, ResultSet 
+rs) throws SQLException {[] 
+ []
+
+
+Overfull \hbox (43.79706pt too wide) in paragraph at lines 20--20
+[]      \OT1/cmtt/m/n/10.95 System.out.println(rs.getString("ProductID") + " : 
+" + rs.getString("Name"));[] 
+ []
+
+
+Overfull \hbox (302.488pt too wide) in paragraph at lines 20--20
+[]    \OT1/cmtt/m/n/10.95 stmt.execute("if exists (select * from sys.objects wh
+ere name = 'Product_JDBC_Sample')" + "drop table Product_JDBC_Sample");[] 
+ []
+
+
+Overfull \hbox (112.78131pt too wide) in paragraph at lines 20--20
+[]    \OT1/cmtt/m/n/10.95 sql = "INSERT Product_JDBC_Sample VALUES ('Adjustable
+ Time','AR-5381')"; stmt.execute(sql);[] 
+ []
+
+
+Overfull \hbox (124.27869pt too wide) in paragraph at lines 20--20
+[]    \OT1/cmtt/m/n/10.95 sql = "INSERT Product_JDBC_Sample VALUES ('ML Bottom 
+Bracket','BB-8107')"; stmt.execute(sql);[] 
+ []
+
+
+Overfull \hbox (147.27344pt too wide) in paragraph at lines 20--20
+[]    \OT1/cmtt/m/n/10.95 sql = "INSERT Product_JDBC_Sample VALUES ('Mountain-5
+00 Black','BK-M18B-44')"; stmt.execute(sql);[] 
+ []
+
+)
+Overfull \vbox (39.80135pt too high) detected at line 203
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[37
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 216--216
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[38
+
+]
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[39
+
+]
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[40
+
+]
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[41
+
+]
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[42
+
+]
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[43
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 222--222
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[44
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 237--237
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 
+237.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 237.
+
+LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbraceleft' on input line 237.
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[45
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 239--239
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 254--254
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb)
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[46
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 256--256
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 273--273
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb)
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[47
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 275--275
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 290--290
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb)
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[48
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 292--292
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 305--305
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb)
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[49
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 307--307
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 316--316
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb)
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[50
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 318--318
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 336--336
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb)
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[51
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 345--345
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[52
+
+]
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[53
+
+]
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[54
+
+]
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[55
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 347--347
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 375--375
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb
+Overfull \hbox (107.03262pt too wide) in paragraph at lines 28--28
+[]\OT1/cmtt/m/n/10.95 // This macro prints the message in the SQLCA if the retu
+rn code is 0 and the SQLCODE is not 0[] 
+ []
+
+)
+Overfull \vbox (148.6014pt too high) detected at line 375
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[56
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 377--377
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 399--399
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb
+Overfull \hbox (153.02213pt too wide) in paragraph at lines 22--22
+[]\OT1/cmtt/m/n/10.95 // If the return code is not 0 or the SQLCODE is not expe
+cted, an error occurred and must be recorded.[] 
+ []
+
+)
+Overfull \vbox (67.00136pt too high) detected at line 399
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[57
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 401--401
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 427--427
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb
+Overfull \hbox (32.29968pt too wide) in paragraph at lines 26--26
+[]  \OT1/cmtt/m/n/10.95 EXEC SQL SELECT SNAME, AGE into :sname, :sage FROM ONE.
+SAILOR WHERE sid = :sid;[] 
+ []
+
+
+Overfull \hbox (15.05362pt too wide) in paragraph at lines 26--26
+[]  \OT1/cmtt/m/n/10.95 printf("Sailor %s's age is %d.\nExecuted Successfully\n
+Bye\n", sname, sage);[] 
+ []
+
+)
+Overfull \vbox (121.40138pt too high) detected at line 427
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[58
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 429--429
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 454--454
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb)
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[59
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 456--456
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 467--467
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb)
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[60
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 473--473
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[61
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 475--475
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 503--503
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb
+Overfull \hbox (250.74982pt too wide) in paragraph at lines 28--28
+[]    \OT1/cmtt/m/n/10.95 try { Class.forName("com.ibm.db2.jdbc.app.DB2Driver")
+.newInstance(); } catch (Exception e) { e.printStackTrace(); }[] 
+ []
+
+
+Overfull \hbox (101.28394pt too wide) in paragraph at lines 28--28
+[]      \OT1/cmtt/m/n/10.95 App_Cursor1 cursor1; App_Cursor2 cursor2; String st
+r1 = null, str2 = null; long count1;[] 
+ []
+
+)
+Overfull \vbox (148.6014pt too high) detected at line 503
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[62
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 513--513
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[63
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 515--515
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 539--539
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb
+Overfull \hbox (43.79706pt too wide) in paragraph at lines 24--24
+[]\OT1/cmtt/m/n/10.95 // display the result set. cursor1.next() returns false w
+hen there are no more rows[] 
+ []
+
+)
+Overfull \vbox (94.20137pt too high) detected at line 539
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[64
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 549--549
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[65
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 551--551
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+\openout4 = `"Lec 7.3.vrb"'.
+
+
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 577--577
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+(Lec 7.3.vrb
+Overfull \hbox (43.79706pt too wide) in paragraph at lines 26--26
+[]\OT1/cmtt/m/n/10.95 // display the result set. cursor2.next() returns false w
+hen there are no more rows[] 
+ []
+
+)
+Overfull \vbox (121.40138pt too high) detected at line 577
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[66
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 586--586
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[67
+
+]
+Overfull \hbox (204.49606pt too wide) in paragraph at lines 599--599
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+
+Overfull \hbox (204.49606pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[68
 
 ]
 \tf@nav=\write6
@@ -1883,21 +2067,45 @@ Overfull \hbox (204.45624pt too wide) has occurred while \output is active
 \tf@snm=\write8
 \openout8 = `"Lec 7.3.snm"'.
 
- (Lec 7.3.aux)
+(Lec 7.3.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
-Package rerunfilecheck Info: File `"Lec 7.3".out' has not changed.
-(rerunfilecheck)             Checksum: <no file>.
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+Package rerunfilecheck Warning: File `"Lec 7.3".out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `"Lec 7.3".out':
+(rerunfilecheck)             Before: 455F0194F0BA497C28475AC184260BBE;239
+(rerunfilecheck)             After:  BE396CCED706CBDE2582C833C6E26835;238.
  ) 
 Here is how much of TeX's memory you used:
- 28349 strings out of 402987
- 548053 string characters out of 5448523
- 934246 words of memory out of 5000000
- 56491 multiletter control sequences out of 15000+600000
- 638628 words of font info for 105 fonts, out of 8000000 for 9000
- 1348 hyphenation exceptions out of 8191
- 128i,15n,123p,503b,652s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 29085 strings out of 467871
+ 573339 string characters out of 5418376
+ 940112 words of memory out of 5000000
+ 57234 multiletter control sequences out of 15000+600000
+ 641670 words of font info for 91 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 128i,15n,123p,503b,785s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/milav/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmitt10.pfb><C:/Users/milav/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
+sfonts/cm/cmmi10.pfb><C:/Users/milav/AppData/Local/Programs/MiKTeX/fonts/type1/
+public/amsfonts/cm/cmss10.pfb><C:/Users/milav/AppData/Local/Programs/MiKTeX/fon
+ts/type1/public/amsfonts/cm/cmss12.pfb><C:/Users/milav/AppData/Local/Programs/M
+iKTeX/fonts/type1/public/amsfonts/cm/cmss8.pfb><C:/Users/milav/AppData/Local/Pr
+ograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Users/milav/AppDa
+ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmssi10.pfb><C:/Users/m
+ilav/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C
+:/Users/milav/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt
+10.pfb>
+Output written on "Lec 7.3.pdf" (68 pages, 561090 bytes).
+PDF statistics:
+ 1988 PDF objects out of 2073 (max. 8388607)
+ 138 named destinations out of 1000 (max. 500000)
+ 219 words of extra memory for PDF output out of 10000 (max. 10000000)
 
-Output written on Lec 7.3.pdf (36 pages).

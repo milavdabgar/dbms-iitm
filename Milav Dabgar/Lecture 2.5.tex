@@ -38,19 +38,21 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Completed the understanding of basic query structure
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To familiarize with set operations, null values and aggregation
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To familiarize with set operations, null values and aggregation
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Set Operations: \texttt{union}, \texttt{intersect}, \texttt{except}
         \item Null Values
         \item Aggregate Functions: \texttt{avg}, \texttt{min}, \texttt{max}, \texttt{sum}, and \texttt{count}
@@ -117,17 +119,19 @@ except
 \end{frame}
 
 \begin{frame}{Set Operations (3)}
-    \begin{itemize}
-        \item Set operations \texttt{union}, \texttt{intersect}, and \texttt{except}
-        \item Each of the above operations automatically eliminates duplicates
-        \item To retain all duplicates use the corresponding multiset versions \texttt{union all}, \texttt{intersect all}, and \texttt{except all}.
-        \item Suppose a tuple occurs $m$ times in $r$ and $n$ times in $s$, then, it occurs:
-        \begin{itemize}
-            \item \textbf{$m + n$} times in \texttt{$r$ union all $s$}
-            \item \textbf{$\min(m, n)$} times in \texttt{$r$ intersect all $s$}
-            \item \textbf{$\max(0, m - n)$} times in \texttt{$r$ except all $s$}
+    \begin{block}{Duplicates}
+        \begin{itemize}[<+->]
+            \item Set operations \texttt{union}, \texttt{intersect}, and \texttt{except}
+            \item Each of the above operations automatically eliminates duplicates
+            \item To retain all duplicates use the corresponding multiset versions \texttt{union all}, \texttt{intersect all}, and \texttt{except all}.
+            \item Suppose a tuple occurs $m$ times in $r$ and $n$ times in $s$, then, it occurs:
+            \begin{itemize}
+                \item[$\triangleright$] \textbf{$m + n$} times in \texttt{$r$ union all $s$}
+                \item[$\triangleright$] \textbf{$\min(m, n)$} times in \texttt{$r$ intersect all $s$}
+                \item[$\triangleright$] \textbf{$\max(0, m - n)$} times in \texttt{$r$ except all $s$}
+            \end{itemize}
         \end{itemize}
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \section{Null Values}
@@ -163,21 +167,23 @@ where salary is null;
 \end{frame}
 
 \begin{frame}{Null Values (2): Three Valued Logic}
-    \begin{itemize}
-        \item Three values: \textbf{true}, \textbf{false}, \textbf{unknown}
-        \item Any comparison with null returns \textbf{unknown}
-        \begin{itemize}
-            \item Example: $\texttt{5 < null}$ \quad or \quad $\texttt{null <> null}$ \quad or \quad $\texttt{null = null}$
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item Three values: \textbf{true}, \textbf{false}, \textbf{unknown}
+            \item Any comparison with null returns \textbf{unknown}
+            \begin{itemize}
+                \item[$\triangleright$] Example: $\texttt{5 < null}$ \quad or \quad $\texttt{null <> null}$ \quad or \quad $\texttt{null = null}$
+            \end{itemize}
+            \item Three-valued logic using the value \textbf{unknown}:
+            \begin{itemize}
+                \item[$\triangleright$] \textbf{OR}: \texttt{(unknown or true) = true}, \texttt{(unknown or false) = unknown}, \texttt{(unknown or unknown) = unknown}
+                \item[$\triangleright$] \textbf{AND}: \texttt{(true and unknown) = unknown}, \texttt{(false and unknown) = false}, \texttt{(unknown and unknown) = unknown}
+                \item[$\triangleright$] \textbf{NOT}: \texttt{(not unknown) = unknown}
+            \end{itemize}
+            \item `\texttt{P is unknown}' evaluates to \textbf{true} if predicate $P$ evaluates to \textbf{unknown}
+            \item Result of \texttt{where} clause predicate is treated as \textbf{false} if it evaluates to \textbf{unknown}
         \end{itemize}
-        \item Three-valued logic using the value \textbf{unknown}:
-        \begin{itemize}
-            \item \textbf{OR}: \texttt{(unknown or true) = true}, \texttt{(unknown or false) = unknown}, \texttt{(unknown or unknown) = unknown}
-            \item \textbf{AND}: \texttt{(true and unknown) = unknown}, \texttt{(false and unknown) = false}, \texttt{(unknown and unknown) = unknown}
-            \item \textbf{NOT}: \texttt{(not unknown) = unknown}
-        \end{itemize}
-        \item `\texttt{P is unknown}' evaluates to \textbf{true} if predicate $P$ evaluates to \textbf{unknown}
-        \item Result of \texttt{where} clause predicate is treated as \textbf{false} if it evaluates to \textbf{unknown}
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \section{Aggregate Functions}
@@ -192,16 +198,18 @@ where salary is null;
 \end{frame}
 
 \begin{frame}{Aggregate Functions}
-    \begin{itemize}
-        \item These functions operate on the multiset of values of a column of a relation, and return a value
-        \begin{itemize}
-            \item \texttt{avg}: average value
-            \item \texttt{min}: minimum value
-            \item \texttt{max}: maximum value
-            \item \texttt{sum}: sum of values
-            \item \texttt{count}: number of values
+    \begin{exampleblock}{Common Functions}
+        \begin{itemize}[<+->]
+            \item These functions operate on the multiset of values of a column of a relation, and return a value
+            \begin{itemize}
+                \item[$\triangleright$] \texttt{avg}: average value
+                \item[$\triangleright$] \texttt{min}: minimum value
+                \item[$\triangleright$] \texttt{max}: maximum value
+                \item[$\triangleright$] \texttt{sum}: sum of values
+                \item[$\triangleright$] \texttt{count}: number of values
+            \end{itemize}
         \end{itemize}
-    \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{Aggregate Functions (2)}
@@ -297,7 +305,7 @@ having avg(salary) > 42000;
 \end{frame}
 
 \begin{frame}[fragile]{Null Values and Aggregates}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Total all salaries
         \begin{lstlisting}[language=SQL]
 select sum(salary) 
@@ -308,14 +316,14 @@ from instructor;
         \item All aggregate operations except \texttt{count(*)} ignore tuples with null values on the aggregated attributes
         \item What if collection has only null values?
         \begin{itemize}
-            \item \texttt{count} returns \texttt{0}
-            \item all other aggregates return \texttt{null}
+            \item[$\triangleright$] \texttt{count} returns \texttt{0}
+            \item[$\triangleright$] all other aggregates return \texttt{null}
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Completed the understanding of set operations, null values, and aggregation
     \end{itemize}
     \vspace{2em}

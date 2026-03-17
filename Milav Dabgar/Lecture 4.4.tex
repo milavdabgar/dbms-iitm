@@ -39,21 +39,23 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Design Process for Database Systems
         \item ER Model for real world representation with entities, entity sets, attributes, and relationships
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To illustrate ER Diagram notation for ER Models
-        \item To explore translation of ER Models to Relational Schemas
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To illustrate ER Diagram notation for ER Models
+            \item To explore translation of ER Models to Relational Schemas
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item ER Diagram
         \item ER Model to Relational Schema
     \end{itemize}
@@ -71,7 +73,7 @@
 
 \begin{frame}{Entity Sets}
     Entities can be represented graphically as follows:
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Rectangles represent entity sets.
         \item Attributes are listed inside entity rectangle.
         \item Underline indicates primary key attributes.
@@ -84,7 +86,7 @@
 \end{frame}
 
 \begin{frame}{Relationship Sets}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Diamonds represent relationship sets.
     \end{itemize}
     \begin{center}
@@ -99,7 +101,7 @@
 \end{frame}
 
 \begin{frame}{Roles}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Entity sets of a relationship need not be distinct Each occurrence of an entity set plays a 'role' in the relationship
         \item The labels 'course id' and 'prereq id' are called \textbf{roles}.
     \end{itemize}
@@ -109,12 +111,12 @@
 \end{frame}
 
 \begin{frame}{Cardinality Constraints}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item We express cardinality constraints by drawing either a directed line ($\rightarrow$), signifying 'one,' or an undirected line (--), signifying 'many,' between the relationship set and the entity set.
         \item \textbf{One-to-one relationship between an instructor and a student}:
         \begin{itemize}
-            \item A student is associated with at most one instructor via the relationship advisor
-            \item An instructor is associated with at most one student via the relationship advisor
+            \item[$\triangleright$] A student is associated with at most one instructor via the relationship advisor
+            \item[$\triangleright$] An instructor is associated with at most one student via the relationship advisor
         \end{itemize}
     \end{itemize}
     \begin{center}
@@ -123,7 +125,7 @@
 \end{frame}
 
 \begin{frame}{One-to-Many Relationship}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{one-to-many relationship between an instructor and a student}
         \item an instructor is associated with several (including 0) students via advisor
         \item a student is associated with at most one instructor via advisor
@@ -134,7 +136,7 @@
 \end{frame}
 
 \begin{frame}{Many-to-One Relationships}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{many-to-one relationship between a student and an instructor}
         \item an instructor is associated with at most one student via advisor
         \item a student is associated with several (including 0) instructors via advisor
@@ -145,7 +147,7 @@
 \end{frame}
 
 \begin{frame}{Many-to-Many Relationship}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item An instructor is associated with several (possibly 0) students via advisor
         \item A student is associated with several (possibly 0) instructors via advisor
     \end{itemize}
@@ -155,15 +157,15 @@
 \end{frame}
 
 \begin{frame}{Total and Partial Participation}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Total participation} (indicated by double line): every entity in the entity set participates in at least one relationship in the relationship set
         \begin{itemize}
-            \item participation of student in advisor relation is total
-            \item every student must have an associated instructor
+            \item[$\triangleright$] participation of student in advisor relation is total
+            \item[$\triangleright$] every student must have an associated instructor
         \end{itemize}
         \item \textbf{Partial participation}: some entities may not participate in any relationship in the relationship set
         \begin{itemize}
-            \item Example: participation of instructor in advisor is partial
+            \item[$\triangleright$] Example: participation of instructor in advisor is partial
         \end{itemize}
     \end{itemize}
     \begin{center}
@@ -172,7 +174,7 @@
 \end{frame}
 
 \begin{frame}{Notation for Expressing More Complex Constraints}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A line may have an associated minimum and maximum cardinality, shown in the form $l..h$, where $l$ is the minimum and $h$ the maximum cardinality
         \item A minimum value of 1 indicates total participation.
         \item A maximum value of 1 indicates that the entity participates in at most one relationship
@@ -190,7 +192,7 @@
 \end{frame}
 
 \begin{frame}{Expressing Weak Entity Sets}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item In ER diagrams, a weak entity set is depicted via a double rectangle
         \item We underline the discriminator of a weak entity set with a dashed line
         \item The relationship set connecting the weak entity set to the identifying strong entity set is depicted by a double diamond
@@ -218,23 +220,25 @@
 \end{frame}
 
 \begin{frame}{Reduction to Relation Schema}
-    \begin{itemize}
-        \item Entity sets and relationship sets can be expressed uniformly as relation schemas that represent the contents of the database
-        \item A database which conforms to an ER diagram can be represented by a collection of schemas
-        \item For each entity set and relationship set there is a unique schema that is assigned the name of the corresponding entity set or relationship set
-        \item Each schema has a number of columns (generally corresponding to attributes), which have unique names
-    \end{itemize}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item Entity sets and relationship sets can be expressed uniformly as relation schemas that represent the contents of the database
+            \item A database which conforms to an ER diagram can be represented by a collection of schemas
+            \item For each entity set and relationship set there is a unique schema that is assigned the name of the corresponding entity set or relationship set
+            \item Each schema has a number of columns (generally corresponding to attributes), which have unique names
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Representing Entity Sets}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A strong entity set reduces to a schema with the same attributes
         \begin{itemize}
-            \item \texttt{student(ID, name, tot\_cred)}
+            \item[$\triangleright$] \texttt{student(ID, name, tot\_cred)}
         \end{itemize}
         \item A weak entity set becomes a table that includes a column for the primary key of the identifying strong entity set
         \begin{itemize}
-            \item \texttt{section(course\_id, sec\_id, sem, year)}
+            \item[$\triangleright$] \texttt{section(course\_id, sec\_id, sem, year)}
         \end{itemize}
     \end{itemize}
     \begin{center}
@@ -243,11 +247,11 @@
 \end{frame}
 
 \begin{frame}{Representing Relationship Sets}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A many-to-many relationship set is represented as a schema with attributes for the primary keys of the two participating entity sets, and any descriptive attributes of the relationship set.
         \item Example: schema for relationship set advisor
         \begin{itemize}
-            \item \texttt{advisor = (s\_id, i\_id)}
+            \item[$\triangleright$] \texttt{advisor = (s\_id, i\_id)}
         \end{itemize}
     \end{itemize}
     \begin{center}
@@ -256,15 +260,15 @@
 \end{frame}
 
 \begin{frame}{Representation of Entity Sets with Composite Attributes}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Composite attributes are flattened out by creating a separate attribute for each component attribute
         \item Example: given entity set \texttt{instructor} with composite attribute \texttt{name} with component attributes \texttt{first\_name} and \texttt{last\_name} the schema corresponding to the entity set has two attributes \texttt{name\_first\_name} and \texttt{name\_last\_name}
         \begin{itemize}
-            \item Prefix omitted if there is no ambiguity (\texttt{name\_first\_name} could be \texttt{first\_name})
+            \item[$\triangleright$] Prefix omitted if there is no ambiguity (\texttt{name\_first\_name} could be \texttt{first\_name})
         \end{itemize}
         \item Ignoring multivalued attributes, extended \texttt{instructor} schema is
         \begin{itemize}
-            \item \texttt{instructor(ID, first\_name, middle\_initial, last\_name, street\_number, street\_name, apt\_number, city, state, zip\_code, date\_of\_birth)}
+            \item[$\triangleright$] \texttt{instructor(ID, first\_name, middle\_initial, last\_name, street\_number, street\_name, apt\_number, city, state, zip\_code, date\_of\_birth)}
         \end{itemize}
     \end{itemize}
     \begin{center}
@@ -273,7 +277,7 @@
 \end{frame}
 
 \begin{frame}{Representation of Entity Sets with Multivalued Attributes}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A multivalued attribute $M$ of an entity $E$ is represented by a separate schema $E_M$
         \item Schema $E_M$ has attributes corresponding to the primary key of $E$ and an attribute corresponding to multivalued attribute $M$
         \item Example: Multivalued attribute \texttt{phone\_number} of \texttt{instructor} is represented by a schema: \texttt{inst\_phone = (ID, phone\_number)}
@@ -283,7 +287,7 @@
 \end{frame}
 
 \begin{frame}{Redundancy of Schema}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Many-to-one and one-to-many relationship sets that are total on the many-side can be represented by adding an extra attribute to the 'many' side, containing the primary key of the 'one' side
         \item Example: Instead of creating a schema for relationship set \texttt{inst\_dept}, add an attribute \texttt{dept\_name} to the schema arising from entity set \texttt{instructor}
     \end{itemize}
@@ -293,7 +297,7 @@
 \end{frame}
 
 \begin{frame}{Redundancy of Schema (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item For one-to-one relationship sets, either side can be chosen to act as the 'many' side
         \item That is, an extra attribute can be added to either of the tables corresponding to the two entity sets
         \item If participation is partial on the 'many' side, replacing a schema by an extra attribute in the schema corresponding to the 'many' side could result in null values
@@ -301,7 +305,7 @@
 \end{frame}
 
 \begin{frame}{Redundancy of Schema (3)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The schema corresponding to a relationship set linking a weak entity set to its identifying strong entity set is redundant.
         \item Example: The \texttt{section} schema already contains the attributes that would appear in the \texttt{sec\_course} schema
     \end{itemize}
@@ -311,10 +315,12 @@
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Illustrated ER Diagram notation for ER Models
-        \item Discussed translation of ER Models to Relational Schema
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Illustrated ER Diagram notation for ER Models
+            \item Discussed translation of ER Models to Relational Schema
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

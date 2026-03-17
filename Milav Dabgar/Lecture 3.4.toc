@@ -1,5 +1,5 @@
-\beamer@sectionintoc {1}{Transactions}{5}{0}{1}
-\beamer@sectionintoc {2}{Integrity Constraints}{7}{0}{2}
-\beamer@sectionintoc {3}{Referential Integrity}{12}{0}{3}
-\beamer@sectionintoc {4}{SQL Data Types and Schemas}{15}{0}{4}
-\beamer@sectionintoc {5}{Authorization}{21}{0}{5}
+\beamer@sectionintoc {1}{Transactions}{11}{0}{1}
+\beamer@sectionintoc {2}{Integrity Constraints}{22}{0}{2}
+\beamer@sectionintoc {3}{Referential Integrity}{38}{0}{3}
+\beamer@sectionintoc {4}{SQL Data Types and Schemas}{48}{0}{4}
+\beamer@sectionintoc {5}{Authorization}{75}{0}{5}

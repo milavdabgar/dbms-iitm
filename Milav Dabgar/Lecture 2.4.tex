@@ -38,28 +38,30 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Introduced relational query language
         \item Familiarized with data definition and basic query structure
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To complete the understanding of basic query structure
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To understand Cartesian Product
+            \item To familiarize with String operations
+            \item To familiarize with Ordering and set operations
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
-        \item Additional Basic Operations
+    \begin{itemize}[<+->]
         \item Cartesian Product
-        \item Rename \texttt{AS} Operation
-        \item String Values
-        \item \texttt{Order By}
-        \item \texttt{Select Top} / \texttt{Fetch}
-        \item \texttt{Where} Clause Predicate
-        \item Duplicates
+        \item Joins
+        \item Rename Operation
+        \item String Operations
+        \item Ordering
+        \item Set Operations
     \end{itemize}
 \end{frame}
 
@@ -95,43 +97,51 @@ from instructor, teaches;
     \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Examples}
-    \begin{itemize}
-        \item Find the names of all instructors who have taught some course and the course id
-        \begin{lstlisting}[language=SQL]
-select name, course_id 
-from instructor, teaches 
-where instructor.ID = teaches.ID;
-        \end{lstlisting}
-        \item Equi-Join, Natural Join
-    \end{itemize}
+\begin{frame}{Joins}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item For all instructors who have taught some course, find their names and the course ID of the courses they taught
+            \item We can write:
+            \begin{center}
+                \texttt{select name, course\_id \\
+                        from instructor, teaches \\
+                        where instructor.ID = teaches.ID}
+            \end{center}
+            \item Find the course ID, semester, year and title of each course offered by the Comp. Sci. department
+            \label{cs_dept_query}
+            \begin{center}
+                \texttt{select section.course\_id, semester, year, title \\
+                        from section, course \\
+                        where section.course\_id = course.course\_id and dept\_name = 'Comp. Sci.'}
+            \end{center}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Examples (2)}
-    \begin{itemize}
-        \item Find the names of all instructors in the Art department who have taught some course and the course id
-        \begin{lstlisting}[language=SQL]
-select name, course_id 
-from instructor, teaches 
-where instructor.ID = teaches.ID 
-  and instructor.dept_name = 'Art';
-        \end{lstlisting}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Rename AS Operation}
-    \begin{itemize}
-        \item SQL allows renaming relations and attributes using the \texttt{as} clause: 
-        \begin{center}\texttt{old\_name as new\_name}\end{center}
-        \item Find the names of all instructors who have a higher salary than some instructor in 'Comp. Sci'.
-        \begin{lstlisting}[language=SQL]
-select distinct T.name 
-from instructor as T, instructor as S 
-where T.salary > S.salary 
-  and S.dept_name = 'Comp. Sci';
-        \end{lstlisting}
-        \item Keyword \texttt{as} is optional and may be omitted: \texttt{instructor as T} $\equiv$ \texttt{instructor T}
-    \end{itemize}
+\begin{frame}{Rename Operation}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item The SQL allows renaming relations and attributes using the \texttt{as} clause:
+            \begin{center}
+                \texttt{old-name as new-name}
+            \end{center}
+            \item Example:
+            \begin{center}
+                \texttt{select ID, name, salary/12 as monthly\_salary \\
+                        from instructor}
+            \end{center}
+            \item Find the names of all instructors who have a higher salary than some instructor in 'Comp. Sci'.
+            \begin{center}
+                \texttt{select distinct T.name \\
+                        from instructor as T, instructor as S \\
+                        where T.salary > S.salary and S.dept\_name = 'Comp. Sci.'}
+            \end{center}
+            \item Keyword \texttt{as} is optional and may be omitted.
+            \begin{center}
+                \texttt{instructor as T $\equiv$ instructor T}
+            \end{center}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Cartesian Product Example}
@@ -156,56 +166,66 @@ where T.salary > S.salary
     \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{String Operations}
-    \begin{itemize}
-        \item SQL includes a string-matching operator for comparisons on character strings. The operator \texttt{like} uses patterns that are described using two special characters:
-        \begin{itemize}
-            \item \textbf{percent} (\%): The \% character matches any substring
-            \item \textbf{underscore} (\_): The \_ character matches any character
+\begin{frame}{String Operations}
+    \begin{block}{Pattern Matching}
+        \begin{itemize}[<+->]
+            \item SQL includes a string-matching operator for comparisons on character strings. The operator \texttt{like} uses patterns that are described using two special characters:
+            \begin{itemize}
+                \item[$\triangleright$] \texttt{\%} (percent): The \% character matches any substring.
+                \item[$\triangleright$] \texttt{\_} (underscore): The \_ character matches any character.
+            \end{itemize}
+            \item Find the names of all instructors whose name includes the substring ``dar''.
+            \begin{center}
+                \texttt{select name \\
+                        from instructor \\
+                        where name like '\%dar\%'}
+            \end{center}
+            \item Match the string \texttt{"100 \%"}
+            \begin{center}
+                \texttt{like '100 \textbackslash\%' escape '\textbackslash'}
+            \end{center}
         \end{itemize}
-        \item Find the names of all instructors whose name includes the substring 'dar'
-        \begin{lstlisting}[language=SQL]
-select name 
-from instructor 
-where name like '%dar%';
-        \end{lstlisting}
-        \item Match the string '100\%': \texttt{like '100\textbackslash\%' escape '\textbackslash'}
-        \item In that above we use backslash (\textbackslash) as the escape character
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{String Operations (2)}
-    \begin{itemize}
-        \item Patterns are case sensitive
+    \begin{itemize}[<+->]
+        \item Patterns are case sensitive.
         \item Pattern matching examples:
         \begin{itemize}
-            \item \texttt{'Intro\%'} matches any string beginning with 'Intro'
-            \item \texttt{'\%Comp\%'} matches any string containing 'Comp' as a substring
-            \item \texttt{'\_\_\_'} matches any string of exactly three characters
-            \item \texttt{'\_\_\_\%'} matches any string of at least three characters
+            \item[$\triangleright$] \texttt{'Intro\%'} matches any string beginning with \texttt{"Intro"}.
+            \item[$\triangleright$] \texttt{'\%Comp\%'} matches any string containing \texttt{"Comp"} as a substring, for example, \texttt{"Intro. to Comp. Sci."}, and \texttt{"Comp. Sci. and Engg."}.
+            \item[$\triangleright$] \texttt{'\_\_\_'} matches any string of exactly three characters.
+            \item[$\triangleright$] \texttt{'\_\_\_\%'} matches any string of at least three characters.
         \end{itemize}
-        \item SQL supports a variety of string operations such as:
+        \item SQL supports a variety of string operations such as
         \begin{itemize}
-            \item concatenation (using \texttt{||})
-            \item converting from upper to lower case (and vice versa)
-            \item finding string length, extracting substrings, etc.
+            \item[$\triangleright$] concatenation (using $\mid\mid$)
+            \item[$\triangleright$] converting from upper to lower case (and vice versa)
+            \item[$\triangleright$] finding string length, extracting substrings, etc.
         \end{itemize}
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Ordering the Display of Tuples}
-    \begin{itemize}
-        \item List in alphabetic order the names of all instructors
-        \begin{lstlisting}[language=SQL]
-select distinct name 
-from instructor 
-order by name;
-        \end{lstlisting}
-        \item We may specify \texttt{desc} for descending order or \texttt{asc} for ascending order, for each attribute; ascending order is the default.
-        \item Example: \texttt{order by name desc}
-        \item Can sort on multiple attributes
-        \item Example: \texttt{order by dept\_name, name}
-    \end{itemize}
+\begin{frame}{Ordering the Display of Tuples}
+    \begin{block}{Order By}
+        \begin{itemize}[<+->]
+            \item List in alphabetic order the names of all instructors
+            \begin{center}
+                \texttt{select distinct name \\
+                        from instructor \\
+                        order by name}
+            \end{center}
+            \item We may specify \texttt{desc} for descending order or \texttt{asc} for ascending order, for each attribute; ascending order is the default.
+            \begin{itemize}
+                \item[$\triangleright$] Example: \texttt{order by name desc}
+            \end{itemize}
+            \item Can sort on multiple attributes
+            \begin{itemize}
+                \item[$\triangleright$] Example: \texttt{order by dept\_name, name}
+            \end{itemize}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Selecting Number of Tuples in Output}
@@ -231,22 +251,24 @@ fetch first 10 rows only;
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Where Clause Predicates}
-    \begin{itemize}
-        \item SQL includes a \texttt{between} comparison operator
-        \item Example: Find the names of all instructors with salary between \$90,000 and \$100,000 (that is, $\ge \$90,000$ and $\le \$100,000$)
-        \begin{lstlisting}[language=SQL]
-select name 
-from instructor
-where salary between 90000 and 100000;
-        \end{lstlisting}
-        \item Tuple comparison
-        \begin{lstlisting}[language=SQL]
-select name, course_id 
-from instructor, teaches 
-where (instructor.ID, dept_name) = (teaches.ID, 'Biology');
-        \end{lstlisting}
-    \end{itemize}
+\begin{frame}{Where Clause Predicates}
+    \begin{block}{\texttt{between} operator}
+        \begin{itemize}[<+->]
+            \item SQL includes a \texttt{between} comparison operator
+            \item Example: Find the names of all instructors with salary between \$90,000 and \$100,000 (that is, $\geq \$90,000$ and $\leq \$100,000$)
+            \begin{center}
+                \texttt{select name \\
+                        from instructor \\
+                        where salary between 90000 and 100000}
+            \end{center}
+            \item Tuple comparison
+            \begin{center}
+                \texttt{select name, course\_id \\
+                        from instructor, teaches \\
+                        where (instructor.ID, dept\_name) = (teaches.ID, 'Biology');}
+            \end{center}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{In Operator}

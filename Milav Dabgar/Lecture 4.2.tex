@@ -38,19 +38,21 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Relational Algebras and its Operations
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To understand formal calculus-based query language through relational algebra
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To understand formal calculus-based query language through relational algebra
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Tuple Relational Calculus (Overview only)
         \item Domain Relational Calculus (Overview only)
         \item Equivalence of Algebra and Calculus
@@ -58,18 +60,18 @@
 \end{frame}
 
 \begin{frame}{Formal Relational Query Language}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Relational Algebra
         \begin{itemize}
-            \item Procedural and Algebra based
+            \item[$\triangleright$] Procedural and Algebra based
         \end{itemize}
         \item Tuple Relational Calculus
         \begin{itemize}
-            \item Non-Procedural and Predicate Calculus based
+            \item[$\triangleright$] Non-Procedural and Predicate Calculus based
         \end{itemize}
         \item Domain Relational Calculus
         \begin{itemize}
-            \item Non-Procedural and Predicate Calculus based
+            \item[$\triangleright$] Non-Procedural and Predicate Calculus based
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -85,25 +87,29 @@
 \end{frame}
 
 \begin{frame}{Predicate Logic}
-    \begin{itemize}
-        \item Predicate Logic or Predicate Calculus is an extension of Propositional Logic or Boolean Algebra.
-        \item It adds the concept of predicates and quantifiers to better capture the meaning of statements that cannot be adequately expressed by propositional logic.
-        \item Tuple Relational Calculus and Domain Relational Calculus are based on Predicate Calculus.
-    \end{itemize}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item Predicate Logic or Predicate Calculus is an extension of Propositional Logic or Boolean Algebra.
+            \item It adds the concept of predicates and quantifiers to better capture the meaning of statements that cannot be adequately expressed by propositional logic.
+            \item Tuple Relational Calculus and Domain Relational Calculus are based on Predicate Calculus.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Predicate}
-    \begin{itemize}
-        \item Consider the statement, '$x$ is greater than 3'. It has two parts. The first part, the variable $x$, is the subject of the statement. The second part, 'is greater than 3', is the predicate. It refers to a property that the subject of the statement can have.
-        \item The statement '$x$ is greater than 3' can be denoted by $P(x)$ where $P$ denotes the predicate 'is greater than 3' and $x$ is the variable.
-        \item The predicate $P$ can be considered as a function. It tells the truth value of the statement $P(x)$ at $x$. Once a value has been assigned to the variable $x$, the statement $P(x)$ becomes a proposition and has a truth or false value.
-        \item In general, a statement involving $n$ variables $x_1, x_2, x_3, \dots, x_n$ can be denoted by $P(x_1, x_2, x_3, \dots, x_n)$. Here $P$ is also referred to as $n$-place predicate or a $n$-ary predicate.
-    \end{itemize}
+    \begin{block}{Definition}
+        \begin{itemize}[<+->]
+            \item Consider the statement, '$x$ is greater than 3'. It has two parts. The first part, the variable $x$, is the subject of the statement. The second part, 'is greater than 3', is the predicate. It refers to a property that the subject of the statement can have.
+            \item The statement '$x$ is greater than 3' can be denoted by $P(x)$ where $P$ denotes the predicate 'is greater than 3' and $x$ is the variable.
+            \item The predicate $P$ can be considered as a function. It tells the truth value of the statement $P(x)$ at $x$. Once a value has been assigned to the variable $x$, the statement $P(x)$ becomes a proposition and has a truth or false value.
+            \item In general, a statement involving $n$ variables $x_1, x_2, x_3, \dots, x_n$ can be denoted by $P(x_1, x_2, x_3, \dots, x_n)$. Here $P$ is also referred to as $n$-place predicate or a $n$-ary predicate.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Quantifiers}
     In predicate logic, predicates are used alongside quantifiers to express the extent to which a predicate is true over a range of elements. Using quantifiers to create such propositions is called quantification. There are two types of quantifiers:
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Universal Quantifier
         \item Existential Quantifier
     \end{itemize}
@@ -111,7 +117,7 @@
 
 \begin{frame}{Universal Quantifier}
     Universal Quantification: Mathematical statements sometimes assert that a property is true for all the values of a variable in a particular domain, called the domain of discourse.
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Such a statement is expressed using universal quantification.
         \item The universal quantification of $P(x)$ for a particular domain is the proposition that asserts that $P(x)$ is true for all values of $x$ in this domain.
         \item The domain is very important here since it decides the possible values of $x$.
@@ -124,7 +130,7 @@
 
 \begin{frame}{Existential Quantifier}
     Existential Quantification: Some mathematical statements assert that there is an element with a certain property. Such statements are expressed by existential quantification. Existential quantification can be used to form a proposition that is true if and only if $P(x)$ is true for at least one value of $x$ in the domain.
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Formally, the existential quantification of $P(x)$ is the statement 'There exists an element $x$ in the domain such that $P(x)$'.
         \item The notation $\exists P(x)$ denotes the existential quantification of $P(x)$. Here $\exists$ is called the existential quantifier. $\exists P(x)$ is read as 'There is atleast one such $x$ such that $P(x)$'.
         \item Example: Let $P(x)$ be the statement '$x > 5$'. What is the truth value of the statement $\exists x P(x)$?
@@ -143,29 +149,31 @@
 \end{frame}
 
 \begin{frame}{Tuple Relational Calculus}
-    TRC is a non-procedural query language, where each query is of the form
-    \[ \{t \mid P(t)\} \]
-    \begin{itemize}
-        \item where $t =$ resulting tuples, $P(t) =$ known as predicate and these are the conditions that are used to fetch $t$. $P(t)$ may have various conditions logically combined with OR ($\lor$), AND ($\land$), NOT($\lnot$).
-        \item It also uses quantifiers:
-        \begin{itemize}
-            \item $\exists t \in r (Q(t)) =$ 'there exists' a tuple in $t$ in relation $r$ such that predicate $Q(t)$ is true.
-            \item $\forall t \in r (Q(t)) =$ $Q(t)$ is true 'for all' tuples in relation $r$.
+    \begin{block}{Definition}
+        TRC is a non-procedural query language, where each query is of the form
+        \[ \{t \mid P(t)\} \]
+        \begin{itemize}[<+->]
+            \item where $t =$ resulting tuples, $P(t) =$ known as predicate and these are the conditions that are used to fetch $t$. $P(t)$ may have various conditions logically combined with OR ($\lor$), AND ($\land$), NOT($\lnot$).
+            \item It also uses quantifiers:
+            \begin{itemize}
+                \item[$\triangleright$] $\exists t \in r (Q(t)) =$ 'there exists' a tuple in $t$ in relation $r$ such that predicate $Q(t)$ is true.
+                \item[$\triangleright$] $\forall t \in r (Q(t)) =$ $Q(t)$ is true 'for all' tuples in relation $r$.
+            \end{itemize}
+            \item $\{P \mid \exists S \in \text{Students and } (S.\text{CGPA} > 8 \land P.\text{name} = S.\text{sname} \land P.\text{age} = S.\text{age})\}$: returns the name and age of students with a CGPA above 8.
         \end{itemize}
-        \item $\{P \mid \exists S \in \text{Students and } (S.\text{CGPA} > 8 \land P.\text{name} = S.\text{sname} \land P.\text{age} = S.\text{age})\}$: returns the name and age of students with a CGPA above 8.
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Predicate Calculus Formula}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item a) Set of attributes and constants
         \item b) Set of comparison operators: (e.g., $<, \leq, =, \neq, >, \geq$)
         \item c) Set of connectives: and ($\land$), or ($\lor$), not ($\lnot$)
         \item d) Implication ($\Rightarrow$): $x \Rightarrow y$, if $x$ is true, then $y$ is true. $x \Rightarrow y \equiv \lnot x \lor y$
         \item e) Set of quantifiers:
         \begin{itemize}
-            \item $\exists t \in r (Q(t)) \equiv$ 'there exists' a tuple in $t$ in relation $r$ such that predicate $Q(t)$ is true
-            \item $\forall t \in r (Q(t)) \equiv$ $Q$ is true 'for all' tuples $t$ in relation $r$
+            \item[$\triangleright$] $\exists t \in r (Q(t)) \equiv$ 'there exists' a tuple in $t$ in relation $r$ such that predicate $Q(t)$ is true
+            \item[$\triangleright$] $\forall t \in r (Q(t)) \equiv$ $Q$ is true 'for all' tuples $t$ in relation $r$
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -188,7 +196,7 @@
     Q.1 Obtain the first name of students whose age is greater than 21.
     
     \textbf{Solution:}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $\{t.\text{Fname} \mid \text{Student}(t) \land t.\text{age} > 21\}$
         \item $\{t.\text{Fname} \mid t \in \text{Student} \land t.\text{age} > 21\}$
         \item $\{t \mid \exists s \in \text{Student} (s.\text{age} > 21 \land t.\text{Fname} = s.\text{Fname})\}$
@@ -197,16 +205,16 @@
 
 \begin{frame}{TRC Example (2)}
     Consider the relational schema \texttt{student(rollNo, name, year, courseId)} and \texttt{course(courseId, cname, teacher)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Q.2 Find out the names of all students who have taken the course name 'DBMS'.
         \begin{itemize}
-            \item $\{t \mid \exists s \in \text{student } \exists c \in \text{course } (s.\text{courseId} = c.\text{courseId} \land c.\text{cname} = '\text{DBMS}' \land t.\text{name} = s.\text{name})\}$
-            \item $\{s.\text{name} \mid s \in \text{student} \land \exists c \in \text{course } (s.\text{courseId} = c.\text{courseId} \land c.\text{cname} = '\text{DBMS}')\}$
+            \item[$\triangleright$] $\{t \mid \exists s \in \text{student } \exists c \in \text{course } (s.\text{courseId} = c.\text{courseId} \land c.\text{cname} = '\text{DBMS}' \land t.\text{name} = s.\text{name})\}$
+            \item[$\triangleright$] $\{s.\text{name} \mid s \in \text{student} \land \exists c \in \text{course } (s.\text{courseId} = c.\text{courseId} \land c.\text{cname} = '\text{DBMS}')\}$
         \end{itemize}
         \item Q.3 Find out the names of all students and their \texttt{rollNo} who have taken the course name 'DBMS'.
         \begin{itemize}
-            \item $\{s.\text{name}, s.\text{rollNo} \mid s \in \text{student} \land \exists c \in \text{course } (s.\text{courseId} = c.\text{courseId} \land c.\text{cname} = '\text{DBMS}')\}$
-            \item $\{t \mid \exists s \in \text{student } \exists c \in \text{course } (s.\text{courseId} = c.\text{courseId} \land c.\text{cname} = '\text{DBMS}' \land t.\text{name} = s.\text{name} \land t.\text{rollNo} = s.\text{rollNo})\}$
+            \item[$\triangleright$] $\{s.\text{name}, s.\text{rollNo} \mid s \in \text{student} \land \exists c \in \text{course } (s.\text{courseId} = c.\text{courseId} \land c.\text{cname} = '\text{DBMS}')\}$
+            \item[$\triangleright$] $\{t \mid \exists s \in \text{student } \exists c \in \text{course } (s.\text{courseId} = c.\text{courseId} \land c.\text{cname} = '\text{DBMS}' \land t.\text{name} = s.\text{name} \land t.\text{rollNo} = s.\text{rollNo})\}$
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -224,7 +232,7 @@
     \[ \Pi_{\text{eid}} (\sigma_{\text{aname} = '\text{Boeing}'} (\text{Aircraft} \bowtie \text{Certified})) \]
     
     \textbf{TRC}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $\{C.\text{eid} \mid C \in \text{Certified} \land \exists A \in \text{Aircraft} (A.\text{aid} = C.\text{aid} \land A.\text{aname} = '\text{Boeing}')\}$
         \item $\{T \mid \exists C \in \text{Certified } \exists A \in \text{Aircraft} (A.\text{aid} = C.\text{aid} \land A.\text{aname} = '\text{Boeing}' \land T.\text{eid} = C.\text{eid})\}$
     \end{itemize}
@@ -255,20 +263,22 @@
     
     Q.6 Identify the flights that can be piloted by every pilot whose salary is more than $\$100,000$. (Hint: The pilot must be certified for at least one plane with a sufficiently large cruising range.)
     
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $\{F.\text{flno} \mid F \in \text{Flights} \land \exists A \in \text{Aircraft} \exists C \in \text{Certified} \exists E \in \text{Employees} (A.\text{cruisingrange} > F.\text{distance} \land A.\text{aid} = C.\text{aid} \land E.\text{salary} > 100,000 \land E.\text{eid} = C.\text{eid})\}$
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Safety of Expressions}
-    \begin{itemize}
-        \item It is possible to write tuple calculus expressions that generate infinite relations.
-        \item For example, $\{t \mid \lnot t \in r\}$ results in an infinite relation if the domain of any attribute of relation $r$ is infinite.
-        \item To guard against the problem, we restrict the set of allowable expressions to \textbf{safe expressions}.
-        \item An expression $\{t \mid P(t)\}$ in the tuple relational calculus is safe if every component of $t$ appears in one of the relations, tuples, or constants that appear in $P$.
-        \item NOTE: this is more than just a syntax condition.
-        \item E.g. $\{t \mid t[A] = 5 \lor \text{true}\}$ is not safe - it defines an infinite set with attribute values that do not appear in any relation or tuples or constants in $P$.
-    \end{itemize}
+    \begin{alertblock}{Warning on Safety}
+        \begin{itemize}[<+->]
+            \item It is possible to write tuple calculus expressions that generate infinite relations.
+            \item For example, $\{t \mid \lnot t \in r\}$ results in an infinite relation if the domain of any attribute of relation $r$ is infinite.
+            \item To guard against the problem, we restrict the set of allowable expressions to \textbf{safe expressions}.
+            \item An expression $\{t \mid P(t)\}$ in the tuple relational calculus is safe if every component of $t$ appears in one of the relations, tuples, or constants that appear in $P$.
+            \item NOTE: this is more than just a syntax condition.
+            \item E.g. $\{t \mid t[A] = 5 \lor \text{true}\}$ is not safe - it defines an infinite set with attribute values that do not appear in any relation or tuples or constants in $P$.
+        \end{itemize}
+    \end{alertblock}
 \end{frame}
 
 \section{Domain Relational Calculus}
@@ -282,13 +292,15 @@
 \end{frame}
 
 \begin{frame}{Domain Relational Calculus}
-    \begin{itemize}
-        \item A non-procedural query language equivalent in power to the tuple relational calculus.
-        \item Each query is an expression of the form:
-        \[ \{\langle x_1, x_2, \dots, x_n \rangle \mid P(x_1, x_2, \dots, x_n)\} \]
-        \item $x_1, x_2, \dots, x_n$ represent domain variables.
-        \item $P$ represents a formula similar to that of the predicate calculus.
-    \end{itemize}
+    \begin{block}{Definition}
+        \begin{itemize}[<+->]
+            \item A non-procedural query language equivalent in power to the tuple relational calculus.
+            \item Each query is an expression of the form:
+            \[ \{\langle x_1, x_2, \dots, x_n \rangle \mid P(x_1, x_2, \dots, x_n)\} \]
+            \item $x_1, x_2, \dots, x_n$ represent domain variables.
+            \item $P$ represents a formula similar to that of the predicate calculus.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \section{Equivalence of Algebra and Calculus}
@@ -344,10 +356,12 @@
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Introduced tuple relational and domain relational calculus
-        \item Illustrated equivalence of algebra and calculus
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Introduced tuple relational and domain relational calculus
+            \item Illustrated equivalence of algebra and calculus
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

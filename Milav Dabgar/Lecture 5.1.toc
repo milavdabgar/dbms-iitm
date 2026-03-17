@@ -1,4 +1,4 @@
-\beamer@sectionintoc {1}{Features of Good Relational Design}{5}{0}{1}
-\beamer@sectionintoc {2}{Redundancy and Anomaly}{11}{0}{2}
-\beamer@sectionintoc {3}{Decomposition}{15}{0}{3}
-\beamer@sectionintoc {4}{Atomic Domains and First Normal Form}{21}{0}{4}
+\beamer@sectionintoc {1}{Features of Good Relational Design}{14}{0}{1}
+\beamer@sectionintoc {2}{Redundancy and Anomaly}{33}{0}{2}
+\beamer@sectionintoc {3}{Decomposition}{65}{0}{3}
+\beamer@sectionintoc {4}{Atomic Domains and First Normal Form}{83}{0}{4}

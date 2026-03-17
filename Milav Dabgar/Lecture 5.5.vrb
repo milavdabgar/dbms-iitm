@@ -1,7 +1,8 @@
 \frametitle{Dependency Preservation (5): Testing}
-\begin{itemize}
+\begin{itemize}[<+->]
         \item To check if a dependency $\alpha \rightarrow \beta$ is preserved in a decomposition of $R$ into $R_1, R_2, \dots, R_n$ we apply the following test (with attribute closure done with respect to $F$)
     \end{itemize}
+    \vspace{0.5em}
     \begin{verbatim}
 result = alpha
 while (changes to result) do
@@ -9,7 +10,7 @@ while (changes to result) do
         t = (result intersect R_i)^+ intersect R_i
         result = result union t
     \end{verbatim}
-    \begin{itemize}
+    \begin{itemize}[<+(2)->]
         \item If \texttt{result} contains all attributes in $\beta$, then the functional dependency $\alpha \rightarrow \beta$ is preserved.
         \item We apply the test on all dependencies in $F$ to check if a decomposition is dependency preserving
         \item This procedure takes polynomial time, instead of the exponential time required to compute $F^+$ and $(F_1 \cup F_2 \cup \dots \cup F_n)^+$

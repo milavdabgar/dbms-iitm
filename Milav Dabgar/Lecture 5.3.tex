@@ -39,20 +39,22 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Introduced the notion of Functional Dependencies
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To develop the theory of functional dependencies
-        \item To understand how a schema can be decomposed for a 'good' design using functional dependencies
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To develop the theory of functional dependencies
+            \item To understand how a schema can be decomposed for a 'good' design using functional dependencies
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Functional Dependency Theory
         \item Decomposition Using Functional Dependencies
     \end{itemize}
@@ -69,7 +71,7 @@
 \end{frame}
 
 \begin{frame}{Functional Dependencies: Armstrong's Axioms}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Given a set of Functional Dependencies $F$, we can infer new dependencies by the \textbf{Armstrong's Axioms}:
         \item These axioms can be repeatedly applied to generate new FDs and added to $F$
         \item A new FD obtained by applying the axioms is said to the logically implied by $F$
@@ -77,8 +79,8 @@
         \item Clearly, $F \subseteq F^+$
         \item These axioms are
         \begin{itemize}
-            \item \textbf{Sound} (generate only functional dependencies that actually hold), and
-            \item \textbf{Complete} (eventually generate all functional dependencies that hold)
+            \item[$\triangleright$] \textbf{Sound} (generate only functional dependencies that actually hold), and
+            \item[$\triangleright$] \textbf{Complete} (eventually generate all functional dependencies that hold)
         \end{itemize}
         \item \textbf{Reflexivity}: if $\beta \subseteq \alpha$, then $\alpha \rightarrow \beta$
         \item \textbf{Augmentation}: if $\alpha \rightarrow \beta$, then $\gamma\alpha \rightarrow \gamma\beta$
@@ -87,32 +89,33 @@
 \end{frame}
 
 \begin{frame}{Functional Dependencies (2): Closure of a Set FDs}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $F = \{A \rightarrow B, B \rightarrow C\}$
         \item $F^+ = \{A \rightarrow B, B \rightarrow C, A \rightarrow C\}$
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Functional Dependencies (3): Closure of a Set FDs}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $R = (A, B, C, G, H, I)$
         \item $F = \{A \rightarrow B, A \rightarrow C, CG \rightarrow H, CG \rightarrow I, B \rightarrow H\}$
         \item Some members of $F^+$
         \begin{itemize}
-            \item $A \rightarrow H$
-            \item $\triangleright$ by transitivity from $A \rightarrow B$ and $B \rightarrow H$
-            \item $AG \rightarrow I$
-            \item $\triangleright$ by augmenting $A \rightarrow C$ with $G$, to get $AG \rightarrow CG$ and then transitivity with $CG \rightarrow I$
-            \item $CG \rightarrow HI$
-            \item $\triangleright$ by augmenting $CG \rightarrow I$ with $CG$ to infer $CGI \rightarrow I$ and $CG \rightarrow CGI$, and then transitivity with $CGI \rightarrow HI$
+            \item[$\triangleright$] $A \rightarrow H$
+            \item[$\triangleright$] by transitivity from $A \rightarrow B$ and $B \rightarrow H$
+            \item[$\triangleright$] $AG \rightarrow I$
+            \item[$\triangleright$] by augmenting $A \rightarrow C$ with $G$, to get $AG \rightarrow CG$ and then transitivity with $CG \rightarrow I$
+            \item[$\triangleright$] $CG \rightarrow HI$
+            \item[$\triangleright$] by augmenting $CG \rightarrow I$ with $CG$ to infer $CGI \rightarrow I$ and $CG \rightarrow CGI$, and then transitivity with $CGI \rightarrow HI$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Functional Dependencies (4): Closure of a Set FDs: Computing $F^+$}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item To compute the closure of a set of functional dependencies $F$:
     \end{itemize}
+    \vspace{1em}
     \begin{verbatim}
 F+ <- F
 repeat
@@ -124,28 +127,29 @@ repeat
             then add the resulting functional dependency to F+
 until F+ does not change any further
     \end{verbatim}
-    \begin{itemize}
+    \begin{itemize}[<+(1)->]
         \item Note: We shall see an alternative procedure for this task later
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Functional Dependencies (5): Armstrong's Axioms: Derived Rules}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Additional Derived Rules:
         \begin{itemize}
-            \item \textbf{Union}: if $\alpha \rightarrow \beta$ holds and $\alpha \rightarrow \gamma$ holds, then $\alpha \rightarrow \beta\gamma$ holds
-            \item \textbf{Decomposition}: if $\alpha \rightarrow \beta\gamma$ holds, then $\alpha \rightarrow \beta$ holds and $\alpha \rightarrow \gamma$ holds
-            \item \textbf{Pseudotransitivity}: if $\alpha \rightarrow \beta$ holds and $\gamma\beta \rightarrow \delta$ holds, then $\alpha\gamma \rightarrow \delta$ holds
+            \item[$\triangleright$] \textbf{Union}: if $\alpha \rightarrow \beta$ holds and $\alpha \rightarrow \gamma$ holds, then $\alpha \rightarrow \beta\gamma$ holds
+            \item[$\triangleright$] \textbf{Decomposition}: if $\alpha \rightarrow \beta\gamma$ holds, then $\alpha \rightarrow \beta$ holds and $\alpha \rightarrow \gamma$ holds
+            \item[$\triangleright$] \textbf{Pseudotransitivity}: if $\alpha \rightarrow \beta$ holds and $\gamma\beta \rightarrow \delta$ holds, then $\alpha\gamma \rightarrow \delta$ holds
         \end{itemize}
         \item The above rules can be inferred from basic Armstrong's axioms (and hence are not included in the basic set). They can be proven independently too
     \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Functional Dependencies (6): Closure of Attribute Sets}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Given a set of attributes $\alpha$, define the \textbf{closure of $\alpha$ under $F$} (denoted by $\alpha^+$) as the set of attributes that are functionally determined by $\alpha$ under $F$
         \item Algorithm to compute $\alpha^+$, the closure of $\alpha$ under $F$
     \end{itemize}
+    \vspace{1em}
     \begin{verbatim}
 result <- alpha
 while (changes to result) do
@@ -158,43 +162,43 @@ while (changes to result) do
 \end{frame}
 
 \begin{frame}{Functional Dependencies (7): Closure of Attribute Sets: Example}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item $R = (A, B, C, G, H, I)$
         \item $F = \{A \rightarrow B, A \rightarrow C, CG \rightarrow H, CG \rightarrow I, B \rightarrow H\}$
         \item $(AG)^+$
         \begin{itemize}
-            \item a) result = $AG$
-            \item b) result = $ABCG$ ($A \rightarrow C$ and $A \rightarrow B$)
-            \item c) result = $ABCGH$ ($CG \rightarrow H$ and $CG \subseteq AGBC$)
-            \item d) result = $ABCGHI$ ($CG \rightarrow I$ and $CG \subseteq AGBCH$)
+            \item[$\triangleright$] a) result = $AG$
+            \item[$\triangleright$] b) result = $ABCG$ ($A \rightarrow C$ and $A \rightarrow B$)
+            \item[$\triangleright$] c) result = $ABCGH$ ($CG \rightarrow H$ and $CG \subseteq AGBC$)
+            \item[$\triangleright$] d) result = $ABCGHI$ ($CG \rightarrow I$ and $CG \subseteq AGBCH$)
         \end{itemize}
         \item Is $AG$ a candidate key?
         \begin{itemize}
-            \item a) Is $AG$ a super key?
-            \item i) Does $AG \rightarrow R$? == Is $(AG)^+ \supseteq R$
-            \item b) Is any subset of $AG$ a superkey?
-            \item i) Does $A \rightarrow R$? == Is $(A)^+ \supseteq R$
-            \item ii) Does $G \rightarrow R$? == Is $(G)^+ \supseteq R$
+            \item[$\triangleright$] a) Is $AG$ a super key?
+            \item[$\triangleright$] i) Does $AG \rightarrow R$? == Is $(AG)^+ \supseteq R$
+            \item[$\triangleright$] b) Is any subset of $AG$ a superkey?
+            \item[$\triangleright$] i) Does $A \rightarrow R$? == Is $(A)^+ \supseteq R$
+            \item[$\triangleright$] ii) Does $G \rightarrow R$? == Is $(G)^+ \supseteq R$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Functional Dependencies (7): Closure of Attribute Sets: Use}
     There are several uses of the attribute closure algorithm:
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Testing for superkey}:
         \begin{itemize}
-            \item To test if $\alpha$ is a superkey, we compute $\alpha^+$, and check if $\alpha^+$ contains all attributes of $R$.
+            \item[$\triangleright$] To test if $\alpha$ is a superkey, we compute $\alpha^+$, and check if $\alpha^+$ contains all attributes of $R$.
         \end{itemize}
         \item \textbf{Testing functional dependencies}
         \begin{itemize}
-            \item To check if a functional dependency $\alpha \rightarrow \beta$ holds (or, in other words, is in $F^+$), just check if $\beta \subseteq \alpha^+$
-            \item That is, we compute $\alpha^+$ by using attribute closure, and then check if it contains $\beta$.
-            \item Is a simple and cheap test, and very useful
+            \item[$\triangleright$] To check if a functional dependency $\alpha \rightarrow \beta$ holds (or, in other words, is in $F^+$), just check if $\beta \subseteq \alpha^+$
+            \item[$\triangleright$] That is, we compute $\alpha^+$ by using attribute closure, and then check if it contains $\beta$.
+            \item[$\triangleright$] Is a simple and cheap test, and very useful
         \end{itemize}
         \item \textbf{Computing closure of $F$}
         \begin{itemize}
-            \item For each $\gamma \subseteq R$, we find the closure $\gamma^+$, and for each $S \subseteq \gamma^+$, we output a functional dependency $\gamma \rightarrow S$.
+            \item[$\triangleright$] For each $\gamma \subseteq R$, we find the closure $\gamma^+$, and for each $S \subseteq \gamma^+$, we output a functional dependency $\gamma \rightarrow S$.
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -210,14 +214,18 @@ while (changes to result) do
 \end{frame}
 
 \begin{frame}{BCNF: Boyce-Codd Normal Form}
-    \begin{itemize}
-        \item A relation schema $R$ is in BCNF with respect to a set $F$ of FDs if for all FDs in $F^+$ of the form
-        \[ \alpha \rightarrow \beta, \text{ where } \alpha \subseteq R \text{ and } \beta \subseteq R \]
-        at least one of the following holds:
-        \begin{itemize}
-            \item $\alpha \rightarrow \beta$ is trivial (that is, $\beta \subseteq \alpha$)
-            \item $\alpha$ is a superkey for $R$
+    \begin{block}{Definition of BCNF}
+        \begin{itemize}[<+->]
+            \item A relation schema $R$ is in BCNF with respect to a set $F$ of FDs if for all FDs in $F^+$ of the form
+            \[ \alpha \rightarrow \beta, \text{ where } \alpha \subseteq R \text{ and } \beta \subseteq R \]
+            at least one of the following holds:
+            \begin{itemize}
+                \item[$\triangleright$] $\alpha \rightarrow \beta$ is trivial (that is, $\beta \subseteq \alpha$)
+                \item[$\triangleright$] $\alpha$ is a superkey for $R$
+            \end{itemize}
         \end{itemize}
+    \end{block}
+    \begin{itemize}[<+(2)->]
         \item Example schema not in BCNF:
         \begin{center}
             \texttt{instr\_dept(ID, name, salary, dept\_name, building, budget)}
@@ -227,42 +235,42 @@ while (changes to result) do
 \end{frame}
 
 \begin{frame}{BCNF (2): Decomposition}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item If in schema $R$ and a non-trivial dependency $\alpha \rightarrow \beta$ causes a violation of BCNF, we decompose $R$ into:
         \begin{itemize}
-            \item $\alpha \cup \beta$
-            \item $(R - (\beta - \alpha))$
+            \item[$\triangleright$] $\alpha \cup \beta$
+            \item[$\triangleright$] $(R - (\beta - \alpha))$
         \end{itemize}
         \item In our example,
         \begin{itemize}
-            \item $\alpha = \text{dept\_name}$
-            \item $\beta = \text{building, budget}$
-            \item $\text{dept\_name} \rightarrow \text{building, budget}$
+            \item[$\triangleright$] $\alpha = \text{dept\_name}$
+            \item[$\triangleright$] $\beta = \text{building, budget}$
+            \item[$\triangleright$] $\text{dept\_name} \rightarrow \text{building, budget}$
         \end{itemize}
         \item \texttt{inst\_dept} is replaced by
         \begin{itemize}
-            \item $(\alpha \cup \beta) = (\text{dept\_name, building, budget})$
-            \item $\triangleright \text{dept\_name} \rightarrow \text{building, budget}$
-            \item $(R - (\beta - \alpha)) = (\text{ID, name, salary, dept\_name})$
-            \item $\triangleright \text{ID} \rightarrow \text{name, salary, dept\_name}$
+            \item[$\triangleright$] $(\alpha \cup \beta) = (\text{dept\_name, building, budget})$
+            \item[$\triangleright$] $\triangleright \text{dept\_name} \rightarrow \text{building, budget}$
+            \item[$\triangleright$] $(R - (\beta - \alpha)) = (\text{ID, name, salary, dept\_name})$
+            \item[$\triangleright$] $\triangleright \text{ID} \rightarrow \text{name, salary, dept\_name}$
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{BCNF (3): Lossless Join}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item If we decompose a relation $R$ into relations $R_1$ and $R_2$:
         \begin{itemize}
-            \item Decomposition is lossy if $R_1 \bowtie R_2 \supset R$
-            \item Decomposition is lossless if $R_1 \bowtie R_2 = R$
+            \item[$\triangleright$] Decomposition is lossy if $R_1 \bowtie R_2 \supset R$
+            \item[$\triangleright$] Decomposition is lossless if $R_1 \bowtie R_2 = R$
         \end{itemize}
         \item To check for lossless join decomposition using FD set, following must hold:
         \begin{itemize}
-            \item Union of Attributes of $R_1$ and $R_2$ must be equal to attribute of $R$
+            \item[$\triangleright$] Union of Attributes of $R_1$ and $R_2$ must be equal to attribute of $R$
             \[ R_1 \cup R_2 = R \]
-            \item Intersection of Attributes of $R_1$ and $R_2$ must not be NULL
+            \item[$\triangleright$] Intersection of Attributes of $R_1$ and $R_2$ must not be NULL
             \[ R_1 \cap R_2 \neq \phi \]
-            \item Common attribute must be a key for at least one relation ($R_1$ or $R_2$)
+            \item[$\triangleright$] Common attribute must be a key for at least one relation ($R_1$ or $R_2$)
             \[ R_1 \cap R_2 \rightarrow R_1 \text{ or } R_1 \cap R_2 \rightarrow R_2 \]
         \end{itemize}
         \item Prove that BCNF ensures Lossless Join
@@ -270,18 +278,18 @@ while (changes to result) do
 \end{frame}
 
 \begin{frame}{BCNF (4): Dependency Preservation}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Constraints, including FDs, are costly to check in practice unless they pertain to only one relation
         \item If it is sufficient to test only those dependencies on each individual relation of a decomposition in order to ensure that all functional dependencies hold, then that decomposition is \textbf{dependency preserving}.
         \item It is not always possible to achieve both BCNF and dependency preservation. Consider:
         \begin{itemize}
-            \item $R = CSZ$, $F = \{CS \rightarrow Z, Z \rightarrow C\}$
-            \item Key = $CS$
-            \item $CS \rightarrow Z$ satisfies BCNF, but $Z \rightarrow C$ violates
+            \item[$\triangleright$] $R = CSZ$, $F = \{CS \rightarrow Z, Z \rightarrow C\}$
+            \item[$\triangleright$] Key = $CS$
+            \item[$\triangleright$] $CS \rightarrow Z$ satisfies BCNF, but $Z \rightarrow C$ violates
         \end{itemize}
         \item Decompose as: $R_1 = ZC$, $R_2 = CSZ - (C - Z) = SZ$
         \begin{itemize}
-            \item $R_1 \cup R_2 = CSZ = R$, $R_1 \cap R_2 = Z \neq \phi$, and $R_1 \cap R_2 = Z \rightarrow ZC = R_1$. So it has lossless join
+            \item[$\triangleright$] $R_1 \cup R_2 = CSZ = R$, $R_1 \cap R_2 = Z \neq \phi$, and $R_1 \cap R_2 = Z \rightarrow ZC = R_1$. So it has lossless join
         \end{itemize}
         \item However, we cannot check $CS \rightarrow Z$ without doing a join. Hence it is not dependency preserving
         \item We consider a weaker normal form, known as Third Normal Form (3NF)
@@ -289,28 +297,32 @@ while (changes to result) do
 \end{frame}
 
 \begin{frame}{3NF: Third Normal Form}
-    \begin{itemize}
-        \item A relation schema $R$ is in third normal form (3NF) if for all:
-        \[ \alpha \rightarrow \beta \in F^+ \]
-        at least one of the following holds:
-        \begin{itemize}
-            \item $\alpha \rightarrow \beta$ is trivial (that is, $\beta \subseteq \alpha$)
-            \item $\alpha$ is a superkey for $R$
-            \item Each attribute A in $\beta - \alpha$ is contained in a candidate key for $R$ (Note: Each attribute may be in a different candidate key)
+    \begin{block}{Definition of 3NF}
+        \begin{itemize}[<+->]
+            \item A relation schema $R$ is in third normal form (3NF) if for all:
+            \[ \alpha \rightarrow \beta \in F^+ \]
+            at least one of the following holds:
+            \begin{itemize}
+                \item[$\triangleright$] $\alpha \rightarrow \beta$ is trivial (that is, $\beta \subseteq \alpha$)
+                \item[$\triangleright$] $\alpha$ is a superkey for $R$
+                \item[$\triangleright$] Each attribute A in $\beta - \alpha$ is contained in a candidate key for $R$ (Note: Each attribute may be in a different candidate key)
+            \end{itemize}
         \end{itemize}
+    \end{block}
+    \begin{itemize}[<+(3)->]
         \item If a relation is in BCNF it is in 3NF (since in BCNF one of the first two conditions above must hold)
         \item Third condition is a minimal relaxation of BCNF to ensure dependency preservation (will see why later)
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Goals of Normalization}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Let $R$ be a relation scheme with a set $F$ of functional dependencies
         \item Decide whether a relation scheme $R$ is in 'good' form
         \item In the case that a relation scheme $R$ is not in 'good' form, decompose it into a set of relation scheme $\{R_1, R_2, ..., R_n\}$ such that
         \begin{itemize}
-            \item each relation scheme is in good form
-            \item the decomposition is a lossless-join decomposition
+            \item[$\triangleright$] each relation scheme is in good form
+            \item[$\triangleright$] the decomposition is a lossless-join decomposition
         \end{itemize}
         \item Preferably, the decomposition should be dependency preserving
     \end{itemize}
@@ -318,12 +330,12 @@ while (changes to result) do
 
 \begin{frame}{Problems with Decomposition}
     There are three potential problems to consider:
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item May be impossible to reconstruct the original relation! (Lossiness)
         \item Dependency checking may require joins
         \item Some queries become more expensive
         \begin{itemize}
-            \item What is the building for an instructor?
+            \item[$\triangleright$] What is the building for an instructor?
         \end{itemize}
     \end{itemize}
     \vspace{1em}
@@ -331,7 +343,7 @@ while (changes to result) do
 \end{frame}
 
 \begin{frame}{How good is BCNF?}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item There are database schemas in BCNF that do not seem to be sufficiently normalized
         \item Consider a relation
         \begin{center}
@@ -353,7 +365,7 @@ while (changes to result) do
 \end{frame}
 
 \begin{frame}{How good is BCNF? (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item There are no non-trivial functional dependencies and therefore the relation is in BCNF
         \item Insertion anomalies - that is, if we add a phone 981-992-3443 to 99999, we need to add two tuples
         \begin{center}
@@ -364,7 +376,7 @@ while (changes to result) do
 \end{frame}
 
 \begin{frame}{How good is BCNF? (3)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Therefore, it is better to decompose \texttt{inst\_info} into:
         \item This suggests the need for higher normal forms, such as the Fourth Normal Form (4NF)
     \end{itemize}
@@ -388,10 +400,12 @@ while (changes to result) do
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Introduced the theory of functional dependencies
-        \item Discussed issues in 'good' design in the context of functional dependencies
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Introduced the theory of functional dependencies
+            \item Discussed issues in 'good' design in the context of functional dependencies
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

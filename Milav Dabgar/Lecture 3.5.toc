@@ -1,3 +1,3 @@
-\beamer@sectionintoc {1}{Functions and Procedural Constructs}{5}{0}{1}
-\beamer@sectionintoc {2}{Triggers}{22}{0}{2}
-\beamer@sectionintoc {3}{Triggers: Functionality vs Performance}{29}{0}{3}
+\beamer@sectionintoc {1}{Functions and Procedural Constructs}{11}{0}{1}
+\beamer@sectionintoc {2}{Triggers}{76}{0}{2}
+\beamer@sectionintoc {3}{Triggers: Functionality vs Performance}{122}{0}{3}

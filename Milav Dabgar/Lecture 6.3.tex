@@ -39,20 +39,22 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Learnt how to decompose a schema into 3NF while preserving dependency and lossless join
         \item Learnt how to decompose a schema into BCNF with lossless join
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To design the schema for a Library Information System
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To design the schema for a Library Information System
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Library Information System
     \end{itemize}
 \end{frame}
@@ -69,47 +71,47 @@
 
 \begin{frame}{Library Information System (LIS)}
     We are given to design a relational database schema for a Library Information System (LIS) of an Institute
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The specification document of the LIS has already been shared with you
         \item In this presentation, we include the key points from the Specs; but the actual document must be referred to
         \item We carry out the following tasks in the module:
         \begin{itemize}
-            \item Identify the Entity Sets with attributes
-            \item Identify the Relationships
-            \item Build the initial set of relational schema
-            \item Refine the set of schema with FDs that hold on them
-            \item Finalize the design of the schema
+            \item[$\triangleright$] Identify the Entity Sets with attributes
+            \item[$\triangleright$] Identify the Relationships
+            \item[$\triangleright$] Build the initial set of relational schema
+            \item[$\triangleright$] Refine the set of schema with FDs that hold on them
+            \item[$\triangleright$] Finalize the design of the schema
         \end{itemize}
         \item The coding of various queries in SQL, based on these schema are left as exercises
     \end{itemize}
 \end{frame}
 
 \begin{frame}{LIS Specs Excerpts}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item An institute library has 200000+ books and 10000+ members
         \item Books are regularly issued by members on loan and returned after a period.
         \item The library needs an LIS to manage the books, the members and the issue-return process
         \item Every book has
         \begin{itemize}
-            \item title
-            \item author (in case of multiple authors, only the first author is maintained)
-            \item publisher
-            \item year of publication
-            \item ISBN number (which is unique for the publication), and
-            \item accession number (which is the unique number of the copy of the book in the library)
+            \item[$\triangleright$] title
+            \item[$\triangleright$] author (in case of multiple authors, only the first author is maintained)
+            \item[$\triangleright$] publisher
+            \item[$\triangleright$] year of publication
+            \item[$\triangleright$] ISBN number (which is unique for the publication), and
+            \item[$\triangleright$] accession number (which is the unique number of the copy of the book in the library)
         \end{itemize}
         \item There may be multiple copies of the same book in the library
     \end{itemize}
 \end{frame}
 
 \begin{frame}{LIS Specs Excerpts (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item There are four categories of members of the library:
         \begin{itemize}
-            \item undergraduate students
-            \item post graduate students
-            \item research scholars, and
-            \item faculty members
+            \item[$\triangleright$] undergraduate students
+            \item[$\triangleright$] post graduate students
+            \item[$\triangleright$] research scholars, and
+            \item[$\triangleright$] faculty members
         \end{itemize}
         \item Every student has
         \begin{itemize}
@@ -151,25 +153,25 @@
 \end{frame}
 
 \begin{frame}{LIS Specs Excerpts (4)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The library has the following rules for issue:
         \begin{itemize}
-            \item A book may be issued to a member if it is not already issued to someone else (trivial)
-            \item A book may not be issued to a member if another copy of the same book is already issued to the same member
-            \item No issue will be done to a member if at the time of issue one or more of the books issued by the member has already exceeded its duration of issue
-            \item No issue will be allowed also if the quota is exceeded for the member
+            \item[$\triangleright$] A book may be issued to a member if it is not already issued to someone else (trivial)
+            \item[$\triangleright$] A book may not be issued to a member if another copy of the same book is already issued to the same member
+            \item[$\triangleright$] No issue will be done to a member if at the time of issue one or more of the books issued by the member has already exceeded its duration of issue
+            \item[$\triangleright$] No issue will be allowed also if the quota is exceeded for the member
         \end{itemize}
         \item It is assumed that the name of every author or member has two parts
         \begin{itemize}
-            \item $\triangleright$ first name
-            \item $\triangleright$ last name
+            \item[$\triangleright$] first name
+            \item[$\triangleright$] last name
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{LIS Specs Excerpts (5): Queries}
     LIS should support the following operations/query:
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Add/Remove members, categories of members, books.
         \item Add/Remove/Edit quota for a category of member, duration for a category of member.
         \item Check if the library has a book given its title (part of title should match). If yes: title, author, publisher, year and ISBN should be listed.
@@ -336,7 +338,7 @@
 \end{frame}
 
 \begin{frame}{LIS Relational Schema}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \texttt{books (title, author\_fname, author\_lname, publisher, year, ISBN\_no, accession\_no)}
         \item \texttt{book\_issue (members, accession\_no, doi)}
         \item \texttt{members (member\_no, member\_type)}
@@ -574,23 +576,27 @@ WHERE accession_no = 162715 AND book_issue.member_no = members.member_no;
 \end{frame}
 
 \begin{frame}{LIS Schema Refinement (13): Final}
-    \begin{itemize}
-        \item \texttt{book\_catalogue (title, author\_fname, author\_lname, publisher, year, ISBN\_no)}
-        \item \texttt{book\_copies (ISBN\_no, accession\_no)}
-        \item \texttt{book\_issue (member\_no, accession\_no, doi)}
-        \item \texttt{quota (member\_type, max\_books, max\_duration)}
-        \item \texttt{members (member\_no, member\_class, member\_type, roll\_no, id)}
-        \item \texttt{students (student\_fname, student\_lname, roll\_no, department, gender, mobile\_no, dob, degree)}
-        \item \texttt{faculty (faculty\_fname, faculty\_lname, id, department, gender, mobile\_no, doj)}
-        \item \texttt{staff (staff\_fname, staff\_lname, id, gender, mobile\_no, doj)}
-    \end{itemize}
+    \begin{exampleblock}{Final Schema}
+        \begin{itemize}[<+->]
+            \item \texttt{book\_catalogue (title, author\_fname, author\_lname, publisher, year, ISBN\_no)}
+            \item \texttt{book\_copies (ISBN\_no, accession\_no)}
+            \item \texttt{book\_issue (member\_no, accession\_no, doi)}
+            \item \texttt{quota (member\_type, max\_books, max\_duration)}
+            \item \texttt{members (member\_no, member\_class, member\_type, roll\_no, id)}
+            \item \texttt{students (student\_fname, student\_lname, roll\_no, department, gender, mobile\_no, dob, degree)}
+            \item \texttt{faculty (faculty\_fname, faculty\_lname, id, department, gender, mobile\_no, doj)}
+            \item \texttt{staff (staff\_fname, staff\_lname, id, gender, mobile\_no, doj)}
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Using the specification for a Library Information System, we have illustrated how a schema can be designed and then refined for finalization
-        \item Coding of various queries based on these schema are left as exercises
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Using the specification for a Library Information System, we have illustrated how a schema can be designed and then refined for finalization
+            \item Coding of various queries based on these schema are left as exercises
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

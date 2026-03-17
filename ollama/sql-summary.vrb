@@ -1,0 +1,30 @@
+\frametitle{Modifying Data}
+\begin{alertblock}{\textcolor{red}{\ding{43}} Safety First}<1->
+Always use \texttt{WHERE} clauses with UPDATE and DELETE, or you'll affect \textbf{all} rows!
+\end{alertblock}
+
+\pause
+\begin{exampleblock}{INSERT}<2->
+\begin{lstlisting}
+-- Single row
+INSERT INTO employees (id, name, salary)
+VALUES (101, 'Alice Smith', 75000);
+
+-- Multiple rows
+INSERT INTO employees VALUES
+    (102, 'Bob', 2, 60000, '2024-01-15'),
+    (103, 'Carol', 2, 65000, '2024-01-20');
+\end{lstlisting}
+\end{exampleblock}
+
+\pause
+\begin{exampleblock}{UPDATE \& DELETE}<3->
+\begin{lstlisting}
+UPDATE employees
+SET salary = salary * 1.05
+WHERE performance_rating = 'Excellent';
+
+DELETE FROM employees
+WHERE termination_date IS NOT NULL;
+\end{lstlisting}
+\end{exampleblock}

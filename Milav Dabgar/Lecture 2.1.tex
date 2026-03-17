@@ -38,20 +38,22 @@
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To understand attributes and their types
-        \item To understand the mathematical structure of relational model
-        \begin{itemize}
-            \item Schema
-            \item Instance
-            \item Keys
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To understand attributes and their types
+            \item To understand the mathematical structure of relational model
+            \begin{itemize}
+                \item Schema
+                \item Instance
+                \item Keys
+            \end{itemize}
+            \item To familiarize with different types of relational query languages
         \end{itemize}
-        \item To familiarize with different types of relational query languages
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Attribute Types
         \item Relation Schema and Instance
         \item Keys
@@ -107,21 +109,26 @@
 \end{frame}
 
 \begin{frame}{Attribute Types}
-    \begin{itemize}
-        \item Consider \texttt{Students = (Roll\#, First Name, Last Name, DoB, Passport\#, Aadhaar\#, Department)} relation
-        \item The set of allowed values for each attribute is called the \textbf{domain} of the attribute
-        \begin{itemize}
-            \item \textbf{Roll\#}: Alphanumeric string
-            \item \textbf{First Name, Last Name}: Alpha String
-            \item \textbf{DoB}: Date
-            \item \textbf{Passport\#}: String (Letter followed by 7 digits) - nullable (optional)
-            \item \textbf{Aadhaar\#}: 12-digit number
-            \item \textbf{Department}: Alpha String
+    \begin{exampleblock}{Example Relation}
+        Consider \texttt{Students = (Roll\#, First Name, Last Name, DoB, Passport\#, Aadhaar\#, Department)} relation
+    \end{exampleblock}
+    
+    \uncover<2->{
+        \begin{itemize}[<+->]
+            \item The set of allowed values for each attribute is called the \textbf{domain} of the attribute
+            \begin{itemize}
+                \item \textbf{Roll\#}: Alphanumeric string
+                \item \textbf{First Name, Last Name}: Alpha String
+                \item \textbf{DoB}: Date
+                \item \textbf{Passport\#}: String (Letter followed by 7 digits) - nullable (optional)
+                \item \textbf{Aadhaar\#}: 12-digit number
+                \item \textbf{Department}: Alpha String
+            \end{itemize}
+            \item Attribute values are (normally) required to be \textbf{atomic}; that is, indivisible
+            \item The special value \textbf{null} is a member of every domain. Indicates that the value is unknown
+            \item The null value may cause complications in the definition of many operations
         \end{itemize}
-        \item Attribute values are (normally) required to be \textbf{atomic}; that is, indivisible
-        \item The special value \textbf{null} is a member of every domain. Indicates that the value is unknown
-        \item The null value may cause complications in the definition of many operations
-    \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}{Attribute Types (2)}
@@ -149,15 +156,22 @@
 \end{frame}
 
 \begin{frame}{Relation Schema and Instance}
-    \begin{itemize}
-        \item $A_1, A_2, \dots, A_n$ are attributes
-        \item $R = (A_1, A_2, \dots, A_n)$ is a \textbf{relation schema}. Example: \texttt{instructor = (ID, name, dept\_name, salary)}
-        \item Formally, given sets $D_1, D_2, \dots, D_n$ a \textbf{relation} $r$ is a subset of $D_1 \times D_2 \times \dots \times D_n$.
-        \item Thus, a relation is a set of $n$-tuples $(a_1, a_2, \dots, a_n)$ where each $a_i \in D_i$
-        \item The current values (\textbf{relation instance}) of a relation are specified by a table
-        \item An element $t$ of $r$ is a \textbf{tuple}, represented by a row in a table
-        \item Example: $\text{instructor} \subseteq (\text{String(5)} \times \text{String} \times \text{String} \times \text{Number}^+)$, where \texttt{ID} $\in \text{String(5)}$, \texttt{name} $\in \text{String}$, \texttt{dept\_name} $\in \text{String}$, and \texttt{salary} $\in \text{Number}^+$
-    \end{itemize}
+    \begin{block}{Formal Definition}
+        \begin{itemize}[<+->]
+            \item $A_1, A_2, \dots, A_n$ are attributes
+            \item $R = (A_1, A_2, \dots, A_n)$ is a \textbf{relation schema}. Example: \texttt{instructor = (ID, name, dept\_name, salary)}
+            \item Formally, given sets $D_1, D_2, \dots, D_n$ a \textbf{relation} $r$ is a subset of $D_1 \times D_2 \times \dots \times D_n$.
+        \end{itemize}
+    \end{block}
+    
+    \uncover<4->{
+        \begin{itemize}[<+->]
+            \item Thus, a relation is a set of $n$-tuples $(a_1, a_2, \dots, a_n)$ where each $a_i \in D_i$
+            \item The current values (\textbf{relation instance}) of a relation are specified by a table
+            \item An element $t$ of $r$ is a \textbf{tuple}, represented by a row in a table
+            \item Example: $\text{instructor} \subseteq (\text{String(5)} \times \text{String} \times \text{String} \times \text{Number}^+)$, where \texttt{ID} $\in \text{String(5)}$, \texttt{name} $\in \text{String}$, \texttt{dept\_name} $\in \text{String}$, and \texttt{salary} $\in \text{Number}^+$
+        \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}{Relations are Unordered with Unique Tuples}
@@ -201,20 +215,27 @@
 \end{frame}
 
 \begin{frame}{Keys}
-    \begin{itemize}
-        \item Let $K \subseteq R$, where $R$ is the set of attributes in the relation
-        \item $K$ is a \textbf{superkey} of $R$ if values for $K$ are sufficient to identify a unique tuple of each possible relation $r(R)$
-        \begin{itemize}
-            \item Example: \texttt{\{ID\}} and \texttt{\{ID, name\}} are both superkeys of \texttt{instructor}
+    \begin{block}{Definitions}
+        \begin{itemize}[<+->]
+            \item Let $K \subseteq R$, where $R$ is the set of attributes in the relation
+            \item $K$ is a \textbf{superkey} of $R$ if values for $K$ are sufficient to identify a unique tuple of each possible relation $r(R)$
+            \begin{itemize}
+                \item Example: \texttt{\{ID\}} and \texttt{\{ID, name\}} are both superkeys of \texttt{instructor}
+            \end{itemize}
+            \item Superkey $K$ is a \textbf{candidate key} if $K$ is minimal
+            \begin{itemize}
+                \item Example: \texttt{\{ID\}} is a candidate key for \texttt{instructor}
+            \end{itemize}
         \end{itemize}
-        \item Superkey $K$ is a \textbf{candidate key} if $K$ is minimal
-        \begin{itemize}
-            \item Example: \texttt{\{ID\}} is a candidate key for \texttt{instructor}
+    \end{block}
+    
+    \uncover<6->{
+        \begin{itemize}[<+->]
+            \item One of the candidate keys is selected to be the \textbf{primary key}. Which one?
+            \item A \textbf{surrogate key} (or synthetic key) in a database is a unique identifier for either an entity in the modeled world or an object in the database
+            \item The surrogate key is not derived from application data, unlike a \textbf{natural} (or business) \textbf{key} which is derived from application data.
         \end{itemize}
-        \item One of the candidate keys is selected to be the \textbf{primary key}. Which one?
-        \item A \textbf{surrogate key} (or synthetic key) in a database is a unique identifier for either an entity in the modeled world or an object in the database
-        \item The surrogate key is not derived from application data, unlike a \textbf{natural} (or business) \textbf{key} which is derived from application data.
-    \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}{Keys (2)}
@@ -307,18 +328,19 @@
 \end{frame}
 
 \begin{frame}{Relational Query Languages}
-    \textbf{Procedural viz-a-viz Non-procedural or Declarative Paradigms}
-    \begin{itemize}
-        \item \textbf{Procedural programming} requires that the programmer tell the computer \textit{what} to do
-        \begin{itemize}
-            \item That is, \textit{how} to get the output for the range of required inputs
-            \item The programmer must know an appropriate algorithm
+    \begin{block}{Procedural viz-a-viz Non-procedural or Declarative Paradigms}
+        \begin{itemize}[<+->]
+            \item \textbf{Procedural programming} requires that the programmer tell the computer \textit{what} to do
+            \begin{itemize}
+                \item That is, \textit{how} to get the output for the range of required inputs
+                \item The programmer must know an appropriate algorithm
+            \end{itemize}
+            \item \textbf{Declarative programming} requires a more descriptive style
+            \begin{itemize}
+                \item The programmer must know what relationships hold between various entities
+            \end{itemize}
         \end{itemize}
-        \item \textbf{Declarative programming} requires a more descriptive style
-        \begin{itemize}
-            \item The programmer must know what relationships hold between various entities
-        \end{itemize}
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Relational Query Languages (Cont..)}

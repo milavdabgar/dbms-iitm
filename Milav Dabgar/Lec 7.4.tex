@@ -1,4 +1,4 @@
-﻿\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
 
 % --- Theme Setup ---
 \usetheme{Madrid}
@@ -39,20 +39,22 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Introduced the use of SQL from a programming language
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To understand how to access PostgreSQL database from Python
-        \item To understand Python Web Application with PostgresSQL
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To understand how to access PostgreSQL database from Python
+            \item To understand Python Web Application with PostgresSQL
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Accessing PostgreSQL from Python
         \item Developing Web Application with Python
     \end{itemize}
@@ -69,16 +71,14 @@
 \end{frame}
 
 \begin{frame}{Python Modules for PostgreSQL}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Following Python modules that can be used to work with a PostgreSQL database server:
         \begin{itemize}
-            \item psycopg2
-            \item pg8000
-            \item py-postgresql
-            \item PyGreSQL
-            \item ocpgdb
-            \item bpgsql
-            \item SQLAlchemy (needs any of the above to be installed separately)
+            \item[$\triangleright$] psycopg2
+            \item[$\triangleright$] pg8000
+            \item[$\triangleright$] py-postgresql
+            \item[$\triangleright$] PyGreSQL
+            \item[$\triangleright$] SQLAlchemy (needs any of the above)
         \end{itemize}
     \end{itemize}
     \vspace{1em}
@@ -86,20 +86,17 @@
 \end{frame}
 
 \begin{frame}{Package psycopg2}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Advantages of psycopg2}
         \begin{itemize}
-            \item Most popular and stable module to work with PostgreSQL
-            \item Used in most of the Python and Postgres frameworks
-            \item An actively maintained package and supports Python 2.x and 3.x
-            \item Thread-safe and designed for heavily multi-threaded applications.
+            \item[$\triangleright$] Most popular and stable module to work with PostgreSQL
+            \item[$\triangleright$] An actively maintained package supporting Python 2.x and 3.x
+            \item[$\triangleright$] Thread-safe and designed for heavily multi-threaded applications
         \end{itemize}
         \item \textbf{Installing Psycopg2 using pip command}
         \begin{itemize}
-            \item The following pip command installs psycopg2 on different operating systems including Windows, MacOS, Linux, and Unix:
-            \item \texttt{pip install psycopg2}
-            \item For installing specific version, the following command can be used:
-            \item \texttt{pip install psycopg2==2.8.6}
+            \item[$\triangleright$] \texttt{pip install psycopg2}
+            \item[$\triangleright$] For specific version: \texttt{pip install psycopg2==2.8.6}
         \end{itemize}
     \end{itemize}
     \vspace{1em}
@@ -107,17 +104,16 @@
 \end{frame}
 
 \begin{frame}{Steps to access PostgresSQL from Python}
-    \begin{itemize}
-        \item \textbf{Steps to access PostgresSQL from Python using Psycopg}
-        \begin{itemize}
-            \item a) Create connection
-            \item b) Create cursor
-            \item c) Execute the query
-            \item d) Commit/rollback
-            \item e) Close the cursor
-            \item f) Close the connection
+    \begin{exampleblock}{Steps using Psycopg}
+        \begin{itemize}[<+->]
+            \item[a)] Create connection
+            \item[b)] Create cursor
+            \item[c)] Execute the query
+            \item[d)] Commit/rollback
+            \item[e)] Close the cursor
+            \item[f)] Close the connection
         \end{itemize}
-    \end{itemize}
+    \end{exampleblock}
     \begin{center}
         \includegraphics[height=0.3\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000008_13dbfe7991a72de8d7bb0015b71ace508c006425ee135fc3b682db1c3f404005.png"}
     \end{center}
@@ -125,23 +121,22 @@
 \end{frame}
 
 \begin{frame}{Python psycopg2 Module APIs: connection objects}
-    \begin{itemize}
-        \item \texttt{psycopg2.connect(database="mydb", user="myuser", password="mypass", host="127.0.0.1", port="5432")}
+    \begin{itemize}[<+->]
+        \item \texttt{psycopg2.connect(database, user, password, host, port)}
         \begin{itemize}
-            \item This API opens a connection to the PostgreSQL database. If database is opened successfully, it returns a connection object.
+            \item[$\triangleright$] Opens a connection to the PostgreSQL database; returns a connection object if successful
         \end{itemize}
         \item \texttt{connection.close()}
         \begin{itemize}
-            \item This method closes the database connection.
+            \item[$\triangleright$] Closes the database connection
         \end{itemize}
-        \item \textbf{Important psycopg2 module routines for managing cursor object:}
         \item \texttt{connection.cursor()}
         \begin{itemize}
-            \item This routine creates a cursor which will be used throughout the program.
+            \item[$\triangleright$] Creates a cursor which will be used throughout the program
         \end{itemize}
         \item \texttt{cursor.close()}
         \begin{itemize}
-            \item This method closes the cursor.
+            \item[$\triangleright$] Closes the cursor
         \end{itemize}
     \end{itemize}
     \vspace{1em}
@@ -187,14 +182,14 @@
 \end{frame}
 
 \begin{frame}{Python psycopg2 Module APIs: commit \& rollback}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \texttt{connection.commit()}
         \begin{itemize}
-            \item This method commits the current transaction. If you do not call this method, anything you did since the last call to \texttt{commit()} is not visible to other database connections.
+            \item[$\triangleright$] Commits the current transaction. Changes not committed are not visible to other database connections.
         \end{itemize}
         \item \texttt{connection.rollback()}
         \begin{itemize}
-            \item This method rolls back any changes to the database since the last call to \texttt{commit()}.
+            \item[$\triangleright$] Rolls back any changes to the database since the last call to \texttt{commit()}.
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -349,43 +344,29 @@ updateRecord(110, "Finance") #function call
 \end{frame}
 
 \begin{frame}{Web and Internet Development using Python}
-    \begin{itemize}
-        \item Python offers several frameworks such as \textbf{bottle.py}, \textbf{Flask}, \textbf{CherryPy}, \textbf{Pyramid}, \textbf{Django} and \textbf{web2py} for web development.
+    \begin{itemize}[<+->]
+        \item Python offers several frameworks such as \textbf{Flask}, \textbf{Django}, \textbf{CherryPy}, \textbf{Pyramid}, and \textbf{web2py} for web development.
         \item Python offers many choices for web development
         \begin{itemize}
-            \item Frameworks such as \textbf{Django} and \textbf{Pyramid}.
-            \item Advanced content management systems such as \textbf{Plone} and \textbf{django CMS}.
-            \item Micro-frameworks such as \textbf{Flask} and \textbf{Bottle}.
+            \item[$\triangleright$] Frameworks such as \textbf{Django} and \textbf{Pyramid}
+            \item[$\triangleright$] Advanced content management systems such as \textbf{Plone} and \textbf{django CMS}
+            \item[$\triangleright$] Micro-frameworks such as \textbf{Flask} and \textbf{Bottle}
         \end{itemize}
         \item Python's standard library supports many internet protocols
         \begin{itemize}
-            \item HTML and XML
-            \item E-mail processing
-            \item JSON
-            \item Support for FTP, IMAP, and other Internet protocols
-            \item Easy-to-use socket interface
+            \item[$\triangleright$] HTML/XML, E-mail processing, JSON, FTP, IMAP, socket interface
         \end{itemize}
-        \item The package Index has more libraries
-        \begin{itemize}
-            \item \textbf{Requests}, a powerful HTTP client library.
-            \item \textbf{Feedparser} for parsing RSS/Atom feeds.
-            \item \textbf{Beautiful Soup}, an HTML parser that can handle all sorts of HTML.
-            \item \textbf{Paramiko}, implementing the SSH2 protocol.
-            \item \textbf{Twisted Python}, a framework for asynchronous network programming.
-        \end{itemize}
+        \item Popular packages: \textbf{Requests}, \textbf{Feedparser}, \textbf{Beautiful Soup}, \textbf{Twisted Python}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Flask Web Application Framework}
-    \begin{itemize}
-        \item Flask is a lightweight WSGI (Web Server Gateway Interface) web application framework. It is designed to make getting started quick and easy, with the ability to scale up to complex applications.
-        \item It began as a simple wrapper around Werkzeug (Werkzeug WSGI toolkit) and Jinja (Jinja template engine) and has since then become one of the most popular Python web application frameworks.
-        \item Flask offers suggestions, but does not enforce any dependencies or project layouts. It is up to the developer to choose the tools and libraries they want to use.
-        \item There are many extensions provided by the community that make adding new functionality easy.
-        \item \textbf{Installing Flask using pip command}
-        \begin{itemize}
-            \item \texttt{pip install -U Flask}
-        \end{itemize}
+    \begin{itemize}[<+->]
+        \item Flask is a lightweight WSGI web application framework -- quick to start, scales to complex applications
+        \item Built around Werkzeug (WSGI toolkit) and Jinja (template engine)
+        \item Flask offers suggestions but does not enforce any dependencies or project layouts
+        \item There are many community extensions that make adding new functionality easy
+        \item \textbf{Installing Flask:} \texttt{pip install -U Flask}
     \end{itemize}
     \vspace{1em}
     \small Source: \url{https://pypi.org/project/Flask/}
@@ -615,10 +596,12 @@ def viewAll():
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Learnt how to access PostgreSQL database from Python
-        \item Learnt to build Python Web Application with PostgresSQL and Flask
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Learnt how to access PostgreSQL database from Python
+            \item Learnt to build Python Web Application with PostgresSQL and Flask
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

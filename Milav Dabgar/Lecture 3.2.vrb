@@ -1,7 +1,8 @@
 \frametitle{Updates with Scalar Subqueries}
-\begin{itemize}
-        \item Recompute and update \texttt{tot\_creds} value for all students
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+\begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Recompute and update \texttt{tot\_creds} value for all students
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 update student S
 set tot_creds = (
     select sum(credits)
@@ -11,13 +12,14 @@ set tot_creds = (
       and takes.grade <> 'F'
       and takes.grade is not null
 );
-        \end{lstlisting}
-        \item Sets \texttt{tot\_creds} to null for students who have not taken any course
-        \item Instead of \texttt{sum (credits)}, use:
-        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+            \end{lstlisting}
+            \item Sets \texttt{tot\_creds} to null for students who have not taken any course
+            \item Instead of \texttt{sum (credits)}, use:
+            \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
 case
     when sum(credits) is not null then sum(credits)
     else 0
 end
-        \end{lstlisting}
-    \end{itemize}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}

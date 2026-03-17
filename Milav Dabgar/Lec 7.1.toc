@@ -1,2 +1,2 @@
-\beamer@sectionintoc {1}{Application Programs and User Interfaces}{5}{0}{1}
-\beamer@sectionintoc {2}{Architecture Classification}{18}{0}{2}
+\beamer@sectionintoc {1}{Application Programs and User Interfaces}{18}{0}{1}
+\beamer@sectionintoc {2}{Architecture Classification}{124}{0}{2}

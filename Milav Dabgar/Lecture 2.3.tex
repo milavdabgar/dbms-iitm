@@ -38,21 +38,23 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Introduced relational algebra
         \item Familiarized with the operators of relational algebra
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To understand relational query language
-        \item To understand data definition and basic query structure
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To understand relational query language
+            \item To understand data definition and basic query structure
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item History of SQL
         \item Data Definition Language (DDL)
         \item Data Manipulation Language (DML): Query Structure
@@ -71,7 +73,7 @@
 \end{frame}
 
 \begin{frame}{History of Query Language}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item IBM developed Structured English Query Language (\textbf{SEQUEL}) as part of System R project. Renamed Structured Query Language (SQL; pronounced still as SEQUEL)
         \item ANSI and ISO standard SQL:
     \end{itemize}
@@ -106,7 +108,7 @@
 \end{frame}
 
 \begin{frame}{History of Query Language (2): Compliance}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item SQL is the de facto industry standard today for relational or structured data systems
         \item Commercial systems as well as open systems may be fully or partially compliant to one or more standards from SQL-92 onward
         \item Not all examples here may work on your particular system. Check your system's SQL documentation!
@@ -114,7 +116,7 @@
 \end{frame}
 
 \begin{frame}{History of Query Language (3): Alternatives}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item There aren't any alternatives to SQL for speaking to relational databases (that is, SQL as a protocol), but there are many alternatives to writing SQL in the applications
         \item These alternatives have been implemented in the form of frontends for working with relational databases.
         \item Some examples of a frontend include:
@@ -130,7 +132,7 @@
 \end{frame}
 
 \begin{frame}{History of Query Language (4): Derivatives}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item There are several query languages that are derived from or inspired by SQL. Of these, the most popular and effective is \textbf{SPARQL}.
         \item \textbf{SPARQL} (pronounced \textit{sparkle}, a recursive acronym for SPARQL Protocol and RDF Query Language) is an RDF query language
         \begin{itemize}
@@ -154,22 +156,24 @@
 \end{frame}
 
 \begin{frame}{Data Definition Language (DDL)}
-    The SQL data-definition language (DDL) allows the specification of information about relations, including:
-    \begin{itemize}
-        \item The Schema for each Relation
-        \item The Domain of values associated with each Attribute
-        \item Integrity Constraints
-        \item And also other information such as:
-        \begin{itemize}
-            \item The set of Indices to be maintained for each relation
-            \item Security and Authorization information for each relation
-            \item The Physical Storage Structure of each relation on disk
+    \begin{block}{Overview}
+        The SQL data-definition language (DDL) allows the specification of information about relations, including:
+        \begin{itemize}[<+->]
+            \item The Schema for each Relation
+            \item The Domain of values associated with each Attribute
+            \item Integrity Constraints
+            \item And also other information such as:
+            \begin{itemize}
+                \item The set of Indices to be maintained for each relation
+                \item Security and Authorization information for each relation
+                \item The Physical Storage Structure of each relation on disk
+            \end{itemize}
         \end{itemize}
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Domain Types in SQL}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \texttt{char(n)}: Fixed length character string, with user-specified length $n$
         \item \texttt{varchar(n)}: Variable length character strings, with user-specified maximum length $n$
         \item \texttt{int}: Integer (a finite subset of the integers that is machine-dependent)
@@ -187,7 +191,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Create Table Construct}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item An SQL relation is defined using the \texttt{create table} command:
     \end{itemize}
     \begin{lstlisting}[language=SQL]
@@ -201,7 +205,7 @@ create table r (
     (integrity-constraint_k)
 );
     \end{lstlisting}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \texttt{r} is the name of the relation
         \item each \texttt{A\_i} is an attribute name in the schema of relation \texttt{r}
         \item \texttt{D\_i} is the data type of values in the domain of attribute \texttt{A\_i}
@@ -315,22 +319,24 @@ alter table r drop A;
 \end{frame}
 
 \begin{frame}{Basic Query Structure}
-    \begin{itemize}
-        \item A typical SQL query has the form:
-        \begin{center}
-            \texttt{select $A_1, A_2, \dots, A_n$ \newline
-                    from $r_1, r_2, \dots, r_m$ \newline
-                    where $P$}
-        \end{center}
-        \item $A_i$ represents an attribute from $r_i$'s
-        \item $r_i$ represents a relation
-        \item $P$ is a predicate
-        \item The result of an SQL query is a \textbf{relation}
-    \end{itemize}
+    \begin{block}{Typical SQL Query Form}
+        \begin{itemize}[<+->]
+            \item A typical SQL query has the form:
+            \begin{center}
+                \texttt{select $A_1, A_2, \dots, A_n$ \newline
+                        from $r_1, r_2, \dots, r_m$ \newline
+                        where $P$}
+            \end{center}
+            \item $A_i$ represents an attribute from $r_i$'s
+            \item $r_i$ represents a relation
+            \item $P$ is a predicate
+            \item The result of an SQL query is a \textbf{relation}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Select Clause}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The \texttt{select} clause lists the attributes desired in the result of a query
         \item Corresponds to the projection operation of the relational algebra
         \item Example: find the names of all instructors:
@@ -345,7 +351,7 @@ from instructor;
 \end{frame}
 
 \begin{frame}[fragile]{Select Clause (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item SQL allows duplicates in relations as well as in query results!!!
         \item To force the elimination of duplicates, insert the keyword \texttt{distinct} after \texttt{select}
         \item Find the department names of all instructors, and remove duplicates:
@@ -362,7 +368,7 @@ from instructor;
 \end{frame}
 
 \begin{frame}[fragile]{Select Clause (3)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item An asterisk in the select clause denotes \texttt{all} attributes:
         \begin{lstlisting}[language=SQL]
 select *
@@ -383,7 +389,7 @@ select 'A' from instructor;
 \end{frame}
 
 \begin{frame}[fragile]{Select Clause (4)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The \texttt{select} clause can contain arithmetic expressions involving the operation \texttt{+}, \texttt{-}, \texttt{*}, and \texttt{/}, and operating on constants or attributes of tuples
         \item The query:
         \begin{lstlisting}[language=SQL]
@@ -400,7 +406,7 @@ from instructor;
 \end{frame}
 
 \begin{frame}[fragile]{Where Clause}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The \texttt{where} clause specifies conditions that the result must satisfy
         \item Corresponds to the selection predicate of the relational algebra
         \item To find all instructors in Comp. Sci. dept:
@@ -420,7 +426,7 @@ where dept_name = 'Comp. Sci.' and salary > 80000;
 \end{frame}
 
 \begin{frame}[fragile]{From Clause}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The \texttt{from} clause lists the relations involved in the query
         \item Corresponds to the Cartesian product operation of the relational algebra
         \item Find the Cartesian product \texttt{instructor $\times$ teaches}:

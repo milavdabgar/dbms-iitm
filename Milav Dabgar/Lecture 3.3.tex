@@ -38,36 +38,25 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
-        \item Nested subquery in SQL
-        \item Processes for data modification
+    \begin{itemize}[<+->]
+        \item Nested Subqueries
+        \item Modifications of the Database
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To learn SQL expressions for Join
-        \item To learn SQL expressions for Views
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To understand SQL expressions for joins
+            \item To understand views and its usage
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Join Expressions
-        \begin{itemize}
-            \item Cross Join
-            \item Inner Join
-            \item Outer Join
-            \item Left Outer Join
-            \item Right Outer Join
-            \item Full Outer Join
-        \end{itemize}
         \item Views
-        \begin{itemize}
-            \item View Expansion
-            \item View Update
-            \item Materialized Views
-        \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -82,46 +71,37 @@
 \end{frame}
 
 \begin{frame}{Joined Relations}
-    \begin{itemize}
-        \item Join operations take two relations and return as a result another relation
-        \item A join operation is a Cartesian product which requires that tuples in the two relations match (under some condition).
-        \item It also specifies the attributes that are present in the result of the join
-        \item The join operations are typically used as subquery expressions in the \texttt{from} clause
-    \end{itemize}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item Join operations take two relations and return as a result another relation
+            \item A join operation is a Cartesian product which requires that tuples in the two relations match (under some condition)
+            \item It also specifies the attributes that are present in the result of the join
+            \item The join operations are typically used as subquery expressions in the \texttt{from} clause
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\begin{frame}{Types of Join between Relations}
-    \begin{itemize}
-        \item \textbf{Cross join}
-        \item \textbf{Inner join}
-        \begin{itemize}
-            \item Equi-join
-            \item Natural join
+\begin{frame}{Join operations}
+    \begin{block}{Types}
+        \begin{itemize}[<+->]
+            \item Join operations take multiple forms
+            \begin{itemize}
+                \item[$\triangleright$] Three Join types
+                \begin{itemize}
+                    \item Inner join
+                    \item Left outer join
+                    \item Right outer join
+                    \item Full outer join
+                \end{itemize}
+                \item[$\triangleright$] Join conditions
+                \begin{itemize}
+                    \item Natural
+                    \item \texttt{On} \textit{<predicate>}
+                    \item \texttt{Using} $(A_1,A_2, \dots ,A_n)$
+                \end{itemize}
+            \end{itemize}
         \end{itemize}
-        \item \textbf{Outer join}
-        \begin{itemize}
-            \item Left outer join
-            \item Right outer join
-            \item Full outer join
-        \end{itemize}
-        \item \textbf{Self-join}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Cross Join}
-    \begin{itemize}
-        \item \texttt{CROSS JOIN} returns the Cartesian product of rows from tables in the join
-        \item \textbf{Explicit}
-        \begin{lstlisting}[language=SQL]
-select * 
-from employee cross join department;
-        \end{lstlisting}
-        \item \textbf{Implicit}
-        \begin{lstlisting}[language=SQL]
-select * 
-from employee, department;
-        \end{lstlisting}
-    \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Join operations - Example}
@@ -162,49 +142,82 @@ from employee, department;
     \end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Inner Join}
-    \begin{itemize}
-        \item \texttt{course inner join prereq}
-    \end{itemize}
-    \begin{center}
-        \begin{adjustbox}{max width=\textwidth}
-        \begin{tabular}{|l|l|l|l|l|l|}
-        \hline
-        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} & \textbf{prereq\_id} & \textbf{course\_id} \\ \hline
-        BIO-301 & Genetics & Biology & 4 & BIO-101 & BIO-301 \\ \hline
-        CS-190 & Game Design & Comp. Sci. & 4 & CS-101 & CS-190 \\ \hline
-        \end{tabular}
-        \end{adjustbox}
-    \end{center}
-    
-    \vspace{1em}
-    \begin{itemize}
-        \item If specified as \texttt{natural}, the 2nd \texttt{course\_id} field is skipped
-    \end{itemize}
-    \begin{center}
-        \begin{adjustbox}{max width=0.8\textwidth}
-        \begin{tabular}{|l|l|l|l|}
-        \hline
-        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} \\ \hline
-        BIO-301 & Genetics & Biology & 4 \\ \hline
-        CS-190 & Game Design & Comp. Sci. & 4 \\ \hline
-        \end{tabular}
-        \end{adjustbox}
-    \end{center}
+\begin{frame}{Cross Join}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item \textbf{Cross Join}: Returns the Cartesian product of the two relations
+            \item Example: \texttt{course cross join prereq}
+            \item This is equivalent to \texttt{course, prereq} in the \texttt{from} clause
+            \item So what is the difference between \texttt{cross join} and the Cartesian product?
+            \begin{itemize}
+                \item[$\triangleright$] A cross join does not have any condition with it.
+                \item[$\triangleright$] But if you just write \texttt{course, prereq} in the \texttt{from} clause, you may be tempted to use \texttt{where} condition to filter the relation, which results in inner join.
+            \end{itemize}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\begin{frame}{Outer Join}
-    \begin{itemize}
-        \item An extension of the join operation that avoids loss of information
-        \item Computes the join and then adds tuples from one relation that does not match tuples in the other relation to the result of the join
-        \item Uses null values
-    \end{itemize}
+\begin{frame}[fragile]{Inner Join}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item Inner join operations are used to combine relations based on a given condition
+            \item Consider the query:
+            \begin{lstlisting}[language=SQL]
+select * 
+from course inner join prereq 
+            on course.course_id = prereq.course_id;
+            \end{lstlisting}
+            \item Note that \texttt{course.course\_id} appears twice in the result
+            \item It is same as:
+            \begin{lstlisting}[language=SQL]
+select * 
+from course, prereq 
+where course.course_id = prereq.course_id;
+            \end{lstlisting}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Inner Join with `using` clause}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item A similar query to the one on the previous slide, but using \texttt{using} clause
+            \begin{lstlisting}[language=SQL]
+select * 
+from course inner join prereq using (course_id);
+            \end{lstlisting}
+            \item Note that \texttt{course\_id} appears only once in the result
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Outer Join}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item An extension of the join operation that avoids loss of information
+            \item Computes the join and then adds tuples from one relation that do not match tuples in the other relation to the result of the join
+            \item Uses \textit{null} values
+            \begin{itemize}
+                \item[$\triangleright$] \textbf{left outer join}: Returns all rows from the left table, and the matched rows from the right table
+                \item[$\triangleright$] \textbf{right outer join}: Returns all rows from the right table, and the matched rows from the left table
+                \item[$\triangleright$] \textbf{full outer join}: Returns all rows when there is a match in either left or right table
+            \end{itemize}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Left Outer Join}
-    \begin{itemize}
-        \item \texttt{course natural left outer join prereq}
-    \end{itemize}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Find all \texttt{(course\_id, title, prereq\_id)} pairs for all courses, including those that have no prerequisite
+            \begin{lstlisting}[language=SQL]
+select course.course_id, title, prereq_id
+from course left outer join prereq 
+            on course.course_id = prereq.course_id;
+            \end{lstlisting}
+            \item \textbf{Output:}
+        \end{itemize}
+    \end{exampleblock}
     \begin{center}
         \begin{adjustbox}{max width=0.9\textwidth}
         \begin{tabular}{|l|l|l|l|l|}
@@ -219,9 +232,17 @@ from employee, department;
 \end{frame}
 
 \begin{frame}[fragile]{Right Outer Join}
-    \begin{itemize}
-        \item \texttt{course natural right outer join prereq}
-    \end{itemize}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Same query but with right outer join
+            \begin{lstlisting}[language=SQL]
+select course.course_id, title, prereq_id 
+from course right outer join prereq 
+            on course.course_id = prereq.course_id;
+            \end{lstlisting}
+            \item \textbf{Output:}
+        \end{itemize}
+    \end{exampleblock}
     \begin{center}
         \begin{adjustbox}{max width=0.9\textwidth}
         \begin{tabular}{|l|l|l|l|l|}
@@ -253,17 +274,20 @@ from employee, department;
     \end{center}
 \end{frame}
 
-\begin{frame}{Joined Relations}
-    \begin{itemize}
-        \item Join operations take two relations and return as a result another relation
-        \item These additional operations are typically used as subquery expressions in the \texttt{from} clause
-        \item \textbf{Join condition} - defines which tuples in the two relations match, and what attributes are present in the result of the join
-        \item \textbf{Join type} - defines how tuples in each relation that do not match any tuple in the other relation (based on the join condition) are treated
-    \end{itemize}
-    
-    \vspace{1em}
+\begin{frame}{Join Types and Conditions}
     \begin{columns}
-        \begin{column}{0.5\textwidth}
+        \begin{column}{0.6\textwidth}
+            \begin{block}{Overview}
+                \begin{itemize}[<+->]
+                    \item Join operations take a \textit{join type} and a \textit{join condition}.
+                    \item \textbf{Join type}: \texttt{inner join}, \texttt{left outer join}, \texttt{right outer join}, \texttt{full outer join}
+                    \item \textbf{Join condition}: Defines which tuples in the two relations match, and what attributes are present in the result of the join.
+                    \item Example: \texttt{natural}, \texttt{on <predicate>}, \texttt{using (A1, A2, ..., An)}
+                    \item Note: \texttt{outer join} is a shorthand for \texttt{left outer join} or \texttt{right outer join} or \texttt{full outer join}
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.4\textwidth}
             \textbf{Join Types}
             \begin{itemize}
                 \item \texttt{inner join}
@@ -271,8 +295,7 @@ from employee, department;
                 \item \texttt{right outer join}
                 \item \texttt{full outer join}
             \end{itemize}
-        \end{column}
-        \begin{column}{0.5\textwidth}
+            \vspace{1em}
             \textbf{Join Conditions}
             \begin{itemize}
                 \item \texttt{natural}
@@ -360,47 +383,52 @@ from employee, department;
   \vfill
 \end{frame}
 
-\begin{frame}[fragile]{Views}
-    \begin{itemize}
-        \item In some cases, it is not desirable for all users to see the entire logical model (that is, all the actual relations stored in the database.)
-        \item Consider a person who needs to know an instructor's name and department, but not the salary. This person should see a relation described, in SQL, by
-        \begin{lstlisting}[language=SQL]
-select ID, name, dept_name 
-from instructor;
-        \end{lstlisting}
-        \item A \textbf{view} provides a mechanism to hide certain data from the view of certain users
-        \item Any relation that is not of the conceptual model but is made visible to a user as a 'virtual relation' is called a \textbf{view}.
-    \end{itemize}
+\begin{frame}{Views}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item In some cases, it is not desirable for all users to see the entire logical model (that is, all the actual relations stored in the database).
+            \item Consider a person who needs to know an instructor's name and department, but not the salary. This person should see a relation described, in SQL, by
+            \begin{itemize}
+                \item[$\triangleright$] \texttt{select ID, name, dept\_name from instructor}
+            \end{itemize}
+            \item A \textbf{view} provides a mechanism to hide certain data from the view of certain users.
+            \item Any relation that is not of the conceptual model but is made visible to a user as a ``virtual relation'' is called a view.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{View Definition}
-    \begin{itemize}
-        \item A view is defined using the \texttt{create view} statement which has the form
-        \begin{lstlisting}[language=SQL]
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item A view is defined using the \texttt{create view} statement which has the form
+            \begin{lstlisting}[language=SQL]
 create view v as <query expression>;
-        \end{lstlisting}
-        where \texttt{<query expression>} is any legal SQL expression
-        \item The view name is represented by \texttt{v}
-        \item Once a view is defined, the view name can be used to refer to the virtual relation that the view generates
-        \item View definition is not the same as creating a new relation by evaluating the query expression
-        \item Rather, a view definition causes the saving of an expression; the expression is substituted into queries using the view
-    \end{itemize}
+            \end{lstlisting}
+            where \texttt{<query expression>} is any legal SQL expression. The view name is represented by \texttt{v}.
+            \item Once a view is defined, the view name can be used to refer to the virtual relation that the view generates.
+            \item View definition is not the same as creating a new relation by evaluating the query expression
+            \item Rather, a view definition causes the saving of an expression; the expression is substituted into queries using the view.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Example Views}
-    \begin{itemize}
-        \item A view of instructors without their salary
-        \begin{lstlisting}[language=SQL]
-create view faculty as 
-select ID, name, dept_name 
-from instructor;
-        \end{lstlisting}
-        \item Find all instructors in the Biology department
-        \begin{lstlisting}[language=SQL]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item A view of instructors without their salary
+            \begin{lstlisting}[language=SQL]
+create view faculty as
+    select ID, name, dept_name 
+    from instructor;
+            \end{lstlisting}
+            \item Find all instructors in the Biology department
+            \begin{lstlisting}[language=SQL]
 select name 
 from faculty 
 where dept_name = 'Biology';
-        \end{lstlisting}
+            \end{lstlisting}
+        \end{itemize}
+    \end{exampleblock}
         \item Create a view of department salary totals
         \begin{lstlisting}[language=SQL]
 create view departments_total_salary(dept_name, total_salary) as 
@@ -412,31 +440,21 @@ group by dept_name;
 \end{frame}
 
 \begin{frame}[fragile]{Views Defined Using Other Views}
-    \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
-create view physics_fall_2009 as
-select course.course_id, sec_id, building, room_number 
-from course, section 
-where course.course_id = section.course_id 
-  and course.dept_name = 'Physics' 
-  and section.semester = 'Fall' 
-  and section.year = '2009';
-    \end{lstlisting}
-    
-    \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
-create view physics_fall_2009_watson as 
-select course_id, room_number 
-from physics_fall_2009 
-where building = 'Watson';
-    \end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]{Views Defined Using Other Views (2)}
-    \begin{itemize}
-        \item One view may be used in the expression defining another view
-        \item A view relation $v_1$ is said to depend directly on a view relation $v_2$ if $v_2$ is used in the expression defining $v_1$
-        \item A view relation $v_1$ is said to depend on view relation $v_2$ if either $v_1$ depends directly on $v_2$ or there is a path of dependencies from $v_1$ to $v_2$
-        \item A view relation $v$ is said to be \textbf{recursive} if it depends on itself
-    \end{itemize}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Create a view of department salary totals
+            \begin{lstlisting}[language=SQL]
+create view departments_total_salary(dept_name, total_salary) as
+    select dept_name, sum (salary) 
+    from instructor 
+    group by dept_name;
+            \end{lstlisting}
+            \item One view may be used in the expression defining another view
+            \item A view relation $v_1$ is said to \textbf{depend directly on} a view relation $v_2$ if $v_2$ is used in the expression defining $v_1$
+            \item A view relation $v_1$ is said to \textbf{depend on} view relation $v_2$ if either $v_1$ depends directly on $v_2$ or there is a path of dependencies from $v_1$ to $v_2$
+            \item A view relation $v$ is said to be \textbf{recursive} if it depends on itself.
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]{View Expansion}
@@ -460,51 +478,61 @@ create view physics_fall_2009_watson as
     \end{itemize}
 \end{frame}
 
-\begin{frame}{View Expansion*}
-    \begin{itemize}
-        \item A way to define the meaning of views defined in terms of other views
-        \item Let view $v_1$ be defined by an expression $e_1$ that may itself contain uses of view relations
-        \item View expansion of an expression repeats the following replacement step:
-        \vspace{1em}
-        \textbf{repeat}\\
-        \quad Find any view relation $v_i$ in $e_1$\\
-        \quad Replace the view relation $v_i$ by the expression defining $v_i$\\
-        \textbf{until} no more view relations are present in $e_1$
-        \vspace{1em}
-        \item As long as the view definitions are not recursive, this loop will terminate
-    \end{itemize}
+\begin{frame}{View Expansion}
+    \begin{block}{Definition}
+        \begin{itemize}[<+->]
+            \item Expand the view:
+            \begin{itemize}
+                \item[$\triangleright$] \texttt{create view v as <query expression>}
+            \end{itemize}
+            \item To define the meaning of views defined in terms of other views.
+            \item Let view $v_1$ be defined by an expression $e_1$ that may itself contain uses of view relations.
+            \item View expansion of an expression repeats the following replacement step:
+            \begin{itemize}
+                \item[$\triangleright$] \textbf{Repeat} Find any view relation $v_i$ in $e_1$
+                \item[$\triangleright$] Replace the view relation $v_i$ by the expression defining $v_i$
+                \item[$\triangleright$] \textbf{Until} no more view relations are present in $e_1$
+            \end{itemize}
+            \item As long as the view definitions are not recursive, this loop will terminate
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Update of a View}
-    \begin{itemize}
-        \item Add a new tuple to \texttt{faculty} view which we defined earlier
-        \begin{lstlisting}[language=SQL]
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Add a new tuple to \texttt{faculty} view which we defined earlier
+            \begin{lstlisting}[language=SQL]
 insert into faculty 
 values ('30765', 'Green', 'Music');
-        \end{lstlisting}
-        \item This insertion must be represented by the insertion of the tuple \texttt{('30765', 'Green', 'Music', null)} into the \texttt{instructor} relation
-    \end{itemize}
+            \end{lstlisting}
+            \item This insertion must be represented by the insertion of the tuple \texttt{('30765', 'Green', 'Music', null)} into the \texttt{instructor} relation
+        \end{itemize}
+    \end{exampleblock}
 \end{frame}
 
-\begin{frame}[fragile]{Some Updates cannot be Translated Uniquely}
-    \begin{itemize}
-        \item \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\tiny]
-create view instructor_info as 
-select ID, name, building 
-from instructor, department 
-where instructor.dept_name = department.dept_name;
-        \end{lstlisting}
-        \item \texttt{insert into instructor\_info values ('69987', 'White', 'Taylor');}
-        \item which department, if multiple departments in Taylor?
-        \item what if no department is in Taylor?
-        \item Most SQL implementations allow updates only on \textbf{simple views}
-        \begin{itemize}
-            \item The \texttt{from} clause has only one database relation
-            \item The \texttt{select} clause contains only attribute names of the relation, and does not have any expressions, aggregates, or \texttt{distinct} specification
-            \item Any attribute not listed in the \texttt{select} clause can be set to null
-            \item The query does not have a \texttt{group by} or \texttt{having} clause
+\begin{frame}{Some Updates Cannot be Translated Uniquely}
+    \begin{block}{Overview}
+        \begin{itemize}[<+->]
+            \item Example: $\texttt{create view instructor\_info as select ID, name, building from instructor, department where instructor.dept\_name = department.dept\_name;}$
+            \item $\texttt{insert into instructor\_info values ('69987', 'White', 'Taylor');}$
+            \item What if there is no department in Taylor? What if there are multiple departments in Taylor?
         \end{itemize}
-    \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Update of a View (2)}
+    \begin{block}{Constraints}
+        \begin{itemize}[<+->]
+            \item Most SQL implementations allow updates only on simple views:
+            \begin{itemize}
+                \item[$\triangleright$] The \texttt{from} clause has only one database relation.
+                \item[$\triangleright$] The \texttt{select} clause contains only attribute names of the relation, and does not have any expressions, aggregates, or \texttt{distinct} specification.
+                \item[$\triangleright$] Any attribute not listed in the \texttt{select} clause can be set to null
+                \item[$\triangleright$] The query does not have a \texttt{group by} or \texttt{having} clause.
+            \end{itemize}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{And Some Not at All}

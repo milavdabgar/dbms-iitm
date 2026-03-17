@@ -1,8 +1,9 @@
 \frametitle{Functional Dependencies (6): Closure of Attribute Sets}
-\begin{itemize}
+\begin{itemize}[<+->]
         \item Given a set of attributes $\alpha$, define the \textbf{closure of $\alpha$ under $F$} (denoted by $\alpha^+$) as the set of attributes that are functionally determined by $\alpha$ under $F$
         \item Algorithm to compute $\alpha^+$, the closure of $\alpha$ under $F$
     \end{itemize}
+    \vspace{1em}
     \begin{verbatim}
 result <- alpha
 while (changes to result) do

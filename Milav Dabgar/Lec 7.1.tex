@@ -1,4 +1,4 @@
-﻿\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
 
 % --- Theme Setup ---
 \usetheme{Madrid}
@@ -39,7 +39,7 @@
 \end{frame}
 
 \begin{frame}{Week Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Studied the Normal Forms and their Importance in Relational Design - how progressive increase of constraints can minimize redundancy in a schema
         \item Learnt how to decompose a schema into 3NF while preserving dependency and lossless join
         \item Learnt how to decompose a schema into BCNF with lossless join
@@ -53,16 +53,18 @@
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item What are the Application Programs across various sectors?
-        \item Commonality of architecture across applications
-        \item Understanding the classification and evolution of the architectures
-        \item A look at the architecture for a few sample applications
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item What are the Application Programs across various sectors?
+            \item Commonality of architecture across applications
+            \item Understanding the classification and evolution of the architectures
+            \item A look at the architecture for a few sample applications
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Application Programs
         \item Application Architecture with classification and evolution
         \item Sample application architectures
@@ -80,119 +82,119 @@
 \end{frame}
 
 \begin{frame}{Application Programs: Internet / Web or Mobile}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Financial:}
         \begin{itemize}
-            \item Netbanking: SBI, PNB, BoB, Canara, HDFC, ICICI
-            \item Insurance \& Investment: LICI, PolicyBazaar, NSDL, NPS,
-            \item Share Market: ICICIDirect, Sharekhan, HDFCDirect
-            \item Payment Gateway: Paytm, GPay, Bhim UPI, PhonePe,
-            \item e-Commerce: Amazon, Flipkart, eBay, BigBazaar, BigBasket,
+            \item[$\triangleright$] Netbanking: SBI, PNB, BoB, Canara, HDFC, ICICI
+            \item[$\triangleright$] Insurance \& Investment: LICI, PolicyBazaar, NSDL, NPS,
+            \item[$\triangleright$] Share Market: ICICIDirect, Sharekhan, HDFCDirect
+            \item[$\triangleright$] Payment Gateway: Paytm, GPay, Bhim UPI, PhonePe,
+            \item[$\triangleright$] e-Commerce: Amazon, Flipkart, eBay, BigBazaar, BigBasket,
         \end{itemize}
         \item \textbf{Travel \& Tourism:}
         \begin{itemize}
-            \item Travel Reservations: IRCTC, Airlines, MakeMyTrip, Yatra,
-            \item Transportation: Uber, Ola Cab, Mega Cab, Meru Cab,
-            \item Accommodation: Booking, OYO, AirBnb, Fabhotels, Treebo,
-            \item Navigation: Google Maps, MapQuest, Apple Maps,
-            \item Food \& Delivery: Zomato, Swiggy, UberEats, Dunzo,
+            \item[$\triangleright$] Travel Reservations: IRCTC, Airlines, MakeMyTrip, Yatra,
+            \item[$\triangleright$] Transportation: Uber, Ola Cab, Mega Cab, Meru Cab,
+            \item[$\triangleright$] Accommodation: Booking, OYO, AirBnb, Fabhotels, Treebo,
+            \item[$\triangleright$] Navigation: Google Maps, MapQuest, Apple Maps,
+            \item[$\triangleright$] Food \& Delivery: Zomato, Swiggy, UberEats, Dunzo,
         \end{itemize}
         \item \textbf{Communication:}
         \begin{itemize}
-            \item Live Interaction: Zoom, Google Meet, Teams, Webex, Skype,
-            \item Mail: Gmail, Yahoo, Hotmail, Rediffmail, Enterprise Mail,
-            \item Intermittent Interaction: WhatsApp, Telegram, Signal, Skype
-            \item Social Media: Facebook, Instagram, Twitter, YouTube,
+            \item[$\triangleright$] Live Interaction: Zoom, Google Meet, Teams, Webex, Skype,
+            \item[$\triangleright$] Mail: Gmail, Yahoo, Hotmail, Rediffmail, Enterprise Mail,
+            \item[$\triangleright$] Intermittent Interaction: WhatsApp, Telegram, Signal, Skype
+            \item[$\triangleright$] Social Media: Facebook, Instagram, Twitter, YouTube,
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Application Programs: Internet / Web or Mobile (cont.)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Knowledge Discovery:}
         \begin{itemize}
-            \item Static: Google, Yahoo, Bing, Wikipedia, Encyclopedia.com,
-            \item Q\&A: Quora, ASKfm, Yahoo Answers, Reddit, Digg,
+            \item[$\triangleright$] Static: Google, Yahoo, Bing, Wikipedia, Encyclopedia.com,
+            \item[$\triangleright$] Q\&A: Quora, ASKfm, Yahoo Answers, Reddit, Digg,
         \end{itemize}
         \item \textbf{Sports:}
         \begin{itemize}
-            \item Cricket: Cricbuzz, CricViz, Cricket-21, Cricket Exchange,
-            \item Tennis: ATP, ITF, SwingVision, TennisPAL, Tennis Clash,
+            \item[$\triangleright$] Cricket: Cricbuzz, CricViz, Cricket-21, Cricket Exchange,
+            \item[$\triangleright$] Tennis: ATP, ITF, SwingVision, TennisPAL, Tennis Clash,
         \end{itemize}
         \item \textbf{Software Engineering:}
         \begin{itemize}
-            \item Issue Tracking: JIRA, BugZilla, Githubs, Gitlab,
-            \item Online IDE: OnlineGDB, Codechef, Ideone,
-            \item VCS: Githubs, Gitlab, BitBucket, SourceForge,
+            \item[$\triangleright$] Issue Tracking: JIRA, BugZilla, Githubs, Gitlab,
+            \item[$\triangleright$] Online IDE: OnlineGDB, Codechef, Ideone,
+            \item[$\triangleright$] VCS: Githubs, Gitlab, BitBucket, SourceForge,
         \end{itemize}
         \item \textbf{Library:}
         \begin{itemize}
-            \item Digital Library: National Digital Library of India,
-            \item Archives: Internet Archive, arXiv, Nextpoint,
+            \item[$\triangleright$] Digital Library: National Digital Library of India,
+            \item[$\triangleright$] Archives: Internet Archive, arXiv, Nextpoint,
         \end{itemize}
         \item \textbf{Education:}
         \begin{itemize}
-            \item eLearning: BYJU's, IGNOU, NIIT, Edukart,
-            \item MOOCs: SWAYAM, edX, Coursera, Udemy,
+            \item[$\triangleright$] eLearning: BYJU's, IGNOU, NIIT, Edukart,
+            \item[$\triangleright$] MOOCs: SWAYAM, edX, Coursera, Udemy,
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Application Programs: Internet / Web or Mobile (cont.)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Document Processing:}
         \begin{itemize}
-            \item Editing: Overleaf, Google Docs, Spreadsheet
-            \item Website, Blog: Google Sites, WordPress, Webly,
+            \item[$\triangleright$] Editing: Overleaf, Google Docs, Spreadsheet
+            \item[$\triangleright$] Website, Blog: Google Sites, WordPress, Webly,
         \end{itemize}
         \item \textbf{Health:}
         \begin{itemize}
-            \item Telemedicine: MDLIVE, Doctor on Demand,
-            \item National: Aarogy Setu, CoWin, NACO App,
+            \item[$\triangleright$] Telemedicine: MDLIVE, Doctor on Demand,
+            \item[$\triangleright$] National: Aarogy Setu, CoWin, NACO App,
         \end{itemize}
         \item \textbf{Organizational ERP: (Intranet)}
         \begin{itemize}
-            \item Institutions: Students, Faculty, Course
-            \item Manufacturing: Suppliers, Inventory, Customers,
-            \item Hospital: Patient, Doctor, OPD, IPD, Pharmacy,
-            \item Bank: Customers, Accounts, Locker, Deposits,
-            \item Courier: Customers, Parcels, Delivery Agents,
+            \item[$\triangleright$] Institutions: Students, Faculty, Course
+            \item[$\triangleright$] Manufacturing: Suppliers, Inventory, Customers,
+            \item[$\triangleright$] Hospital: Patient, Doctor, OPD, IPD, Pharmacy,
+            \item[$\triangleright$] Bank: Customers, Accounts, Locker, Deposits,
+            \item[$\triangleright$] Courier: Customers, Parcels, Delivery Agents,
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Characteristic of Application Programs}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Diversity}: These applications widely differ in their
         \begin{itemize}
-            \item Domain, functionality, user base, response time, scale, daily hit and many more
+            \item[$\triangleright$] Domain, functionality, user base, response time, scale, daily hit and many more
         \end{itemize}
         \item \textbf{Unity}: Yet, these have a lot in common
         \begin{itemize}
-            \item Most use an RDBMS like Oracle, DB2 MySQL, PostgreSQL, etc. for managing data
-            \item Applications are functionally split into \textbf{frontend layer}, \textbf{middle layer}, \textbf{backend layer}
+            \item[$\triangleright$] Most use an RDBMS like Oracle, DB2 MySQL, PostgreSQL, etc. for managing data
+            \item[$\triangleright$] Applications are functionally split into \textbf{frontend layer}, \textbf{middle layer}, \textbf{backend layer}
         \end{itemize}
-        \item $\triangleright$ Frontend or Presentation Layer / Tier
+        \item \textbf{Frontend} or Presentation Layer / Tier
         \begin{itemize}
-            \item Interacts with the user: Display / View, Input / Output
-            \item Choose item, Add to cart, Checkout, Pay, Track order
-            \item Interfaces may be, Browser-based, Mobile App, or Custom
+            \item[$\triangleright$] Interacts with the user: Display / View, Input / Output
+            \item[$\triangleright$] Choose item, Add to cart, Checkout, Pay, Track order
+            \item[$\triangleright$] Interfaces may be, Browser-based, Mobile App, or Custom
         \end{itemize}
-        \item $\triangleright$ Middle or Application / Business Logic Layer / Tier
+        \item \textbf{Middle} or Application / Business Logic Layer / Tier
         \begin{itemize}
-            \item Implements the Functionality of the Application: Links front and backend
-            \item Authentication, Search / Browse logic, Pricing, Cart management, Payment handling (gateway), Order management (mail / SMS / internal actions), Delivery management
-            \item Support functionality based on frontend interface
+            \item[$\triangleright$] Implements the Functionality of the Application: Links front and backend
+            \item[$\triangleright$] Authentication, Search / Browse logic, Pricing, Cart management, Payment handling (gateway), Order management (mail / SMS / internal actions), Delivery management
+            \item[$\triangleright$] Support functionality based on frontend interface
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Characteristic of Application Programs (cont.)}
-    \begin{itemize}
-        \item $\triangleright$ Backend or Data Access Layer / Tier
+    \begin{itemize}[<+->]
+        \item \textbf{Backend} or Data Access Layer / Tier
         \begin{itemize}
-            \item Manages persistent data, large volume, efficient access, security
-            \item User, Cart, Inventory, Order, Vendor databases
+            \item[$\triangleright$] Manages persistent data, large volume, efficient access, security
+            \item[$\triangleright$] User, Cart, Inventory, Order, Vendor databases
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -205,25 +207,25 @@
 \end{frame}
 
 \begin{frame}{Application Architectures: Layers}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Presentation Layer / Tier}
         \begin{itemize}
-            \item Model-View-Controller (MVC) architecture
-            \item $\triangleright$ \textbf{model}: business logic
-            \item $\triangleright$ \textbf{view}: presentation of data, depends on display device
-            \item $\triangleright$ \textbf{controller}: receives events, executes actions, and returns a view to the user
+            \item[$\triangleright$] Model-View-Controller (MVC) architecture
+            \item[$\triangleright$] \textbf{model}: business logic
+            \item[$\triangleright$] \textbf{view}: presentation of data, depends on display device
+            \item[$\triangleright$] \textbf{controller}: receives events, executes actions, and returns a view to the user
         \end{itemize}
         \item \textbf{Business Logic Layer / Tier}
         \begin{itemize}
-            \item provides high level view of data and actions on data
-            \item $\triangleright$ often using an object data model
-            \item hides details of data storage schema
+            \item[$\triangleright$] provides high level view of data and actions on data
+            \item[$\triangleright$] often using an object data model
+            \item[$\triangleright$] hides details of data storage schema
         \end{itemize}
         \item \textbf{Data Access Layer / Tier}
         \begin{itemize}
-            \item interfaces between business logic layer and the underlying database
-            \item provides mapping from object model of business layer to relational model of database
-            \item Already discussed and studied in depth
+            \item[$\triangleright$] interfaces between business logic layer and the underlying database
+            \item[$\triangleright$] provides mapping from object model of business layer to relational model of database
+            \item[$\triangleright$] Already discussed and studied in depth
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -235,17 +237,17 @@
 \end{frame}
 
 \begin{frame}{Application Architecture (3): User Interface}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Web browsers have become the de-facto standard user interface to databases
         \item Enable large numbers of users to access databases from anywhere
         \item Avoid the need for downloading / installing specialized code, while providing a good graphical user interface
         \begin{itemize}
-            \item $\triangleright$ Javascript, Flash and other scripting languages run in browser, but are downloaded transparently
+            \item[$\triangleright$] Javascript, Flash and other scripting languages run in browser, but are downloaded transparently
         \end{itemize}
         \item Examples: banks, airline and rental car reservations, university course registration and grading, and so on.
         \item Use in Mobile Devices are getting popular
         \begin{itemize}
-            \item Mobile Apps or Browser in Mobile
+            \item[$\triangleright$] Mobile Apps or Browser in Mobile
         \end{itemize}
         \item These are similar in architecture and workflow with web, but have significant differences with their smaller (but wide range of) form factor, and extremely low resources
         \item Will be discussed later
@@ -253,41 +255,41 @@
 \end{frame}
 
 \begin{frame}{Application Architecture (4): Business Logic Layer}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Provides abstractions of entities
         \begin{itemize}
-            \item For example, students, instructors, courses, etc
+            \item[$\triangleright$] For example, students, instructors, courses, etc
         \end{itemize}
         \item Enforces business rules for carrying out actions
         \begin{itemize}
-            \item For example, student can enroll in a class only if she has completed prerequisites, and has paid her tuition fees
+            \item[$\triangleright$] For example, student can enroll in a class only if she has completed prerequisites, and has paid her tuition fees
         \end{itemize}
         \item Supports workflows which define how a task involving multiple participants is to be carried out
         \begin{itemize}
-            \item For example, how to process application by a student applying to a university
-            \item Sequence of steps to carry out task
-            \item Error handling
-            \item $\triangleright$ For example, what to do if recommendation letters not received on time
+            \item[$\triangleright$] For example, how to process application by a student applying to a university
+            \item[$\triangleright$] Sequence of steps to carry out task
+            \item[$\triangleright$] Error handling
+            \item[$\triangleright$] For example, what to do if recommendation letters not received on time
         \end{itemize}
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Application Architecture (5): Object-Relational Mapping}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Allows application code to be written on top of object-oriented data model, while storing data in a traditional relational database
         \item alternative: implement object-oriented or object-relational database to store object model
         \begin{itemize}
-            \item $\triangleright$ has not been commercially successful
+            \item[$\triangleright$] has not been commercially successful
         \end{itemize}
         \item Schema designer has to provide a mapping between object data and relational schema
         \begin{itemize}
-            \item For example, Java class Student mapped to relation student, with corresponding mapping of attributes
-            \item An object can map to multiple tuples in multiple relations
+            \item[$\triangleright$] For example, Java class Student mapped to relation student, with corresponding mapping of attributes
+            \item[$\triangleright$] An object can map to multiple tuples in multiple relations
         \end{itemize}
         \item Application opens a session, which connects to the database
         \begin{itemize}
-            \item Objects can be created and saved to the database using session.save(object)
-            \item mapping used to create appropriate tuples in the database
+            \item[$\triangleright$] Objects can be created and saved to the database using session.save(object)
+            \item[$\triangleright$] mapping used to create appropriate tuples in the database
         \end{itemize}
         \item Query can be run to retrieve objects satisfying specified predicates
     \end{itemize}
@@ -311,22 +313,22 @@
 \end{frame}
 
 \begin{frame}{Architecture Classification}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Database architecture uses programming languages to design a particular type of software for businesses or organizations.
         \item Database architecture focuses on the design, development, implementation and maintenance of computer programs that store and organize information for businesses, agencies and institutions.
         \item A database architect develops and implements software to meet the needs of users.
         \item The design of a DBMS depends on its architecture. It can be
         \begin{itemize}
-            \item centralized
-            \item decentralized
-            \item hierarchical
+            \item[$\triangleright$] centralized
+            \item[$\triangleright$] decentralized
+            \item[$\triangleright$] hierarchical
         \end{itemize}
         \item The architecture of a DBMS can be seen as either single tier or multi-tier:
         \begin{itemize}
-            \item 1-tier architecture
-            \item 2-tier architecture
-            \item 3-tier architecture
-            \item n-tier architecture
+            \item[$\triangleright$] 1-tier architecture
+            \item[$\triangleright$] 2-tier architecture
+            \item[$\triangleright$] 3-tier architecture
+            \item[$\triangleright$] n-tier architecture
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -338,7 +340,7 @@
 \end{frame}
 
 \begin{frame}{1-tier Architecture}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item One-tier architecture involves putting all of the required components for a software application or technology on a single server or platform
         \item Basically, a one-tier architecture keeps all of the elements of an application, including the interface, Middleware and back-end data, in one place
         \item Developers see these types of systems as the simplest and most direct way
@@ -350,7 +352,7 @@
 \end{frame}
 
 \begin{frame}{2-tier Architecture}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The two-tier is based on Client Server architecture
         \item It is like client server application
         \item The direct communication takes place between client and server
@@ -363,7 +365,7 @@
 \end{frame}
 
 \begin{frame}{3-tier Architecture}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item A 3-tier architecture separates its tiers Presentation, Logic and Data Access - from each other based on the complexity of the users and how they use the data present in the database
         \item It is the most widely used architecture to design a DBMS
     \end{itemize}
@@ -374,7 +376,7 @@
 \end{frame}
 
 \begin{frame}{n-tier Architecture}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item An n-tier architecture distributes different components of the 3 tiers between different servers and adds interfaces tiers for interactions and workload balancing
     \end{itemize}
     \begin{center}
@@ -403,12 +405,14 @@
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Had a glimpse of Application Programs across various sectors
-        \item Understood the typical architecture for an application
-        \item Studies the classification and evolution of the architectures
-        \item Glimpsed at architecture for a few sample applications
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Had a glimpse of Application Programs across various sectors
+            \item Understood the typical architecture for an application
+            \item Studies the classification and evolution of the architectures
+            \item Glimpsed at architecture for a few sample applications
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

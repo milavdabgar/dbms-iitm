@@ -1,4 +1,4 @@
-﻿\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
 
 % --- Theme Setup ---
 \usetheme{Madrid}
@@ -39,7 +39,7 @@
 \end{frame}
 
 \begin{frame}{Module Recap}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Familiarized with the Fundamentals notions and technologies of Web
         \item Learnt about Scripting
         \item Learnt the notions of Servlets
@@ -47,13 +47,15 @@
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
-        \item To understand how to use SQL from a programming language
-    \end{itemize}
+    \begin{block}{Goals}
+        \begin{itemize}[<+->]
+            \item To understand how to use SQL from a programming language
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Accessing SQL From a Programming Language
     \end{itemize}
 \end{frame}
@@ -69,29 +71,18 @@
 \end{frame}
 
 \begin{frame}{Working with SQL and Native Language}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Applications use Application Programming / Program Interface (API) to interact with a database server
         \item Applications make calls to
         \begin{itemize}
-            \item Connect with the database server
-            \item Send SQL commands to the database server
-            \item Fetch tuples of result one-by-one into program variables
+            \item[$\triangleright$] Connect with the database server
+            \item[$\triangleright$] Send SQL commands to the database server
+            \item[$\triangleright$] Fetch tuples of result one-by-one into program variables
         \end{itemize}
         \item \textbf{Frameworks}
         \begin{itemize}
-            \item Connectionist
-            \begin{itemize}
-                \item $\triangleright$ Open Database Connectivity (ODBC) works with C, C++, C\#, Visual Basic, and Python. Other data APIs include
-                \begin{itemize}
-                    \item - OLEDB
-                    \item - ADO.NET
-                \end{itemize}
-                \item $\triangleright$ Java Database Connectivity (JDBC) works with Java
-            \end{itemize}
-            \item Embedding
-            \begin{itemize}
-                \item $\triangleright$ Embedded SQL works with C, C++, Java, COBOL, FORTRAN and Pascal
-            \end{itemize}
+            \item[$\triangleright$] \textbf{Connectionist:} ODBC (C, C++, C\#, Visual Basic, Python), JDBC (Java)
+            \item[$\triangleright$] \textbf{Embedding:} Embedded SQL works with C, C++, Java, COBOL, FORTRAN and Pascal
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -103,22 +94,16 @@
 \end{frame}
 
 \begin{frame}{ODBC}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Open Database Connectivity (ODBC) is a standard API for accessing DBMS
         \item It aimed to be independent of database systems and operating systems
-        \item An application written using ODBC can be ported to other platforms, both on the client and server side, with few changes to the data access code
+        \item An application written using ODBC can be ported to other platforms with few changes to the data access code
         \item ODBC is
         \begin{itemize}
-            \item A standard for application program to communicate with a database server
-            \item An application program interface (API) to
-            \begin{itemize}
-                \item $\triangleright$ Open a connection with a database
-                \item $\triangleright$ Send queries and updates
-                \item $\triangleright$ Get back results
-            \end{itemize}
+            \item[$\triangleright$] A standard for application program to communicate with a database server
+            \item[$\triangleright$] An API to Open a connection, Send queries and updates, Get back results
         \end{itemize}
         \item Applications such as GUI, Spreadsheets, etc. can use ODBC
-        \item ODBC was originally developed by Microsoft and Simba Technologies during the early 1990s, and became the basis for the Call Level Interface (CLI) standardized by SQL Access Group in the Unix and mainframe field.
     \end{itemize}
 \end{frame}
 
@@ -144,28 +129,25 @@ while True:
 \end{frame}
 
 \begin{frame}{JDBC}
-    \begin{itemize}
-        \item Java Database Connectivity (JDBC) is an API for the programming language Java, which defines how a client may access a database
-        \item It is a Java-based data access technology used for Java database connectivity
-        \item JDBC supports a variety of features for querying and updating data, and for retrieving query results; metadata retrieval, such as querying about relations present in the database and the names and types of relation attributes
+    \begin{itemize}[<+->]
+        \item Java Database Connectivity (JDBC) is an API for Java which defines how a client may access a database
+        \item JDBC supports a variety of features for querying and updating data, and for retrieving query results; metadata retrieval
         \item Model for communicating with the database:
         \begin{itemize}
-            \item Open a connection
-            \item Create a 'statement' object
-            \item Execute queries using the Statement object to send queries and fetch results
-            \item Exception mechanism to handle errors
+            \item[$\triangleright$] Open a connection
+            \item[$\triangleright$] Create a 'statement' object
+            \item[$\triangleright$] Execute queries using the Statement object to send queries and fetch results
+            \item[$\triangleright$] Exception mechanism to handle errors
         \end{itemize}
-        \item JDBC, originally released by Sun Microsystems released as part of Java Development Kit (JDK) 1.1 on in 1997, is part of the Java Standard Edition platform, from Oracle Corporation
     \end{itemize}
 \end{frame}
 
 \begin{frame}{JDBC: Example (1)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item We show a simple example here to connect to SQL Server from Java using JDBC to execute database commands
         \item In the example, the sample code makes a connection to the sample database
         \item Then, using an SQL statement with the SQLServerStatement object, it runs the SQL statement and places the data that it returns into a SQLServerResultSet object
         \item Next, the sample code calls the custom displayRow method to iterate through the rows of data that are in the result set, and uses the getString method to display some of the data
-        \item Complete example can be found at: Retrieving result set data sample
     \end{itemize}
 \end{frame}
 
@@ -221,16 +203,14 @@ public class RetrieveResultSet {
 \end{frame}
 
 \begin{frame}{Connectionist Bridge Configurations}
-    \begin{itemize}
-        \item A bridge is a special kind of driver that uses another driver-based technology
-        \item This driver translates source function-calls into target function-calls
-        \item Programmers usually use such a bridge when they lack a source driver for some database but have access to a target driver
+    \begin{itemize}[<+->]
+        \item A bridge is a special kind of driver that uses another driver-based technology; translates source function-calls into target function-calls
         \item Common bridges are:
         \begin{itemize}
-            \item \textbf{ODBC-to-JDBC (ODBC-JDBC) bridges}: An ODBC-JDBC bridge consists of an ODBC driver which uses the services of a JDBC driver to connect to a database. Examples: OpenLink ODBC-JDBC Bridge, SequeLink ODBC-JDBC Bridge
-            \item \textbf{JDBC-to-ODBC (JDBC-ODBC) bridges}: A JDBC-ODBC bridge consists of a JDBC driver which employs an ODBC driver to connect to a target database. Examples: OpenLink JDBC-ODBC Bridge, SequeLink JDBC-ODBC Bridge
-            \item \textbf{OLE DB-to-ODBC bridges}: An OLE DB-ODBC bridge consists of an OLE DB Provider which uses the services of an ODBC driver to connect to a target database. This provider translates OLE DB method calls into ODBC function calls. Examples: OpenLink OLEDB-ODBC Bridge, SequeLink OLEDB-ODBC Bridge
-            \item \textbf{ADO.NET-to-ODBC bridges}: An ADO.NET-ODBC bridge consists of an ADO.NET Provider which uses the services of an ODBC driver to connect to a target database. Examples: OpenLink ADO.NET-ODBC Bridge, SequeLink ADO.NET-ODBC Bridge
+            \item[$\triangleright$] \textbf{ODBC-to-JDBC bridges}: ODBC driver using JDBC services (e.g., OpenLink ODBC-JDBC Bridge)
+            \item[$\triangleright$] \textbf{JDBC-to-ODBC bridges}: JDBC driver using ODBC services (e.g., OpenLink JDBC-ODBC Bridge)
+            \item[$\triangleright$] \textbf{OLE DB-to-ODBC bridges}: OLE DB Provider using ODBC services
+            \item[$\triangleright$] \textbf{ADO.NET-to-ODBC bridges}: ADO.NET Provider using ODBC services
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -356,13 +336,11 @@ where current of c
 \end{frame}
 
 \begin{frame}{Embedded SQL: C Example}
-    \begin{itemize}
-        \item Here is an example embedded SQL C program from DB2: Embedded SQL for C and C++ (by P. Godfrey NOV 2002)
-        \item It does not do much, but is instructive
-        \item The APP queries a table \texttt{sailor} in schema \texttt{one}.
-        \item User \texttt{one} has granted select privileges to all on table \texttt{sailor}, so the bind step will be legal
-        \item This APP takes one argument on the command line, a sailor's SID. It then finds the sailor SID's age out of the table \texttt{ONE.SAILOR} and reports it
-        \item Try pre-compiling / compiling it. Connect to database \texttt{c341f02} for this.
+    \begin{itemize}[<+->]
+        \item Here is an example embedded SQL C program from DB2
+        \item The APP queries a table \texttt{sailor} in schema \texttt{one}
+        \item This APP takes one argument on the command line, a sailor's SID, finds the sailor's age from \texttt{ONE.SAILOR} and reports it
+        \item Try pre-compiling / compiling it
     \end{itemize}
 \end{frame}
 
@@ -489,9 +467,8 @@ Bye
 \end{frame}
 
 \begin{frame}{Embedded SQL: Java Example}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item The following example SQLJ application, \texttt{App.sqlj}, uses static SQL to retrieve and update data from the \texttt{EMPLOYEE} table of the sample database
-        \item Complete example can be found at: Example: Embedding SQL Statements in your Java™ application
     \end{itemize}
 \end{frame}
 
@@ -609,9 +586,11 @@ catch( Exception e ) {
 \end{frame}
 
 \begin{frame}{Module Summary}
-    \begin{itemize}
-        \item Introduced the use of SQL from a programming language
-    \end{itemize}
+    \begin{block}{Summary}
+        \begin{itemize}[<+->]
+            \item Introduced the use of SQL from a programming language
+        \end{itemize}
+    \end{block}
     \vspace{2em}
     \begin{center}
     \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\

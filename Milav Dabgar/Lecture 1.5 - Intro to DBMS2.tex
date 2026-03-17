@@ -13,6 +13,8 @@
 \usepackage{amssymb}
 \usepackage{longtable}
 \usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{mindmap,trees,shadows,arrows.meta,positioning,shapes.geometric,calc,chains}
 
 % --- Title Information ---
 \title{Module 05}
@@ -46,7 +48,7 @@
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Database Design
         \item OO Relational Model
         \item XML
@@ -73,21 +75,20 @@
 \end{frame}
 
 \begin{frame}{Database Design}
-    The process of designing the general structure of the database:
-    \begin{itemize}
-        \item \textbf{Logical Design} -- Deciding on the database schema. Database design requires that we find a good collection of relation schema
-        \begin{itemize}
-            \item Business decision
+    \begin{block}{Defining the Structure}
+        The process of designing the general structure of the database:
+    \end{block}
+    
+    \uncover<2->{
+        \begin{itemize}[<+->]
+            \item \textbf{Logical Design} -- Deciding on the database schema. Database design requires that we find a good collection of relation schema
             \begin{itemize}
-                \item[$\triangleright$] What attributes should we record in the database?
+                \item \textbf{Business decision}: What attributes should we record in the database?
+                \item \textbf{Computer Science decision}: What relation schemas should we have and how should the attributes be distributed among the various relation schemas?
             \end{itemize}
-            \item Computer Science decision
-            \begin{itemize}
-                \item[$\triangleright$] What relation schemas should we have and how should the attributes be distributed among the various relation schemas?
-            \end{itemize}
+            \item \textbf{Physical Design} -- Deciding on the physical layout of the database
         \end{itemize}
-        \item \textbf{Physical Design} -- Deciding on the physical layout of the database
-    \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}{Database Design (2)}
@@ -154,21 +155,23 @@
 \end{frame}
 
 \begin{frame}{Design Approaches}
-    \begin{itemize}
-        \item Need to come up with a methodology to ensure that each relations in the database is good
-        \item Two ways of doing so:
-        \begin{itemize}
-            \item \textbf{Entity Relationship Model} (Chapter 7)
-            \begin{itemize}
-                \item[$\triangleright$] Models an enterprise as a collection of entities and relationships
-                \item[$\triangleright$] Represented diagrammatically by an entity-relationship diagram
+    Need to come up with a methodology to ensure that each relations in the database is good. Two ways of doing so:
+    
+    \uncover<2->{
+        \begin{exampleblock}{Methodologies}
+            \begin{itemize}[<+->]
+                \item \textbf{Entity Relationship Model} (Chapter 7)
+                \begin{itemize}
+                    \item[$\triangleright$] Models an enterprise as a collection of entities and relationships
+                    \item[$\triangleright$] Represented diagrammatically by an entity-relationship diagram
+                \end{itemize}
+                \item \textbf{Normalization Theory} (Chapter 8)
+                \begin{itemize}
+                    \item[$\triangleright$] Formalize what designs are bad, and test for them
+                \end{itemize}
             \end{itemize}
-            \item \textbf{Normalization Theory} (Chapter 8)
-            \begin{itemize}
-                \item[$\triangleright$] Formalize what designs are bad, and test for them
-            \end{itemize}
-        \end{itemize}
-    \end{itemize}
+        \end{exampleblock}
+    }
 \end{frame}
 
 \section{Object-Relational Data Models}
@@ -183,16 +186,20 @@
 \end{frame}
 
 \begin{frame}{Object-Relational Data Models}
-    \begin{itemize}
-        \item Relational model: flat, atomic values
-        \item Object Relational Data Models
-        \begin{itemize}
-            \item Extend the relational data model by including object orientation and constructs to deal with added data types
-            \item Allow attributes of tuples to have complex types, including non-atomic values such as nested relations
-            \item Preserve relational foundations, in particular the declarative access to data, while extending modeling power
-            \item Provide upward compatibility with existing relational languages
-        \end{itemize}
-    \end{itemize}
+    \begin{alertblock}{Limitations of Relational Model}
+        Relational model explicitly limits storage to flat, atomic values.
+    \end{alertblock}
+    
+    \uncover<2->{
+        \begin{block}{Object Relational Extensions}
+            \begin{itemize}[<+->]
+                \item Extend the relational data model by including object orientation and constructs to deal with added data types
+                \item Allow attributes of tuples to have complex types, including non-atomic values such as nested relations
+                \item Preserve relational foundations, in particular the declarative access to data, while extending modeling power
+                \item Provide upward compatibility with existing relational languages
+            \end{itemize}
+        \end{block}
+    }
 \end{frame}
 
 \section{XML: Extensible Markup Language}
@@ -207,11 +214,11 @@
 \end{frame}
 
 \begin{frame}{XML: Extensible Markup Language}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Defined by the WWW Consortium (W3C)
         \item Originally intended as a document markup language not a database language
         \item The ability to specify new tags, and to create nested tag structures made XML a great way to exchange data, not just documents
-        \item XML has become the basis for all new generation data interchange formats
+        \item XML has \textbf{become the basis} for all new generation data interchange formats
         \item A wide variety of tools is available for parsing, browsing and querying XML documents/data
     \end{itemize}
 \end{frame}
@@ -228,28 +235,30 @@
 \end{frame}
 
 \begin{frame}{Database Engine}
-    \begin{itemize}
-        \item Storage manager
-        \item Query processing
-        \item Transaction manager
-    \end{itemize}
+    \begin{block}{Core Components}
+        \begin{itemize}[<+->]
+            \item Storage manager
+            \item Query processing
+            \item Transaction manager
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{Storage Management}
-    \begin{itemize}
-        \item Storage manager is a program module that provides the interface between the low-level data stored in the database and the application programs and queries submitted to the system
-        \item The storage manager is responsible for the following tasks:
-        \begin{itemize}
-            \item Interaction with the OS file manager
-            \item Efficient storing, retrieving and updating of data
+    \begin{block}{The Storage Manager}
+        A program module that provides the interface between the low-level data stored in the database and the application programs and queries submitted to the system.
+    \end{block}
+    
+    \uncover<2->{
+        \begin{itemize}[<+->]
+            \item The storage manager is responsible for:
+            \begin{itemize}
+                \item Interaction with the OS file manager
+                \item Efficient storing, retrieving and updating of data
+            \end{itemize}
+            \item Issues: Storage access, File organization, Indexing and hashing
         \end{itemize}
-        \item Issues:
-        \begin{itemize}
-            \item Storage access
-            \item File organization
-            \item Indexing and hashing
-        \end{itemize}
-    \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}{Query Processing}
@@ -259,13 +268,13 @@
 \end{frame}
 
 \begin{frame}{Query Processing (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Alternative ways of evaluating a given query
         \begin{itemize}
             \item Equivalent expressions
             \item Different algorithms for each operation
         \end{itemize}
-        \item Cost difference between a good and a bad way of evaluating a query can be enormous
+        \item \textbf{Cost difference} between a good and a bad way of evaluating a query can be enormous
         \item Need to estimate the cost of operations
         \begin{itemize}
             \item Depends critically on statistical information about relations which the database must maintain
@@ -275,13 +284,17 @@
 \end{frame}
 
 \begin{frame}{Transaction Management}
-    \begin{itemize}
-        \item What if the system fails?
-        \item What if more than one user is concurrently updating the same data?
-        \item A \textbf{transaction} is a collection of operations that performs a single logical function in a database application
-        \item \textbf{Transaction-management component} ensures that the database remains in a consistent (correct) state despite system failures (e.g., power failures and operating system crashes) and transaction failures.
-        \item \textbf{Concurrency-control manager} controls the interaction among the concurrent transactions, to ensure the consistency of the database.
-    \end{itemize}
+    \begin{alertblock}{Challenges}
+        What if the system fails? What if more than one user is concurrently updating the same data?
+    \end{alertblock}
+    
+    \uncover<2->{
+        \begin{itemize}[<+->]
+            \item A \textbf{transaction} is a collection of operations that performs a single logical function in a database application.
+            \item \textbf{Transaction-management component} ensures that the database remains in a consistent (correct) state despite system failures and transaction failures.
+            \item \textbf{Concurrency-control manager} controls the interaction among the concurrent transactions, to ensure the consistency of the database.
+        \end{itemize}
+    }
 \end{frame}
 
 \section{Database System Internals}

@@ -13,6 +13,8 @@
 \usepackage{amssymb}
 \usepackage{longtable}
 \usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{mindmap,trees,shadows,arrows.meta,positioning,shapes.geometric,calc,chains}
 
 % --- Title Information ---
 \title{Module 02}
@@ -29,13 +31,13 @@
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item To understand the need for a DBMS from a historical perspective
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Evolution of data management practices
         \item History of DBMS
     \end{itemize}
@@ -53,27 +55,34 @@
 \end{frame}
 
 \begin{frame}{Data Management}
-    Management of Data or Records is a basic need for human society:
-    \begin{itemize}
-        \item Storage
-        \item Retrieval
-        \item Transaction
-        \item Audit
-        \item Archival
-    \end{itemize}
+    \begin{block}{Definition}
+        Management of Data or Records is a basic need for human society:
+        \begin{itemize}[<+->]
+            \item Storage
+            \item Retrieval
+            \item Transaction
+            \item Audit
+            \item Archival
+        \end{itemize}
+    \end{block}
     \vspace{0.5em}
-    \textbf{For:}
-    \begin{itemize}
-        \item Individual
-        \item Small / Big Enterprise
-        \item Global
-    \end{itemize}
-    \vspace{0.5em}
-    There have been two major approaches in this practice:
-    \begin{itemize}
-        \item Physical
-        \item Electronic
-    \end{itemize}
+    \uncover<6->{
+        \vspace{0.5em}
+        \textbf{For:}
+        \begin{itemize}
+            \item Individual
+            \item Small / Big Enterprise
+            \item Global
+        \end{itemize}
+    }
+    \uncover<7->{
+        \vspace{0.5em}
+        There have been two major approaches in this practice:
+        \begin{itemize}
+            \item Physical
+            \item Electronic
+        \end{itemize}
+    }
 \end{frame}
 
 \begin{frame}{Data Management: Physical}
@@ -87,8 +96,10 @@
 \end{frame}
 
 \begin{frame}{Data Management: Electronic}
-    Electronic Data or Records management moves with the advances in technology especially of memory, storage, computing, and networking.
-    \begin{itemize}
+    \begin{exampleblock}{Growth with Technology}
+        Electronic Data or Records management moves with the advances in technology especially of memory, storage, computing, and networking.
+    \end{exampleblock}
+    \begin{itemize}[<+->]
         \item \textbf{1950s:} Computer Programming started
         \item \textbf{1960s:} Data Management with punch card / tapes and magnetic tapes
         \item \textbf{1970s:} 
@@ -108,7 +119,7 @@
     Electronic Data or Records management depends on various parameters including:
     \begin{columns}[t]
         \begin{column}{0.5\textwidth}
-            \begin{itemize}
+            \begin{itemize}[<+->]
                 \item Durability
                 \item Scalability
                 \item Security
@@ -116,7 +127,7 @@
             \end{itemize}
         \end{column}
         \begin{column}{0.5\textwidth}
-            \begin{itemize}
+            \begin{itemize}[<+->]
                 \item Ease of Use
                 \item Consistency
                 \item Efficiency
@@ -131,21 +142,25 @@
     \textbf{Recall how shop owners used to maintain their accounts.} \\
     A book register was maintained on which the shop owner wrote the amount received from customers, the amount due for any customer, inventory details and so on.
     
-    \vspace{0.5em}
-    \textbf{Problems with such an approach of book-keeping:}
-    \begin{itemize}
-        \item \textbf{Durability:} Physical damage to these registers is a possibility due to rodents, humidity, wear and tear
-        \item \textbf{Scalability:} Very difficult to maintain for many years, some shops have numerous registers spanning over years
-        \item \textbf{Security:} Susceptible to tampering by outsiders
-        \item \textbf{Retrieval:} Time consuming process to search for a previous entry
-        \item \textbf{Consistency:} Prone to human errors
-    \end{itemize}
-    Not only small shops but large organizations also used to maintain their transaction details in book registers.
+    \uncover<2->{
+        \vspace{0.5em}
+        \textbf{Problems with such an approach of book-keeping:}
+        \begin{itemize}[<+->]
+            \item \textbf{Durability:} Physical damage to these registers is a possibility due to rodents, humidity, wear and tear
+            \item \textbf{Scalability:} Very difficult to maintain for many years, some shops have numerous registers spanning over years
+            \item \textbf{Security:} Susceptible to tampering by outsiders
+            \item \textbf{Retrieval:} Time consuming process to search for a previous entry
+            \item \textbf{Consistency:} Prone to human errors
+        \end{itemize}
+    }
+    \uncover<8->{
+        Not only small shops but large organizations also used to maintain their transaction details in book registers.
+    }
 \end{frame}
 
 \begin{frame}{Spreadsheet Files - A better solution}
     \textbf{Spreadsheet Softwares like Google Sheets:} Due to the disadvantages of maintaining ledger registers, organizations dealing with huge amount of data shifted to using spreadsheet softwares for maintaining their records in files.
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Durability:} These are computer applications and hence data is less prone to physical damage.
         \item \textbf{Scalability:} Easier to search, insert and modify records as compared to book ledgers
         \item \textbf{Security:} Can be password-protected
@@ -158,7 +173,7 @@
 
 \begin{frame}{Why leave filesystems?}
     \textbf{Lack of efficiency in meeting growing needs}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item With rapid scale up of data, there has been considerable increase in the time required to perform most operations.
         \item A typical spreadsheet file may have an upper limit on the number of rows.
         \item Ensuring consistency of data is a big challenge.
@@ -167,8 +182,12 @@
         \item A system crash could be catastrophic.
     \end{itemize}
     
-    \vspace{0.5em}
-    The above limitations of filesystems paved the way for a comprehensive platform dedicated to management of data -- the \textbf{Database Management Systems}.
+    \uncover<7->{
+        \vspace{0.5em}
+        \begin{alertblock}{Database Management Systems}
+            The above limitations of filesystems paved the way for a comprehensive platform dedicated to management of data -- the \textbf{Database Management Systems}.
+        \end{alertblock}
+    }
 \end{frame}
 
 \section{History of DBMS}
@@ -183,54 +202,97 @@
 \end{frame}
 
 \begin{frame}{History of Database Systems}
-    \begin{itemize}
-        \item \textbf{1950s and early 1960s:}
-        \begin{itemize}
-            \item Data processing using magnetic tapes for storage
-            \begin{itemize}
-                \item[$\triangleright$] Tapes provided only sequential access
-            \end{itemize}
-            \item Punched cards for input
-        \end{itemize}
-        \item \textbf{Late 1960s and 1970s:}
-        \begin{itemize}
-            \item Hard disks allowed direct access to data
-            \item Network and hierarchical data models in widespread use
-            \item Ted Codd defines the relational data model
-            \begin{itemize}
-                \item[$\triangleright$] Would win the ACM Turing Award for this work
-                \item[$\triangleright$] IBM Research begins System R prototype
-                \item[$\triangleright$] UC Berkeley begins Ingres prototype
-            \end{itemize}
-            \item High-performance (for the era) transaction processing
-        \end{itemize}
-    \end{itemize}
+    \begin{center}
+        \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}[
+                start chain=going right,
+                node distance=5mm,
+                event/.style={rectangle, draw=MidnightBlue!80, fill=MidnightBlue!5, rounded corners, thick, text centered, text width=3cm, minimum height=3.5cm, drop shadow, on chain},
+                year/.style={font=\bfseries, text=MidnightBlue, align=center, inner sep=2pt, fill=white}
+            ]
+            
+            \node[event] (50s) {
+                \begin{itemize}
+                    \item Magnetic tapes
+                    \item Sequential access
+                    \item Punched cards
+                \end{itemize}
+            };
+            \node[year, above=2mm of 50s] {1950s - 60s};
+            
+            \node[event] (70s) {
+                \begin{itemize}
+                    \item Hard disks (direct access)
+                    \item Network \& Hierarchical models
+                    \item Ted Codd (Relational model)
+                \end{itemize}
+            };
+            \node[year, above=2mm of 70s] {Late 60s - 70s};
+            
+            \node[event] (80s) {
+                \begin{itemize}
+                    \item SQL industrial standard
+                    \item Parallel \& distributed DBs
+                    \item Object-oriented DBs
+                \end{itemize}
+            };
+            \node[year, above=2mm of 80s] {1980s};
+            
+            \node[event] (90s) {
+                \begin{itemize}
+                    \item Data warehousing
+                    \item Data mining
+                    \item Emergence of Web commerce
+                \end{itemize}
+            };
+            \node[year, above=2mm of 90s] {1990s};
+            
+            % Arrows
+            \draw[->, thick, MidnightBlue!50] (50s) -- (70s);
+            \draw[->, thick, MidnightBlue!50] (70s) -- (80s);
+            \draw[->, thick, MidnightBlue!50] (80s) -- (90s);
+            
+            \end{tikzpicture}
+        }
+    \end{center}
 \end{frame}
 
-\begin{frame}{History (2)}
-    \begin{itemize}
-        \item \textbf{1980s:}
-        \begin{itemize}
-            \item Research relational prototypes evolve into commercial systems -- SQL becomes industrial standard
-            \item Parallel and distributed database systems
-            \item Object-oriented database systems
-        \end{itemize}
-        \item \textbf{1990s:}
-        \begin{itemize}
-            \item Large decision support and data-mining applications
-            \item Large multi-terabyte data warehouses
-            \item Emergence of Web commerce
-        \end{itemize}
-        \item \textbf{Early 2000s:}
-        \begin{itemize}
-            \item XML and XQuery standards
-            \item Automated database administration
-        \end{itemize}
-        \item \textbf{Later 2000s:}
-        \begin{itemize}
-            \item Giant data storage systems -- Google BigTable, Yahoo PNuts, Amazon, $\ldots$
-        \end{itemize}
-    \end{itemize}
+\begin{frame}{History of Database Systems (2)}
+    \begin{center}
+        \resizebox{0.7\textwidth}{!}{
+            \begin{tikzpicture}[
+                start chain=going right,
+                node distance=10mm,
+                event/.style={rectangle, draw=MidnightBlue!80, fill=MidnightBlue!5, rounded corners, thick, text centered, text width=4cm, minimum height=3cm, drop shadow, on chain},
+                year/.style={font=\bfseries, text=MidnightBlue, align=center, inner sep=2pt, fill=white}
+            ]
+            
+            \node[event] (early00s) {
+                \begin{itemize}
+                    \item XML and XQuery standards
+                    \item Automated database administration
+                \end{itemize}
+            };
+            \node[year, above=2mm of early00s] {Early 2000s};
+            
+            \node[event] (late00s) {
+                \begin{itemize}
+                    \item Giant data storage systems
+                    \begin{itemize}
+                        \item Google BigTable
+                        \item Yahoo PNuts
+                        \item Amazon Dynamo
+                    \end{itemize}
+                \end{itemize}
+            };
+            \node[year, above=2mm of late00s] {Later 2000s};
+            
+            % Arrows
+            \draw[->, thick, MidnightBlue!50] (early00s) -- (late00s);
+            
+            \end{tikzpicture}
+        }
+    \end{center}
 \end{frame}
 
 \begin{frame}{History (3): Evolution of Data Models}

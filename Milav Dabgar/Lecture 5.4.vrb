@@ -1,7 +1,8 @@
 \frametitle{Canonical Cover (5)}
-\begin{itemize}
+\begin{itemize}[<+->]
         \item To compute a canonical cover for $F$:
     \end{itemize}
+    \vspace{1em}
     \begin{verbatim}
 repeat
     Use the union rule to replace any dependencies in F
@@ -13,6 +14,6 @@ repeat
         If an extraneous attribute is found, delete it from alpha -> beta
 until F does not change
     \end{verbatim}
-    \begin{itemize}
+    \begin{itemize}[<+(1)->]
         \item Note: Union rule may become applicable after some extraneous attributes have been deleted, so it has to be re-applied
     \end{itemize}

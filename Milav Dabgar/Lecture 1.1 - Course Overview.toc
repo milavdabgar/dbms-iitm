@@ -1,2 +1,2 @@
-\beamer@sectionintoc {1}{Why Databases?}{4}{0}{1}
-\beamer@sectionintoc {2}{Know Your Course}{9}{0}{2}
+\beamer@sectionintoc {1}{Why Databases?}{9}{0}{1}
+\beamer@sectionintoc {2}{Know Your Course}{46}{0}{2}

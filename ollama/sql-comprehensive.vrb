@@ -1,0 +1,50 @@
+\frametitle{Numeric Functions}
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\onslide<1->{
+\begin{block}{Mathematical Functions}
+\begin{itemize}
+    \item \texttt{ABS(n)} - Absolute value
+    \item \texttt{ROUND(n, d)} - Round to d decimals
+    \item \texttt{CEIL(n)} / \texttt{CEILING(n)} - Round up
+    \item \texttt{FLOOR(n)} - Round down
+    \item \texttt{TRUNC(n, d)} - Truncate
+    \item \texttt{MOD(n, d)} / \texttt{n % d} - Modulo
+    \item \texttt{POWER(n, e)} / \texttt{POW(n, e)}
+    \item \texttt{SQRT(n)} - Square root
+    \item \texttt{SIGN(n)} - Sign of number
+    \item \texttt{GREATEST(n1, n2, ...)} - Maximum
+    \item \texttt{LEAST(n1, n2, ...)} - Minimum
+\end{itemize}
+\end{block}
+}
+\end{column}
+
+\pause
+\begin{column}{0.5\textwidth}
+\begin{exampleblock}<2->{Numeric Examples}
+\begin{lstlisting}
+-- Round salary
+SELECT first_name, ROUND(salary, -2) AS rounded_salary
+FROM employees;
+
+-- Calculate bonus
+SELECT first_name, salary * 0.1 AS bonus,
+       CEIL(salary * 0.1) AS rounded_bonus
+FROM employees;
+
+-- Modulo for even/odd
+SELECT emp_id,
+       CASE WHEN MOD(emp_id, 2) = 0
+            THEN 'Even' ELSE 'Odd' END
+FROM employees;
+
+-- Power calculation
+SELECT POWER(2, 10) AS kilobytes;
+
+-- Square root
+SELECT SQRT(16) AS result;  -- Returns 4
+\end{lstlisting}
+\end{exampleblock}
+\end{column}
+\end{columns}

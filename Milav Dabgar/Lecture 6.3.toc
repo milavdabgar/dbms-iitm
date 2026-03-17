@@ -1,6 +1,6 @@
-\beamer@sectionintoc {1}{Library Information System Specification}{5}{0}{1}
-\beamer@sectionintoc {2}{Entity Sets}{12}{0}{2}
-\beamer@sectionintoc {3}{Relationships}{19}{0}{3}
-\beamer@sectionintoc {4}{Relational Schema}{21}{0}{4}
-\beamer@sectionintoc {5}{Schema Refinement}{23}{0}{5}
-\beamer@sectionintoc {6}{Final Schema}{36}{0}{6}
+\beamer@sectionintoc {1}{Library Information System Specification}{6}{0}{1}
+\beamer@sectionintoc {2}{Entity Sets}{61}{0}{2}
+\beamer@sectionintoc {3}{Relationships}{68}{0}{3}
+\beamer@sectionintoc {4}{Relational Schema}{70}{0}{4}
+\beamer@sectionintoc {5}{Schema Refinement}{78}{0}{5}
+\beamer@sectionintoc {6}{Final Schema}{91}{0}{6}

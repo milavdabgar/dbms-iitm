@@ -13,6 +13,8 @@
 \usepackage{amssymb}
 \usepackage{longtable}
 \usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{mindmap,trees,shadows,arrows.meta,positioning,shapes.geometric,calc}
 
 % --- Title Information ---
 \title{Module 01}
@@ -29,14 +31,14 @@
 \end{frame}
 
 \begin{frame}{Module Objectives}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item To understand the importance of database management systems in modern day applications
         \item To Know Your Course
     \end{itemize}
 \end{frame}
 
 \begin{frame}{Module Outline}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Why Databases?
         \item KYC: Know Your Course
         \item Course Prerequisite
@@ -57,7 +59,7 @@
 \end{frame}
 
 \begin{frame}{Database Management System (DBMS)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item DBMS contains information about a particular enterprise
         \item Collection of interrelated data
         \item Set of programs to access the data
@@ -78,19 +80,24 @@
 \end{frame}
 
 \begin{frame}{University Database Example}
-    \begin{itemize}
-        \item Application program examples
-        \begin{itemize}
+    \begin{exampleblock}{Application program examples}
+        \begin{itemize}[<+->]
             \item Add new students, instructors, and courses
             \item Register students for courses, and generate class rosters
             \item Assign grades to students, compute grade point averages (GPA) and generate transcripts
         \end{itemize}
-        \item In the early days, database applications were built directly on top of file systems
-    \end{itemize}
+    \end{exampleblock}
+    
+    \uncover<4->{
+        \vspace{1em}
+        \begin{block}{Historical Context}
+            In the early days, database applications were built directly on top of file systems
+        \end{block}
+    }
 \end{frame}
 
 \begin{frame}{Drawbacks of using file systems to store data}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Data redundancy and inconsistency
         \begin{itemize}
             \item Multiple file formats, duplication of information in different files
@@ -112,7 +119,7 @@
 \end{frame}
 
 \begin{frame}{Drawbacks of using file systems to store data (2)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item Atomicity of updates
         \begin{itemize}
             \item Failures may leave database in an inconsistent state with partial updates carried out
@@ -130,8 +137,12 @@
         \end{itemize}
     \end{itemize}
     
-    \vspace{0.5em}
-    \textbf{Database systems offer solutions to all the above problems}
+    \uncover<4->{
+        \vspace{0.5em}
+        \begin{alertblock}{Solution}
+            Database systems offer solutions to all the above problems
+        \end{alertblock}
+    }
 \end{frame}
 
 \section{Know Your Course}
@@ -146,7 +157,7 @@
 \end{frame}
 
 \begin{frame}{Course Prerequisites: Essential}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Set Theory}
         \begin{itemize}
             \item Definition of a Set
@@ -173,7 +184,7 @@
 \end{frame}
 
 \begin{frame}{Course Prerequisites: Essential (Relations and Functions)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Relations and Functions}
         \begin{itemize}
             \item Definition of Relations
@@ -197,7 +208,7 @@
 \end{frame}
 
 \begin{frame}{Course Prerequisites: Essential (Propositional Logic)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Propositional Logic}
         \begin{itemize}
             \item Truth Values \& Truth Tables
@@ -213,7 +224,7 @@
 \end{frame}
 
 \begin{frame}{Course Prerequisites: Essential (Predicate Logic)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Predicate Logic}
         \begin{itemize}
             \item Predicates
@@ -232,7 +243,7 @@
 \end{frame}
 
 \begin{frame}{Course Prerequisites: Essential (Data Structures)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Data Structures}
         \begin{itemize}
             \item Array
@@ -255,7 +266,7 @@
 \end{frame}
 
 \begin{frame}{Course Prerequisites: Essential (Programming)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Programming in Python}
         \item \textbf{Courses}
         \begin{itemize}
@@ -266,7 +277,7 @@
 \end{frame}
 
 \begin{frame}{Course Prerequisites: Desirable}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Algorithms and Programming in C}
         \begin{itemize}
             \item Sorting
@@ -292,7 +303,7 @@
 \end{frame}
 
 \begin{frame}{Course Prerequisites: Desirable (OOAD)}
-    \begin{itemize}
+    \begin{itemize}[<+->]
         \item \textbf{Object-Oriented Analysis and Design}
         \item \textbf{Courses}
         \begin{itemize}
@@ -304,24 +315,28 @@
 
 \begin{frame}{Course Outline}
     \begin{center}
-        \begin{adjustbox}{max width=0.9\textwidth}
-        \begin{tabular}{|l|l|}
-        \hline
-        \textbf{Week No.} & \textbf{Topics} \\ \hline
-        Week 1 & Course Overview; Introduction \\ \hline
-        Week 2 & Basic Structured Query Language \\ \hline
-        Week 3 & Advanced Structured Query Language \\ \hline
-        Week 4 & Relational Algebra, Entity Relationship Model \\ \hline
-        Week 5 & Normal Forms and Functional Dependency \\ \hline
-        Week 6 & Normal Forms and Functional Dependency \\ \hline
-        Week 7 & Application Development \\ \hline
-        Week 8 & Storage Management \\ \hline
-        Week 9 & Indexing and Hashing \\ \hline
-        Week 10 & Transactions \\ \hline
-        Week 11 & Backup and Recovery \\ \hline
-        Week 12 & Query Optimization, Conclusion \\ \hline
-        \end{tabular}
-        \end{adjustbox}
+        \resizebox{0.95\textwidth}{!}{
+            \begin{tikzpicture}[
+                node distance=1.5cm and 2.5cm,
+                box/.style={rectangle, draw=MidnightBlue!80, fill=MidnightBlue!10, rounded corners, thick, text centered, text width=4.5cm, minimum height=1.2cm, drop shadow},
+                arrow/.style={-{Stealth[length=2mm, width=2mm]}, thick, MidnightBlue!80}
+            ]
+            
+            % Nodes
+            \node (intro) [box] {\textbf{Weeks 1-3}\\Intro \& SQL};
+            \node (model) [box, below right=of intro] {\textbf{Weeks 4-6}\\Relational Algebra \& Normal Forms};
+            \node (app) [box, below left=of model] {\textbf{Week 7}\\Application Dev};
+            \node (storage) [box, below right=of app] {\textbf{Weeks 8-9}\\Storage \& Indexing};
+            \node (trans) [box, below left=of storage] {\textbf{Weeks 10-12}\\Transactions, Recovery, \& Query Opt};
+            
+            % Arrows
+            \draw [arrow] (intro) -- (model);
+            \draw [arrow] (model) -- (app);
+            \draw [arrow] (app) -- (storage);
+            \draw [arrow] (storage) -- (trans);
+            
+            \end{tikzpicture}
+        }
     \end{center}
 \end{frame}
 
