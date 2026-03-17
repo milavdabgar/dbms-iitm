@@ -1,0 +1,26 @@
+\frametitle{Aggregate functions (5): SUM}
+\begin{itemize}
+        \item From the \texttt{course} relation, find the total credits offered by each department.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL]
+select dept_name, sum(credits) as sum_credits
+from course
+group by dept_name;
+        \end{lstlisting}
+        \item \textbf{Output:}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.4\textwidth}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{dept\_name} & \textbf{sum\_credits} \\ \hline
+        Finance & 3 \\ \hline
+        History & 3 \\ \hline
+        Physics & 4 \\ \hline
+        Music & 3 \\ \hline
+        Comp. Sci. & 17 \\ \hline
+        Biology & 11 \\ \hline
+        Elec. Eng. & 3 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}

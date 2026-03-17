@@ -1,0 +1,14 @@
+\frametitle{Other Authorization Features}
+\begin{itemize}
+        \item \textbf{\texttt{references}} privilege to create foreign key
+        \begin{lstlisting}[language=SQL]
+grant reference (dept_name) on department to Mariano;
+        \end{lstlisting}
+        \item why is this required?
+        \item \textbf{Transfer of privileges}
+        \begin{lstlisting}[language=SQL]
+grant select on department to Amit with grant option;
+revoke select on department from Amit, Satoshi cascade;
+revoke select on department from Amit, Satoshi restrict;
+        \end{lstlisting}
+    \end{itemize}

@@ -1,0 +1,28 @@
+\frametitle{Data Definition Language (DDL)}
+\begin{itemize}
+        \item Specification notation for defining the database schema
+        \item Example:
+    \end{itemize}
+    \begin{verbatim}
+create table instructor (
+    ID          char(5),
+    name        varchar(20),
+    dept_name   varchar(20),
+    salary      numeric(8,2)
+)
+    \end{verbatim}
+    \begin{itemize}
+        \item DDL compiler generates a set of table templates stored in a data dictionary
+        \item Data dictionary contains metadata (that is, data about data)
+        \begin{itemize}
+            \item Database schema
+            \item Integrity constraints
+            \begin{itemize}
+                \item[$\triangleright$] Primary key (ID uniquely identifies instructors)
+            \end{itemize}
+            \item Authorization
+            \begin{itemize}
+                \item[$\triangleright$] Who can access what
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}

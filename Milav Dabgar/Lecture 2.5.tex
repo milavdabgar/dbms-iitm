@@ -1,0 +1,328 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 10}
+\subtitle{Introduction to SQL/3}
+\author{Milav Dabgar}
+\institute{www.milav.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item Completed the understanding of basic query structure
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To familiarize with set operations, null values and aggregation
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Set Operations: \texttt{union}, \texttt{intersect}, \texttt{except}
+        \item Null Values
+        \item Aggregate Functions: \texttt{avg}, \texttt{min}, \texttt{max}, \texttt{sum}, and \texttt{count}
+        \item \texttt{Group By}
+        \item \texttt{Having}
+        \item Null Values
+    \end{itemize}
+\end{frame}
+
+\section{Set Operations}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Set Operations\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Set Operations}
+    \begin{itemize}
+        \item Find courses that ran in Fall 2009 or in Spring 2010
+        \begin{lstlisting}[language=SQL]
+(select course_id from section where sem = 'Fall' and year = 2009)
+union
+(select course_id from section where sem = 'Spring' and year = 2010);
+        \end{lstlisting}
+        \item Find courses that ran in Fall 2009 and in Spring 2010
+        \begin{lstlisting}[language=SQL]
+(select course_id from section where sem = 'Fall' and year = 2009)
+intersect
+(select course_id from section where sem = 'Spring' and year = 2010);
+        \end{lstlisting}
+        \item Find courses that ran in Fall 2009 but not in Spring 2010
+        \begin{lstlisting}[language=SQL]
+(select course_id from section where sem = 'Fall' and year = 2009)
+except
+(select course_id from section where sem = 'Spring' and year = 2010);
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Set Operations (2)}
+    \begin{itemize}
+        \item Find the salaries of all instructors that are less than the largest salary
+        \begin{lstlisting}[language=SQL]
+select distinct T.salary 
+from instructor as T, instructor as S 
+where T.salary < S.salary;
+        \end{lstlisting}
+        \item Find all the salaries of all instructors
+        \begin{lstlisting}[language=SQL]
+select distinct salary 
+from instructor;
+        \end{lstlisting}
+        \item Find the largest salary of all instructors
+        \begin{lstlisting}[language=SQL]
+(select 'second query')
+except
+(select 'first query');
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Set Operations (3)}
+    \begin{itemize}
+        \item Set operations \texttt{union}, \texttt{intersect}, and \texttt{except}
+        \item Each of the above operations automatically eliminates duplicates
+        \item To retain all duplicates use the corresponding multiset versions \texttt{union all}, \texttt{intersect all}, and \texttt{except all}.
+        \item Suppose a tuple occurs $m$ times in $r$ and $n$ times in $s$, then, it occurs:
+        \begin{itemize}
+            \item \textbf{$m + n$} times in \texttt{$r$ union all $s$}
+            \item \textbf{$\min(m, n)$} times in \texttt{$r$ intersect all $s$}
+            \item \textbf{$\max(0, m - n)$} times in \texttt{$r$ except all $s$}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Null Values}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Null Values\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Null Values}
+    \begin{itemize}
+        \item It is possible for tuples to have a null value, denoted by \texttt{null}, for some of their attributes
+        \item \texttt{null} signifies an unknown value or that a value does not exist
+        \item The result of any arithmetic expression involving \texttt{null} is \texttt{null}
+        \begin{itemize}
+            \item Example: \texttt{5 + null} returns \texttt{null}
+        \end{itemize}
+        \item The predicate \texttt{is null} can be used to check for null values
+        \begin{itemize}
+            \item Example: Find all instructors whose salary is null
+            \begin{lstlisting}[language=SQL]
+select name 
+from instructor 
+where salary is null;
+            \end{lstlisting}
+        \end{itemize}
+        \item It is not possible to test for null values with comparison operators, such as \texttt{=}, \texttt{<}, or \texttt{<>}. We need to use the \texttt{is null} and \texttt{is not null} operators instead
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Null Values (2): Three Valued Logic}
+    \begin{itemize}
+        \item Three values: \textbf{true}, \textbf{false}, \textbf{unknown}
+        \item Any comparison with null returns \textbf{unknown}
+        \begin{itemize}
+            \item Example: $\texttt{5 < null}$ \quad or \quad $\texttt{null <> null}$ \quad or \quad $\texttt{null = null}$
+        \end{itemize}
+        \item Three-valued logic using the value \textbf{unknown}:
+        \begin{itemize}
+            \item \textbf{OR}: \texttt{(unknown or true) = true}, \texttt{(unknown or false) = unknown}, \texttt{(unknown or unknown) = unknown}
+            \item \textbf{AND}: \texttt{(true and unknown) = unknown}, \texttt{(false and unknown) = false}, \texttt{(unknown and unknown) = unknown}
+            \item \textbf{NOT}: \texttt{(not unknown) = unknown}
+        \end{itemize}
+        \item `\texttt{P is unknown}' evaluates to \textbf{true} if predicate $P$ evaluates to \textbf{unknown}
+        \item Result of \texttt{where} clause predicate is treated as \textbf{false} if it evaluates to \textbf{unknown}
+    \end{itemize}
+\end{frame}
+
+\section{Aggregate Functions}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Aggregate Functions\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Aggregate Functions}
+    \begin{itemize}
+        \item These functions operate on the multiset of values of a column of a relation, and return a value
+        \begin{itemize}
+            \item \texttt{avg}: average value
+            \item \texttt{min}: minimum value
+            \item \texttt{max}: maximum value
+            \item \texttt{sum}: sum of values
+            \item \texttt{count}: number of values
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Aggregate Functions (2)}
+    \begin{itemize}
+        \item Find the average salary of instructors in the Computer Science department
+        \begin{lstlisting}[language=SQL]
+select avg(salary) 
+from instructor 
+where dept_name = 'Comp. Sci';
+        \end{lstlisting}
+        \item Find the total number of instructors who teach a course in the Spring 2010 semester
+        \begin{lstlisting}[language=SQL]
+select count(distinct ID) 
+from teaches 
+where semester = 'Spring' and year = 2010;
+        \end{lstlisting}
+        \item Find the number of tuples in the course relation
+        \begin{lstlisting}[language=SQL]
+select count(*) 
+from course;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Aggregate Functions (3): Group By}
+    \begin{itemize}
+        \item Find the average salary of instructors in each department
+        \begin{lstlisting}[language=SQL]
+select dept_name, avg(salary) as avg_salary 
+from instructor 
+group by dept_name;
+        \end{lstlisting}
+    \end{itemize}
+
+    \vspace{1em}
+    \begin{minipage}{0.65\textwidth}
+        \small
+        \textbf{instructor} relation
+        \begin{center}
+            \begin{tabular}{|l|l|l|l|}
+            \hline
+            \textbf{ID} & \textbf{name} & \textbf{dept\_name} & \textbf{salary} \\ \hline
+            76766 & Crick & Biology & 72000 \\ \hline
+            45565 & Katz & Comp. Sci. & 75000 \\ \hline
+            10101 & Srinivasan & Comp. Sci. & 65000 \\ \hline
+            76543 & Singh & Finance & 80000 \\ \hline
+            \dots & \dots & \dots & \dots \\ \hline
+            33456 & Gold & Physics & 87000 \\ \hline
+            22222 & Einstein & Physics & 95000 \\ \hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}%
+    \begin{minipage}{0.35\textwidth}
+        \small
+        \textbf{Result}
+        \begin{center}
+            \begin{tabular}{|l|l|}
+            \hline
+            \textbf{dept\_name} & \textbf{avg\_salary} \\ \hline
+            Biology & 72000 \\ \hline
+            Comp. Sci. & 77333 \\ \hline
+            Finance & 85000 \\ \hline
+            \dots & \dots \\ \hline
+            Physics & 91000 \\ \hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Aggregate Functions (4): Group By}
+    \begin{itemize}
+        \item Attributes in \texttt{select} clause outside of aggregate functions must appear in \texttt{group by} list
+        \begin{lstlisting}[language=SQL]
+/* erroneous query */ 
+select dept_name, ID, avg(salary) 
+from instructor 
+group by dept_name;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Aggregate Functions (5): Having Clause}
+    \begin{itemize}
+        \item Find the names and average salaries of all departments whose average salary is greater than 42000
+        \begin{lstlisting}[language=SQL]
+select dept_name, avg(salary) 
+from instructor 
+group by dept_name 
+having avg(salary) > 42000;
+        \end{lstlisting}
+        \item \textbf{Note}: Predicates in the \texttt{having} clause are applied \textbf{after} the formation of groups, whereas predicates in the \texttt{where} clause are applied \textbf{before} forming groups.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Null Values and Aggregates}
+    \begin{itemize}
+        \item Total all salaries
+        \begin{lstlisting}[language=SQL]
+select sum(salary) 
+from instructor;
+        \end{lstlisting}
+        \item Above statement ignores null amounts
+        \item Result is null if there is no non-null amount
+        \item All aggregate operations except \texttt{count(*)} ignore tuples with null values on the aggregated attributes
+        \item What if collection has only null values?
+        \begin{itemize}
+            \item \texttt{count} returns \texttt{0}
+            \item all other aggregates return \texttt{null}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Completed the understanding of set operations, null values, and aggregation
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

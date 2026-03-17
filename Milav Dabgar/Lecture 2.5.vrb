@@ -1,0 +1,16 @@
+\frametitle{Null Values and Aggregates}
+\begin{itemize}
+        \item Total all salaries
+        \begin{lstlisting}[language=SQL]
+select sum(salary)
+from instructor;
+        \end{lstlisting}
+        \item Above statement ignores null amounts
+        \item Result is null if there is no non-null amount
+        \item All aggregate operations except \texttt{count(*)} ignore tuples with null values on the aggregated attributes
+        \item What if collection has only null values?
+        \begin{itemize}
+            \item \texttt{count} returns \texttt{0}
+            \item all other aggregates return \texttt{null}
+        \end{itemize}
+    \end{itemize}

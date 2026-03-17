@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{Example of a Relation}{5}{0}{1}
+\beamer@sectionintoc {2}{Attributes}{7}{0}{2}
+\beamer@sectionintoc {3}{Schema and Instance}{10}{0}{3}
+\beamer@sectionintoc {4}{Keys}{13}{0}{4}
+\beamer@sectionintoc {5}{Relational Query Languages}{19}{0}{5}

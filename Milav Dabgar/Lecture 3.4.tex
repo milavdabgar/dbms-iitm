@@ -1,0 +1,476 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 14}
+\subtitle{Intermediate SQL/3}
+\author{Milav Dabgar}
+\institute{www.milav.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item SQL expressions for Join and Views
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To understand Transactions
+        \item To learn SQL expressions for Integrity Constraints
+        \item To understand more Data Types in SQL
+        \item To understand Authorization in SQL
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Transactions
+        \item Integrity Constraints
+        \item SQL Data Types and Schemas
+        \item Authorization
+    \end{itemize}
+\end{frame}
+
+\section{Transactions}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Transactions\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Transactions}
+    \begin{itemize}
+        \item Unit of work
+        \item \textbf{Atomic transaction}
+        \begin{itemize}
+            \item either fully executed or rolled back as if it never occurred
+        \end{itemize}
+        \item Isolation from concurrent transactions
+        \item Transactions begin implicitly
+        \item Ended by \texttt{commit work} or \texttt{rollback work}
+        \item But default on most databases: each SQL statement commits automatically
+        \item Can turn off auto commit for a session (for example, using API)
+        \item In SQL:1999, can use: \texttt{begin atomic ... end}
+        \begin{itemize}
+            \item Not supported on most databases
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Integrity Constraints}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Integrity Constraints\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Integrity Constraints}
+    \begin{itemize}
+        \item Integrity constraints guard against accidental damage to the database, by ensuring that authorized changes to the database do not result in a loss of data consistency
+        \item A checking account must have a balance greater than Rs. 10,000.00
+        \item A salary of a bank employee must be at least Rs. 250.00 an hour
+        \item A customer must have a (non-null) phone number
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Integrity Constraints on a Single Relation}
+    \begin{itemize}
+        \item \texttt{not null}
+        \item \texttt{primary key}
+        \item \texttt{unique}
+        \item \texttt{check (P)}, where \texttt{P} is a predicate
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Not Null and Unique Constraints}
+    \begin{itemize}
+        \item \textbf{\texttt{not null}}
+        \begin{itemize}
+            \item Declare name and budget to be \texttt{not null}
+            \begin{lstlisting}[language=SQL]
+name varchar(20) not null 
+budget numeric(12,2) not null
+            \end{lstlisting}
+        \end{itemize}
+        \item \textbf{\texttt{unique ($A_1, A_2, ..., A_m$)}}
+        \begin{itemize}
+            \item The \texttt{unique} specification states that the attributes $A_1, A_2, ..., A_m$ form a candidate key
+            \item Candidate keys are permitted to be null (in contrast to primary keys).
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{The check clause}
+    \begin{itemize}
+        \item \texttt{check (P)}, where \texttt{P} is a predicate
+        \item Ensure that semester is one of fall, winter, spring or summer:
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create table section ( 
+    course_id varchar(8), 
+    sec_id varchar(8), 
+    semester varchar(6), 
+    year numeric(4,0), 
+    building varchar(15), 
+    room_number varchar(7), 
+    time_slot_id varchar(4), 
+    primary key (course_id, sec_id, semester, year), 
+    check (semester in ('Fall', 'Winter', 'Spring', 'Summer')) 
+);
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\section{Referential Integrity}
+
+\begin{frame}{Referential Integrity}
+    \begin{itemize}
+        \item Ensures that a value that appears in one relation for a given set of attributes also appears for a certain set of attributes in another relation
+        \item Example: If 'Biology' is a department name appearing in one of the tuples in the \texttt{instructor} relation, then there exists a tuple in the \texttt{department} relation for 'Biology'
+        \item Let $A$ be a set of attributes. Let $R$ and $S$ be two relations that contain attributes $A$ and where $A$ is the primary key of $S$. $A$ is said to be a \textbf{foreign key} of $R$ if for any values of $A$ appearing in $R$ these values also appear in $S$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Cascading Actions in Referential Integrity}
+    \begin{itemize}
+        \item With cascading, you can define the actions that the Database Engine takes when a user tries to delete or update a key to which existing foreign keys point
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create table course (
+    course_id char(5) primary key, 
+    title varchar(20), 
+    dept_name varchar(20) references department
+);
+        \end{lstlisting}
+        \vfill
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create table course (
+    ...
+    dept_name varchar(20), 
+    foreign key (dept_name) references department 
+        on delete cascade 
+        on update cascade,
+    ...
+);
+        \end{lstlisting}
+        \item Alternative actions to cascade: \texttt{no action}, \texttt{set null}, \texttt{set default}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Integrity Constraint Violation During Transactions}
+    \begin{itemize}
+        \item \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create table person ( 
+    ID char(10), 
+    name char(40), 
+    mother char(10), 
+    father char(10), 
+    primary key ID, 
+    foreign key father references person, 
+    foreign key mother references person
+);
+        \end{lstlisting}
+        \item How to insert a tuple without causing constraint violation?
+        \begin{itemize}
+            \item Insert father and mother of a person before inserting person
+            \item OR, Set father and mother to null initially, update after inserting all persons (not possible if father and mother attributes declared to be \texttt{not null})
+            \item OR Defer constraint checking (will discuss later)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{SQL Data Types and Schemas}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}SQL Data Types and Schemas\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Built-in Data Types in SQL}
+    \begin{itemize}
+        \item \texttt{date}: Dates, containing a (4 digit) year, month and date
+        \begin{itemize}
+            \item Example: \texttt{date '2005-7-27'}
+        \end{itemize}
+        \item \texttt{time}: Time of day, in hours, minutes and seconds.
+        \begin{itemize}
+            \item Example: \texttt{time '09:00:30'}, \texttt{time '09:00:30.75'}
+        \end{itemize}
+        \item \texttt{timestamp}: date plus time of day
+        \begin{itemize}
+            \item Example: \texttt{timestamp '2005-7-27 09:00:30.75'}
+        \end{itemize}
+        \item \texttt{interval}: period of time
+        \begin{itemize}
+            \item Example: \texttt{interval '1' day}
+        \end{itemize}
+        \item Subtracting a date/time/timestamp value from another gives an interval value
+        \item Interval values can be added to date/time/timestamp values
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Index Creation}
+    \begin{itemize}
+        \item \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create table student ( 
+    ID varchar(5), 
+    name varchar(20) not null, 
+    dept_name varchar(20), 
+    tot_cred numeric(3,0) default 0, 
+    primary key (ID)
+);
+        \end{lstlisting}
+        \item \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create index studentID_index on student(ID);
+        \end{lstlisting}
+        \item Indices are data structures used to speed up access to records with specified values for index attributes
+        \item \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+select * 
+from student 
+where ID = '12345';
+        \end{lstlisting}
+        \item Can be executed by using the index to find the required record, without looking at all records of \texttt{student}
+        \item More on indices in Chapter 9
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{User-Defined Types}
+    \begin{itemize}
+        \item \texttt{create type} construct in SQL creates user-defined type (alias, like \texttt{typedef} in C)
+        \item \begin{lstlisting}[language=SQL]
+create type Dollars as numeric(12,2) final;
+        \end{lstlisting}
+        \item \begin{lstlisting}[language=SQL]
+create table department (
+    dept_name varchar(20), 
+    building varchar(15), 
+    budget Dollars 
+);
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Domains}
+    \begin{itemize}
+        \item \texttt{create domain} construct in SQL-92 creates user-defined domain types 
+        \begin{lstlisting}[language=SQL]
+create domain person_name char(20) not null;
+        \end{lstlisting}
+        \item Types and domains are similar
+        \item Domains can have constraints, such as \texttt{not null}, specified on them
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create domain degree_level varchar(10) 
+    constraint degree_level_test 
+    check (value in ('Bachelors', 'Masters', 'Doctorate'));
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Large-Object Types}
+    \begin{itemize}
+        \item Large objects (photos, videos, CAD files, etc.) are stored as a \textbf{large object}:
+        \begin{itemize}
+            \item \textbf{\texttt{blob}}: binary large object - object is a large collection of uninterpreted binary data (whose interpretation is left to an application outside of the database system)
+            \item \textbf{\texttt{clob}}: character large object - object is a large collection of character data
+        \end{itemize}
+        \item When a query returns a large object, a pointer is returned rather than the large object itself
+    \end{itemize}
+\end{frame}
+
+\section{Authorization}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Authorization\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Authorization}
+    \begin{itemize}
+        \item Forms of authorization on parts of the database:
+        \begin{itemize}
+            \item \textbf{Read} - allows reading, but not modification of data
+            \item \textbf{Insert} - allows insertion of new data, but not modification of existing data
+            \item \textbf{Update} - allows modification, but not deletion of data
+            \item \textbf{Delete} - allows deletion of data
+        \end{itemize}
+        \item Forms of authorization to modify the database schema
+        \begin{itemize}
+            \item \textbf{Index} - allows creation and deletion of indices
+            \item \textbf{Resources} - allows creation of new relations
+            \item \textbf{Alteration} - allows addition or deletion of attributes in a relation
+            \item \textbf{Drop} - allows deletion of relations
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Authorization Specification in SQL}
+    \begin{itemize}
+        \item The \texttt{grant} statement is used to confer authorization
+        \begin{center}
+        \texttt{grant <privilege list> on <relation name or view name> to <user list>}
+        \end{center}
+        \item \texttt{<user list>} is:
+        \begin{itemize}
+            \item a user-id
+            \item \texttt{public}, which allows all valid users the privilege granted
+            \item A \textbf{role} (more on this later)
+        \end{itemize}
+        \item Granting a privilege on a view does not imply granting any privileges on the underlying relations
+        \item The grantor of the privilege must already hold the privilege on the specified item (or be the database administrator)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Privileges in SQL}
+    \begin{itemize}
+        \item \textbf{\texttt{select}}: allows read access to relation, or the ability to query using the view
+        \begin{itemize}
+            \item Example: grant users $U_1, U_2,$ and $U_3$ select authorization on the \texttt{instructor} relation:
+            \begin{lstlisting}[language=SQL]
+grant select on instructor to U1, U2, U3;
+            \end{lstlisting}
+        \end{itemize}
+        \item \textbf{\texttt{insert}}: the ability to insert tuples
+        \item \textbf{\texttt{update}}: the ability to update using the SQL update statement
+        \item \textbf{\texttt{delete}}: the ability to delete tuples
+        \item \textbf{\texttt{all privileges}}: used as a short form for all the allowable privileges
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Revoking Authorization in SQL}
+    \begin{itemize}
+        \item The \texttt{revoke} statement is used to revoke authorization
+        \begin{center}
+        \texttt{revoke <privilege list> on <relation name or view name> from <user list>}
+        \end{center}
+        \item Example:
+        \begin{lstlisting}[language=SQL]
+revoke select on branch from U1, U2, U3;
+        \end{lstlisting}
+        \item \texttt{<privilege-list>} may be \texttt{all} to revoke all privileges the revokee may hold
+        \item If \texttt{<revokee-list>} includes \texttt{public}, all users lose the privilege except those granted it explicitly
+        \item If the same privilege was granted twice to the same user by different grantees, the user may retain the privilege after the revocation
+        \item All privileges that depend on the privilege being revoked are also revoked
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Roles}
+    \begin{itemize}
+        \item \begin{lstlisting}[language=SQL]
+create role instructor;
+grant instructor to Amit;
+        \end{lstlisting}
+        \item Privileges can be granted to roles:
+        \begin{lstlisting}[language=SQL]
+grant select on takes to instructor;
+        \end{lstlisting}
+        \item Roles can be granted to users, as well as to other roles
+        \begin{lstlisting}[language=SQL]
+create role teaching_assistant;
+grant teaching_assistant to instructor;
+        \end{lstlisting}
+        \item Instructor inherits all privileges of teaching assistant
+        \item \textbf{Chain of roles}
+        \begin{lstlisting}[language=SQL]
+create role dean;
+grant instructor to dean;
+grant dean to Satoshi;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Authorization on Views}
+    \begin{itemize}
+        \item \begin{lstlisting}[language=SQL]
+create view geo_instructor as (
+    select * 
+    from instructor 
+    where dept_name = 'Geology'
+);
+grant select on geo_instructor to geo_staff;
+        \end{lstlisting}
+        \item Suppose that a \texttt{geo\_staff} member issues:
+        \begin{lstlisting}[language=SQL]
+select * from geo_instructor;
+        \end{lstlisting}
+        \item What if
+        \begin{itemize}
+            \item \texttt{geo\_staff} does not have permissions on \texttt{instructor}?
+            \item creator of view did not have some permissions on \texttt{instructor}?
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Other Authorization Features}
+    \begin{itemize}
+        \item \textbf{\texttt{references}} privilege to create foreign key
+        \begin{lstlisting}[language=SQL]
+grant reference (dept_name) on department to Mariano;
+        \end{lstlisting}
+        \item why is this required?
+        \item \textbf{Transfer of privileges}
+        \begin{lstlisting}[language=SQL]
+grant select on department to Amit with grant option;
+revoke select on department from Amit, Satoshi cascade;
+revoke select on department from Amit, Satoshi restrict;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Introduced transactions
+        \item Learnt SQL expressions for integrity constraints
+        \item Familiarized with more data types in SQL
+        \item Discussed authorization in SQL
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

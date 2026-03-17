@@ -1,0 +1,550 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 15}
+\subtitle{Advanced SQL}
+\author{Milav Dabgar}
+\institute{www.milav.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item Transactions
+        \item Integrity Constraints
+        \item More Data Types in SQL
+        \item Authorization in SQL
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To familiarize with functions and procedures in SQL
+        \item To understand the triggers and their performance issues
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Functions and Procedural Constructs
+        \item Triggers
+        \item Triggers: Functionality vs Performance
+    \end{itemize}
+\end{frame}
+
+\section{Functions and Procedural Constructs}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Functions and Procedural Constructs\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Native Language $\leftrightarrow$ Query Language}
+    \begin{itemize}
+        \item Application programs typically interact with the database using an interface:
+        \begin{itemize}
+            \item \textbf{Embedded SQL}
+            \item \textbf{Dynamic SQL} (ODBC, JDBC)
+        \end{itemize}
+        \item There's often a need to execute complex business logic that cannot be easily expressed in standard SQL alone.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Functions and Procedures}
+    \begin{itemize}
+        \item Functions / Procedures and Control Flow Statements were added in SQL:1999
+        \item Functions/Procedures can be written in \textbf{SQL itself}, or in an \textbf{external programming language} (like C, Java)
+        \item Functions written in an external languages are particularly useful with specialized data types such as images and geometric objects
+        \begin{itemize}
+            \item Example: Functions to check if polygons overlap, or to compare images for similarity
+        \end{itemize}
+        \item Some database systems support \textbf{table-valued functions}, which can return a relation as a result
+        \item SQL:1999 also supports a rich set of imperative constructs, including \textbf{loops}, \textbf{if-then-else}, and \textbf{assignment}
+        \item Many databases have proprietary procedural extensions to SQL that differ from SQL:1999
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{SQL Functions}
+    \begin{itemize}
+        \item Define a function that, given the name of a department, returns the count of the number of instructors in that department:
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create function dept_count (dept_name varchar(20))
+    returns integer
+    begin
+        declare d_count integer;
+        select count(*) into d_count 
+        from instructor 
+        where instructor.dept_name = dept_name;
+        return d_count; 
+    end
+        \end{lstlisting}
+        \item The function \texttt{dept\_count} can be used to find the department names and budget of all departments with more that 12 instructors:
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+select dept_name, budget 
+from department
+where dept_count (dept_name) > 12;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{SQL Functions (2)}
+    \begin{itemize}
+        \item Compound statement: \texttt{begin ... end}
+        \begin{itemize}
+            \item May contain multiple SQL statements between \texttt{begin} and \texttt{end}.
+        \end{itemize}
+        \item \texttt{returns} - indicates the variable-type that is returned (for example, \texttt{integer})
+        \item \texttt{return} - specifies the values that are to be returned as result of invoking the function
+        \item SQL functions are in fact parameterized views that generalize the regular notion of views by allowing parameters
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Table Functions}
+    \begin{itemize}
+        \item Functions that return a relation as a result added in SQL:2003
+        \item Return all instructors in a given department:
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\tiny]
+create function instructor_of (dept_name char(20))
+    returns table (
+        ID varchar(5), 
+        name varchar(20),
+        dept_name varchar(20),
+        salary numeric(8, 2)
+    )
+    return table ( 
+        select ID, name, dept_name, salary 
+        from instructor 
+        where instructor.dept_name = instructor_of.dept_name 
+    );
+        \end{lstlisting}
+        \item Usage
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\tiny]
+select *
+from table (instructor_of('Music'));
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{SQL Procedures}
+    \begin{itemize}
+        \item The \texttt{dept\_count} function could instead be written as procedure:
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create procedure dept_count_proc (
+    in dept_name varchar(20), 
+    out d_count integer
+)
+begin
+    select count(*) into d_count
+    from instructor
+    where instructor.dept_name = dept_count_proc.dept_name;
+end
+        \end{lstlisting}
+        \item Procedures can be invoked either from an SQL procedure or from embedded SQL, using the \texttt{call} statement.
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+declare d_count integer; 
+call dept_count_proc ('Physics', d_count);
+        \end{lstlisting}
+        \item Procedures and functions can be invoked also from dynamic SQL
+        \item SQL:1999 allows \textbf{overloading} - more than one function/procedure of the same name as long as the number of arguments and/or the types of the arguments differ
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Language Constructs for Procedures and Functions}
+    \begin{itemize}
+        \item SQL supports constructs that gives it almost all the power of a general-purpose programming language.
+        \item \textbf{Warning}: Most database systems implement their own variant of the standard syntax
+        \item Compound statement: \texttt{begin ... end}
+        \begin{itemize}
+            \item May contain multiple SQL statements between \texttt{begin} and \texttt{end}.
+            \item Local variables can be declared within a compound statement.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Language Constructs (2): \texttt{while} and \texttt{repeat}}
+    \begin{itemize}
+        \item \textbf{while} loop:
+        \begin{lstlisting}[language=SQL]
+while boolean_expression do 
+    sequence_of_statements;
+end while;
+        \end{lstlisting}
+        
+        \item \textbf{repeat} loop:
+        \begin{lstlisting}[language=SQL]
+repeat 
+    sequence_of_statements; 
+until boolean_expression 
+end repeat;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Language Constructs (3): \texttt{for}}
+    \begin{itemize}
+        \item \textbf{for} loop
+        \item Permits iteration over all results of a query
+        \item Find the budget of all departments:
+        \begin{lstlisting}[language=SQL]
+declare n integer default 0; 
+for r as
+    select budget from department
+do
+    set n = n + r.budget;
+end for;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Language Constructs (4): \texttt{if-then-else}}
+    \begin{itemize}
+        \item Conditional statements: \texttt{if-then-else}, \texttt{case}
+        \item \textbf{if-then-else} statement
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+if boolean_expression then 
+    sequence_of_statements; 
+elseif boolean_expression then 
+    sequence_of_statements;
+...
+else
+    sequence_of_statements;
+end if;
+        \end{lstlisting}
+        \item The \texttt{if} statement supports the use of optional \texttt{elseif} clauses and a default \texttt{else} clause.
+        \item Example procedure: registers student after ensuring classroom capacity is not exceeded (Returns 0 on success and -1 if capacity is exceeded)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Language Constructs (5): \texttt{Simple case}}
+    \begin{itemize}
+        \item \textbf{Simple case} statement
+        \begin{lstlisting}[language=SQL]
+case variable
+    when value1 then sequence_of_statements; 
+    when value2 then sequence_of_statements;
+    ...
+    else sequence_of_statements;
+end case;
+        \end{lstlisting}
+        \item The \texttt{when} clause of the \texttt{case} statement defines the value that when satisfied determines the flow of control
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Language Constructs (6): \texttt{Searched case}}
+    \begin{itemize}
+        \item \textbf{Searched case} statement
+        \begin{lstlisting}[language=SQL]
+case 
+    when sql-expression = value1 then sequence_of_statements; 
+    when sql-expression = value2 then sequence_of_statements;
+    ...
+    else sequence_of_statements;
+end case;
+        \end{lstlisting}
+        \item Any supported SQL expression can be used here. These expressions can contain references to variables, parameters, special registers, and more.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Language Constructs (7): \texttt{Exception}}
+    \begin{itemize}
+        \item Signaling of exception conditions, and declaring handlers for exceptions
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+declare out_of_classroom_seats condition;
+declare exit handler for out_of_classroom_seats 
+begin
+    ...
+    signal out_of_classroom_seats;
+    ...
+end;
+        \end{lstlisting}
+        \item The handler here is \texttt{exit} causes enclosing \texttt{begin ... end} to be terminated and exit
+        \item Other actions possible on exception
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{External Language Routines*}
+    \begin{itemize}
+        \item SQL:1999 allows the definition of functions/procedures in an imperative programming language (Java, C$\#$, C or C++) which can be invoked from SQL queries
+        \item Such functions can be more efficient than functions defined in SQL, and computations that cannot be carried out in SQL can be executed by these functions
+        \item Declaring external language procedures and functions
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create procedure dept_count_proc(
+    in dept_name varchar(20), 
+    out count integer
+) 
+language C
+external name '/usr/avi/bin/dept_count_proc';
+
+create function dept_count(dept_name varchar(20))
+    returns integer 
+    language C
+    external name '/usr/avi/bin/dept_count';
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{External Language Routines (2)*}
+    \begin{itemize}
+        \item \textbf{Benefits of external language functions/procedures:}
+        \begin{itemize}
+            \item More efficient for many operations, and more expressive power
+        \end{itemize}
+        \item \textbf{Drawbacks}
+        \begin{itemize}
+            \item Code to implement function may need to be loaded into database system and executed in the database system's address space.
+            \item $\triangleright$ Risk of accidental corruption of database structures
+            \item $\triangleright$ Security risk, allowing users access to unauthorized data
+        \end{itemize}
+        \item There are alternatives, which give good security at the cost of performance
+        \item Direct execution in the database system's space is used when efficiency is more important than security
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{External Language Routines (3)*: Security}
+    \begin{itemize}
+        \item To deal with security problems, we can do one of the following:
+        \begin{itemize}
+            \item \textbf{Use sandbox techniques}
+            \item $\triangleright$ That is, use a safe language like Java, which cannot be used to access/damage other parts of the database code
+            \item \textbf{Run external language functions/procedures in a separate process}, with no access to the database process' memory
+            \item $\triangleright$ Parameters and results communicated via inter-process communication
+        \end{itemize}
+        \item Both have performance overheads
+        \item Many database systems support both above approaches as well as direct executing in database system address space
+    \end{itemize}
+\end{frame}
+
+\section{Triggers}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Triggers\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Trigger}
+    \begin{itemize}
+        \item A trigger defines a set of actions that are performed in response to an \texttt{insert}, \texttt{update}, or \texttt{delete} operation on a specified table
+        \item When such an SQL operation is executed, the trigger is said to have been \textbf{activated}
+        \item Triggers are \textbf{optional}
+        \item Triggers are defined using the \texttt{create trigger} statement
+        \item Triggers can be used
+        \begin{itemize}
+            \item To enforce data integrity rules via referential constraints and check constraints
+            \item To cause updates to other tables, automatically generate or transform values for inserted or updated rows, or invoke functions to perform tasks such as issuing alerts
+        \end{itemize}
+        \item To design a trigger mechanism, we must:
+        \begin{itemize}
+            \item Specify the \textbf{events} (like \texttt{update}, \texttt{insert}, or \texttt{delete}) for the trigger to execute
+            \item Specify the \textbf{time} (\texttt{BEFORE} or \texttt{AFTER}) of execution
+            \item Specify the \textbf{actions} to be taken when the trigger executes
+        \end{itemize}
+        \item Syntax of triggers may vary across systems
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Types of Triggers: BEFORE}
+    \begin{itemize}
+        \item \textbf{BEFORE triggers}
+        \begin{itemize}
+            \item Run \textbf{before} an \texttt{update}, or \texttt{insert}
+            \item Values that are being updated or inserted can be modified before the database is actually modified. You can use triggers that run before an update or insert to:
+            \item $\triangleright$ Check or modify values before they are actually updated or inserted in the database
+            \item $\triangleright$ Useful if user-view and internal database format differs
+            \item $\triangleright$ Run other non-database operations coded in user-defined functions
+        \end{itemize}
+        \item \textbf{BEFORE DELETE triggers}
+        \begin{itemize}
+            \item Run before a \texttt{delete}
+            \item $\triangleright$ Checks values (raises an error, if necessary)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Types of Triggers (2): AFTER}
+    \begin{itemize}
+        \item \textbf{AFTER triggers}
+        \begin{itemize}
+            \item Run \textbf{after} an \texttt{update}, \texttt{insert}, or \texttt{delete}
+            \item You can use triggers that run after an update or insert to:
+            \item $\triangleright$ Update data in other tables
+            \item $\triangleright$ Useful for maintaining relationships between data or keeping an audit trail
+            \item $\triangleright$ Check against other data in the table or in other tables
+            \item $\triangleright$ Useful to ensure data integrity when referential integrity constraints aren't appropriate, or
+            \item $\triangleright$ when table check constraints limit checking to the current table only
+            \item $\triangleright$ Run non-database operations coded in user-defined functions
+            \item $\triangleright$ Useful when issuing alerts or to update information outside the database
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Row Level and Statement Level Triggers}
+    There are two types of triggers based on the level at which the triggers are applied:
+    \begin{itemize}
+        \item \textbf{Row level triggers} are executed whenever a row is affected by the event on which the trigger is defined.
+        \begin{itemize}
+            \item Let Employee be a table with 100 rows. Suppose an update statement is executed to increase the salary of each employee by 10\%. Any row level update trigger configured on the table Employee will affect all the 100 rows in the table during this update.
+        \end{itemize}
+        \item \textbf{Statement level triggers} perform a single action for all rows affected by a statement, instead of executing a separate action for each affected row.
+        \begin{itemize}
+            \item Used for each statement instead of for each row
+            \item Uses \texttt{referencing old table} or \texttt{referencing new table} to refer to temporary tables called transition tables containing the affected rows
+            \item Can be more efficient when dealing with SQL statements that update a large number of rows
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Triggering Events and Actions in SQL}
+    \begin{itemize}
+        \item Triggering event can be an \texttt{insert}, \texttt{delete} or \texttt{update}
+        \item Triggers on update can be restricted to specific attributes
+        \begin{itemize}
+            \item For example, \texttt{after update of grade on takes}
+        \end{itemize}
+        \item Values of attributes before and after an update can be referenced
+        \begin{itemize}
+            \item \texttt{referencing old row as}: for deletes and updates
+            \item \texttt{referencing new row as}: for inserts and updates
+        \end{itemize}
+        \item Triggers can be activated before an event, which can serve as extra constraints. For example, convert blank grades to null:
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create trigger setnull_trigger before update of takes 
+referencing new row as nrow 
+for each row 
+when (nrow.grade = ' ')
+begin atomic 
+    set nrow.grade = null;
+end;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Trigger to Maintain \texttt{credits\_earned} value}
+    \begin{lstlisting}[language=SQL]
+create trigger credits_earned after update of grade on (takes) 
+referencing new row as nrow 
+referencing old row as orow 
+for each row 
+when nrow.grade <> 'F' and nrow.grade is not null 
+    and (orow.grade = 'F' or orow.grade is null) 
+begin atomic 
+    update student 
+    set tot_cred = tot_cred + (
+        select credits 
+        from course 
+        where course.course_id = nrow.course_id 
+    )
+    where student.id = nrow.id;
+end;
+    \end{lstlisting}
+\end{frame}
+
+\section{Triggers: Functionality vs Performance}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Triggers: Functionality vs Performance\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{How to use triggers?}
+    \begin{itemize}
+        \item The optimal use of DML triggers is for short, simple, and easy to maintain write operations that act largely independent of an application's business logic.
+        \item Typical and recommended uses of triggers include:
+        \begin{itemize}
+            \item Logging changes to a history table
+            \item Auditing users and their actions against sensitive tables
+            \item Adding additional values to a table that may not be available to an application (due to security restrictions or other limitations), such as:
+            \item $\triangleright$ Login/user name
+            \item $\triangleright$ Time an operation occurs
+            \item $\triangleright$ Server/database name
+            \item Simple validation
+        \end{itemize}
+    \end{itemize}
+    \vspace{1em}
+    \small{Source: \textit{SQL Server triggers: The good and the scary}}
+\end{frame}
+
+\begin{frame}{How not to use triggers?}
+    \begin{itemize}
+        \item Triggers are like Lays: Once you pop, you can't stop
+        \item One of the greatest challenges for architects and developers is to ensure that
+        \begin{itemize}
+            \item triggers are used only as needed, and
+            \item to not allow them to become a one-size-fits-all solution for any data needs that happen to come along
+        \end{itemize}
+        \item Adding triggers is often seen as faster and easier than adding code to an application, but the cost of doing so is compounded over time with each added line of code
+    \end{itemize}
+    \vspace{1em}
+    \small{Source: \textit{SQL Server triggers: The good and the scary}}
+\end{frame}
+
+\begin{frame}{How not to use triggers? (2)}
+    \begin{itemize}
+        \item Triggers can become dangerous when:
+        \begin{itemize}
+            \item There are too many
+            \item Trigger code becomes complex
+            \item Triggers go cross-server - across databases over network
+            \item Triggers call triggers
+            \item Recursive triggers are set to ON. This database-level setting is set to off by default
+            \item Functions, stored procedures, or views are in triggers
+            \item Iteration occurs
+        \end{itemize}
+    \end{itemize}
+    \vspace{1em}
+    \small{Source: \textit{SQL Server triggers: The good and the scary}}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Familiarized with functions and procedures in SQL
+        \item Understood the triggers
+        \item Familiarized with some of the performance issues of triggers
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

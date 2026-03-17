@@ -1,0 +1,541 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 13}
+\subtitle{Intermediate SQL/2}
+\author{Milav Dabgar}
+\institute{www.milav.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item Nested subquery in SQL
+        \item Processes for data modification
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To learn SQL expressions for Join
+        \item To learn SQL expressions for Views
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Join Expressions
+        \begin{itemize}
+            \item Cross Join
+            \item Inner Join
+            \item Outer Join
+            \item Left Outer Join
+            \item Right Outer Join
+            \item Full Outer Join
+        \end{itemize}
+        \item Views
+        \begin{itemize}
+            \item View Expansion
+            \item View Update
+            \item Materialized Views
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Join Expressions}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Join Expressions\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Joined Relations}
+    \begin{itemize}
+        \item Join operations take two relations and return as a result another relation
+        \item A join operation is a Cartesian product which requires that tuples in the two relations match (under some condition).
+        \item It also specifies the attributes that are present in the result of the join
+        \item The join operations are typically used as subquery expressions in the \texttt{from} clause
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Types of Join between Relations}
+    \begin{itemize}
+        \item \textbf{Cross join}
+        \item \textbf{Inner join}
+        \begin{itemize}
+            \item Equi-join
+            \item Natural join
+        \end{itemize}
+        \item \textbf{Outer join}
+        \begin{itemize}
+            \item Left outer join
+            \item Right outer join
+            \item Full outer join
+        \end{itemize}
+        \item \textbf{Self-join}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Cross Join}
+    \begin{itemize}
+        \item \texttt{CROSS JOIN} returns the Cartesian product of rows from tables in the join
+        \item \textbf{Explicit}
+        \begin{lstlisting}[language=SQL]
+select * 
+from employee cross join department;
+        \end{lstlisting}
+        \item \textbf{Implicit}
+        \begin{lstlisting}[language=SQL]
+select * 
+from employee, department;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Join operations - Example}
+    \begin{itemize}
+        \item Relation \texttt{course}
+        \item Relation \texttt{prereq}
+        \item Observe that prereq information is missing for CS-315 and course information is missing for CS-347
+    \end{itemize}
+    \begin{columns}
+        \begin{column}{0.65\textwidth}
+            \textbf{course}
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth}
+                \begin{tabular}{|l|l|l|l|}
+                \hline
+                \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} \\ \hline
+                BIO-301 & Genetics & Biology & 4 \\ \hline
+                CS-190 & Game Design & Comp. Sci. & 4 \\ \hline
+                CS-315 & Robotics & Comp. Sci. & 3 \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+        \end{column}
+        \begin{column}{0.35\textwidth}
+            \textbf{prereq}
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth}
+                \begin{tabular}{|l|l|}
+                \hline
+                \textbf{course\_id} & \textbf{prereq\_id} \\ \hline
+                BIO-301 & BIO-101 \\ \hline
+                CS-190 & CS-101 \\ \hline
+                CS-347 & CS-101 \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Inner Join}
+    \begin{itemize}
+        \item \texttt{course inner join prereq}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=\textwidth}
+        \begin{tabular}{|l|l|l|l|l|l|}
+        \hline
+        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} & \textbf{prereq\_id} & \textbf{course\_id} \\ \hline
+        BIO-301 & Genetics & Biology & 4 & BIO-101 & BIO-301 \\ \hline
+        CS-190 & Game Design & Comp. Sci. & 4 & CS-101 & CS-190 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+    
+    \vspace{1em}
+    \begin{itemize}
+        \item If specified as \texttt{natural}, the 2nd \texttt{course\_id} field is skipped
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.8\textwidth}
+        \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} \\ \hline
+        BIO-301 & Genetics & Biology & 4 \\ \hline
+        CS-190 & Game Design & Comp. Sci. & 4 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Outer Join}
+    \begin{itemize}
+        \item An extension of the join operation that avoids loss of information
+        \item Computes the join and then adds tuples from one relation that does not match tuples in the other relation to the result of the join
+        \item Uses null values
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Left Outer Join}
+    \begin{itemize}
+        \item \texttt{course natural left outer join prereq}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.9\textwidth}
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} & \textbf{prereq\_id} \\ \hline
+        BIO-301 & Genetics & Biology & 4 & BIO-101 \\ \hline
+        CS-190 & Game Design & Comp. Sci. & 4 & CS-101 \\ \hline
+        CS-315 & Robotics & Comp. Sci. & 3 & null \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Right Outer Join}
+    \begin{itemize}
+        \item \texttt{course natural right outer join prereq}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.9\textwidth}
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} & \textbf{prereq\_id} \\ \hline
+        BIO-301 & Genetics & Biology & 4 & BIO-101 \\ \hline
+        CS-190 & Game Design & Comp. Sci. & 4 & CS-101 \\ \hline
+        CS-347 & null & null & null & CS-101 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Full Outer Join}
+    \begin{itemize}
+        \item \texttt{course natural full outer join prereq}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.9\textwidth}
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} & \textbf{prereq\_id} \\ \hline
+        BIO-301 & Genetics & Biology & 4 & BIO-101 \\ \hline
+        CS-190 & Game Design & Comp. Sci. & 4 & CS-101 \\ \hline
+        CS-315 & Robotics & Comp. Sci. & 3 & null \\ \hline
+        CS-347 & null & null & null & CS-101 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Joined Relations}
+    \begin{itemize}
+        \item Join operations take two relations and return as a result another relation
+        \item These additional operations are typically used as subquery expressions in the \texttt{from} clause
+        \item \textbf{Join condition} - defines which tuples in the two relations match, and what attributes are present in the result of the join
+        \item \textbf{Join type} - defines how tuples in each relation that do not match any tuple in the other relation (based on the join condition) are treated
+    \end{itemize}
+    
+    \vspace{1em}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \textbf{Join Types}
+            \begin{itemize}
+                \item \texttt{inner join}
+                \item \texttt{left outer join}
+                \item \texttt{right outer join}
+                \item \texttt{full outer join}
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{Join Conditions}
+            \begin{itemize}
+                \item \texttt{natural}
+                \item \texttt{on <predicate>}
+                \item \texttt{using (A1, A2, ..., An)}
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Joined Relations - Examples}
+    \begin{itemize}
+        \item \texttt{course inner join prereq on course.course\_id = prereq.course\_id}
+        \item What is the difference between the above (equi join), and a natural join?
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=\textwidth}
+        \begin{tabular}{|l|l|l|l|l|l|}
+        \hline
+        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} & \textbf{prereq\_id} & \textbf{course\_id} \\ \hline
+        BIO-301 & Genetics & Biology & 4 & BIO-101 & BIO-301 \\ \hline
+        CS-190 & Game Design & Comp. Sci. & 4 & CS-101 & CS-190 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+
+    \vspace{0.5em}
+    \begin{itemize}
+        \item \texttt{course left outer join prereq on course.course\_id = prereq.course\_id}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=\textwidth}
+        \begin{tabular}{|l|l|l|l|l|l|}
+        \hline
+        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} & \textbf{prereq\_id} & \textbf{course\_id} \\ \hline
+        BIO-301 & Genetics & Biology & 4 & BIO-101 & BIO-301 \\ \hline
+        CS-190 & Game Design & Comp. Sci. & 4 & CS-101 & CS-190 \\ \hline
+        CS-315 & Robotics & Comp. Sci. & 3 & null & null \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Joined Relations - Examples (2)}
+    \begin{itemize}
+        \item \texttt{course natural right outer join prereq}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.9\textwidth}
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} & \textbf{prereq\_id} \\ \hline
+        BIO-301 & Genetics & Biology & 4 & BIO-101 \\ \hline
+        CS-190 & Game Design & Comp. Sci. & 4 & CS-101 \\ \hline
+        CS-347 & null & null & null & CS-101 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+
+    \vspace{0.5em}
+    \begin{itemize}
+        \item \texttt{course full outer join prereq using (course\_id)}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.9\textwidth}
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} & \textbf{prereq\_id} \\ \hline
+        BIO-301 & Genetics & Biology & 4 & BIO-101 \\ \hline
+        CS-190 & Game Design & Comp. Sci. & 4 & CS-101 \\ \hline
+        CS-315 & Robotics & Comp. Sci. & 3 & null \\ \hline
+        CS-347 & null & null & null & CS-101 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\section{Views}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Views\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Views}
+    \begin{itemize}
+        \item In some cases, it is not desirable for all users to see the entire logical model (that is, all the actual relations stored in the database.)
+        \item Consider a person who needs to know an instructor's name and department, but not the salary. This person should see a relation described, in SQL, by
+        \begin{lstlisting}[language=SQL]
+select ID, name, dept_name 
+from instructor;
+        \end{lstlisting}
+        \item A \textbf{view} provides a mechanism to hide certain data from the view of certain users
+        \item Any relation that is not of the conceptual model but is made visible to a user as a 'virtual relation' is called a \textbf{view}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{View Definition}
+    \begin{itemize}
+        \item A view is defined using the \texttt{create view} statement which has the form
+        \begin{lstlisting}[language=SQL]
+create view v as <query expression>;
+        \end{lstlisting}
+        where \texttt{<query expression>} is any legal SQL expression
+        \item The view name is represented by \texttt{v}
+        \item Once a view is defined, the view name can be used to refer to the virtual relation that the view generates
+        \item View definition is not the same as creating a new relation by evaluating the query expression
+        \item Rather, a view definition causes the saving of an expression; the expression is substituted into queries using the view
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Example Views}
+    \begin{itemize}
+        \item A view of instructors without their salary
+        \begin{lstlisting}[language=SQL]
+create view faculty as 
+select ID, name, dept_name 
+from instructor;
+        \end{lstlisting}
+        \item Find all instructors in the Biology department
+        \begin{lstlisting}[language=SQL]
+select name 
+from faculty 
+where dept_name = 'Biology';
+        \end{lstlisting}
+        \item Create a view of department salary totals
+        \begin{lstlisting}[language=SQL]
+create view departments_total_salary(dept_name, total_salary) as 
+select dept_name, sum(salary) 
+from instructor 
+group by dept_name;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Views Defined Using Other Views}
+    \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create view physics_fall_2009 as
+select course.course_id, sec_id, building, room_number 
+from course, section 
+where course.course_id = section.course_id 
+  and course.dept_name = 'Physics' 
+  and section.semester = 'Fall' 
+  and section.year = '2009';
+    \end{lstlisting}
+    
+    \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create view physics_fall_2009_watson as 
+select course_id, room_number 
+from physics_fall_2009 
+where building = 'Watson';
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Views Defined Using Other Views (2)}
+    \begin{itemize}
+        \item One view may be used in the expression defining another view
+        \item A view relation $v_1$ is said to depend directly on a view relation $v_2$ if $v_2$ is used in the expression defining $v_1$
+        \item A view relation $v_1$ is said to depend on view relation $v_2$ if either $v_1$ depends directly on $v_2$ or there is a path of dependencies from $v_1$ to $v_2$
+        \item A view relation $v$ is said to be \textbf{recursive} if it depends on itself
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{View Expansion}
+    \begin{itemize}
+        \item Expand use of a view in a query/another view
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+create view physics_fall_2009_watson as 
+( 
+  select course_id, room_number 
+  from (
+      select course.course_id, building, room_number 
+      from course, section 
+      where course.course_id = section.course_id 
+        and course.dept_name = 'Physics' 
+        and section.semester = 'Fall' 
+        and section.year = '2009'
+  ) 
+  where building = 'Watson'
+);
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{View Expansion*}
+    \begin{itemize}
+        \item A way to define the meaning of views defined in terms of other views
+        \item Let view $v_1$ be defined by an expression $e_1$ that may itself contain uses of view relations
+        \item View expansion of an expression repeats the following replacement step:
+        \vspace{1em}
+        \textbf{repeat}\\
+        \quad Find any view relation $v_i$ in $e_1$\\
+        \quad Replace the view relation $v_i$ by the expression defining $v_i$\\
+        \textbf{until} no more view relations are present in $e_1$
+        \vspace{1em}
+        \item As long as the view definitions are not recursive, this loop will terminate
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Update of a View}
+    \begin{itemize}
+        \item Add a new tuple to \texttt{faculty} view which we defined earlier
+        \begin{lstlisting}[language=SQL]
+insert into faculty 
+values ('30765', 'Green', 'Music');
+        \end{lstlisting}
+        \item This insertion must be represented by the insertion of the tuple \texttt{('30765', 'Green', 'Music', null)} into the \texttt{instructor} relation
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Some Updates cannot be Translated Uniquely}
+    \begin{itemize}
+        \item \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\tiny]
+create view instructor_info as 
+select ID, name, building 
+from instructor, department 
+where instructor.dept_name = department.dept_name;
+        \end{lstlisting}
+        \item \texttt{insert into instructor\_info values ('69987', 'White', 'Taylor');}
+        \item which department, if multiple departments in Taylor?
+        \item what if no department is in Taylor?
+        \item Most SQL implementations allow updates only on \textbf{simple views}
+        \begin{itemize}
+            \item The \texttt{from} clause has only one database relation
+            \item The \texttt{select} clause contains only attribute names of the relation, and does not have any expressions, aggregates, or \texttt{distinct} specification
+            \item Any attribute not listed in the \texttt{select} clause can be set to null
+            \item The query does not have a \texttt{group by} or \texttt{having} clause
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{And Some Not at All}
+    \begin{itemize}
+        \item \begin{lstlisting}[language=SQL]
+create view history_instructors as 
+select * 
+from instructor 
+where dept_name = 'History';
+        \end{lstlisting}
+        \item What happens if we insert \texttt{('25566', 'Brown', 'Biology', 100000)} into \texttt{history\_instructors}?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Materialized Views}
+    \begin{itemize}
+        \item \textbf{Materializing a view}: create a physical table containing all the tuples in the result of the query defining the view
+        \item If relations used in the query are updated, the materialized view result becomes out of date
+        \item Need to \textbf{maintain} the view, by updating the view whenever the underlying relations are updated
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Learnt SQL expressions for Join and Views
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

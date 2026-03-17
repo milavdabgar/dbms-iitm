@@ -1,0 +1,10 @@
+\frametitle{And Some Not at All}
+\begin{itemize}
+        \item \begin{lstlisting}[language=SQL]
+create view history_instructors as
+select *
+from instructor
+where dept_name = 'History';
+        \end{lstlisting}
+        \item What happens if we insert \texttt{('25566', 'Brown', 'Biology', 100000)} into \texttt{history\_instructors}?
+    \end{itemize}

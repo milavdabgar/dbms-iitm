@@ -1,0 +1,6 @@
+\beamer@sectionintoc {1}{Database Design}{5}{0}{1}
+\beamer@sectionintoc {2}{Object-Relational Data Models}{10}{0}{2}
+\beamer@sectionintoc {3}{XML: Extensible Markup Language}{12}{0}{3}
+\beamer@sectionintoc {4}{Database Engine}{14}{0}{4}
+\beamer@sectionintoc {5}{Database System Internals}{20}{0}{5}
+\beamer@sectionintoc {6}{Database Users and Administrators}{24}{0}{6}

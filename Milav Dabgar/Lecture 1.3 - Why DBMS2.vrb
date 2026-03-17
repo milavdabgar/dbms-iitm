@@ -1,0 +1,28 @@
+\frametitle{Bank Transaction: Python viz-a-viz SQL (6)}
+\begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Python}
+            \begin{verbatim}
+#Writing back to the file
+f_obj_Account1.close()
+f_obj_Account2.close()
+f_obj_Ledger.close()
+
+if success == 1:
+    f_obj_Account = open('Accounts.csv', 'w+', newline='')
+    f_writer = csv.DictWriter(f_obj_Account, fieldnames=col_name_Account)
+    f_writer.writeheader()
+    for data in temp:
+        f_writer.writerow(data)
+    f_obj_Account.close()
+    print("Transaction is successful !!")
+else:
+    print('Transaction failed: Confirm Account details')
+            \end{verbatim}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{SQL} \\
+            \vspace{1em}
+            \textit{// Handled implicitly by the DBMS}
+        \end{column}
+    \end{columns}

@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{Nested Subqueries}{5}{0}{1}
+\beamer@sectionintoc {2}{Subqueries in the Where Clause}{7}{0}{2}
+\beamer@sectionintoc {3}{Subqueries in the From Clause}{19}{0}{3}
+\beamer@sectionintoc {4}{Subqueries in the Select Clause}{23}{0}{4}
+\beamer@sectionintoc {5}{Modifications of the Database}{25}{0}{5}

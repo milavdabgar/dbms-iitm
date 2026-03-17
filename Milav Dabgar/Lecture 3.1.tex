@@ -1,0 +1,754 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 11}
+\subtitle{SQL Examples}
+\author{Milav Dabgar}
+\institute{www.milav.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Week Recap}
+    \begin{itemize}
+        \item Basic notions of Relational Database Models
+        \item Attributes and their types
+        \item Mathematical structure of relational model
+        \item Schema and Instance
+        \item Keys, primary as well as foreign
+        \item Relational algebra with operators
+        \item Relational query language
+        \item DDL (Data Definition)
+        \item DML (Basic Query Structure)
+        \item Detailed understanding of basic query structure
+        \item Set operations, null values, and aggregation
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To recap various basic SQL features through example workout
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Examples of basic SQL
+    \end{itemize}
+\end{frame}
+
+\section{SELECT}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}SELECT\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Select distinct}
+    \begin{itemize}
+        \item From the \textbf{classroom} relation in the figure, find the names of buildings in which every individual classroom has capacity less than 100 (removing the duplicates).
+    \end{itemize}
+    \begin{columns}
+        \begin{column}{0.45\textwidth}
+            \textbf{classroom} relation
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth}
+                \begin{tabular}{|l|l|l|}
+                \hline
+                \textbf{building} & \textbf{room\_number} & \textbf{capacity} \\ \hline
+                Packard & 101 & 500 \\ \hline
+                Painter & 514 & 10 \\ \hline
+                Taylor & 3128 & 70 \\ \hline
+                Watson & 100 & 30 \\ \hline
+                Watson & 120 & 50 \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+        \end{column}
+        \begin{column}{0.55\textwidth}
+            \textbf{Query:}
+            \begin{lstlisting}[language=SQL]
+select distinct building 
+from classroom 
+where capacity < 100;
+            \end{lstlisting}
+            \textbf{Output:}
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth}
+                \begin{tabular}{|l|}
+                \hline
+                \textbf{building} \\ \hline
+                Painter \\ \hline
+                Taylor \\ \hline
+                Watson \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Select all}
+    \begin{itemize}
+        \item From the \textbf{classroom} relation in the figure, find the names of buildings in which every individual classroom has capacity less than 100 (without removing the duplicates).
+    \end{itemize}
+    \begin{columns}
+        \begin{column}{0.45\textwidth}
+            \textbf{classroom} relation
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth}
+                \begin{tabular}{|l|l|l|}
+                \hline
+                \textbf{building} & \textbf{room\_number} & \textbf{capacity} \\ \hline
+                Packard & 101 & 500 \\ \hline
+                Painter & 514 & 10 \\ \hline
+                Taylor & 3128 & 70 \\ \hline
+                Watson & 100 & 30 \\ \hline
+                Watson & 120 & 50 \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+        \end{column}
+        \begin{column}{0.55\textwidth}
+            \textbf{Query:}
+            \begin{lstlisting}[language=SQL]
+select all building 
+from classroom 
+where capacity < 100;
+            \end{lstlisting}
+            \textbf{Output:}
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth}
+                \begin{tabular}{|l|}
+                \hline
+                \textbf{building} \\ \hline
+                Painter \\ \hline
+                Taylor \\ \hline
+                Watson \\ \hline
+                Watson \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+            \small Note that duplicate retention is the default and hence it is a common practice to skip \texttt{all} immediately after \texttt{select}.
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\section{Cartesian Product / AS}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Cartesian Product / AS\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Cartesian Product}
+    \begin{itemize}
+        \item Find the list of all students of departments which have a budget < \$0.1 million
+        \begin{lstlisting}[language=SQL]
+select name, budget 
+from student, department 
+where student.dept_name = department.dept_name 
+  and budget < 100000;
+        \end{lstlisting}
+        \item The above query first generates every possible student-department pair, which is the Cartesian product of \texttt{student} and \texttt{department}. Then, it filters all the rows with \texttt{student.dept\_name = department.dept\_name} and \texttt{budget < 100000}.
+        \item The common attribute \texttt{dept\_name} in the resulting table are renamed using the relation name (\texttt{student.dept\_name} and \texttt{department.dept\_name})
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Rename AS Operation}
+    \begin{itemize}
+        \item The same query in the previous slide can be framed by renaming the tables as shown below.
+        \begin{lstlisting}[language=SQL]
+select S.name as studentname, budget as deptbudget 
+from student as S, department as D 
+where S.dept_name = D.dept_name 
+  and budget < 100000;
+        \end{lstlisting}
+        \item The above query renames the relation \texttt{student} as \texttt{S} and the relation \texttt{department} as \texttt{D}
+        \item It also displays the attribute \texttt{name} as \texttt{StudentName} and \texttt{budget} as \texttt{DeptBudget}.
+        \item Note that the \texttt{budget} attribute does not have any prefix because it occurs only in the \texttt{department} relation.
+    \end{itemize}
+
+    \textbf{Output:}
+    \vspace{-0.5em}
+    \begin{center}
+        \begin{adjustbox}{max width=0.5\textwidth}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{studentname} & \textbf{deptbudget} \\ \hline
+        Brandt & 50000 \\ \hline
+        Peltier & 70000 \\ \hline
+        Levy & 70000 \\ \hline
+        Sanchez & 80000 \\ \hline
+        Snow & 70000 \\ \hline
+        Aoi & 85000 \\ \hline
+        Bourikas & 85000 \\ \hline
+        Tanaka & 90000 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\section{WHERE: AND / OR}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}WHERE: AND / OR\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Where: AND and OR}
+    \begin{itemize}
+        \item From the \texttt{instructor} and \texttt{department} relations in the figure, find out the names of all instructors whose department is 'Finance' or whose department is in any of the following buildings: 'Watson', 'Taylor'.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+select name 
+from instructor I, department D 
+where D.dept_name = I.dept_name 
+  and (I.dept_name = 'Finance' or building in ('Watson','Taylor'));
+        \end{lstlisting}
+        \item \textbf{Output:}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.5\textwidth}
+        \begin{tabular}{|l|}
+        \hline
+        \textbf{name} \\ \hline
+        Srinivasan \\ \hline
+        Wu \\ \hline
+        Einstein \\ \hline
+        Gold \\ \hline
+        Katz \\ \hline
+        Singh \\ \hline
+        Crick \\ \hline
+        Brandt \\ \hline
+        Kim \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Instructor and Department Relations}
+    \textbf{department}
+    \vspace{-0.5em}
+    \begin{center}
+        \begin{adjustbox}{max width=\textwidth}
+        \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{dept\_name} & \textbf{building} & \textbf{budget} \\ \hline
+        Biology & Watson & 90000 \\ \hline
+        Comp. Sci. & Taylor & 100000 \\ \hline
+        Elec. Eng & Taylor & 85000 \\ \hline
+        Finance & Painter & 120000 \\ \hline
+        History & Painter & 50000 \\ \hline
+        Music & Packard & 80000 \\ \hline
+        Physics & Watson & 70000 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+    
+    \textbf{instructor}
+    \vspace{-0.5em}
+    \begin{center}
+        \begin{adjustbox}{max width=\textwidth}
+        \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{ID} & \textbf{name} & \textbf{dept\_name} & \textbf{salary} \\ \hline
+        10101 & Srinivasan & Comp. Sci. & 65000 \\ \hline
+        12121 & Wu & Finance & 90000 \\ \hline
+        15151 & Mozart & Music & 40000 \\ \hline
+        22222 & Einstein & Physics & 95000 \\ \hline
+        32343 & El Said & History & 60000 \\ \hline
+        33456 & Gold & Physics & 87000 \\ \hline
+        45565 & Katz & Comp. Sci. & 75000 \\ \hline
+        58583 & Califieri & History & 62000 \\ \hline
+        76543 & Singh & Finance & 80000 \\ \hline
+        76766 & Crick & Biology & 72000 \\ \hline
+        83821 & Brandt & Comp. Sci. & 92000 \\ \hline
+        98345 & Kim & Elec. Eng & 80000 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\section{String}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}String\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{String Operations}
+    \begin{itemize}
+        \item From the \texttt{course} relation in the figure, find the titles of all courses whose course id has three alphabets indicating the department.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL]
+select title 
+from course 
+where course_id like '___-%';
+        \end{lstlisting}
+        \item \textbf{Output:}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.5\textwidth}
+        \begin{tabular}{|l|}
+        \hline
+        \textbf{title} \\ \hline
+        Intro. to Biology \\ \hline
+        Genetics \\ \hline
+        Computational Biology \\ \hline
+        Investment Banking \\ \hline
+        World History \\ \hline
+        Physical Principles \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+    \begin{itemize}
+        \item \small The course id of each department has either 2 or 3 alphabets in the beginning, followed by a hyphen and then followed by a 3-digit number. The above query returns the names of those departments that have 3 alphabets in the beginning.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{course relation}
+    \begin{center}
+        \begin{adjustbox}{max width=\textwidth}
+        \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{course\_id} & \textbf{title} & \textbf{dept\_name} & \textbf{credits} \\ \hline
+        BIO-101 & Intro. to Biology & Biology & 4 \\ \hline
+        BIO-301 & Genetics & Biology & 4 \\ \hline
+        BIO-399 & Computational Biology & Biology & 3 \\ \hline
+        CS-101 & Intro. to Computer Science & Comp. Sci. & 4 \\ \hline
+        CS-190 & Game Design & Comp. Sci. & 4 \\ \hline
+        CS-315 & Robotics & Comp. Sci. & 3 \\ \hline
+        CS-319 & Image Processing & Comp. Sci. & 3 \\ \hline
+        CS-347 & Database System Concepts & Comp. Sci. & 3 \\ \hline
+        EE-181 & Intro. to Digital Systems & Elec. Eng. & 3 \\ \hline
+        FIN-201 & Investment Banking & Finance & 3 \\ \hline
+        HIS-351 & World History & History & 3 \\ \hline
+        MU-199 & Music Video Production & Music & 3 \\ \hline
+        PHY-101 & Physical Principles & Physics & 4 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\section{ORDER BY}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}ORDER BY\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Order By}
+    \begin{itemize}
+        \item From the \texttt{student} relation in the figure, obtain the list of all students in alphabetic order of departments and within each department, in decreasing order of total credits.
+        \item The list is first sorted in alphabetic order of \texttt{dept\_name}.
+        \item Within each dept, it is sorted in decreasing order of \texttt{tot\_cred}.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL]
+select name, dept_name, tot_cred 
+from student 
+order by dept_name ASC, tot_cred DESC;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Order By - student relation and output}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \textbf{student}
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth, max height=0.7\textheight}
+                \begin{tabular}{|l|l|l|l|}
+                \hline
+                \textbf{ID} & \textbf{name} & \textbf{dept\_name} & \textbf{tot\_cred} \\ \hline
+                00128 & Zhang & Comp. Sci. & 102 \\ \hline
+                12345 & Shankar & Comp. Sci. & 32 \\ \hline
+                19991 & Brandt & History & 80 \\ \hline
+                23121 & Chavez & Finance & 110 \\ \hline
+                44553 & Peltier & Physics & 56 \\ \hline
+                45678 & Levy & Physics & 46 \\ \hline
+                54321 & Williams & Comp. Sci. & 54 \\ \hline
+                55739 & Sanchez & Music & 38 \\ \hline
+                70557 & Snow & Physics & 0 \\ \hline
+                76543 & Brown & Comp. Sci. & 58 \\ \hline
+                76653 & Aoi & Elec. Eng. & 60 \\ \hline
+                98765 & Bourikas & Elec. Eng. & 98 \\ \hline
+                98988 & Tanaka & Biology & 120 \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{Output}
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth, max height=0.7\textheight}
+                \begin{tabular}{|l|l|l|}
+                \hline
+                \textbf{name} & \textbf{dept\_name} & \textbf{tot\_cred} \\ \hline
+                Tanaka & Biology & 120 \\ \hline
+                Zhang & Comp. Sci. & 102 \\ \hline
+                Brown & Comp. Sci. & 58 \\ \hline
+                Williams & Comp. Sci. & 54 \\ \hline
+                Shankar & Comp. Sci. & 32 \\ \hline
+                Bourikas & Elec. Eng. & 98 \\ \hline
+                Aoi & Elec. Eng. & 60 \\ \hline
+                Chavez & Finance & 110 \\ \hline
+                Brandt & History & 80 \\ \hline
+                Sanchez & Music & 38 \\ \hline
+                Peltier & Physics & 56 \\ \hline
+                Levy & Physics & 46 \\ \hline
+                Snow & Physics & 0 \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\section{IN}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}IN\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{In Operator}
+    \begin{itemize}
+        \item From the \texttt{teaches} relation in the figure, find the IDs of all courses taught in the Fall or Spring of 2018.
+        \item \emph{Note: We can use \texttt{distinct} to remove duplicates.}
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL]
+select course_id 
+from teaches 
+where semester in ('Fall','Spring') and year = 2018;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{In Operator - teaches relation and output}
+    \begin{columns}
+        \begin{column}{0.6\textwidth}
+            \textbf{teaches}
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth, max height=0.7\textheight}
+                \begin{tabular}{|l|l|l|l|}
+                \hline
+                \textbf{ID} & \textbf{course\_id} & \textbf{semester} & \textbf{year} \\ \hline
+                10101 & CS-101 & Fall & 2017 \\ \hline
+                10101 & CS-315 & Spring & 2018 \\ \hline
+                10101 & CS-347 & Fall & 2017 \\ \hline
+                12121 & FIN-201 & Spring & 2018 \\ \hline
+                15151 & MU-199 & Spring & 2018 \\ \hline
+                22222 & PHY-101 & Fall & 2017 \\ \hline
+                32343 & HIS-351 & Spring & 2018 \\ \hline
+                45565 & CS-101 & Spring & 2018 \\ \hline
+                45565 & CS-319 & Spring & 2018 \\ \hline
+                76766 & BIO-101 & Summer & 2017 \\ \hline
+                76766 & BIO-301 & Summer & 2018 \\ \hline
+                83821 & CS-190 & Spring & 2017 \\ \hline
+                83821 & CS-190 & Spring & 2017 \\ \hline
+                83821 & CS-319 & Spring & 2018 \\ \hline
+                98345 & EE-181 & Spring & 2017 \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \textbf{Output}
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth}
+                \begin{tabular}{|l|}
+                \hline
+                \textbf{course\_id} \\ \hline
+                CS-315 \\ \hline
+                FIN-201 \\ \hline
+                MU-199 \\ \hline
+                HIS-351 \\ \hline
+                CS-101 \\ \hline
+                CS-319 \\ \hline
+                CS-319 \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\section{Set}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Set\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Set Operations: UNION}
+    \begin{itemize}
+        \item For the same question in the previous slide, we can find the solution using \texttt{union} operator as follows.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL]
+select course_id from teaches 
+where semester='Fall' and year=2018 
+
+union 
+
+select course_id from teaches 
+where semester='Spring' and year=2018;
+        \end{lstlisting}
+        \item Note that \texttt{union} removes all duplicates. If we use \texttt{union all} instead of \texttt{union}, we get the same set of tuples as in previous slide.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Set Operations (2): INTERSECT}
+    \begin{itemize}
+        \item From the \texttt{instructor} relation, find the names of all instructors who taught in either the Computer Science department or the Finance department and whose salary is < 80000.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL]
+select name 
+from instructor 
+where dept_name in ('Comp. Sci.','Finance') 
+
+intersect 
+
+select name 
+from instructor 
+where salary < 80000;
+        \end{lstlisting}
+        \item Note that the same can be achieved using the query:
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+select name from instructor 
+where dept_name in ('Comp. Sci.', 'Finance') and salary < 80000;
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Set Operations (3): EXCEPT}
+    \begin{itemize}
+        \item From the \texttt{instructor} relation, find the names of all instructors who taught in either the Computer Science department or the Finance department and whose salary is either $\ge 90000$ or $\le 70000$.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+select name 
+from instructor 
+where dept_name in ('Comp. Sci.','Finance') 
+
+except 
+
+select name 
+from instructor 
+where salary < 90000 and salary > 70000;
+        \end{lstlisting}
+        \item Note that the same can be achieved using the query given below:
+        \begin{lstlisting}[language=SQL, basicstyle=\ttfamily\scriptsize]
+select name from instructor 
+where dept_name in ('Comp. Sci.', 'Finance') 
+  and (salary >= 90000 or salary <= 70000);
+        \end{lstlisting}
+    \end{itemize}
+\end{frame}
+
+\section{Aggregation}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Aggregation\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Aggregate functions: AVG}
+    \begin{columns}
+        \begin{column}{0.6\textwidth}
+            \begin{itemize}
+                \item From the \texttt{classroom} relation, find the names and the average capacity of each building whose average capacity is greater than 25.
+                \item \textbf{Query:}
+                \begin{lstlisting}[language=SQL]
+select building, avg(capacity) 
+from classroom 
+group by building 
+having avg(capacity) > 25;
+                \end{lstlisting}
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \textbf{Output:}
+            \begin{center}
+                \begin{adjustbox}{max width=\textwidth}
+                \begin{tabular}{|l|l|}
+                \hline
+                \textbf{building} & \textbf{avg} \\ \hline
+                Taylor & 70 \\ \hline
+                Packard & 500 \\ \hline
+                Watson & 40 \\ \hline
+                \end{tabular}
+                \end{adjustbox}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Aggregate functions (2): MIN}
+    \begin{itemize}
+        \item From the \texttt{instructor} relation, find the least salary drawn by any instructor among all the instructors.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL]
+select min(salary) as least_salary 
+from instructor;
+        \end{lstlisting}
+        \item \textbf{Output:}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.3\textwidth}
+        \begin{tabular}{|l|}
+        \hline
+        \textbf{least\_salary} \\ \hline
+        40000 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Aggregate functions (3): MAX}
+    \begin{itemize}
+        \item From the \texttt{student} relation, find the maximum credits obtained by any student among all the students.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL]
+select max(tot_cred) as max_credits 
+from student;
+        \end{lstlisting}
+        \item \textbf{Output:}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.3\textwidth}
+        \begin{tabular}{|l|}
+        \hline
+        \textbf{max\_credits} \\ \hline
+        120 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Aggregate functions (4): COUNT}
+    \begin{itemize}
+        \item From the \texttt{section} relation, find the number of courses run in each building.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL]
+select building, count(course_id) as course_count 
+from section 
+group by building;
+        \end{lstlisting}
+        \item \textbf{Output:}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.4\textwidth}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{building} & \textbf{course\_count} \\ \hline
+        Taylor & 5 \\ \hline
+        Packard & 4 \\ \hline
+        Painter & 3 \\ \hline
+        Watson & 3 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Aggregate functions (5): SUM}
+    \begin{itemize}
+        \item From the \texttt{course} relation, find the total credits offered by each department.
+        \item \textbf{Query:}
+        \begin{lstlisting}[language=SQL]
+select dept_name, sum(credits) as sum_credits 
+from course 
+group by dept_name;
+        \end{lstlisting}
+        \item \textbf{Output:}
+    \end{itemize}
+    \begin{center}
+        \begin{adjustbox}{max width=0.4\textwidth}
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{dept\_name} & \textbf{sum\_credits} \\ \hline
+        Finance & 3 \\ \hline
+        History & 3 \\ \hline
+        Physics & 4 \\ \hline
+        Music & 3 \\ \hline
+        Comp. Sci. & 17 \\ \hline
+        Biology & 11 \\ \hline
+        Elec. Eng. & 3 \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item SQL Examples have been practiced for
+        \begin{itemize}
+            \item Select
+            \item Cartesian Product / \texttt{as}
+            \item Where: \texttt{and} / \texttt{or}
+            \item String Matching
+            \item \texttt{Order by}
+            \item \texttt{in}
+            \item Set Operations: \texttt{union}, \texttt{intersect}, \texttt{except}
+            \item Aggregate Functions: \texttt{avg}, \texttt{min}, \texttt{max}, \texttt{count}, \texttt{sum}
+        \end{itemize}
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

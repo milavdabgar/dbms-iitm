@@ -1,0 +1,8 @@
+\beamer@sectionintoc {1}{SELECT}{5}{0}{1}
+\beamer@sectionintoc {2}{Cartesian Product / AS}{8}{0}{2}
+\beamer@sectionintoc {3}{WHERE: AND / OR}{11}{0}{3}
+\beamer@sectionintoc {4}{String}{14}{0}{4}
+\beamer@sectionintoc {5}{ORDER BY}{17}{0}{5}
+\beamer@sectionintoc {6}{IN}{20}{0}{6}
+\beamer@sectionintoc {7}{Set}{23}{0}{7}
+\beamer@sectionintoc {8}{Aggregation}{27}{0}{8}

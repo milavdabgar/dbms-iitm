@@ -1,0 +1,10 @@
+\frametitle{In Operator}
+\begin{itemize}
+        \item The \texttt{in} operator allows you to specify multiple values in a \texttt{where} clause
+        \item The \texttt{in} operator is a shorthand for multiple \texttt{or} conditions
+        \begin{lstlisting}[language=SQL]
+select name
+from instructor
+where dept_name in ('Comp. Sci.', 'Biology');
+        \end{lstlisting}
+    \end{itemize}

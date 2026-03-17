@@ -1,0 +1,445 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{caption}
+
+% --- Title Information ---
+\title{Module 03}
+\subtitle{Why DBMS?/2}
+\author{Milav Dabgar}
+\institute{www.milav.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item Evolution of Data and Records Management
+        \item History of DBMS
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item Comparison of File based data management and DBMS
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item File handling by Python viz-a-viz DBMS - Bank Transaction example
+        \item Parameterized Comparison
+    \end{itemize}
+\end{frame}
+
+\section{File Systems vs Databases}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}File Systems vs Databases\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Case study: A bank transaction}
+    \textbf{Banking Transaction System} \\
+    Consider a simple banking system where a person can open a new account, transfer fund to an existing account and check the history of all her transactions till date.
+    
+    \vspace{1em}
+    The application performs the following checks:
+    \begin{itemize}
+        \item If the account balance is not enough, it will not allow the fund transfer
+        \item If the account numbers are not correct, it will flash a message and terminate the transaction.
+        \item If a transaction is successful, it prints a confirmation message.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Case study: A bank transaction (2)}
+    We will use this banking transaction system to compare various features of a file-based (spreadsheet/.csv files) implementation viz-a-viz a DBMS-based implementation
+    
+    \begin{itemize}
+        \item Account details are stored in
+        \begin{itemize}
+            \item \texttt{Accounts.csv} for file-based implementation
+            \item \texttt{Accounts} table for DBMS implementation
+        \end{itemize}
+        \item The transaction details are stored in
+        \begin{itemize}
+            \item \texttt{Ledger.csv} file for file-based implementation
+            \item \texttt{Ledger} table for DBMS implementation
+        \end{itemize}
+    \end{itemize}
+    
+    \vspace{1em}
+    In the following slides we discuss a fund transfer transaction.\\
+    \textbf{Source:} \url{https://github.com/bhaskariitm/transition-from-files-to-db/tree/main}
+\end{frame}
+
+\section{Python viz-a-viz SQL}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Python viz-a-viz SQL\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Bank Transaction: Python viz-a-viz SQL}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Python}
+            \begin{verbatim}
+def begin_Transaction(creditAcc, debitAcc, amount):
+    temp = [] 
+    success = 0
+    # Open file handles to retrieve and store transaction data
+    f_obj_Account1 = open('Accounts.csv', 'r')
+    f_reader1 = csv.DictReader(f_obj_Account1)
+    
+    f_obj_Account2 = open('Accounts.csv', 'r')
+    f_reader2 = csv.DictReader(f_obj_Account2)
+    
+    f_obj_Ledger = open('Ledger.csv', 'a+')
+    f_writer = csv.DictWriter(f_obj_Ledger, fieldnames=col_name_Ledger)
+            \end{verbatim}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{SQL} \\
+            \vspace{1em}
+            \textit{// Handled implicitly by the DBMS}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Bank Transaction: Python viz-a-viz SQL (2)}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Python}
+            \begin{verbatim}
+try:
+    for sRec in f_reader1: 
+        #CONDITION CHECK FOR ENOUGH BALANCE
+        if sRec["AcctNo"] == debitAcc and int(sRec["Balance"]) > int(amt):
+            ...
+            \end{verbatim}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{SQL}
+            \begin{verbatim}
+do $$
+begin
+    amt = 5000;
+    sendVal = '1800090';
+    recVal = '1800100';
+    
+    select balance from accounts 
+        into sbalance 
+        where account_no = sendVal;
+        
+    if sbalance < amt then
+        ...
+$$
+            \end{verbatim}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Bank Transaction: Python viz-a-viz SQL (3)}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Python}
+            \begin{verbatim}
+# in continuation...
+        for rRec in f_reader2:
+            if rRec["AcctNo"] == creditAcc:
+                sRec["Balance"] = str(int(sRec["Balance"]) - int(amt)) # DEBIT
+                temp.append(sRec)
+                ...
+            \end{verbatim}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{SQL}
+            \begin{verbatim}
+    # in continuation...
+    if sbalance < amt then
+        raise notice "Insufficient balance";
+    else
+        update accounts 
+            set balance = balance - amt 
+            where account_no = sendVal;
+        ...
+$$
+            \end{verbatim}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Bank Transaction: Python viz-a-viz SQL (4)}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Python}
+            \begin{verbatim}
+# in continuation...
+                # Critical point
+                f_writer.writerow({
+                    "Acct1":sRec["AcctNo"],
+                    "Acct2":rRec["AcctNo"],
+                    "Amount":amt, "D/C":"D"})
+                
+                rRec["Balance"] = str(int(rRec["Balance"]) + int(amt)) # CREDIT
+                temp.append(rRec)
+                ...
+            \end{verbatim}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{SQL}
+            \begin{verbatim}
+# in continuation...
+        insert into ledger(sendAc, recAc, amnt, ttype) 
+            values(sendVal, recVal, amt, 'D');
+            
+        update accounts 
+            set balance = balance + amt 
+            where account_no = recVal;
+        ...
+$$
+            \end{verbatim}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Bank Transaction: Python viz-a-viz SQL (5)}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Python}
+            \begin{verbatim}
+# in continuation...
+                f_writer.writerow({
+                    "Acct1":rRec["AcctNo"],
+                    "Acct2":sRec["AcctNo"],
+                    "Amount":amt,"D/C":"C"})
+                success = success + 1
+                break
+                
+        f_obj_Account1.seek(0)
+        next(f_obj_Account1)
+        for record in f_reader1:
+            if record["AcctNo"] != temp[0]["AcctNo"] and record["AcctNo"] != temp[1]["AcctNo"]:
+except: 
+    print("Wrong input entered !!!")
+            \end{verbatim}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{SQL}
+            \begin{verbatim}
+# in continuation...
+        insert into ledger(sendAc, recAc, amnt, ttype) 
+            values(recVal, sendVal, amt, 'C');
+            
+        commit;
+        raise notice "Successful";
+    end if;
+end;
+$$
+            \end{verbatim}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Bank Transaction: Python viz-a-viz SQL (6)}
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Python}
+            \begin{verbatim}
+#Writing back to the file 
+f_obj_Account1.close()
+f_obj_Account2.close()
+f_obj_Ledger.close()
+
+if success == 1:
+    f_obj_Account = open('Accounts.csv', 'w+', newline='')
+    f_writer = csv.DictWriter(f_obj_Account, fieldnames=col_name_Account)
+    f_writer.writeheader()
+    for data in temp:
+        f_writer.writerow(data)
+    f_obj_Account.close()
+    print("Transaction is successful !!")
+else:
+    print('Transaction failed: Confirm Account details')
+            \end{verbatim}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{SQL} \\
+            \vspace{1em}
+            \textit{// Handled implicitly by the DBMS}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\section{Parameterized Comparison}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Parameterized Comparison\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Comparison}
+    \begin{center}
+        \begin{adjustbox}{max width=\textwidth}
+        \begin{tabular}{|l|p{6cm}|p{6cm}|}
+        \hline
+        \textbf{Parameter} & \textbf{File Handling via Python} & \textbf{DBMS} \\ \hline
+        Scalability (data amount) & Very difficult to handle insert, update and querying of records & In-built features to provide high scalability for a large number of records \\ \hline
+        Scalability (structure change) & Extremely difficult to change the structure of records as in the case of adding or removing attributes & Adding or removing attributes can be done seamlessly using simple SQL queries \\ \hline
+        Time of execution & In seconds & In milliseconds \\ \hline
+        Persistence & Data processed using temporary data structures have to be manually updated to the file & Data persistence is ensured via automatic, system induced mechanisms \\ \hline
+        Robustness & Ensuring robustness of data has to be done manually & Backup, recovery and restore need minimum manual intervention \\ \hline
+        Security & Difficult to implement in Python (Security at OS level) & User-specific access at database level \\ \hline
+        Programmer's productivity & Most file access operations involve extensive coding to ensure persistence, robustness and security of data & Standard and simple built-in queries reduce the effort involved in coding thereby increasing a programmer's throughput \\ \hline
+        Arithmetic operations & Easy to do arithmetic computations & Limited set of arithmetic operations are available \\ \hline
+        Costs & Low costs for hardware, software and human resources & High costs for hardware, software and human resources \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Scalability}
+    \textbf{File handling via Python}
+    \begin{itemize}
+        \item \textbf{Number of records:} As the \# of records increases, the efficiency of flat files reduces:
+        \begin{itemize}
+            \item the time spent in searching for the right records
+            \item the limitations of the OS in handling huge files
+        \end{itemize}
+        \item \textbf{Structural Change:} To add an attribute, initializing the new attribute of each record with a default value has to be done by program. It is very difficult to detect and maintain relationships between entities if and when an attribute has to be removed.
+    \end{itemize}
+    
+    \vspace{1em}
+    \textbf{DBMS}
+    \begin{itemize}
+        \item \textbf{Number of records:} Databases are built to efficiently scale up when the \# of records increase drastically.
+        \begin{itemize}
+            \item In-built mechanisms, like indexing, for quick access of right data.
+        \end{itemize}
+        \item \textbf{Structural Change:} During adding an attribute, a default value can be defined that holds for all existing records - the new attribute gets initialized with the default value. During deletion, constraints are used either not to allow the removal or ensure its safe removal
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Time and Efficiency}
+    \textbf{File handling via Python}
+    \begin{itemize}
+        \item The effort needed to implement a file handler is quite less in Python
+        \item In order to process a 1GB file, a program in Python would typically take few seconds.
+    \end{itemize}
+    
+    \vspace{1em}
+    \textbf{DBMS}
+    \begin{itemize}
+        \item The effort to install and configure a DB in a DB server is expensive \& time consuming
+        \item In order to process a 1GB file, an SQL query would typically take few milliseconds.
+        \item If the number of records is very small, the overhead in installing and configuring a database will be much more than the time advantage obtained from executing the queries.
+        \item However, if the number of records is really large, then the time required in the initialization process of a database will be negligible as compared to the time saved in using SQL queries.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Persistence, Robustness, Security}
+    \textbf{File handling via Python}
+    \begin{itemize}
+        \item \textbf{Persistence:} Data processed using in-memory data structures stay in the memory during processing. After updates, these are manually updated to the file on disk
+        \item \textbf{Robustness:} Ensuring consistency, reliability and sanity is manual via multiple checks. On a system crash, a transaction may cause inconsistency or loss of data.
+        \item \textbf{Security:} Extremely difficult to implement granular security in file systems. Authentication is at the OS level.
+    \end{itemize}
+    
+    \vspace{1em}
+    \textbf{Database Management Systems (DBMS)}
+    \begin{itemize}
+        \item \textbf{Persistence:} Data persistence is ensured via automatic, system mechanisms. The programmer does not have to worry about the data getting lost due to manual errors
+        \item \textbf{Robustness:} Backup, recovery \& restore need minimum manual intervention. The backup and recovery plan can be devised for automatic recovery on a crash
+        \item \textbf{Security:} DBMS provides user-specific access at the database level with restriction for to view only access
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Programmer's Productivity}
+    \textbf{File handling via Python}
+    \begin{itemize}
+        \item \textbf{Building the file handler:} Since the constraints within and across entities have to be enforced manually, the effort involved in building a file handling application is huge
+        \item \textbf{Maintenance:} To maintain the consistency of data, one must regularly check for sanity of data and the relationships between entities during inserts, updates and deletes
+        \item \textbf{Handling huge data:} As the data grows beyond the capacity of the file handler, more efforts are needed
+    \end{itemize}
+    
+    \vspace{1em}
+    \textbf{DBMS}
+    \begin{itemize}
+        \item \textbf{Configuring the database:} The installation and configuration of a database is specialized job of a DBA. A programmer, on the other hand, is saved the trouble
+        \item \textbf{Maintenance:} DBMS has in-built mechanisms to ensure consistency and sanity of data being inserted, updated or deleted. The programmer does not need to do such checks
+        \item \textbf{Handling huge data:} DBMS can handle even terabytes of data - Programmer does not have to worry
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Arithmetic Operations}
+    \textbf{File handling via Python}
+    \begin{itemize}
+        \item \textbf{Extensive support for arithmetic and logical operations:} Extensive arithmetic and logical operations can be performed on data using Python. These include complex numerical calculations and recursive computations.
+    \end{itemize}
+    
+    \vspace{1em}
+    \textbf{DBMS}
+    \begin{itemize}
+        \item \textbf{Limited support for arithmetic and logical operations:} SQL provides limited arithmetic and logical operations. Any other complex computation has to be done outside the SQL.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Costs and Complexity}
+    \textbf{File handling via Python}
+    \begin{itemize}
+        \item File systems are cheaper to install and use. No specialized hardware, software or personnel are required to maintain filesystems.
+    \end{itemize}
+    
+    \vspace{1em}
+    \textbf{DBMS}
+    \begin{itemize}
+        \item Large databases are served by dedicated database servers need large storage and processing power
+        \item DBMSs are expensive software that have to be installed and regularly updated
+        \item Databases are inherently complex and need specialized people to work on it like \textbf{DBA}
+        \item The above factors lead to \textbf{huge costs in implementing and maintaining database management systems}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Elucidated the difference between File handling by Python viz-a-viz DBMS through an Bank Transaction example
+        \item Parameterized Comparison
+    \end{itemize}
+    
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

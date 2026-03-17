@@ -1,0 +1,13 @@
+\frametitle{From Clause}
+\begin{itemize}
+        \item The \texttt{from} clause lists the relations involved in the query
+        \item Corresponds to the Cartesian product operation of the relational algebra
+        \item Find the Cartesian product \texttt{instructor $\times$ teaches}:
+        \begin{lstlisting}[language=SQL]
+select *
+from instructor, teaches;
+        \end{lstlisting}
+        \item Generates every possible instructor-teaches pair, with all attributes from both relations
+        \item For common attributes (for example, \texttt{ID}), the attributes in the resulting table are renamed using the relation name (for example, \texttt{instructor.ID})
+        \item Cartesian product not very useful directly, but useful combined with \texttt{where}-clause condition
+    \end{itemize}
