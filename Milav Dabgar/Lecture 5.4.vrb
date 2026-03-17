@@ -1,0 +1,18 @@
+\frametitle{Canonical Cover (5)}
+\begin{itemize}
+        \item To compute a canonical cover for $F$:
+    \end{itemize}
+    \begin{verbatim}
+repeat
+    Use the union rule to replace any dependencies in F
+        alpha_1 -> beta_1 and alpha_1 -> beta_2
+        with alpha_1 -> beta_1 beta_2
+    Find a functional dependency alpha -> beta with an
+    extraneous attribute either in alpha or in beta
+        /* Note: test for extraneous attributes done using F_c, not F */
+        If an extraneous attribute is found, delete it from alpha -> beta
+until F does not change
+    \end{verbatim}
+    \begin{itemize}
+        \item Note: Union rule may become applicable after some extraneous attributes have been deleted, so it has to be re-applied
+    \end{itemize}

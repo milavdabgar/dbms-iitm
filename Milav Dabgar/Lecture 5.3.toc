@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{Functional Dependency Theory}{5}{0}{1}
+\beamer@sectionintoc {2}{Decomposition using Functional Dependencies}{14}{0}{2}
