@@ -1,0 +1,630 @@
+﻿\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 34}
+\subtitle{Application Design and Development/4: Python and PostgreSQL}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item Introduced the use of SQL from a programming language
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To understand how to access PostgreSQL database from Python
+        \item To understand Python Web Application with PostgresSQL
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Accessing PostgreSQL from Python
+        \item Developing Web Application with Python
+    \end{itemize}
+\end{frame}
+
+\section{PostgreSQL and Python}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Working with PostgreSQL and Python\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Python Modules for PostgreSQL}
+    \begin{itemize}
+        \item Following Python modules that can be used to work with a PostgreSQL database server:
+        \begin{itemize}
+            \item psycopg2
+            \item pg8000
+            \item py-postgresql
+            \item PyGreSQL
+            \item ocpgdb
+            \item bpgsql
+            \item SQLAlchemy (needs any of the above to be installed separately)
+        \end{itemize}
+    \end{itemize}
+    \vspace{1em}
+    \small Source: \url{https://pynative.com/python-postgresql-tutorial/}
+\end{frame}
+
+\begin{frame}{Package psycopg2}
+    \begin{itemize}
+        \item \textbf{Advantages of psycopg2}
+        \begin{itemize}
+            \item Most popular and stable module to work with PostgreSQL
+            \item Used in most of the Python and Postgres frameworks
+            \item An actively maintained package and supports Python 2.x and 3.x
+            \item Thread-safe and designed for heavily multi-threaded applications.
+        \end{itemize}
+        \item \textbf{Installing Psycopg2 using pip command}
+        \begin{itemize}
+            \item The following pip command installs psycopg2 on different operating systems including Windows, MacOS, Linux, and Unix:
+            \item \texttt{pip install psycopg2}
+            \item For installing specific version, the following command can be used:
+            \item \texttt{pip install psycopg2==2.8.6}
+        \end{itemize}
+    \end{itemize}
+    \vspace{1em}
+    \small Source: \url{https://pynative.com/python-postgresql-tutorial/}
+\end{frame}
+
+\begin{frame}{Steps to access PostgresSQL from Python}
+    \begin{itemize}
+        \item \textbf{Steps to access PostgresSQL from Python using Psycopg}
+        \begin{itemize}
+            \item a) Create connection
+            \item b) Create cursor
+            \item c) Execute the query
+            \item d) Commit/rollback
+            \item e) Close the cursor
+            \item f) Close the connection
+        \end{itemize}
+    \end{itemize}
+    \begin{center}
+        \includegraphics[height=0.3\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000008_13dbfe7991a72de8d7bb0015b71ace508c006425ee135fc3b682db1c3f404005.png"}
+    \end{center}
+    \small Source: \url{https://pynative.com/python-postgresql-tutorial/}
+\end{frame}
+
+\begin{frame}{Python psycopg2 Module APIs: connection objects}
+    \begin{itemize}
+        \item \texttt{psycopg2.connect(database="mydb", user="myuser", password="mypass", host="127.0.0.1", port="5432")}
+        \begin{itemize}
+            \item This API opens a connection to the PostgreSQL database. If database is opened successfully, it returns a connection object.
+        \end{itemize}
+        \item \texttt{connection.close()}
+        \begin{itemize}
+            \item This method closes the database connection.
+        \end{itemize}
+        \item \textbf{Important psycopg2 module routines for managing cursor object:}
+        \item \texttt{connection.cursor()}
+        \begin{itemize}
+            \item This routine creates a cursor which will be used throughout the program.
+        \end{itemize}
+        \item \texttt{cursor.close()}
+        \begin{itemize}
+            \item This method closes the cursor.
+        \end{itemize}
+    \end{itemize}
+    \vspace{1em}
+    \small Source: \url{https://www.tutorialspoint.com/postgresql/postgresql_python.htm}
+\end{frame}
+
+\begin{frame}{Python psycopg2 Module APIs: insert, delete, update \& stored procedures}
+    \begin{itemize}
+        \item \texttt{cursor.execute(sql [, optional parameters])}
+        \begin{itemize}
+            \item This routine executes an SQL statement. The SQL statement may be parameterized (i.e., placeholders instead of SQL literals). The psycopg2 module supports placeholder using \texttt{\%s} sign. For example: \texttt{cursor.execute("insert into people values (\%s, \%s)", (who, age))}
+        \end{itemize}
+        \item \texttt{cursor.executemany(sql, seq of parameters)}
+        \begin{itemize}
+            \item This routine executes an SQL command against all parameter sequences or mappings found in the sequence SQL.
+        \end{itemize}
+        \item \texttt{cursor.callproc(procname[, parameters])}
+        \begin{itemize}
+            \item This routine executes a stored database procedure with the given name. The sequence of parameters must contain one entry for each argument that the procedure expects.
+        \end{itemize}
+        \item \texttt{cursor.rowcount}
+        \begin{itemize}
+            \item This is a read-only attribute which returns the total number of database rows that have been modified, inserted, or deleted by the last \texttt{execute()}.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Python psycopg2 Module APIs: select}
+    \begin{itemize}
+        \item \texttt{cursor.fetchone()}
+        \begin{itemize}
+            \item This method fetches the next row of a query result set, returning a single sequence, or None when no more data is available.
+        \end{itemize}
+        \item \texttt{cursor.fetchmany([size=cursor.arraysize])}
+        \begin{itemize}
+            \item This routine fetches the next set of rows of a query result, returning a list. An empty list is returned when no more rows are available. The method tries to fetch as many rows as indicated by the size parameter.
+        \end{itemize}
+        \item \texttt{cursor.fetchall()}
+        \begin{itemize}
+            \item This routine fetches all (remaining) rows of a query result, returning a list. An empty list is returned when no rows are available.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Python psycopg2 Module APIs: commit \& rollback}
+    \begin{itemize}
+        \item \texttt{connection.commit()}
+        \begin{itemize}
+            \item This method commits the current transaction. If you do not call this method, anything you did since the last call to \texttt{commit()} is not visible to other database connections.
+        \end{itemize}
+        \item \texttt{connection.rollback()}
+        \begin{itemize}
+            \item This method rolls back any changes to the database since the last call to \texttt{commit()}.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Connect to a PostgreSQL Database Server}
+    \begin{verbatim}
+import psycopg2
+def connectDb(dbname, usrname, pwd, address, portnum):
+  conn = None
+  try: # connect to the PostgreSQL database
+    conn = psycopg2.connect(database = dbname, user = usrname, \
+                            password = pwd, host = address, port = portnum)
+    print ("Database connected successfully")
+  except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+  finally:
+    if conn is not None:
+      conn.close() # close the connection
+
+connectDb("mydb", "myuser", "mypass", "127.0.0.1", "5432") # function call
+    \end{verbatim}
+    \textbf{Output:}
+    \texttt{Database connected successfully}
+    \begin{itemize}
+        \item \texttt{psycopg2.DatabaseError} : Exception raised for errors that are related to the PostgreSQL database.
+        \item We assume the following for all the programs in this module:
+        \begin{itemize}
+            \item Database Name: \texttt{mydb}, Username: \texttt{myuser}, Password: \texttt{mypass}, Host Name: \texttt{localhost} or IP address \texttt{127.0.0.1}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Steps to execute SQL commands}
+    \begin{enumerate}
+        \item Use the \texttt{psycopg2.connect()} method with the required arguments to connect PostgresSQL. It would return an Connection object if the connection established successfully.
+        \item Create a cursor object using the \texttt{cursor()} method of connection object.
+        \item The \texttt{execute()} methods run the SQL commands and return the result.
+        \item Use \texttt{cursor.fetchall()} or \texttt{fetchone()} or \texttt{fetchmany()} to read query result.
+        \item Use \texttt{commit()} to make the changes in database persistent, or use \texttt{rollback()} to revert the database changes.
+        \item Use \texttt{cursor.close()} and \texttt{connection.close()} method to close the cursor and PostgreSQL connection.
+    \end{enumerate}
+    \vspace{1em}
+    \small Source: \url{https://pynative.com/python-postgresql-tutorial/}
+\end{frame}
+
+\begin{frame}[fragile]{CREATE new PostgreSQL tables}
+    \begin{verbatim}
+import psycopg2
+def createTable():
+  conn = None
+  try:
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypass", host="127.0.0.1", port="5432")
+    cur = conn.cursor()
+    cur.execute('''CREATE TABLE EMPLOYEE \
+        (emp_num INT PRIMARY KEY NOT NULL, \
+        emp_name VARCHAR(40) NOT NULL, \
+        department VARCHAR(40) NOT NULL)''') # execute the CREATE TABLE statement
+    conn.commit() # commit the changes to the database
+    print ("Table created successfully")
+    cur.close() # close the cursor
+  except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+  finally:
+    if conn is not None: conn.close() # close the connection
+createTable() #function call
+    \end{verbatim}
+    \textbf{Output (if table EMPLOYEE does not exist):} \texttt{Table created successfully} \\
+    \textbf{Output (if table EMPLOYEE already exists):} \texttt{relation "employee" already exists}
+\end{frame}
+
+\begin{frame}[fragile]{Executing INSERT statement from Python}
+    \begin{verbatim}
+import psycopg2
+def insertRecord(num, name, dept):
+  conn = None
+  try:
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypass", host="127.0.0.1", port="5432")
+    cur = conn.cursor()
+    cur.execute("INSERT INTO EMPLOYEE (emp_num, emp_name, department) \
+                 VALUES (%s, %s, %s)", (num, name, dept))
+    conn.commit()
+    print ("Total number of rows inserted :", cur.rowcount);
+    cur.close()
+  except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+  finally:
+    if conn is not None: conn.close()
+insertRecord(110, 'Bhaskar', 'HR') #function call
+    \end{verbatim}
+    \textbf{Output:} \texttt{Total number of rows inserted : 1} \\
+    \textbf{Output:} \texttt{duplicate key value violates unique constraint "employee\_pkey" Key (emp\_num)=(110) already exists} (If a row already exists with emp\_num = 110)
+\end{frame}
+
+\begin{frame}[fragile]{Executing DELETE statement from Python}
+    \begin{verbatim}
+import psycopg2
+def deleteRecord(num):
+  conn = None
+  try:
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypass", host="127.0.0.1", port="5432")
+    cur = conn.cursor()
+    cur.execute("DELETE FROM EMPLOYEE WHERE emp_num = %s", (num,))
+    conn.commit()
+    print ("Total number of rows deleted :", cur.rowcount)
+    cur.close()
+  except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+  finally:
+    if conn is not None: conn.close() # close the connection
+deleteRecord(110) #function call
+    \end{verbatim}
+    \textbf{Output:} \texttt{Total number of rows deleted : 1} \\
+    \textbf{Output:} \texttt{Total number of rows deleted : 0} (If the row does not exist)
+\end{frame}
+
+\begin{frame}[fragile]{Executing UPDATE statement from Python}
+    \begin{verbatim}
+import psycopg2
+def updateRecord(num, dept):
+  conn = None
+  try:
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypass", host="127.0.0.1", port="5432")
+    cur = conn.cursor()
+    cur.execute("UPDATE EMPLOYEE set department = %s where emp_num = %s", (dept, num))
+    conn.commit()
+    print ("Total number of rows updated :", cur.rowcount)
+    cur.close()
+  except (Exception, psycopg2.DatabaseError) as error:
+    print(error)
+  finally:
+    if conn is not None: conn.close()
+updateRecord(110, "Finance") #function call
+    \end{verbatim}
+    \textbf{Output:} \texttt{Total number of rows updated : 1} \\
+    \textbf{Output:} \texttt{Total number of rows updated : 0} (If the row does not exist)
+\end{frame}
+
+\begin{frame}{Executing SELECT statement from Python}
+    \begin{center}
+        \includegraphics[height=0.7\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000022_0e5222699445e1f54534dc2495e712c9d35432350ebe0dd8eed519d8f91296f3.png"}
+    \end{center}
+\end{frame}
+
+\section{Python Frameworks for PostgresSQL}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Python Frameworks for PostgresSQL\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Web and Internet Development using Python}
+    \begin{itemize}
+        \item Python offers several frameworks such as \textbf{bottle.py}, \textbf{Flask}, \textbf{CherryPy}, \textbf{Pyramid}, \textbf{Django} and \textbf{web2py} for web development.
+        \item Python offers many choices for web development
+        \begin{itemize}
+            \item Frameworks such as \textbf{Django} and \textbf{Pyramid}.
+            \item Advanced content management systems such as \textbf{Plone} and \textbf{django CMS}.
+            \item Micro-frameworks such as \textbf{Flask} and \textbf{Bottle}.
+        \end{itemize}
+        \item Python's standard library supports many internet protocols
+        \begin{itemize}
+            \item HTML and XML
+            \item E-mail processing
+            \item JSON
+            \item Support for FTP, IMAP, and other Internet protocols
+            \item Easy-to-use socket interface
+        \end{itemize}
+        \item The package Index has more libraries
+        \begin{itemize}
+            \item \textbf{Requests}, a powerful HTTP client library.
+            \item \textbf{Feedparser} for parsing RSS/Atom feeds.
+            \item \textbf{Beautiful Soup}, an HTML parser that can handle all sorts of HTML.
+            \item \textbf{Paramiko}, implementing the SSH2 protocol.
+            \item \textbf{Twisted Python}, a framework for asynchronous network programming.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Flask Web Application Framework}
+    \begin{itemize}
+        \item Flask is a lightweight WSGI (Web Server Gateway Interface) web application framework. It is designed to make getting started quick and easy, with the ability to scale up to complex applications.
+        \item It began as a simple wrapper around Werkzeug (Werkzeug WSGI toolkit) and Jinja (Jinja template engine) and has since then become one of the most popular Python web application frameworks.
+        \item Flask offers suggestions, but does not enforce any dependencies or project layouts. It is up to the developer to choose the tools and libraries they want to use.
+        \item There are many extensions provided by the community that make adding new functionality easy.
+        \item \textbf{Installing Flask using pip command}
+        \begin{itemize}
+            \item \texttt{pip install -U Flask}
+        \end{itemize}
+    \end{itemize}
+    \vspace{1em}
+    \small Source: \url{https://pypi.org/project/Flask/}
+\end{frame}
+
+\begin{frame}[fragile]{A Simple Example}
+    \begin{verbatim}
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+  return "Hello World"
+
+if __name__ == '__main__':
+  app.run()
+    \end{verbatim}
+    \begin{itemize}
+        \item Importing flask module in the project is mandatory. Our WSGI application is an object of \texttt{Flask} class.
+        \item Flask constructor takes the name of current module (\texttt{\_\_name\_\_}) as argument.
+        \item The \texttt{route()} function of the Flask class is a decorator, which tells the application which URL should call the associated function. \texttt{app.route(rule, options)}
+        \begin{itemize}
+            \item The \texttt{rule} parameter represents URL binding with the function.
+            \item The \texttt{options} is a list of parameters to be forwarded to the underlying Rule object.
+        \end{itemize}
+        \item In the above example, \texttt{'/'} URL is bound with \texttt{hello\_world()} function. Hence, when the home page of web server is opened in browser, the output of this function will be rendered.
+        \item Finally the \texttt{run()} method of Flask class runs the application on the local development server.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{A Simple Example (2)}
+    \textbf{\texttt{app.run(host, port, debug, options)}}
+    \begin{itemize}
+        \item \texttt{host}: Hostname to listen on. Defaults to 127.0.0.1 (localhost). Set to \texttt{'0.0.0.0'} to have server available externally
+        \item \texttt{port}: Defaults to 5000
+        \item \texttt{debug}: Defaults to false. If set to true, provides a debug information
+        \item \texttt{options}: To be forwarded to underlying Werkzeug server.
+    \end{itemize}
+    \textbf{Executing the code:}
+    \begin{itemize}
+        \item \texttt{python Hello.py}
+    \end{itemize}
+    \textbf{Output:}
+    A message in Python shell:
+    \begin{itemize}
+        \item \texttt{* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)}
+    \end{itemize}
+    Open the above URL (127.0.0.1:5000) in the browser
+    \begin{center}
+        \includegraphics[height=0.2\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000028_dee3c0e3507fc22d6b5163393135f014ae91fa92272cde7e27bebae173c9ba4e.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Python: Flask}
+    \begin{itemize}
+        \item Consider the table Candidate (in PostgreSQL) as shown below:
+    \end{itemize}
+    \begin{center}
+        \includegraphics[height=0.2\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000030_914ee151032499548a51add769ec55e3d0791dc689fa220659b93dac18ef6a42.png"}
+    \end{center}
+    \begin{itemize}
+        \item Code segment in Python:
+    \end{itemize}
+    \begin{verbatim}
+from flask import Flask, render_template, request
+import psycopg2
+
+app = Flask(__name__, template_folder='templates')
+
+# functions to be added here for different actions
+
+if __name__ == '__main__': # Run the Flask app
+    app.run(host='127.0.0.1', debug=True, port=5000)
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Python: Flask (2)}
+    \begin{itemize}
+        \item Source code for \texttt{index.html}:
+    \end{itemize}
+    \begin{verbatim}
+<!DOCTYPE html>
+<html>
+<head> <title>Candidate Email Database</title> </head>
+<body>
+  <h2>Candidate Email Database</h2>
+  <a href="/add">Add Email</a><br><br>
+  <a href="/viewall">View Email</a>
+</body>
+</html>
+    \end{verbatim}
+    \begin{itemize}
+        \item Source code for rendering \texttt{index.html} and \texttt{add.html} pages:
+    \end{itemize}
+    \begin{verbatim}
+@app.route("/")
+def index():
+    return render_template("index.html");
+
+@app.route("/add")
+def add():
+    return render_template("add.html")
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}{Python: Flask (3)}
+    \begin{center}
+        \includegraphics[height=0.6\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000033_460e4697d7b3a7069329b81057e8753ec253e079338fe36a7812338214c6afdc.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Python: Flask (4)}
+    \begin{itemize}
+        \item Source code for \texttt{add.html} (in HTML):
+    \end{itemize}
+    \begin{verbatim}
+<!DOCTYPE html>
+<html>
+<head> <title>Add Email</title> </head>
+<body>
+  <h2>Email Information</h2>
+  <form action = "/savedetails" method="post">
+    <table>
+      <tr><td>CNO</td><td><input type="text" name="cno" required></td></tr>
+      <tr><td>Name</td><td><input type="text" name="name" required></td></tr>
+      <tr><td>Email</td><td><input type="text" name="email" required></td></tr>
+      <tr><td><input type="submit" value="Submit"></td></tr>
+    </table>
+  </form>
+</body>
+</html>
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Python: Flask (5)}
+    \begin{itemize}
+        \item \texttt{saveDetails()} function for \texttt{add.html} (in Python):
+    \end{itemize}
+    \begin{verbatim}
+@app.route("/savedetails",methods = ["POST"])
+def saveDetails():
+  cno = request.form["cno"]
+  name = request.form["name"]
+  email = request.form["email"]
+  conn = None
+  try:
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypass", host="127.0.0.1", port="5432")
+    cur = conn.cursor()
+    cur.execute("INSERT INTO Candidate (cno, name, email) VALUES (%s, %s, %s)", (cno, name, email))
+    conn.commit()
+    cur.close()
+  except (Exception, psycopg2.DatabaseError) as error:
+    return render_template("fail.html")
+  finally:
+    if conn is not None: conn.close()
+  return render_template("success.html")
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}{Python: Flask (6)}
+    \textbf{\url{http://127.0.0.1:5000/add}}
+    \begin{center}
+        \includegraphics[height=0.3\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000037_d2c3442fc7cc9f3b70df5f0cfe934bdf17de0969f99a02fff80a673b51c37b62.png"}
+    \end{center}
+    \textbf{\url{http://127.0.0.1:5000/savedetails}}
+    \begin{center}
+%         \includegraphics[height=0.2\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000038_7b73013989c43a6e184ec53e2f02dfb3ac6fa5eea2656bb7711daaa717729cb4.png"}
+%         \includegraphics[height=0.2\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000039_e7f3afa89f65e5d8ea95dd5a7f042a196b725a7cdc18d6b37bfed8c9e2c31def.png"}
+%         \includegraphics[height=0.2\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000040_8fc14f5e1ff8d548956ec55594ded1904a6322880673dfcf44679d400c806a4b.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Python: Flask (7)}
+    \begin{itemize}
+        \item \texttt{viewAll()} function for \texttt{viewall.html} (in Python):
+    \end{itemize}
+    \begin{verbatim}
+@app.route("/viewall")
+def viewAll():
+  conn = None
+  try:
+    conn = psycopg2.connect(database="mydb", user="myuser", password="mypass", host="127.0.0.1", port="5432")
+    cur = conn.cursor()
+    cur.execute("SELECT cno, name, email FROM Candidate")
+    results = cur.fetchall()
+    cur.close()
+  except (Exception, psycopg2.DatabaseError) as error:
+    return render_template("fail.html")
+  finally:
+    if conn is not None: conn.close()
+  return render_template("viewall.html",rows = results)
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Python: Flask (8)}
+    \begin{itemize}
+        \item Source code for \texttt{viewall.html} (in HTML):
+    \end{itemize}
+    \begin{verbatim}
+<!DOCTYPE html>
+<html>
+<head> <title>Email List</title> </head>
+<body>
+  <h3>Email List</h3>
+  <table border=5>
+    <tr> <th>CNO</th><th>Name</th><th>Email</th> </tr>
+    {% for row in rows %}
+      <tr>
+        <td>{{row[0]}}</td> <td>{{row[1]}}</td> <td>{{row[2]}}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  <br><br>
+  <a href="/">Go Home</a>
+</body>
+</html>
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}{Python: Flask (9)}
+    \textbf{\url{http://127.0.0.1:5000/viewall}}
+    \begin{center}
+%         \includegraphics[height=0.3\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000044_8e05cd866fc583e160c970b3f094f1eb6f0ca759816f259136294df2c2fcfd4d.png"}
+        \vspace{1em}
+        \includegraphics[height=0.4\textheight,keepaspectratio]{"../Lec 7.4_artifacts/image_000045_1c9a5879d21e8e51aa57ce0488e5c5938f3e467480736bbf1af769b74e587d73.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Learnt how to access PostgreSQL database from Python
+        \item Learnt to build Python Web Application with PostgresSQL and Flask
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}
+

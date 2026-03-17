@@ -1,0 +1,573 @@
+﻿\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 32}
+\subtitle{Application Design and Development/2: Web Applications}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item Had a glimpse of Application Programs across various sectors
+        \item Understood the typical architecture for an application
+        \item Studies the classification and evolution of the architectures
+        \item Glimpsed at architecture for a few sample applications
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To familiarize with the fundamentals notions and technologies of Web
+        \item To learn about scripting
+        \item To learn about Servlets
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Web Fundamentals and Scripting
+        \item Servlets
+    \end{itemize}
+\end{frame}
+
+\section{Web Fundamentals}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Web Fundamentals\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{The World Wide Web}
+    \begin{itemize}
+        \item The Web is a distributed information system based on hypertext
+        \item Most Web documents are hypertext documents formatted via the HyperText Markup Language (HTML)
+        \item HTML documents contain
+        \begin{itemize}
+            \item text along with font specifications, and other formatting instructions
+            \item hypertext links to other documents, which can be associated with regions of the text
+            \item forms, enabling users to enter data which can then be sent back to the Web server
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Uniform Resources Locators}
+    \begin{itemize}
+        \item On the Web, functionality of pointers is provided by Uniform Resource Locators (URLs).
+        \item \textbf{URL example:} \url{http://www.acm.org/sigmod}
+        \begin{itemize}
+            \item The first part indicates how the document is to be accessed (protocol)
+            \begin{itemize}
+                \item $\triangleright$ 'http' indicates that the document is to be accessed using the Hyper Text Transfer Protocol.
+            \end{itemize}
+            \item The second part gives the unique name of a machine on the Internet
+            \item The rest of the URL identifies the document within the machine
+        \end{itemize}
+        \item The local identification can be:
+        \begin{itemize}
+            \item The path name of a file on the machine: A file at \texttt{C:/WINDOWS/media/Alarm01.wav} of local machine can be accessed as:
+            \begin{itemize}
+                \item $\triangleright$ \texttt{file:///C:/WINDOWS/media/Alarm01.wav}
+                \item $\triangleright$ \texttt{file://localhost/c:/WINDOWS/media/Alarm01.wav}
+            \end{itemize}
+            \item An identifier (path name) of a program, plus arguments to be passed to the program: Searching google.com with 'silberschatz' has the uri:
+            \begin{itemize}
+                \item $\triangleright$ \url{http://www.google.com/search?q=silberschatz}
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{URI, URL, and URN}
+    \begin{itemize}
+        \item Uniform Resource Identifier (URI)
+        \item Uniform Resource Locator (URL)
+        \item Uniform Resource Name (URN)
+        \item \textbf{Relationships:}
+        \begin{itemize}
+            \item URIs can be classified as locators (URLs), or as names (URNs), or as both.
+            \item URN functions like a person's name
+            \item URL resembles that person's street address.
+            \item URN defines an item's identity, while the URL provides a method for finding it
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{HTML and HTTP}
+    \begin{itemize}
+        \item HTML provides formatting, hypertext link, and image display features
+        \begin{itemize}
+            \item including tables, stylesheets (to alter default formatting), etc.
+        \end{itemize}
+        \item HTML also provides input features
+        \begin{itemize}
+            \item Select from a set of options
+            \begin{itemize}
+                \item $\triangleright$ Pop-up menus, radio buttons, check lists
+            \end{itemize}
+            \item Enter values
+            \begin{itemize}
+                \item $\triangleright$ Text boxes
+            \end{itemize}
+        \end{itemize}
+        \item Filled in input sent back to the server, to be acted upon by an executable at the server
+        \item HyperText Transfer Protocol (HTTP) used for communication with the Web server
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Sample HTML}
+    \begin{verbatim}
+<html>
+<body>
+<table border>
+<tr><th>ID</th><th>Name</th><th>Department</th></tr>
+<tr><td>00128</td><td>Zhang</td><td>Comp. Sci.</td></tr>
+...
+</table>
+<form action='PersonQuery' method='get'>
+Search for:
+<select name='persontype'>
+<option value='student' selected>Student</option>
+<option value='instructor'>Instructor</option>
+</select>
+<br>
+Name:
+<input type='text' size='20' name='name'>
+<input type='submit' value='submit'>
+</form>
+</body>
+</html>
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}{HTTP and Sessions}
+    \begin{itemize}
+        \item \textbf{The HTTP protocol is connectionless}
+        \begin{itemize}
+            \item That is, once the server replies to a request, the server closes the connection with the client, and forgets all about the request
+            \item In contrast, Unix logins, and JDBC/ODBC connections stay connected until the client disconnects
+            \begin{itemize}
+                \item $\triangleright$ retaining user authentication and other information
+            \end{itemize}
+            \item \textbf{Motivation:} reduces load on server
+            \begin{itemize}
+                \item $\triangleright$ operating systems have tight limits on number of open connections on a machine
+            \end{itemize}
+        \end{itemize}
+        \item Information services need session information
+        \begin{itemize}
+            \item For example, user authentication should be done only once per session
+        \end{itemize}
+        \item \textbf{Solution:} use a cookie
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sessions and Cookies}
+    \begin{itemize}
+        \item A \textbf{cookie} is a small piece of text containing identifying information
+        \begin{itemize}
+            \item Sent by server to browser
+            \begin{itemize}
+                \item $\triangleright$ Sent on first interaction, to identify session
+            \end{itemize}
+            \item Sent by browser to the server that created the cookie on further interactions
+            \begin{itemize}
+                \item $\triangleright$ part of the HTTP protocol
+            \end{itemize}
+        \end{itemize}
+        \item Server saves information about cookies it issued, and can use it when serving a request
+        \begin{itemize}
+            \item $\triangleright$ For example, authentication information, and user preferences
+        \end{itemize}
+        \item Cookies can be stored permanently or for a limited time
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Web Browser}
+    \begin{itemize}
+        \item A web browser is application software for accessing the World Wide Web
+        \item A web browser is to fetch content from the Web and display it on a user's device
+        \item This process begins when the user inputs a URL into the browser starting with either \texttt{http:} or \texttt{https:}
+        \item Once a web page has been retrieved, the rendering engine displays it on the user's device
+        \item A browser or rendering engine is a core software component for a web browser
+        \item The primary job of a browser engine is to transform HTML documents and other resources of a web page into an interactive visual representation on a user's device
+        \begin{itemize}
+            \item This includes image and video formats supported by the browser
+        \end{itemize}
+        \item Web pages usually contain hyperlinks to other pages and resources. Each link contains a URL, and when it is clicked or tapped, the browser navigates to the new resource
+        \item Web browsers are used on a range of devices, including desktops, laptops, tablets, and smartphones. In 2020, an estimated 4.9 billion people used a browser. The most used browser is Google Chrome, with a 64\% global market share on all devices, followed by Safari with 19\%
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Web Servers}
+    \begin{itemize}
+        \item A web server is software and underlying hardware that accepts requests via HTTP or its secure variant HTTPS
+        \item A web browser or crawler, requests for a specific resource using HTTP, and the server responds with the content of that resource or an error message
+        \item The server can also accept and store resources sent from the user agent
+        \item The document name in a URL may identify an executable program, that, when run, generates a HTML document
+        \item When an HTTP server receives a request for such a document, it executes the program, and sends back the HTML document that is generated
+        \item The Web client can pass extra arguments with the name of the document
+        \item To install a new service on the Web, one simply needs to create and install an executable that provides that service
+        \item The Web browser provides a graphical user interface to the information service
+        \item Common Gateway Interface (CGI): a standard interface between web and application server
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Web Services}
+    \begin{itemize}
+        \item Allow data on Web to be accessed using remote procedure call mechanism
+        \item Two approaches are widely used
+        \begin{itemize}
+            \item \textbf{Representation State Transfer (REST):} allows use of standard HTTP request to a URL to execute a request and return data
+            \begin{itemize}
+                \item $\triangleright$ returned data is encoded either in XML, or in JavaScript Object Notation (JSON)
+            \end{itemize}
+            \item \textbf{Big Web Services:}
+            \begin{itemize}
+                \item $\triangleright$ uses XML representation for sending request data, as well as for returning results
+                \item $\triangleright$ standard protocol layer built on top of HTTP
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Scripting}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Scripting\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Two-Tier Web Architecture}
+    \begin{center}
+%         \includegraphics[height=0.6\textheight,keepaspectratio]{"../Lec 7.2_artifacts/image_000019_9c34e7bbcf12df880d5ddfe9b67425f171bc8a846c9a3dc52e697843d1a89c89.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Three-Tier Web Architecture}
+    \begin{center}
+%         \includegraphics[height=0.6\textheight,keepaspectratio]{"../Lec 7.2_artifacts/image_000021_641e7d8c067e2a967ea9c42416b9d6dae31bf4e223edb39352e4ca06d9a16f73.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Client-Side Scripting and Validation}
+    \begin{itemize}
+        \item Advantages of execution at client
+        \begin{itemize}
+            \item Offloads work from server
+            \item Provides more flexible user interface
+        \end{itemize}
+        \item Disadvantages
+        \begin{itemize}
+            \item Client functionality is not guaranteed
+            \item $\triangleright$ e.g. Javascript may be disabled on some browsers
+            \item Browser may not support newer language features
+            \item Same application will look and behave differently in different browsers
+            \item Client code can be hacked
+            \item security checks must be always crossed-checked at the server
+            \item cannot be trusted blindly
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Javascript}
+    \begin{itemize}
+        \item \textbf{Javascript}
+        \begin{itemize}
+            \item Language very similar to Java
+            \item Typically executed by the browser
+        \end{itemize}
+        \item Javascript can
+        \begin{itemize}
+            \item validate input,
+            \item interact with user,
+            \item alter display based on user interaction
+        \end{itemize}
+        \item Document Object Model (DOM)
+        \begin{itemize}
+            \item Tree representation of HTML document
+            \item Nodes of tree can be accessed via Javascript
+            \item $\triangleright$ \texttt{document.getElementById('some\_id')}
+            \item And updated
+            \item $\triangleright$ \texttt{document.getElementById('some\_id').innerHTML = "<b>Hello</b>"}
+            \item Forms can be checked, and values updated
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Javascript (2): Example}
+    \begin{verbatim}
+<html>
+<head>
+<script type="text/javascript">
+function validate() {
+  var creds = document.getElementById("CREDIT_CARD").value;
+  if (creds.length != 16) {
+    alert("Credit card must have 16 digits");
+    return false;
+  } else {
+    return true;
+  }
+}
+</script>
+</head>
+<body>
+<form action="form_action.asp" onsubmit="return validate()">
+  Name: <input type="text" name="name" size="20"> <br>
+  Credit Card: <input type="text" name="CREDIT_CARD" id="CREDIT_CARD" size="16">
+  <input type="submit" value="Submit">
+</form>
+</body>
+</html>
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}{Server-Side Scripting}
+    \begin{itemize}
+        \item Server-side scripting simplifies the task of connecting a database to the Web
+        \begin{itemize}
+            \item Define an HTML document with embedded executable code/SQL queries
+            \item Input values from HTML forms can be used directly in the embedded code/SQL queries
+            \item When the document is requested, the Web server executes the embedded code/SQL queries to generate the actual HTML document, which is sent back to the client
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Server Side Context}
+    \begin{itemize}
+        \item \textbf{A Web Application Layer}
+        \begin{itemize}
+            \item Java Servlets
+            \item Java Server Pages (JSP)
+            \item Application Programming Interface (API) -- Java code with annotations
+            \item Python
+            \item Node JS
+        \end{itemize}
+        \item Web application layer maps HTTP requests to method invocations on a class
+        \begin{itemize}
+            \item Maps parameters from the HTTP request to arguments of the method
+            \item Expects method to return a string, or an object that is mapped to a string (such as HTML or JSON), and returns the string to the Web client
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Servlets}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Servlets\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Servlets}
+    \begin{itemize}
+        \item Java classes that run in a Web server
+        \item Provide an API for HTTP interaction
+        \begin{itemize}
+            \item Can process HTTP/HTTPS requests
+            \item Obtain parameters
+            \item Return results to the HTTP client (usually a web browser)
+            \item Maintain information across requests (Sessions)
+        \end{itemize}
+        \item \textbf{Example:} \texttt{javax.servlet.http.HttpServlet}
+        \begin{itemize}
+            \item Two primary methods invoked by Web servers when an HTTP request is received:
+            \item $\triangleright$ \texttt{doGet(request, response)}
+            \item $\triangleright$ \texttt{doPost(request, response)}
+        \end{itemize}
+        \item HTTP Methods
+        \begin{itemize}
+            \item \textbf{GET}: pass parameters in URL
+            \item \textbf{POST}: pass parameters in the body of HTTP request
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Servlet (2)}
+    \begin{center}
+%         \includegraphics[height=0.7\textheight,keepaspectratio]{"../Lec 7.2_artifacts/image_000030_e06abfbbf6a04aacf1f8e120803c43105fd9c1cd5cd7ccb8accf58ef57cb3ef8.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Servlet (3): Example}
+    \begin{verbatim}
+String persontype = request.getParameter("persontype");
+String number = request.getParameter("name");
+if (persontype.equals("student")) {
+  // ... code to find students with the specified name ...
+  // ... using JDBC to communicate with the database ...
+  out.println("<table BORDER COLS=3>");
+  out.println("<tr><td>ID</td><td>Name</td><td>Department</td></tr>");
+  for (/* each result */) {
+    // ... retrieve ID, name and dept name
+    // ... into variables ID, name and deptname
+    out.println("<tr><td>" + ID + "</td><td>" + name + "</td><td>" + deptname + "</td></tr>");
+  }
+  out.println("</table>");
+} else {
+  // ... as above, but for instructors ...
+}
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}{Servlet (4): Sessions}
+    \begin{itemize}
+        \item Servlet API supports handling of sessions
+        \item Sets a cookie on first interaction with browser, and uses it to identify session on further interactions
+        \item To check if session is already active:
+        \begin{itemize}
+            \item \texttt{if (request.getSession(false) == true)}
+            \item $\triangleright$ .. then existing session
+            \item $\triangleright$ else .. redirect to authentication page
+            \item authentication page
+            \item $\triangleright$ check login/password
+            \item $\triangleright$ \texttt{request.getSession(true)}: creates new session
+        \end{itemize}
+        \item Store/retrieve attribute value pairs for a particular session
+        \begin{itemize}
+            \item \texttt{session.setAttribute("userid", userid)}
+            \item \texttt{session.getAttribute("userid")}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Servlet (5): Support}
+    \begin{itemize}
+        \item Servlets run inside application servers such as
+        \begin{itemize}
+            \item Apache Tomcat, Glassfish, JBoss
+            \item BEA Weblogic, IBM WebSphere and Oracle Application Servers
+        \end{itemize}
+        \item Application servers support
+        \begin{itemize}
+            \item deployment and monitoring of servlets
+            \item Java 2 Enterprise Edition (J2EE) platform supporting objects, parallel processing across multiple application servers, etc
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Java Server Pages (JSP)}
+    \begin{itemize}
+        \item A JSP page with embedded Java code
+    \end{itemize}
+    \begin{verbatim}
+<html>
+<head><title>Hello</title></head>
+<body>
+<% if (request.getParameter("name") == null) {
+     out.println("Hello World");
+   } else {
+     out.println("Hello, " + request.getParameter("name"));
+   } %>
+</body>
+</html>
+    \end{verbatim}
+    \begin{itemize}
+        \item JSP is compiled into Java + Servlets
+        \item JSP allows new tags to be defined, in tag libraries
+        \begin{itemize}
+            \item such tags are like library functions, can are used for example to build rich user interfaces such as paginated display of large datasets
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{PHP}
+    \begin{itemize}
+        \item PHP is widely used for Web server scripting
+        \item Extensive libraries including for database access using ODBC
+    \end{itemize}
+    \begin{verbatim}
+<html>
+<head><title>Hello</title></head>
+<body>
+<?php
+  if (!isset($_REQUEST['name'])) {
+    echo "Hello World";
+  } else {
+    echo "Hello, " . $_REQUEST['name'];
+  }
+?>
+</body>
+</html>
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}{USP of JSP}
+    \begin{itemize}
+        \item \textbf{JSP vs. Active Server Pages (ASP)}
+        \begin{itemize}
+            \item ASP is a similar technology from Microsoft and is proprietary (uses VB).
+            \item JSP is platform independent and portable.
+        \end{itemize}
+        \item \textbf{JSP vs. Pure Servlets}
+        \begin{itemize}
+            \item JSP is a servlet but it is more convenient to write and to modify regular HTML than to have a million println statements that generate the HTML.
+            \item The Web page design experts can build the HTML, leaving places for the servlet programmers to insert the dynamic content.
+        \end{itemize}
+        \item \textbf{JSP vs. JavaScript}
+        \begin{itemize}
+            \item JavaScript can generate HTML dynamically on the client.
+            \item 'Client Side': Java Script code is executed by the browser after the web server sends the HTTP response. With the exception of cookies, HTTP and form submission data is not available to JavaScript.
+            \item 'Server Side': Java Server Pages are executed by the web server before the web server sends the HTTP response. It can access server-side resources like databases, catalogs.
+        \end{itemize}
+        \item \textbf{JSP vs. Static HTML}
+        \begin{itemize}
+            \item Regular HTML cannot contain dynamic information.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Familiarized with the Fundamentals notions and technologies of Web
+        \item Learnt about Scripting
+        \item Learnt the notions of Servlets
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}
+

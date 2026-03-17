@@ -1,0 +1,26 @@
+\frametitle{Embedded SQL: Java Example (6)}
+\begin{verbatim}
+// retrieve the updated data from the database
+System.out.println("Retrieve the updated data from the database.");
+str1 = "000010";
+#sql cursor2 = {SELECT firstnme FROM employee WHERE empno = :str1}; // 6
+// display the result set. cursor2.next() returns false when there are no more rows
+System.out.println("Received results:");
+while (true) {
+  #sql { FETCH :cursor2 INTO :str2 }; // 7
+  if (cursor2.endFetch()) break; // 8
+  System.out.println(" empno= " + str1 + " firstname= " + str2 + "");
+}
+cursor2.close(); // 9
+
+// rollback the update
+System.out.println("Rollback the update.");
+#sql { ROLLBACK work };
+System.out.println("Rollback done.");
+} // try
+catch( Exception e ) {
+  e.printStackTrace();
+}
+} // main
+} // class App
+    \end{verbatim}

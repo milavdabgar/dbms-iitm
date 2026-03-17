@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{PostgreSQL and Python}{5}{0}{1}
+\beamer@sectionintoc {2}{Python Frameworks for PostgresSQL}{20}{0}{2}

@@ -1,0 +1,17 @@
+\frametitle{Application Security (4): Application-Level Authorization}
+\begin{itemize}
+        \item Current SQL standard does not allow fine-grained authorization such as 'students can see their own grades, but not other's grades'
+        \item \textbf{Problem 1:} Database has no idea who are application users
+        \item \textbf{Problem 2:} SQL authorization is at the level of tables, or columns of tables, but not to specific rows of a table
+        \item One workaround: use views such as
+        \begin{verbatim}
+create view studentTakes as
+select * from takes
+where takes.ID = syscontext.user_id()
+        \end{verbatim}
+        \item where \texttt{syscontext.user\_id()} provides end user identity
+        \begin{itemize}
+            \item $\triangleright$ end user identity must be provided to the database by the application
+        \end{itemize}
+        \item Having multiple such views is cumbersome
+    \end{itemize}

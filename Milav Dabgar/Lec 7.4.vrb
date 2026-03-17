@@ -1,0 +1,23 @@
+\frametitle{Python: Flask (8)}
+\begin{itemize}
+        \item Source code for \texttt{viewall.html} (in HTML):
+    \end{itemize}
+    \begin{verbatim}
+<!DOCTYPE html>
+<html>
+<head> <title>Email List</title> </head>
+<body>
+  <h3>Email List</h3>
+  <table border=5>
+    <tr> <th>CNO</th><th>Name</th><th>Email</th> </tr>
+    {% for row in rows %}
+      <tr>
+        <td>{{row[0]}}</td> <td>{{row[1]}}</td> <td>{{row[2]}}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  <br><br>
+  <a href="/">Go Home</a>
+</body>
+</html>
+    \end{verbatim}

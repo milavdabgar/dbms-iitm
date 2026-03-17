@@ -1,0 +1,420 @@
+﻿\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 31}
+\subtitle{Application Design and Development/1: Architecture}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Week Recap}
+    \begin{itemize}
+        \item Studied the Normal Forms and their Importance in Relational Design - how progressive increase of constraints can minimize redundancy in a schema
+        \item Learnt how to decompose a schema into 3NF while preserving dependency and lossless join
+        \item Learnt how to decompose a schema into BCNF with lossless join
+        \item Using the specification for a Library Information System, we have illustrated how a schema can be designed and then refined for finalization
+        \item Coding of various queries based on these schema are left as exercises
+        \item Understood multi-valued dependencies to handle attributes that can have multiple values
+        \item Learnt Fourth Normal Form and decomposition to 4NF
+        \item Discussed aspects of the database design process
+        \item Studied the issues with temporal data
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item What are the Application Programs across various sectors?
+        \item Commonality of architecture across applications
+        \item Understanding the classification and evolution of the architectures
+        \item A look at the architecture for a few sample applications
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Application Programs
+        \item Application Architecture with classification and evolution
+        \item Sample application architectures
+    \end{itemize}
+\end{frame}
+
+\section{Application Programs and User Interfaces}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Application Programs and Architecture\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Application Programs: Internet / Web or Mobile}
+    \begin{itemize}
+        \item \textbf{Financial:}
+        \begin{itemize}
+            \item Netbanking: SBI, PNB, BoB, Canara, HDFC, ICICI
+            \item Insurance \& Investment: LICI, PolicyBazaar, NSDL, NPS,
+            \item Share Market: ICICIDirect, Sharekhan, HDFCDirect
+            \item Payment Gateway: Paytm, GPay, Bhim UPI, PhonePe,
+            \item e-Commerce: Amazon, Flipkart, eBay, BigBazaar, BigBasket,
+        \end{itemize}
+        \item \textbf{Travel \& Tourism:}
+        \begin{itemize}
+            \item Travel Reservations: IRCTC, Airlines, MakeMyTrip, Yatra,
+            \item Transportation: Uber, Ola Cab, Mega Cab, Meru Cab,
+            \item Accommodation: Booking, OYO, AirBnb, Fabhotels, Treebo,
+            \item Navigation: Google Maps, MapQuest, Apple Maps,
+            \item Food \& Delivery: Zomato, Swiggy, UberEats, Dunzo,
+        \end{itemize}
+        \item \textbf{Communication:}
+        \begin{itemize}
+            \item Live Interaction: Zoom, Google Meet, Teams, Webex, Skype,
+            \item Mail: Gmail, Yahoo, Hotmail, Rediffmail, Enterprise Mail,
+            \item Intermittent Interaction: WhatsApp, Telegram, Signal, Skype
+            \item Social Media: Facebook, Instagram, Twitter, YouTube,
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Application Programs: Internet / Web or Mobile (cont.)}
+    \begin{itemize}
+        \item \textbf{Knowledge Discovery:}
+        \begin{itemize}
+            \item Static: Google, Yahoo, Bing, Wikipedia, Encyclopedia.com,
+            \item Q\&A: Quora, ASKfm, Yahoo Answers, Reddit, Digg,
+        \end{itemize}
+        \item \textbf{Sports:}
+        \begin{itemize}
+            \item Cricket: Cricbuzz, CricViz, Cricket-21, Cricket Exchange,
+            \item Tennis: ATP, ITF, SwingVision, TennisPAL, Tennis Clash,
+        \end{itemize}
+        \item \textbf{Software Engineering:}
+        \begin{itemize}
+            \item Issue Tracking: JIRA, BugZilla, Githubs, Gitlab,
+            \item Online IDE: OnlineGDB, Codechef, Ideone,
+            \item VCS: Githubs, Gitlab, BitBucket, SourceForge,
+        \end{itemize}
+        \item \textbf{Library:}
+        \begin{itemize}
+            \item Digital Library: National Digital Library of India,
+            \item Archives: Internet Archive, arXiv, Nextpoint,
+        \end{itemize}
+        \item \textbf{Education:}
+        \begin{itemize}
+            \item eLearning: BYJU's, IGNOU, NIIT, Edukart,
+            \item MOOCs: SWAYAM, edX, Coursera, Udemy,
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Application Programs: Internet / Web or Mobile (cont.)}
+    \begin{itemize}
+        \item \textbf{Document Processing:}
+        \begin{itemize}
+            \item Editing: Overleaf, Google Docs, Spreadsheet
+            \item Website, Blog: Google Sites, WordPress, Webly,
+        \end{itemize}
+        \item \textbf{Health:}
+        \begin{itemize}
+            \item Telemedicine: MDLIVE, Doctor on Demand,
+            \item National: Aarogy Setu, CoWin, NACO App,
+        \end{itemize}
+        \item \textbf{Organizational ERP: (Intranet)}
+        \begin{itemize}
+            \item Institutions: Students, Faculty, Course
+            \item Manufacturing: Suppliers, Inventory, Customers,
+            \item Hospital: Patient, Doctor, OPD, IPD, Pharmacy,
+            \item Bank: Customers, Accounts, Locker, Deposits,
+            \item Courier: Customers, Parcels, Delivery Agents,
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Characteristic of Application Programs}
+    \begin{itemize}
+        \item \textbf{Diversity}: These applications widely differ in their
+        \begin{itemize}
+            \item Domain, functionality, user base, response time, scale, daily hit and many more
+        \end{itemize}
+        \item \textbf{Unity}: Yet, these have a lot in common
+        \begin{itemize}
+            \item Most use an RDBMS like Oracle, DB2 MySQL, PostgreSQL, etc. for managing data
+            \item Applications are functionally split into \textbf{frontend layer}, \textbf{middle layer}, \textbf{backend layer}
+        \end{itemize}
+        \item $\triangleright$ Frontend or Presentation Layer / Tier
+        \begin{itemize}
+            \item Interacts with the user: Display / View, Input / Output
+            \item Choose item, Add to cart, Checkout, Pay, Track order
+            \item Interfaces may be, Browser-based, Mobile App, or Custom
+        \end{itemize}
+        \item $\triangleright$ Middle or Application / Business Logic Layer / Tier
+        \begin{itemize}
+            \item Implements the Functionality of the Application: Links front and backend
+            \item Authentication, Search / Browse logic, Pricing, Cart management, Payment handling (gateway), Order management (mail / SMS / internal actions), Delivery management
+            \item Support functionality based on frontend interface
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Characteristic of Application Programs (cont.)}
+    \begin{itemize}
+        \item $\triangleright$ Backend or Data Access Layer / Tier
+        \begin{itemize}
+            \item Manages persistent data, large volume, efficient access, security
+            \item User, Cart, Inventory, Order, Vendor databases
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Characteristic of Application Programs (2): Architecture}
+    \begin{center}
+        \includegraphics[height=0.6\textheight,keepaspectratio]{"../Lec 7.1_artifacts/image_000009_c493b3bb38926ab83e3e215989d30ca29536d0303877ed1cdc909abd7bfae0f7.png"}
+    \end{center}
+    Source: https://en.wikipedia.org/wiki/Multitier\_architecture
+\end{frame}
+
+\begin{frame}{Application Architectures: Layers}
+    \begin{itemize}
+        \item \textbf{Presentation Layer / Tier}
+        \begin{itemize}
+            \item Model-View-Controller (MVC) architecture
+            \item $\triangleright$ \textbf{model}: business logic
+            \item $\triangleright$ \textbf{view}: presentation of data, depends on display device
+            \item $\triangleright$ \textbf{controller}: receives events, executes actions, and returns a view to the user
+        \end{itemize}
+        \item \textbf{Business Logic Layer / Tier}
+        \begin{itemize}
+            \item provides high level view of data and actions on data
+            \item $\triangleright$ often using an object data model
+            \item hides details of data storage schema
+        \end{itemize}
+        \item \textbf{Data Access Layer / Tier}
+        \begin{itemize}
+            \item interfaces between business logic layer and the underlying database
+            \item provides mapping from object model of business layer to relational model of database
+            \item Already discussed and studied in depth
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Application Architecture (2): MVC}
+    \begin{center}
+        \includegraphics[height=0.6\textheight,keepaspectratio]{"../Lec 7.1_artifacts/image_000012_392e4acb8d01b1bdb410146e48b3b647d334d49d5e90fa97007e8badb024c5b5.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Application Architecture (3): User Interface}
+    \begin{itemize}
+        \item Web browsers have become the de-facto standard user interface to databases
+        \item Enable large numbers of users to access databases from anywhere
+        \item Avoid the need for downloading / installing specialized code, while providing a good graphical user interface
+        \begin{itemize}
+            \item $\triangleright$ Javascript, Flash and other scripting languages run in browser, but are downloaded transparently
+        \end{itemize}
+        \item Examples: banks, airline and rental car reservations, university course registration and grading, and so on.
+        \item Use in Mobile Devices are getting popular
+        \begin{itemize}
+            \item Mobile Apps or Browser in Mobile
+        \end{itemize}
+        \item These are similar in architecture and workflow with web, but have significant differences with their smaller (but wide range of) form factor, and extremely low resources
+        \item Will be discussed later
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Application Architecture (4): Business Logic Layer}
+    \begin{itemize}
+        \item Provides abstractions of entities
+        \begin{itemize}
+            \item For example, students, instructors, courses, etc
+        \end{itemize}
+        \item Enforces business rules for carrying out actions
+        \begin{itemize}
+            \item For example, student can enroll in a class only if she has completed prerequisites, and has paid her tuition fees
+        \end{itemize}
+        \item Supports workflows which define how a task involving multiple participants is to be carried out
+        \begin{itemize}
+            \item For example, how to process application by a student applying to a university
+            \item Sequence of steps to carry out task
+            \item Error handling
+            \item $\triangleright$ For example, what to do if recommendation letters not received on time
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Application Architecture (5): Object-Relational Mapping}
+    \begin{itemize}
+        \item Allows application code to be written on top of object-oriented data model, while storing data in a traditional relational database
+        \item alternative: implement object-oriented or object-relational database to store object model
+        \begin{itemize}
+            \item $\triangleright$ has not been commercially successful
+        \end{itemize}
+        \item Schema designer has to provide a mapping between object data and relational schema
+        \begin{itemize}
+            \item For example, Java class Student mapped to relation student, with corresponding mapping of attributes
+            \item An object can map to multiple tuples in multiple relations
+        \end{itemize}
+        \item Application opens a session, which connects to the database
+        \begin{itemize}
+            \item Objects can be created and saved to the database using session.save(object)
+            \item mapping used to create appropriate tuples in the database
+        \end{itemize}
+        \item Query can be run to retrieve objects satisfying specified predicates
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Application Architecture (6): Data Access Layer}
+    \begin{itemize}
+        \item Issues of modeling and design of databases have already discussed in depth through the previous module
+        \item Issues of accessing and updating data from application will be discussed later this with through the interactions of native languages and SQL
+    \end{itemize}
+\end{frame}
+
+\section{Architecture Classification}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Architecture Classification\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Architecture Classification}
+    \begin{itemize}
+        \item Database architecture uses programming languages to design a particular type of software for businesses or organizations.
+        \item Database architecture focuses on the design, development, implementation and maintenance of computer programs that store and organize information for businesses, agencies and institutions.
+        \item A database architect develops and implements software to meet the needs of users.
+        \item The design of a DBMS depends on its architecture. It can be
+        \begin{itemize}
+            \item centralized
+            \item decentralized
+            \item hierarchical
+        \end{itemize}
+        \item The architecture of a DBMS can be seen as either single tier or multi-tier:
+        \begin{itemize}
+            \item 1-tier architecture
+            \item 2-tier architecture
+            \item 3-tier architecture
+            \item n-tier architecture
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Architecture Evolution}
+    \begin{center}
+        \includegraphics[height=0.6\textheight,keepaspectratio]{"../Lec 7.1_artifacts/image_000019_4c60c4d897935ab86dd98b765f9687d3c1c853b9d9eb6a4bde6bb0461707ab2f.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{1-tier Architecture}
+    \begin{itemize}
+        \item One-tier architecture involves putting all of the required components for a software application or technology on a single server or platform
+        \item Basically, a one-tier architecture keeps all of the elements of an application, including the interface, Middleware and back-end data, in one place
+        \item Developers see these types of systems as the simplest and most direct way
+    \end{itemize}
+    \begin{center}
+        \vspace{1em}
+        \includegraphics[height=0.3\textheight,keepaspectratio]{"../Lec 7.1_artifacts/image_000021_37bbe34d7901e1509275b9af4183687185c05391ca4f8aa881597c1583582f03.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{2-tier Architecture}
+    \begin{itemize}
+        \item The two-tier is based on Client Server architecture
+        \item It is like client server application
+        \item The direct communication takes place between client and server
+        \item There is no intermediate between client and server
+    \end{itemize}
+    \begin{center}
+        \vspace{1em}
+        \includegraphics[height=0.3\textheight,keepaspectratio]{"../Lec 7.1_artifacts/image_000023_672256b1378c1280bbd2f7c888d66d63cb7c93a857ac0153cec8936d03a63ba0.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{3-tier Architecture}
+    \begin{itemize}
+        \item A 3-tier architecture separates its tiers Presentation, Logic and Data Access - from each other based on the complexity of the users and how they use the data present in the database
+        \item It is the most widely used architecture to design a DBMS
+    \end{itemize}
+    \begin{center}
+        \vspace{1em}
+        \includegraphics[height=0.3\textheight,keepaspectratio]{"../Lec 7.1_artifacts/image_000025_88425cbb50aeb7608d90ef810c0e4fe8b2abd4dbf3c4623f9498e10b2a2eaf81.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{n-tier Architecture}
+    \begin{itemize}
+        \item An n-tier architecture distributes different components of the 3 tiers between different servers and adds interfaces tiers for interactions and workload balancing
+    \end{itemize}
+    \begin{center}
+        \vspace{1em}
+        \includegraphics[height=0.4\textheight,keepaspectratio]{"../Lec 7.1_artifacts/image_000027_01ead29a97e73bea3331932478e804195431d0616c0ab0411979de6ec4f3d236.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Sample Applications in Multiple Tiers}
+    \begin{table}
+    \centering
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{lp{3.5cm}p{4cm}p{3cm}p{4cm}}
+    \toprule
+    \textbf{Application} & \textbf{Presentation} & \textbf{Logic} & \textbf{Data} & \textbf{Functionality} \\
+    \midrule
+    Web Mail & Login Mail List View Inbox Sent Items Outbox Trash Mail Composer Filters & User Authentication Connection to Mail Server (SMTP, POP, IMAP) Encryption Decryption & Mail Users Address Book Mail Items & Send Receive Mails Manage Address Book \\
+    \midrule
+    Net Banking & Login Account View Add Delete Account Add Delete Beneficiary Fund Transfer & User Authentication Beneficiary Authentication Transaction Validation Connection to Banks Gateways Encryption Decryption & Account Holders Beneficiaries Accounts Debit Credit Transactions & Check Balance and Transactions Transfer Funds \\
+    \midrule
+    Timetable & Login Add Delete Courses, Teachers, Rooms, Slots Assignments: Teachers Course Allocations Course Room, Slots Views & User Authentication Timetable Assignment Logic Encryption Decryption & Courses Teachers Rooms Slots Assignments Allocations & Manage timetable for multiple courses taken by multiple teachers \\
+    \bottomrule
+    \end{tabular}
+    }
+    \end{table}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Had a glimpse of Application Programs across various sectors
+        \item Understood the typical architecture for an application
+        \item Studies the classification and evolution of the architectures
+        \item Glimpsed at architecture for a few sample applications
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}
+

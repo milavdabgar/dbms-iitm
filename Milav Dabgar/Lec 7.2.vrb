@@ -1,0 +1,19 @@
+\frametitle{PHP}
+\begin{itemize}
+        \item PHP is widely used for Web server scripting
+        \item Extensive libraries including for database access using ODBC
+    \end{itemize}
+    \begin{verbatim}
+<html>
+<head><title>Hello</title></head>
+<body>
+<?php
+  if (!isset($_REQUEST['name'])) {
+    echo "Hello World";
+  } else {
+    echo "Hello, " . $_REQUEST['name'];
+  }
+?>
+</body>
+</html>
+    \end{verbatim}

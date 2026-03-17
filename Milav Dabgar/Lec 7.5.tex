@@ -1,0 +1,429 @@
+﻿\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 35}
+\subtitle{Application Design and Development/5: Application Development and Mobile}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item Learnt how to accessing PostgreSQL database from Python
+        \item Learnt to build Python Web Application with PostgreSQL and Flask
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To explore the Rapid Application Development Process
+        \item To understand the issues in Application Performance and Security
+        \item To understand the similarity and differences between how Mobile Apps and Web Applications
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Rapid Application Development
+        \item Application Performance and Security
+        \item Mobile Apps
+    \end{itemize}
+\end{frame}
+
+\section{Rapid Application Development}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Rapid Application Development\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Rapid Application Development}
+    \begin{itemize}
+        \item A lot of effort is required to develop Web application interfaces, especially the rich interaction functionality associated with Web 2.0 applications
+        \item Several approaches to speed up application development
+        \begin{itemize}
+            \item Function library to generate user-interface elements
+            \item Drag-and-drop features in an IDE to create user-interface elements
+            \item Automatically generate code for user interface from a declarative specification
+        \end{itemize}
+        \item Used as part of \textbf{Rapid Application Development (RAD)} tools even before Web
+        \item RAD Software is an agile model that focuses on fast prototyping and quick feedback in app development to ensure speedier delivery and an efficient result
+        \item App development has 4 phases: business modeling, data modeling, process modeling, and testing \& turnover: Defining the requirements, Prototyping, Receiving feedback and Finalizing the software
+        \item With RAD, the time between prototypes and iterations is short, and integration occurs since inception.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Rapid Application Development (2)}
+    \begin{itemize}
+        \item \textbf{Web application development frameworks}
+        \begin{itemize}
+            \item \textbf{Java Server Faces (JSF)}
+            \begin{itemize}
+                \item $\triangleright$ A set of APIs for representing UI components and managing their state, handling events and input validation, defining page navigation, and supporting internationalization and accessibility
+                \item $\triangleright$ JSP custom tag library for expressing a JSF interface within a JSP page
+            \end{itemize}
+            \item \textbf{Ruby on Rails}
+            \begin{itemize}
+                \item $\triangleright$ Allows easy creation of simple CRUD (create, read, update and delete) interfaces by code generation from database schema or object model
+            \end{itemize}
+        \end{itemize}
+        \item \textbf{RAD Platforms and Tools}
+        \begin{itemize}
+            \item G Suite
+            \item Google App Engine
+            \item Microsoft Azure
+            \item Amazon Elastic Compute Cloud (EC2)
+            \item AWS Elastic Beanstalk
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{ASP.NET and Visual Studio}
+    \begin{itemize}
+        \item ASP.NET provides a variety of controls that are interpreted at server, and generate HTML code
+        \item Visual Studio provides drag-and-drop development using these controls
+        \begin{itemize}
+            \item For example, menus and list boxes can be associated with \texttt{DataSet} object
+        \end{itemize}
+        \item Validator controls (constraints) can be added to form input fields
+        \begin{itemize}
+            \item $\triangleright$ JavaScript to enforce constraints at client, and separately enforced at server
+        \end{itemize}
+        \item User actions such as selecting a value from a menu can be associated with actions at server
+        \item DataGrid provides convenient way of displaying SQL query results in tabular format
+    \end{itemize}
+\end{frame}
+
+\section{Application Performance and Security}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Application Performance and Security\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Application Performance}
+    \begin{itemize}
+        \item Performance is an issue for popular Web sites
+        \begin{itemize}
+            \item May be accessed by millions of users every day, thousands of requests per second at peak time
+        \end{itemize}
+        \item Caching techniques used to reduce cost of serving pages by exploiting commonalities between requests
+        \item At the server site:
+        \begin{itemize}
+            \item $\triangleright$ Caching of JDBC connections between servlet requests
+            \begin{itemize}
+                \item a.k.a. connection pooling
+            \end{itemize}
+            \item $\triangleright$ Caching results of database queries
+            \begin{itemize}
+                \item Cached results must be updated if underlying database changes
+            \end{itemize}
+            \item $\triangleright$ Caching of generated HTML
+        \end{itemize}
+        \item At the client's network
+        \begin{itemize}
+            \item $\triangleright$ Caching of pages by Web proxy
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Application Security: SQL Injection}
+    \begin{itemize}
+        \item Suppose query is constructed using
+        \begin{center}\texttt{"select * from instructor where name = '" + name + "'"}\end{center}
+        \item Suppose the user, instead of entering a name, enters:
+        \begin{center}\texttt{X' or 'Y' = 'Y}\end{center}
+        \item then the resulting statement becomes:
+        \begin{center}\texttt{"select * from instructor where name = '" + "X' or 'Y' = 'Y" + "'"}\end{center}
+        \item which is:
+        \begin{itemize}
+            \item $\triangleright$ \texttt{select * from instructor where name = 'X' or 'Y' = 'Y'}
+        \end{itemize}
+        \item User could have even used
+        \begin{itemize}
+            \item $\triangleright$ \texttt{X'; update instructor set salary = salary + 10000; -{}-}
+        \end{itemize}
+        \item Prepared statement internally uses:
+        \begin{center}\texttt{select * from instructor where name = 'X \textbackslash' or \textbackslash'Y \textbackslash' = \textbackslash'Y'}\end{center}
+        \item \textbf{Always use prepared statements, with user inputs as parameters}
+        \item Is the following prepared statement secure?
+        \begin{center}\texttt{conn.prepareStatement("select * from instructor where name = '" + name + "'")}\end{center}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Application Security (2): Password Leakage}
+    \begin{itemize}
+        \item Never store passwords, such as database passwords, in clear text in scripts that may be accessible to users
+        \item For example, in files in a directory accessible to a web server
+        \begin{itemize}
+            \item $\triangleright$ Normally, web server will execute, but not provide source of script files such as \texttt{file.jsp} or \texttt{file.php}, but source of editor backup files such as \texttt{file.jsp\~{}}, or \texttt{.file.jsp.swp} may be served
+        \end{itemize}
+        \item Restrict access to database server from IPs of machines running application servers
+        \begin{itemize}
+            \item Most databases allow restriction of access by source IP address
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Application Security (3): Authentication}
+    \begin{itemize}
+        \item Single factor authentication such as passwords too risky for critical applications
+        \begin{itemize}
+            \item guessing of passwords, sniffing of packets if passwords are not encrypted
+            \item passwords reused by user across sites
+            \item spyware which captures password
+        \end{itemize}
+        \item Two-factor authentication
+        \begin{itemize}
+            \item For example, password plus one-time password sent by SMS
+            \item For example, password plus one-time password devices
+            \begin{itemize}
+                \item $\triangleright$ device generates a new pseudo-random number every minute, and displays to user
+                \item $\triangleright$ user enters the current number as password
+                \item $\triangleright$ application server generates same sequence of pseudo-random numbers to check that the number is correct.
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Application Security (4): Application-Level Authorization}
+    \begin{itemize}
+        \item Current SQL standard does not allow fine-grained authorization such as 'students can see their own grades, but not other's grades'
+        \item \textbf{Problem 1:} Database has no idea who are application users
+        \item \textbf{Problem 2:} SQL authorization is at the level of tables, or columns of tables, but not to specific rows of a table
+        \item One workaround: use views such as
+        \begin{verbatim}
+create view studentTakes as
+select * from takes
+where takes.ID = syscontext.user_id()
+        \end{verbatim}
+        \item where \texttt{syscontext.user\_id()} provides end user identity
+        \begin{itemize}
+            \item $\triangleright$ end user identity must be provided to the database by the application
+        \end{itemize}
+        \item Having multiple such views is cumbersome
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Application Security (5): Application-Level Authorization}
+    \begin{itemize}
+        \item Currently, authorization is done entirely in application
+        \begin{itemize}
+            \item Entire application code has access to entire database
+            \item large surface area, making protection harder
+        \end{itemize}
+        \item Alternative: fine-grained (row-level) authorization schemes
+        \begin{itemize}
+            \item extensions to SQL authorization proposed but not currently implemented
+            \item Oracle Virtual Private Database (VPD) allows predicates to be added transparently to all SQL queries, to enforce fine-grained authorization
+            \begin{itemize}
+                \item $\triangleright$ For example, add \texttt{ID = sys\_context.user\_id()} to all queries on \texttt{student} relation if user is a student
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Application Security (6): Audit Trails}
+    \begin{itemize}
+        \item Applications must log actions to an audit trail, to detect who carried out an update, or accessed some sensitive data
+        \item Audit trails used after-the-fact to
+        \begin{itemize}
+            \item detect security breaches
+            \item repair damage caused by security breach
+            \item trace who carried out the breach
+        \end{itemize}
+        \item Audit trails needed at
+        \begin{itemize}
+            \item Database level, and at
+            \item Application level
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Challenges in Web Application Development}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Challenges in Web Application Development\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Challenges in Web Application Development}
+    \begin{itemize}
+        \item User Interface and User Experience
+        \item Scalability
+        \item Performance
+        \item Knowledge of Framework and Platforms
+        \item Security
+    \end{itemize}
+    \vspace{2em}
+    \small Source: 5 Challenges in Web Application Development
+\end{frame}
+
+\section{Mobile Apps}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Mobile Apps\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{What is a Mobile App?}
+    \begin{itemize}
+        \item A type of application software designed to run on a mobile device, such as a smartphone or tablet computer
+        \item Developed specifically for use on small, wireless computing devices, such as smartphones and tablets
+        \item Designed with consideration for the demands and constraints of the devices and also to take advantage of any specialized capabilities
+        \begin{itemize}
+            \item - Form Factor - influences display and navigation
+            \item - Limited Memory
+            \item - Limited Computing Power
+            \item - Limited Power
+            \item - Limited Bandwidth
+        \end{itemize}
+        \item \dots
+        \begin{itemize}
+            \item[+] Availability of sensors like accelerometer
+            \item[+] Availability of touchscreen - Gesture-based Navigation
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Mobile Website vis-\`a-vis Mobile App}
+    \begin{itemize}
+        \item \textbf{Mobile Website}
+        \begin{itemize}
+            \item Similar to any other website in that it consists of browser-based HTML pages
+            \item Can display text content, data, images and video
+            \item Typically accessed over WiFi or 3G or 4G networks
+            \item Designed for the smaller handheld display and touch-screen interface
+            \item Can also access mobile-specific features such as click-to-call (to dial a phone number) or location-based mapping
+        \end{itemize}
+        \item \textbf{Mobile Apps}
+        \begin{itemize}
+            \item Actual applications that are downloaded and installed on the mobile device
+            \item Users download apps from device-specific portals such as App Store, Google Play Store
+            \item The app may
+            \begin{itemize}
+                \item $\triangleright$ pull content and data from the Internet, in similar fashion to a website, or
+                \item $\triangleright$ download the content so that it can be accessed without an Internet connection
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    \small Source: \url{https://www.slideshare.net/hassandar18/architecture-of-mobile-software-applications?from_action=save}
+\end{frame}
+
+\begin{frame}{Architecture of Mobile App}
+    \begin{itemize}
+        \item Typically 3 tier
+        \begin{itemize}
+            \item Presentation
+            \item Business
+            \item Data
+        \end{itemize}
+        \item Data Layer is often split between:
+        \begin{itemize}
+            \item Local Data
+            \item Remote Data
+        \end{itemize}
+        \item Needs customization for platform
+        \begin{itemize}
+            \item Android
+            \item iOS
+            \item Windows
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Types of Mobile Apps}
+    \begin{itemize}
+        \item \textbf{Native Apps}: Completely written in the native language of a platform
+        \begin{itemize}
+            \item iOS $\rightarrow$ Objective-C; Android $\rightarrow$ Java or C/C++
+            \item Platform specific (heavily dependent on OS)
+        \end{itemize}
+        \item \textbf{Web Apps}: Run completely inside of a Web browser.
+        \begin{itemize}
+            \item Features interfaces built with HTML or CSS
+            \item Powered via Web programming languages $\rightarrow$ Ruby on Rails, JavaScript, PHP, or Python
+            \item Portable across any phone, tablet, or computer
+        \end{itemize}
+        \item \textbf{Hybrid Apps}: Combines attributes of both native and Web apps.
+        \begin{itemize}
+            \item Attempts to use redundant, common code that can be used across platforms, and
+            \item Tailors required attributes to the native system
+        \end{itemize}
+    \end{itemize}
+    \small Source: \url{https://www.slideshare.net/hassandar18/architecture-of-mobile-software-applications?from_action=save}
+\end{frame}
+
+\begin{frame}{Design Issues}
+    \begin{itemize}
+        \item Determine Device
+        \item Note Device Resources - memory, power, speed
+        \item Consider Bandwidth
+        \item Decide on Architecture Layers
+        \item Select Technology
+        \item Define User Interface
+        \item Select Navigation
+        \item Maintain Flow
+    \end{itemize}
+    \vspace{2em}
+    \small Source: \url{https://www.slideshare.net/hassandar18/architecture-of-mobile-software-applications?from_action=save}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Understood the steps in the Rapid Application Development Process
+        \item Exposed to the issues in Application Performance and Application Security
+        \item Learnt the distinctive features of Mobile Apps
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}
+
