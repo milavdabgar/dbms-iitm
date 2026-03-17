@@ -1,0 +1,6 @@
+\beamer@sectionintoc {1}{What is Backup and Recovery?}{17}{0}{1}
+\beamer@sectionintoc {2}{Why Backup?}{26}{0}{2}
+\beamer@sectionintoc {3}{Backup Data: Types}{31}{0}{3}
+\beamer@sectionintoc {4}{Backup Strategies}{35}{0}{4}
+\beamer@sectionintoc {5}{Case: Monthly Schedule}{78}{0}{5}
+\beamer@sectionintoc {6}{Hot Backup}{85}{0}{6}

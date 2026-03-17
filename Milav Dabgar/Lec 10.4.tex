@@ -1,0 +1,495 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 49}
+\subtitle{Concurrency Control/1}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}[<+->]
+        \item With proper planning, a database can be recovered back to a consistent state from inconsistent state in the face of system failures. Such a recovery is done via cascaded or cascadeless rollback
+        \item View Serializability is a weaker serializability system for better concurrency. However, testing for view serializability is NP complete
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}[<+->]
+        \item Concurrency Control through design of serializable schedule is difficult in general. Hence we take a look into locking mechanism and Lock-Based Protocols
+        \item We need to understand how locks may be implemented
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}[<+->]
+        \item Concurrency Control
+        \item Lock-Based Protocols
+        \item Implementing Locking
+    \end{itemize}
+\end{frame}
+
+\section{Concurrency Control}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Concurrency Control\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Concurrency Control}
+    \begin{itemize}[<+->]
+        \item A database must provide a mechanism that will ensure that all possible schedules are both:
+        \begin{itemize}
+            \item[$\triangleright$] Conflict serializable
+            \item[$\triangleright$] Recoverable and, preferably, Cascadeless
+        \end{itemize}
+        \item A policy in which only one transaction can execute at a time generates serial schedules, but provides a poor degree of concurrency
+        \item Concurrency-control schemes tradeoff between the amount of concurrency they allow and the amount of overhead that they incur
+        \item Testing a schedule for serializability after it has executed is a little too late!
+        \item Tests for serializability help us understand why a concurrency control protocol is correct
+        \item \textbf{Goal}: To develop concurrency control protocols that will assure serializability
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Concurrency Control (2)}
+    \begin{itemize}[<+->]
+        \item One way to ensure isolation is to require that data items be accessed in a \textbf{mutually exclusive manner}; that is, while one transaction is accessing a data item, no other transaction can modify that data item
+        \item Should a transaction hold a lock on the whole database?
+        \begin{itemize}
+            \item[$\triangleright$] Would lead to strictly serial schedules - very poor performance
+        \end{itemize}
+        \item The most common method used to implement locking requirement is to allow a transaction to access a data item only if it is currently holding a lock on that item
+    \end{itemize}
+\end{frame}
+
+\section{Lock-Based Protocols}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Lock-Based Protocols\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Lock-Based Protocols}
+    \begin{block}{Lock}
+        A lock is a mechanism to control concurrent access to a data item.
+    \end{block}
+    \begin{itemize}[<+->]
+        \item Data items can be locked in two modes:
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{exclusive (X) mode}: Data item can be both read as well as written. X-lock is requested using \texttt{lock-X} instruction
+            \item[$\triangleright$] \textbf{shared (S) mode}: Data item can only be read. S-lock is requested using \texttt{lock-S} instruction
+        \end{itemize}
+        \item A transaction can unlock a data item Q by the \texttt{unlock(Q)} Instruction
+        \item Lock requests are made to the concurrency-control manager by the programmer
+        \begin{itemize}
+            \item[$\triangleright$] Transaction can proceed only after request is granted
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lock-Based Protocols (2): Lock Compatibility Matrix}
+    \begin{block}{Lock-Compatibility Matrix}
+        A lock compatibility matrix is used which states whether a data item can be locked by two transactions at the same time.
+    \end{block}
+    \vspace{1em}
+    \uncover<2->{
+        \begin{center}
+            \begin{tabular}{|l|l|l|}
+            \hline
+            & \textbf{Shared} & \textbf{Exclusive} \\ \hline
+            \textbf{Shared} & Yes & No \\ \hline
+            \textbf{Exclusive} & No & No \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Lock-Based Protocols (3)}
+    \begin{itemize}[<+->]
+        \item \textbf{Requesting for / Granting of a Lock}
+        \begin{itemize}
+            \item[$\triangleright$] A transaction may be granted a lock on an item if the requested lock is compatible with locks already held on the item by other transactions
+        \end{itemize}
+        \item \textbf{Sharing a Lock}
+        \begin{itemize}
+            \item[$\triangleright$] Any number of transactions can hold shared locks on an item
+            \item[$\triangleright$] But if any transaction holds an exclusive lock on the item no other transaction may hold any lock on the item
+        \end{itemize}
+        \item \textbf{Waiting for a Lock}
+        \begin{itemize}
+            \item[$\triangleright$] If a lock cannot be granted, the requesting transaction is made to wait till all incompatible locks held by other transactions have been released
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lock-Based Protocols (4)}
+    \begin{itemize}[<+->]
+        \item \textbf{Holding a Lock}
+        \begin{itemize}
+            \item[$\triangleright$] A transaction must hold a lock on a data item as long as it accesses that item
+        \end{itemize}
+        \item \textbf{Unlocking / Releasing a Lock}
+        \begin{itemize}
+            \item[$\triangleright$] Transaction $T_i$ may unlock a data item that it had locked at some earlier point
+            \item[$\triangleright$] It is not necessarily desirable for a transaction to unlock a data item immediately after its final access of that data item, since serializability may not be ensured
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Lock-Based Protocols: Example: Serial Schedule}
+    \begin{itemize}[<+->]
+        \item Let A and B be two accounts that are accessed by transactions $T_1$ and $T_2$.
+        \item Transaction $T_1$ transfers \$50 from account B to account A
+        \item Transaction $T_2$ displays the total amount of money in accounts A and B
+        \item Suppose that the values of accounts A and B are \$100 and \$200, respectively
+        \item If executed serially (e.g. $T_1$, $T_2$), $T_2$ will display \$300
+    \end{itemize}
+        \begin{columns}[T]
+            \begin{column}<6->{0.48\textwidth}
+                \textbf{T1:}
+                \begin{lstlisting}
+lock-X(B);
+read(B); 
+B := B - 50; 
+write(B); 
+unlock(B); 
+lock-X(A); 
+read(A); 
+A := A + 50; 
+write(A); 
+unlock(A);
+                \end{lstlisting}
+            \end{column}
+            \begin{column}{0.48\textwidth}
+                \textbf{T2:}
+                \begin{lstlisting}
+lock-S(A); 
+read(A); 
+unlock(A); 
+lock-S(B); 
+read(B); 
+unlock(B); 
+display(A + B);
+                \end{lstlisting}
+            \end{column}
+        \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Lock-Based Protocols: Example: Concurrent Schedule: Bad}
+    \begin{alertblock}{Problem: Unlocking Too Early}
+        In this case, transaction $T_2$ displays \$250, which is incorrect. The reason for this mistake is that the transaction $T_1$ unlocked data item B too early, as a result of which $T_2$ saw an inconsistent state.
+    \end{alertblock}
+        \begin{columns}[T]
+            \begin{column}<2->{0.48\textwidth}
+                \textbf{T1:}
+                \begin{lstlisting}
+lock-X(B);
+read(B); 
+B := B - 50; 
+write(B); 
+unlock(B);
+
+
+lock-X(A); 
+read(A); 
+A := A + 50; 
+write(A); 
+unlock(A);
+                \end{lstlisting}
+            \end{column}
+            \begin{column}{0.48\textwidth}
+                \textbf{T2:}
+                \begin{lstlisting}
+
+
+
+
+
+lock-S(A); 
+read(A); 
+unlock(A); 
+lock-S(B); 
+read(B); 
+unlock(B); 
+display(A + B);
+                \end{lstlisting}
+            \end{column}
+        \end{columns}
+    \uncover<3->{
+        \textbf{Solution:} Delay unlocking till the end
+    }
+\end{frame}
+
+\begin{frame}{Lock-Based Protocols: Example: Concurrent Schedule: Deadlock}
+    \begin{itemize}[<+->]
+        \item Since $T_3$ is holding an exclusive mode lock on B and $T_4$ is requesting a shared-mode lock on B, $T_4$ is waiting for $T_3$ to unlock B
+        \item Similarly, since $T_4$ is holding a shared-mode lock on A and $T_3$ is requesting an exclusive-mode lock on A, $T_3$ is waiting for $T_4$ to unlock A
+    \end{itemize}
+    \uncover<3->{
+        \begin{alertblock}{Deadlock}
+            We have arrived at a state where neither of these transactions can ever proceed with its normal execution. This situation is called deadlock.
+        \end{alertblock}
+    }
+    \begin{itemize}[<+->]
+        \item When deadlock occurs, the system must roll back one of the two transactions.
+        \item Once a transaction has been rolled back, the data items that were locked by that transaction are unlocked and available to the other transaction.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Deadlocks (Cont'd)}
+    \begin{exampleblock}{Example of Deadlock}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                \textbf{T3:}
+                \begin{lstlisting}
+lock-X(B);
+read(B); 
+B := B - 50; 
+write(B); 
+
+lock-X(A); 
+                \end{lstlisting}
+            \end{column}
+            \begin{column}{0.48\textwidth}
+                \textbf{T4:}
+                \begin{lstlisting}
+
+lock-S(A); 
+
+read(A); 
+lock-S(B);
+                \end{lstlisting}
+            \end{column}
+        \end{columns}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Starvation}
+    \begin{itemize}[<+->]
+        \item In addition to deadlocks, there is a possibility of \textbf{Starvation}
+        \item Starvation occurs if the concurrency control manager is badly designed. For example:
+        \begin{itemize}
+            \item[$\triangleright$] A transaction may be waiting for an X-lock on an item, while a sequence of other transactions request and are granted an S-lock on the same item
+            \item[$\triangleright$] The same transaction is repeatedly rolled back due to deadlocks
+        \end{itemize}
+        \item Concurrency control manager can be designed to prevent starvation
+        \item Starvation is also loosely referred to as \textbf{Livelock}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Cascading Rollback}
+    \begin{itemize}[<+->]
+        \item The potential for deadlock exists in most locking protocols. Deadlocks are a necessary evil.
+        \item When a deadlock occurs there is a possibility of \textbf{cascading roll-backs}
+        \item Cascading roll-back is possible under two-phase locking
+        \item In the schedule below, the failure of $T_5$ after the \texttt{read(A)} step of $T_7$ leads to cascading rollback of $T_6$ and $T_7$.
+    \end{itemize}
+    \uncover<5->{
+        \begin{center}
+            \begin{adjustbox}{max width=\textwidth}
+            \begin{tabular}{|l|l|l|}
+            \hline
+            \textbf{$T_5$} & \textbf{$T_6$} & \textbf{$T_7$} \\ \hline
+            \texttt{lock-X(A)} & & \\ 
+            \texttt{read(A)} & & \\ 
+            \texttt{lock-S(B)} & & \\ 
+            \texttt{read(B)} & & \\ 
+            \texttt{write(A)} & & \\ 
+            \texttt{unlock(A)} & \texttt{lock-X(A)} & \\ 
+            & \texttt{read(A)} & \\ 
+            & \texttt{write(A)} & \\ 
+            & \texttt{unlock(A)} & \texttt{lock-S(A)} \\ 
+            & & \texttt{read(A)} \\ \hline
+            \end{tabular}
+            \end{adjustbox}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Two-Phase Locking Protocol}
+    \begin{block}{Two-Phase Locking}
+        This protocol ensures conflict-serializable schedules by dividing execution into two phases.
+    \end{block}
+    \begin{itemize}[<+->]
+        \item \textbf{Phase 1: Growing Phase}
+        \begin{itemize}
+            \item[$\triangleright$] Transaction may obtain locks
+            \item[$\triangleright$] Transaction may not release locks
+        \end{itemize}
+        \item \textbf{Phase 2: Shrinking Phase}
+        \begin{itemize}
+            \item[$\triangleright$] Transaction may release locks
+            \item[$\triangleright$] Transaction may not obtain locks
+        \end{itemize}
+        \item The protocol assures serializability. It can be proved that the transactions can be serialized in the order of their lock points (i.e., the point where a transaction acquired its final lock).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Two-Phase Locking Protocol (2)}
+    \begin{itemize}[<+->]
+        \item There can be conflict serializable schedules that cannot be obtained if two-phase locking is used
+        \item However, in the absence of extra information (that is, ordering of access to data), two-phase locking is needed for conflict serializability in the following sense:
+        \begin{itemize}
+            \item[$\triangleright$] Given a transaction $T_i$ that does not follow two-phase locking, we can find a transaction $T_j$ that uses two-phase locking, and a schedule for $T_i$ and $T_j$ that is not conflict serializable
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lock Conversions}
+    \begin{itemize}[<+->]
+        \item \textbf{Two-phase locking with lock conversions:}
+        \item \textbf{First Phase:}
+        \begin{itemize}
+            \item[$\triangleright$] can acquire a \texttt{lock-S} on item
+            \item[$\triangleright$] can acquire a \texttt{lock-X} on item
+            \item[$\triangleright$] can convert a \texttt{lock-S} to a \texttt{lock-X} (upgrade)
+        \end{itemize}
+        \item \textbf{Second Phase:}
+        \begin{itemize}
+            \item[$\triangleright$] can release a \texttt{lock-S}
+            \item[$\triangleright$] can release a \texttt{lock-X}
+            \item[$\triangleright$] can convert a \texttt{lock-X} to a \texttt{lock-S} (downgrade)
+        \end{itemize}
+        \item This protocol assures serializability. But still relies on the programmer to insert the various locking instructions.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Automatic Acquisition of Locks: Read}
+    \begin{itemize}[<+->]
+        \item A transaction $T_i$ issues the standard read/write instruction, without explicit locking calls
+        \item The operation \texttt{read(D)} is processed as:
+    \end{itemize}
+    \begin{onlyenv}<3->
+        \begin{lstlisting}[language=SQL]
+if Ti has a lock on D
+   then read(D)
+else begin 
+   if necessary, wait until no other transaction has a lock-X on D
+   grant Ti a lock-S on D; 
+   read(D)
+end
+        \end{lstlisting}
+    \end{onlyenv}
+\end{frame}
+
+\begin{frame}[fragile]{Automatic Acquisition of Locks: Write}
+    \begin{itemize}[<+->]
+        \item The operation \texttt{write(D)} is processed as:
+    \end{itemize}
+    \begin{onlyenv}<2->
+        \begin{lstlisting}[language=SQL]
+if Ti has a lock-X on D
+   then write(D)
+else begin 
+   if necessary, wait until no other transaction has any lock on D, 
+   if Ti has a lock-S on D
+       then upgrade lock on D to lock-X
+       else grant Ti a lock-X on D
+   write(D)
+end;
+        \end{lstlisting}
+    \end{onlyenv}
+    \begin{itemize}[<+->]
+        \item<3-> All locks are released after commit or abort
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{More Two Phase Locking Protocols}
+    \begin{itemize}[<+->]
+        \item To avoid Cascading roll-back, follow a modified protocol called \textbf{strict two-phase locking}
+        \begin{itemize}
+            \item[$\triangleright$] a transaction must hold all its exclusive locks till it commits/aborts
+        \end{itemize}
+        \item \textbf{Rigorous two-phase locking} is even stricter
+        \begin{itemize}
+            \item[$\triangleright$] All locks are held till commit/abort. In this protocol transactions can be serialized in the order in which they commit
+        \end{itemize}
+        \item Note that concurrency goes down as we move to more and more strict locking protocol
+    \end{itemize}
+\end{frame}
+
+\section{Implementation of Locking}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Implementation of Locking\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Implementation of Locking}
+    \begin{itemize}[<+->]
+        \item A lock manager can be implemented as a separate process to which transactions send lock and unlock requests
+        \item The lock manager replies to a lock request by sending a lock grant messages (or a message asking the transaction to roll back, in case of a deadlock)
+        \item The requesting transaction waits until its request is answered
+        \item The lock manager maintains a data-structure called a \textbf{lock table} to record granted locks and pending requests
+        \item The lock table is usually implemented as an in-memory hash table indexed on the name of the data item being locked
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lock Table}
+    \begin{itemize}[<+->]
+        \item Lock table also records the type of lock granted or requested
+        \item New request is added to the end of the queue of requests for the data item, and granted if it is compatible with all earlier locks
+        \item Unlock requests result in the request being deleted, and later requests are checked to see if they can now be granted
+        \item If transaction aborts, all waiting or granted requests of the transaction are deleted
+        \item Lock manager may keep a list of locks held by each transaction, to implement this efficiently
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}[<+->]
+        \item Understood the locking mechanism and protocols
+        \item Realized that deadlock is a peril of locking and needs to be handled through rollback
+    \end{itemize}
+    \vspace{2em}
+    \uncover<3->{
+        \begin{center}
+        \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+        \small \textit{Edited and new slides are marked with 'PPD'.}
+        \end{center}
+    }
+\end{frame}
+
+\end{document}

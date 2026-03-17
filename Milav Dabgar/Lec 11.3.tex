@@ -1,0 +1,366 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+% --- Title Information ---
+\title{Module 53}
+\subtitle{Backup \& Recovery/3: Recovery/2}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}[<+->]
+        \item Failures may be due to variety of sources - each needs a strategy for handling
+        \item A proper mix and management of volatile, non-volatile and stable storage can guarantee recovery from failures and ensure Atomicity, Consistency and Durability
+        \item Log-based recovery is efficient and effective
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}[<+->]
+        \item To understand Transactional Logging with Hot Backup
+        \item To focus on concurrent transactions and understand the recovery algorithms
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}[<+->]
+        \item Transactional Logging
+        \item Recovery Algorithm
+    \end{itemize}
+\end{frame}
+
+\section{Transactional Logging}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Transactional Logging\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Hot Backup: Recap}
+    \begin{itemize}[<+->]
+        \item In systems where high availability is a requirement Hot backup is preferable wherever possible
+        \item Hot backup refers to keeping a database up and running while the backup is performed concurrently
+        \item Such a system usually has a module or plug-in that allows the database to be backed up while staying available to end users
+        \item Databases which stores transactions of asset management companies, hedge funds, high frequency trading companies etc. try to implement Hot backups as these data are highly dynamic and the operations run 24x7
+        \item Real time systems like sensor and actuator data in embedded devices, satellite transmissions etc. also use Hot backup
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Transactional Logging as Hot Backup}
+    \begin{itemize}[<+->]
+        \item In regular database systems, Hot Backup is mainly used for Transaction Log Backup
+        \item Cold backup strategies like Differential, Incremental are preferred for Data backup. The reason is evident from the disadvantages of Hot backup
+        \item Transactional Logging is used in circumstances where a possibly inconsistent backup is taken, but another file generated and backed up (after the database file has been fully backed up) can be used to restore consistency
+        \item The information regarding data backup versions while recovery at a given point can be inferred from the Transactional Log backup set
+        \item Thus they play a vital role in database recovery
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Transactional Logging with Recovery: Example}
+    \begin{itemize}[<+->]
+        \item To understand how Transactional Logging works we consider Figure 1 that represents a chunk of a database just before a backup has been started
+    \end{itemize}
+    \uncover<2->{
+        \begin{center}
+            \includegraphics[height=0.25\textheight]{"../Lecture 11.3_artifacts/image_000008_fa47e56ee8f73ed3209bf5b97564b612d892a5067da7a86e7f4344a72752aa76.png"}
+        \end{center}
+    }
+    \begin{itemize}[<+->]
+        \item[<3->] While the backup is in progress, modifications may continue to occur to the database. For example, a request to modify the data at location '4325' to '0' arrives.
+        \item[<4->] When a request comes through to modify a part of the DB, the modifications will be written in the given order compulsorily:
+        \begin{itemize}
+            \item[$\triangleright$] 1. Transaction Log
+            \item[$\triangleright$] 2. Database (itself)
+        \end{itemize}
+        \item[<5->] If a crash occurs before writing to the database then the inconsistent backed up file is recovered first, and then the pending modifications in the transaction log (backed up*) are applied to re-establish consistency
+    \end{itemize}
+    \uncover<6->{
+        \vspace{1em}
+        \small *Note: The Transactional Log itself is backed up using Hot Backup. The Data is backed up incrementally.
+    }
+\end{frame}
+
+\begin{frame}{Transactional Logging with Recovery: Example (2)}
+    \begin{itemize}[<+->]
+        \item Consider in the previous scenario before the occurrence of crash, another request modifies the content of location '4321' to '0'. Incidentally, this change gets written in the database itself (recall: Immediate Modification). This is indicated in Figure 3
+    \end{itemize}
+    \uncover<2->{
+        \begin{center}
+            \includegraphics[height=0.4\textheight]{"../Lecture 11.3_artifacts/image_000011_29b037fac454ca4fd9d6561e3de2041e3e069fa641be968ae642be5de26ecd7c.png"}
+        \end{center}
+    }
+    \begin{itemize}[<+->]
+        \item[<3->] Figure 3 is the state of the database after which the system crashes. Note that this part has already been backed up, and hence, the backup is inconsistent with the database.
+        \item[<4->] \textbf{Recovery Phase:}
+        \begin{itemize}
+            \item[$\triangleright$] Data recovery is done from the last data back up set (Figure 1)
+            \item[$\triangleright$] Log recovery is done from the Transaction Log backup set. It will be same as the current transaction log because of Hot backup
+        \end{itemize}
+        \item[<5->] Figure 4 shows the recovered database and log
+        \item[<6->] The recovered database is inconsistent. To re-establish consistency all transaction logs generated between the start of the backup and the end of the backup must be replayed
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Transactional Logging with Recovery: Example (3)}
+    \begin{itemize}[<+->]
+        \item When using transactional logging we distinguish between \textit{recover} and \textit{restore}:
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Recover}: retrieve from the backup media the database files and transaction logs, and
+            \item[$\triangleright$] \textbf{Restore}: reapply database consistency based on the transaction logs
+        \end{itemize}
+        \item For our restore process, we recover inconsistent database files and completed transaction logs. The recovered files will resemble the configuration shown in Figure 4
+        \item The final database state after replaying log on the recovered database is displayed in Figure 5
+        \item The state of database is consistent
+        \item Note that an unnecessary log replay is shown occurring for block 4325. Whether such replays will occur is dependent on the database being used. For instance, a database vendor might choose to replay all logs because it would be faster than first determining whether a particular logged activity needs to be replayed
+        \item Once all transaction logs have been replayed, the database is said to have been restored, that is, it is at a point where it can now be opened for user access
+    \end{itemize}
+    \uncover<7->{
+        \begin{center}
+            \includegraphics[height=0.25\textheight]{"../Lecture 11.3_artifacts/image_000013_0a5622d28fd4863175bd885cae104fe24369777b2124d3f6c8d8cdc90ad29e7d.png"}
+        \end{center}
+    }
+\end{frame}
+
+\section{Recovery Algorithm}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Recovery Algorithm\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Recovery Schemes}
+    \begin{itemize}[<+->]
+        \item \textbf{So far:}
+        \begin{itemize}
+            \item[$\triangleright$] We covered key concepts
+            \item[$\triangleright$] We assumed serial execution of transactions
+        \end{itemize}
+        \item \textbf{Now:}
+        \begin{itemize}
+            \item[$\triangleright$] We discuss concurrency control issues
+            \item[$\triangleright$] We present the components of the basic recovery algorithm
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Concurrency Control and Recovery}
+    \begin{itemize}[<+->]
+        \item With concurrent transactions, all transactions share a single disk buffer and a single log
+        \item A buffer block can have data items updated by one or more transactions
+        \item We assume that if a transaction $T_i$ has modified an item, no other transaction can modify the same item until $T_i$ has committed or aborted
+        \item That is, the updates of uncommitted transactions should not be visible to other transactions
+        \begin{itemize}
+            \item[$\triangleright$] Otherwise how do we perform undo if $T_1$ updates A, then $T_2$ updates A and commits, and finally $T_1$ has to abort?
+        \end{itemize}
+        \item Can be ensured by obtaining exclusive locks on updated items and holding the locks till end of transaction (strict two-phase locking)
+        \item Log records of different transactions may be interspersed in the log
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example of Data Access with Serial Transaction}
+    \uncover<1->{
+        \begin{center}
+            \includegraphics[height=0.8\textheight]{"../Lecture 11.3_artifacts/image_000018_16525146e368503d674fed7ea7c0de39c0349a3d67d483cb233c8ae8433b25ef.png"}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Example of Data Access with Concurrent Transactions}
+    \uncover<1->{
+        \begin{center}
+            \includegraphics[height=0.8\textheight]{"../Lecture 11.3_artifacts/image_000020_81e3e5fee1a17fb006d56320349609feb03a3cef2e4c11f57c328abcd071c651.png"}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Recovery Algorithm}
+    \begin{itemize}[<+->]
+        \item \textbf{Logging (during normal operation):}
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{<$T_i$ start>} at transaction start
+            \item[$\triangleright$] \texttt{<$T_i$, $X_j$, $V_1$, $V_2$>} for each update, and
+            \item[$\triangleright$] \texttt{<$T_i$ commit>} at transaction end
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recovery Algorithm (2)}
+    \begin{itemize}[<+->]
+        \item \textbf{Transaction rollback (during normal operation)}
+        \item Let $T_i$ be the transaction to be rolled back
+        \item Scan log backwards from the end, and for each log record of $T_i$ of the form \texttt{<$T_i$, $X_j$, $V_1$, $V_2$>}
+        \begin{itemize}
+            \item[$\triangleright$] perform the undo by writing $V_1$ to $X_j$,
+            \item[$\triangleright$] write a log record \texttt{<$T_i$, $X_j$, $V_1$>}
+            \item[$\triangleright$] \dots such log records are called \textbf{Compensation Log Records (CLR)}
+        \end{itemize}
+        \item Once the record \texttt{<$T_i$ start>} is found stop the scan and write the log record \texttt{<$T_i$ abort>}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recovery Algorithm (3): Checkpoints Recap}
+    \begin{itemize}[<+->]
+        \item Let the time of checkpointing is $t_{\text{check}}$ and the time of system crash is $t_{\text{fail}}$
+        \item Let there be four transactions $T_a$, $T_b$, $T_c$ and $T_d$ such that:
+        \begin{itemize}
+            \item[$\triangleright$] $T_a$ commits before checkpoint
+            \item[$\triangleright$] $T_b$ starts before checkpoint and commits before system crash
+            \item[$\triangleright$] $T_c$ starts after checkpoint and commits before system crash
+            \item[$\triangleright$] $T_d$ starts after checkpoint and was active at the time of system crash
+        \end{itemize}
+        \item The actions that are taken by the recovery manager are:
+        \begin{itemize}
+            \item[$\triangleright$] Nothing is done with $T_a$
+            \item[$\triangleright$] Transaction \textbf{redo} is performed for $T_b$ and $T_c$
+            \item[$\triangleright$] Transaction \textbf{undo} is performed for $T_d$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recovery Algorithm (4): Checkpoints Recap}
+    \uncover<1->{
+        \begin{center}
+            \includegraphics[width=\textwidth]{"../Lecture 11.3_artifacts/image_000026_850cb78a5ce6be86f7d420e2e613258afc3818050a05c18f0fc0b7fec2cf7348.png"}
+        \end{center}
+    }
+    \begin{itemize}[<+->]
+        \item[<2->] Any transactions that committed before the last checkpoint should be ignored
+        \begin{itemize}
+            \item[$\triangleright$] $T_1$ can be ignored (updates already output to disk due to checkpoint)
+        \end{itemize}
+        \item[<3->] Any transactions that committed since the last checkpoint need to be redone
+        \begin{itemize}
+            \item[$\triangleright$] $T_2$ and $T_3$ redone
+        \end{itemize}
+        \item[<4->] Any transaction that was running at the time of failure needs to be undone and restarted
+        \begin{itemize}
+            \item[$\triangleright$] $T_4$ undone
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recovery Algorithm (5): Redo-Undo Phases}
+    \begin{itemize}[<+->]
+        \item \textbf{Recovery from failure:} Two phases
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Redo phase:} Replay updates of all transactions, whether they committed, aborted, or are incomplete
+            \item[$\triangleright$] \textbf{Undo phase:} Undo all incomplete transactions
+        \end{itemize}
+    \end{itemize}
+    \uncover<3->{
+        \begin{center}
+            \includegraphics[height=0.4\textheight]{"../Lecture 11.3_artifacts/image_000028_7b19a8bd321fc5381db10a95ca52da4a84cba4b84859fe3a71063f4a573ef5bf.png"}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Recovery Algorithm (5): Redo-Undo Phases (cont.)}
+    \begin{itemize}[<+->]
+        \item \textbf{Requirement:}
+        \begin{itemize}
+            \item[$\triangleright$] Transactions of type $T_1$ need no recovery
+            \item[$\triangleright$] Transactions of type $T_2$ or $T_4$ need to be redone
+            \item[$\triangleright$] Transactions of type $T_3$ or $T_5$ need to be undone and restarted
+        \end{itemize}
+        \item \textbf{Strategy:}
+        \begin{itemize}
+            \item[$\triangleright$] Ignore $T_1$
+            \item[$\triangleright$] Redo $T_2$, $T_3$, $T_4$ and $T_5$
+            \item[$\triangleright$] Undo $T_3$ and $T_5$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recovery Algorithm (6): Redo Phase}
+    \begin{itemize}[<+->]
+        \item Find last \texttt{<checkpoint L>} record, and set \texttt{undo-list} to L
+        \item Scan forward from above \texttt{<checkpoint L>} record
+        \begin{itemize}
+            \item[$\triangleright$] Whenever a record \texttt{<$T_i$, $X_j$, $V_1$, $V_2$>} is found, redo it by writing $V_2$ to $X_j$
+            \item[$\triangleright$] Whenever a log record \texttt{<$T_i$ start>} is found, add $T_i$ to \texttt{undo-list}
+            \item[$\triangleright$] Whenever a log record \texttt{<$T_i$ commit>} or \texttt{<$T_i$ abort>} is found, remove $T_i$ from \texttt{undo-list}
+        \end{itemize}
+        \item Steps for the \textbf{REDO} operation are:
+        \begin{itemize}
+            \item[$\triangleright$] If the transaction has done INSERT, the recovery manager generates an insert from the log
+            \item[$\triangleright$] If the transaction has done DELETE, the recovery manager generates a delete from the log
+            \item[$\triangleright$] If the transaction has done UPDATE, the recovery manager generates an update from the log.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recovery Algorithm (7): Undo Phase}
+    \begin{itemize}[<+->]
+        \item Scan log backwards from end
+        \begin{itemize}
+            \item[$\triangleright$] Whenever a log record \texttt{<$T_i$, $X_j$, $V_1$, $V_2$>} is found where $T_i$ is in \texttt{undo-list} perform same actions as for transaction rollback:
+            \item[$\bullet$] Perform undo by writing $V_1$ to $X_j$
+            \item[$\bullet$] Write a log record \texttt{<$T_i$, $X_j$, $V_1$>}
+            \item[$\triangleright$] Whenever a log record \texttt{<$T_i$ start>} is found where $T_i$ is in \texttt{undo-list}
+            \item[$\bullet$] Write a log record \texttt{<$T_i$ abort>}
+            \item[$\bullet$] Remove $T_i$ from \texttt{undo-list}
+        \end{itemize}
+        \item Stop when \texttt{undo-list} is empty
+        \begin{itemize}
+            \item[$\triangleright$] That is, \texttt{<$T_i$ start>} has been found for every transaction in \texttt{undo-list}
+        \end{itemize}
+        \item Steps for the \textbf{UNDO} operation are:
+        \begin{itemize}
+            \item[$\triangleright$] If the faulty transaction has done INSERT, the recovery manager deletes the data item(s) inserted
+            \item[$\triangleright$] If the faulty transaction has done DELETE, the recovery manager inserts the deleted data item(s) from the log
+            \item[$\triangleright$] If the faulty transaction has done UPDATE, the recovery manager eliminates the value by writing the before-update value from the log
+        \end{itemize}
+        \item After undo phase completes, normal transaction processing can commence
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recovery Algorithm (8): Example}
+    \uncover<1->{
+        \begin{center}
+            \includegraphics[height=0.75\textheight]{"../Lecture 11.3_artifacts/image_000032_dbc57a1ab7d567dad204da3b88da5cd42003b4556dfb651f5dfe5b566176ee9f.png"}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}[<+->]
+        \item Learnt how Hot backup of transaction log helps in recovering consistent database.
+        \item Studied the recovery algorithms for concurrent transactions
+    \end{itemize}
+    \vspace{2em}
+    \uncover<3->{
+        \begin{center}
+        \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors. Edited and new slides are marked with 'PPD'.}
+        \end{center}
+    }
+\end{frame}
+
+\end{document}

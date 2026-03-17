@@ -1,0 +1,621 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{float}
+
+% --- Title Information ---
+\title{Database Management Systems}
+\subtitle{Summary: Week 5 - 8}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{January 26, 2022}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\section{Week 5}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Week 5 Summary\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Module 21 Recap}
+    \begin{itemize}[<+->]
+        \item \textbf{Redundancy} : having multiple copies of same data in the database.
+        \begin{itemize}
+            \item[$\triangleright$] This problem arises when a database is not normalized
+            \item[$\triangleright$] It leads to anomalies
+        \end{itemize}
+        \item \textbf{Anomaly} : inconsistencies that can arise due to data changes in a database with insertion, deletion, and update
+        \begin{itemize}
+            \item[$\triangleright$] These problems occur in poorly planned, un-normalised databases where all the data is stored in one table (a flat-file database)
+        \end{itemize}
+        \item There can be three kinds of anomalies:
+        \begin{itemize}
+            \item[$\triangleright$] Insertions Anomaly
+            \item[$\triangleright$] Deletion Anomaly
+            \item[$\triangleright$] Update Anomaly
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Redundancy and Anomaly}
+    \begin{itemize}[<+->]
+        \item \textbf{Insertions Anomaly}
+        \begin{itemize}
+            \item[$\triangleright$] When the insertion of a data record is not possible without adding some additional unrelated data to the record
+            \item[$\triangleright$] We cannot add an Instructor in \texttt{instructor\_with\_department} if the department does not have a building or budget
+        \end{itemize}
+        \item \textbf{Deletion Anomaly}
+        \begin{itemize}
+            \item[$\triangleright$] When deletion of a data record results in losing some unrelated information that was stored as part of the record that was deleted from a table
+            \item[$\triangleright$] We delete the last Instructor of a Department from \texttt{instructor\_with\_department}, we lose building and budget information
+        \end{itemize}
+        \item \textbf{Update Anomaly}
+        \begin{itemize}
+            \item[$\triangleright$] When a data is changed, which could involve many records having to be changed, leading to the possibility of some changes being made incorrectly
+            \item[$\triangleright$] When the budget changes for a Department having large number of Instructors in \texttt{instructor\_with\_department} application may miss some of them
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{First Normal Form (1NF)}
+    \begin{itemize}[<+->]
+        \item A domain is \textbf{atomic} if its elements are considered to be indivisible units
+        \item Examples of non-atomic domains:
+        \begin{itemize}
+            \item[$\triangleright$] Set of names, composite attributes
+            \item[$\triangleright$] Identification numbers like CS101 that can be broken up into parts
+        \end{itemize}
+        \item A relational schema $R$ is in \textbf{First Normal Form (1NF)} if
+        \begin{itemize}
+            \item[$\triangleright$] the domains of all attributes of $R$ are atomic
+            \item[$\triangleright$] the value of each attribute contains only a single value from that domain
+        \end{itemize}
+        \item Non-atomic values complicate storage and encourage redundant (repeated) storage of data
+        \begin{itemize}
+            \item[$\triangleright$] Example: Set of accounts stored with each customer, and set of owners stored with each account
+        \end{itemize}
+        \item We assume all relations are in first normal form
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Functional Dependencies}
+    \begin{itemize}[<+->]
+        \item Let $R$ be a relation schema $\alpha \subseteq R$ and $\beta \subseteq R$
+        \item The \textbf{functional dependency (FD)}
+        \begin{center}
+            $\alpha \rightarrow \beta$
+        \end{center}
+        holds on $R$ if and only if for any legal relations $r(R)$, whenever any two tuples $t_1$ and $t_2$ of $r$ agree on the attributes $\alpha$, they also agree on the attributes $\beta$. That is,
+        \begin{center}
+            $t_1[\alpha] = t_2[\alpha] \Rightarrow t_1[\beta] = t_2[\beta]$
+        \end{center}
+        \item Example: Consider $r(A, B)$ with a specific instance.
+        \item On this instance, $A \rightarrow B$ does NOT hold, but $B \rightarrow A$ does hold. So we cannot have tuples like (2, 4), or (3, 5), or (4, 7) added to the current instance.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Functional Dependencies : Armstrong's Axioms}
+    \begin{itemize}[<+->]
+        \item Given a set of Functional Dependencies $F$, we can infer new dependencies by the \textbf{Armstrong's Axioms}:
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Reflexivity}: if $\beta \subseteq \alpha$, then $\alpha \rightarrow \beta$
+            \item[$\triangleright$] \textbf{Augmentation}: if $\alpha \rightarrow \beta$, then $\gamma\alpha \rightarrow \gamma\beta$
+            \item[$\triangleright$] \textbf{Transitivity}: if $\alpha \rightarrow \beta$ and $\beta \rightarrow \gamma$, then $\alpha \rightarrow \gamma$
+        \end{itemize}
+        \item These axioms can be repeatedly applied to generate new FDs and added to $F$
+        \item A new FD obtained by applying the axioms is said to the logically implied by $F$
+        \item The process of generations of FDs terminate after finite number of steps and we call it the \textbf{Closure Set $F^+$} for FDs $F$. This is the set of all FDs logically implied by $F$
+        \item Clearly, $F \subseteq F^+$
+        \item These axioms are
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Sound} (generate only functional dependencies that actually hold), and
+            \item[$\triangleright$] \textbf{Complete} (eventually generate all functional dependencies that hold)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Functional Dependencies : Armstrong's Axioms: Derived Rules}
+    \begin{itemize}[<+->]
+        \item \textbf{Additional Derived Rules:}
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Union}: if $\alpha \rightarrow \beta$ holds and $\alpha \rightarrow \gamma$ holds, then $\alpha \rightarrow \beta\gamma$ holds
+            \item[$\triangleright$] \textbf{Decomposition}: if $\alpha \rightarrow \beta\gamma$ holds, then $\alpha \rightarrow \beta$ holds and $\alpha \rightarrow \gamma$ holds
+            \item[$\triangleright$] \textbf{Pseudotransitivity}: if $\alpha \rightarrow \beta$ holds and $\gamma\beta \rightarrow \delta$ holds, then $\alpha\gamma \rightarrow \delta$ holds
+        \end{itemize}
+        \item The above rules can be inferred from basic Armstrong's axioms (and hence are not included in the basic set). They can be proven independently too
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Reflexivity}: if $\beta \subseteq \alpha$, then $\alpha \rightarrow \beta$
+            \item[$\triangleright$] \textbf{Augmentation}: if $\alpha \rightarrow \beta$, then $\gamma\alpha \rightarrow \gamma\beta$
+            \item[$\triangleright$] \textbf{Transitivity}: if $\alpha \rightarrow \beta$ and $\beta \rightarrow \gamma$, then $\alpha \rightarrow \gamma$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Functional Dependencies : Closure of Attribute Sets: Example}
+    \begin{itemize}[<+->]
+        \item $R = (A, B, C, G, H, I)$
+        \item $F = \{A \rightarrow B, A \rightarrow C, CG \rightarrow H, CG \rightarrow I, B \rightarrow H\}$
+        \item $(AG)^+$
+        \begin{itemize}
+            \item[$\triangleright$] 1 result = $AG$
+            \item[$\triangleright$] 2 result = $ABCG$ ($A \rightarrow C$ and $A \rightarrow B$)
+            \item[$\triangleright$] 3 result = $ABCGH$ ($CG \rightarrow H$ and $CG \subseteq AGBC$)
+            \item[$\triangleright$] 4 result = $ABCGHI$ ($CG \rightarrow I$ and $CG \subseteq AGBCH$)
+        \end{itemize}
+        \item Is $AG$ a candidate key?
+        \begin{itemize}
+            \item[$\triangleright$] 1. Is $AG$ a super key?
+            \item[$\triangleright$] \hspace{1em} 1a. Does $AG \rightarrow R$? == Is $(AG)^+ \supseteq R$ (Yes)
+            \item[$\triangleright$] 2. Is any subset of $AG$ a superkey?
+            \item[$\triangleright$] \hspace{1em} 2a. Does $A \rightarrow R$? == Is $(A)^+ \supseteq R$
+            \item[$\triangleright$] \hspace{1em} 2b. Does $G \rightarrow R$? == Is $(G)^+ \supseteq R$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF: Boyce-Codd Normal Form}
+    \begin{itemize}[<+->]
+        \item A relation schema $R$ is in \textbf{BCNF} with respect to a set $F$ of FDs if for all FDs in $F^+$ of the form
+        \item $\alpha \rightarrow \beta$, where $\alpha \subseteq R$ and $\beta \subseteq R$ at least one of the following holds:
+        \begin{itemize}
+            \item[$\triangleright$] $\alpha \rightarrow \beta$ is trivial (that is, $\beta \subseteq \alpha$)
+            \item[$\triangleright$] $\alpha$ is a superkey for $R$
+        \end{itemize}
+        \item Example schema not in BCNF:
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{instr\_dept(ID, name, salary, dept\_name, building, budget)}
+            \item[$\triangleright$] because the non-trivial dependency \texttt{dept\_name $\rightarrow$ building, budget} holds on \texttt{instr\_dept}, but \texttt{dept\_name} is not a superkey
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF (2): Decomposition}
+    \begin{itemize}[<+->]
+        \item If in schema $R$ and a non-trivial dependency $\alpha \rightarrow \beta$ causes a violation of BCNF, we decompose $R$ into:
+        \begin{itemize}
+            \item[$\triangleright$] $\alpha \cup \beta$
+            \item[$\triangleright$] $(R - (\beta - \alpha))$
+        \end{itemize}
+        \item In our example,
+        \begin{itemize}
+            \item[$\triangleright$] $\alpha=$ \texttt{dept\_name}
+            \item[$\triangleright$] $\beta=$ \texttt{building, budget}
+            \item[$\triangleright$] \texttt{dept\_name $\rightarrow$ building, budget}
+        \end{itemize}
+        \item \texttt{inst\_dept} is replaced by
+        \begin{itemize}
+            \item[$\triangleright$] $(\alpha \cup \beta) =$ (\texttt{dept\_name}, \texttt{building}, \texttt{budget})
+            \item[$\triangleright$] \texttt{dept\_name $\rightarrow$ building, budget}
+            \item[$\triangleright$] $(R - (\beta - \alpha)) =$ (\texttt{ID}, \texttt{name}, \texttt{salary}, \texttt{dept\_name})
+            \item[$\triangleright$] \texttt{ID $\rightarrow$ name, salary, dept\_name}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF: Third Normal Form}
+    \begin{itemize}[<+->]
+        \item A relation schema $R$ is in \textbf{third normal form (3NF)} if for all:
+        \item $\alpha \rightarrow \beta \in F^+$
+        \item at least one of the following holds:
+        \begin{itemize}
+            \item[$\triangleright$] $\alpha \rightarrow \beta$ is trivial (that is, $\beta \subseteq \alpha$)
+            \item[$\triangleright$] $\alpha$ is a superkey for $R$
+            \item[$\triangleright$] Each attribute $A$ in $\beta - \alpha$ is contained in a candidate key for $R$ (Note: Each attribute may be in a different candidate key)
+        \end{itemize}
+        \item If a relation is in BCNF it is in 3NF (since in BCNF one of the first two conditions above must hold)
+        \item Third condition is a minimal relaxation of BCNF to ensure dependency preservation (will see why later)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Extraneous Attributes}
+    \begin{itemize}[<+->]
+        \item Consider a set $F$ of FDs and the FD $\alpha \rightarrow \beta$ in $F$.
+        \item Attribute $A$ is extraneous in $\alpha$ if $A \in \alpha$ and $F$ logically implies $(F - \{\alpha \rightarrow \beta\}) \cup \{(\alpha - A) \rightarrow \beta\}$.
+        \item Attribute $A$ is extraneous in $\beta$ if $A \in \beta$ and the set of FDs $(F - \{\alpha \rightarrow \beta\}) \cup \{\alpha \rightarrow (\beta - A)\}$ logically implies $F$.
+        \item \textbf{Note}: Implication in the opposite direction is trivial in each of the cases above, since a 'stronger' functional dependency always implies a weaker one
+        \item Example: Given $F = \{A \rightarrow C, AB \rightarrow C\}$
+        \begin{itemize}
+            \item[$\triangleright$] $B$ is extraneous in $AB \rightarrow C$ because $\{A \rightarrow C, AB \rightarrow C\}$ logically implies $A \rightarrow C$
+            \item[$\triangleright$] $A^+ = AC$ in $\{A \rightarrow C, AB \rightarrow C\}$
+        \end{itemize}
+        \item Example: Given $F = \{A \rightarrow C, AB \rightarrow CD\}$
+        \begin{itemize}
+            \item[$\triangleright$] $C$ is extraneous in $AB \rightarrow CD$ since $AB \rightarrow C$ can be inferred even after deleting $C$
+            \item[$\triangleright$] $AB^+ = ABCD$ in $\{A \rightarrow C, AB \rightarrow D\}$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Equivalence of Sets of Functional Dependencies}
+    \begin{itemize}[<+->]
+        \item Let $F$ \& $G$ are two functional dependency sets.
+        \item These two sets $F$ \& $G$ are equivalent if $F^+ = G^+$. That is: $(F^+ = G^+) \Leftrightarrow (F^+ \Rightarrow G \text{ and } G^+ \Rightarrow F)$
+        \item Equivalence means that every functional dependency in $F$ can be inferred from $G$, and every functional dependency in $G$ an be inferred from $F$
+        \item $F$ and $G$ are equal only if
+        \begin{itemize}
+            \item[$\triangleright$] $F$ \textbf{covers} $G$: Means that all functional dependency of $G$ are logically numbers of functional dependency set $F \Rightarrow F^+ \supseteq G$.
+            \item[$\triangleright$] $G$ \textbf{covers} $F$: Means that all functional dependency of $F$ are logically members of functional dependency set $G \Rightarrow G^+ \supseteq F$.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Equivalence of Sets of Functional Dependencies (2)}
+    \begin{table}[H]
+        \centering
+        \resizebox{\textwidth}{!}{
+            \begin{tabular}{|l|l|l|l|l|}
+                \hline
+                \textbf{Condition} & \textbf{CASES} & \textbf{CASES} & \textbf{CASES} & \textbf{CASES} \\ \hline
+                F Covers G & True & True & False & False \\ \hline
+                G Covers F & True & False & True & False \\ \hline
+                Result & F=G & & G-F (Unclear)& No Comparison \\ \hline
+            \end{tabular}
+        }
+    \end{table}
+\end{frame}
+
+\begin{frame}{Canonical Cover}
+    \begin{itemize}[<+->]
+        \item A \textbf{Canonical Cover} for $F$ is a set of dependencies $F_c$ such that ALL the following properties are satisfied:
+        \begin{itemize}
+            \item[$\triangleright$] $F^+ = F_c^+$ Or,
+            \item[$\triangleright$] $F$ logically implies all dependencies in $F_c$
+            \item[$\triangleright$] $F_c$ logically implies all dependencies in $F$
+        \end{itemize}
+        \item No functional dependency in $F_c$ contains an extraneous attribute
+        \item Each left side of functional dependency in $F_c$ is unique. That is, there are no two dependencies $\alpha_1 \rightarrow \beta_1$ and $\alpha_2 \rightarrow \beta_2$ in $F_c$ such that $\alpha_1 = \alpha_2$
+        \item Intuitively, a Canonical cover of $F$ is a minimal set of FDs
+        \begin{itemize}
+            \item[$\triangleright$] Equivalent to $F$
+            \item[$\triangleright$] Having no redundant FDs
+            \item[$\triangleright$] No redundant parts of FDs
+            \item[$\triangleright$] Minimal / Irreducible Set of Functional Dependencies
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Canonical Cover : Example}
+    \begin{itemize}[<+->]
+        \item For example: $A \rightarrow C$ is redundant in: $\{A \rightarrow B, B \rightarrow C, A \rightarrow C\}$
+        \item Parts of a functional dependency may be redundant
+        \item For example: on RHS: $\{A \rightarrow B, B \rightarrow C, A \rightarrow CD\}$ can be simplified to $\{A \rightarrow B, B \rightarrow C, A \rightarrow D\}$
+        \begin{itemize}
+            \item[$\triangleright$] In the forward: (1) $A \rightarrow CD \Rightarrow A \rightarrow C$ and $A \rightarrow D$ (2) $A \rightarrow B$, $B \rightarrow C \Rightarrow A \rightarrow C$
+            \item[$\triangleright$] In the reverse: (1) $A \rightarrow B$, $B \rightarrow C \Rightarrow A \rightarrow C$ (2) $A \rightarrow C$, $A \rightarrow D \Rightarrow A \rightarrow CD$
+        \end{itemize}
+        \item For example: on LHS: $\{A \rightarrow B, B \rightarrow C, AC \rightarrow D\}$ can be simplified to $\{A \rightarrow B, B \rightarrow C, A \rightarrow D\}$
+        \begin{itemize}
+            \item[$\triangleright$] In the forward: (1) $A \rightarrow B$, $B \rightarrow C \Rightarrow A \rightarrow C \Rightarrow A \rightarrow AC$ (2) $A \rightarrow AC$, $AC \rightarrow D \Rightarrow A \rightarrow D$
+            \item[$\triangleright$] In the reverse: $A \rightarrow D \Rightarrow AC \rightarrow D$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lossless Join Decomposition}
+    \begin{itemize}[<+->]
+        \item For the case of $R = (R_1, R_2)$, we require that for all possible relations $r$ on schema $R$
+        \begin{center}
+            $r = \Pi_{R_1}(r) \bowtie \Pi_{R_2}(r)$
+        \end{center}
+        \item A decomposition of $R$ into $R_1$ and $R_2$ is \textbf{lossless join} if at least one of the following dependencies is in $F^+$:
+        \begin{itemize}
+            \item[$\triangleright$] $R_1 \cap R_2 \rightarrow R_1$
+            \item[$\triangleright$] $R_1 \cap R_2 \rightarrow R_2$
+        \end{itemize}
+        \item The above functional dependencies are a sufficient condition for lossless join decomposition; the dependencies are a necessary condition only if all constraints are functional dependencies
+        \item To Identify whether a decomposition is lossy or lossless, it must satisfy the following conditions:
+        \begin{itemize}
+            \item[$\triangleright$] $R_1 \cup R_2 = R$
+            \item[$\triangleright$] $R_1 \cap R_2 \neq \emptyset$
+            \item[$\triangleright$] $R_1 \cap R_2 \rightarrow R_1$ or $R_1 \cap R_2 \rightarrow R_2$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lossless Join Decomposition : Example}
+    \begin{itemize}[<+->]
+        \item $R = (A, B, C)$
+        \item $F = \{A \rightarrow B, B \rightarrow C\}$
+        \item Can be decomposed in two different ways
+        \item $R_1 = (A, B)$, $R_2 = (B, C)$
+        \begin{itemize}
+            \item[$\triangleright$] Lossless-join decomposition: $R_1 \cap R_2 = \{B\}$ and $B \rightarrow BC$
+            \item[$\triangleright$] Dependency preserving
+        \end{itemize}
+        \item $R_1 = (A, B)$, $R_2 = (A, C)$
+        \begin{itemize}
+            \item[$\triangleright$] Lossless-join decomposition: $R_1 \cap R_2 = \{A\}$ and $A \rightarrow AB$
+            \item[$\triangleright$] Not dependency preserving
+            \item[$\triangleright$] (cannot check $B \rightarrow C$ without computing $R_1 \bowtie R_2$)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dependency Preservation}
+    \begin{itemize}[<+->]
+        \item Let $F_i$ be the set of dependencies $F^+$ that include only attributes in $R_i$
+        \item A decomposition is \textbf{dependency preserving}, if
+        \begin{center}
+            $(F_1 \cup F_2 \cup \dots \cup F_n)^+ = F^+$
+        \end{center}
+        \item If it is not, then checking updates for violation of functional dependencies may require computing joins, which is expensive
+        \item Let $R$ be the original relational schema having FD set $F$. Let $R_1$ and $R_2$ having FD set $F_1$ and $F_2$ respectively, are the decomposed sub-relations of $R$. The decomposition of $R$ is said to be preserving if
+        \begin{itemize}
+            \item[$\triangleright$] $F_1 \cup F_2 \equiv F$ \{ Decomposition Preserving Dependency \}
+            \item[$\triangleright$] If $F_1 \cup F_2 \subset F$ \{ Decomposition NOT Preserving Dependency \} and
+            \item[$\triangleright$] $F_1 \cup F_2 \supset F$ \{ this is not possible \}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dependency Preservation : Example}
+    \begin{itemize}[<+->]
+        \item $R (A, B, C, D)$
+        \item $F = \{A \rightarrow B, B \rightarrow C, C \rightarrow D, D \rightarrow A\}$
+        \item Decomposition: $R_1 (A, B)$, $R_2 (B, C)$, $R_3 (C, D)$
+        \item $A \rightarrow B$ is preserved on table $R_1$
+        \item $B \rightarrow C$ is preserved on table $R_2$
+        \item $C \rightarrow D$ is preserved on table $R_3$
+        \item We have to check whether the one remaining FD: $D \rightarrow A$ is preserved or not.
+        \item $F_1= \{A \rightarrow AB, B \rightarrow BA\}$
+        \item $F_2= \{B \rightarrow BC, C \rightarrow CB\}$
+        \item $F_3= \{C \rightarrow CD, D \rightarrow DC\}$
+        \item $F' = F_1 \cup F_2 \cup F_3$.
+        \item Checking for: $D \rightarrow A$ in ${F'}^+$
+        \item $D \rightarrow C$ (from $R_3$), $C \rightarrow B$ (from $R_2$), $B \rightarrow A$ (from $R_1$) : $D \rightarrow A$ (By Transitivity)
+        \item Hence \textbf{all dependencies are preserved}.
+    \end{itemize}
+\end{frame}
+
+\section{Week 6}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Week 6 Summary\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Normalization or Schema Refinement}
+    \begin{itemize}[<+->]
+        \item \textbf{Normalization} or Schema Refinement is a technique of organizing the data in the database
+        \item A systematic approach of decomposing tables to eliminate data redundancy and undesirable characteristics
+        \begin{itemize}
+            \item[$\triangleright$] Insertion Anomaly
+            \item[$\triangleright$] Update Anomaly
+            \item[$\triangleright$] Deletion Anomaly
+        \end{itemize}
+        \item Most common technique for the Schema Refinement is \textbf{decomposition}.
+        \item \textbf{Goal of Normalization}: Eliminate Redundancy
+        \begin{itemize}
+            \item[$\triangleright$] Redundancy refers to repetition of same data or duplicate copies of same data stored in different locations
+        \end{itemize}
+        \item Normalization is used for mainly two purpose:
+        \begin{itemize}
+            \item[$\triangleright$] Eliminating redundant (useless) data
+            \item[$\triangleright$] Ensuring data dependencies make sense, that is, data is logically stored
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Normalization and Normal Forms}
+    \begin{itemize}[<+->]
+        \item A normal form specifies a set of conditions that the relational schema must satisfy in terms of its constraints - they offer varied levels of guarantee for the design
+        \item Normalization rules are divided into various normal forms. Most common normal forms are:
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{First Normal Form (1NF)}
+            \item[$\triangleright$] \textbf{Second Normal Form (2NF)}
+            \item[$\triangleright$] \textbf{Third Normal Form (3NF)}
+        \end{itemize}
+        \item Informally, a relational database relation is often described as 'normalized' if it meets third normal form. Most 3NF relations are free of insertion, update, and deletion anomalies
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{1NF: First Normal Form}
+    \begin{itemize}[<+->]
+        \item A relation is in \textbf{First Normal Form} if and only if all underlying domains contain atomic values only (doesn't have multivalued attributes (MVA))
+        \item \texttt{STUDENT(Sid, Sname, Cname)}
+    \end{itemize}
+    \vspace{1em}
+    \uncover<3->{
+        \begin{columns}
+            \begin{column}{0.5\textwidth}
+                \begin{center}
+                    \includegraphics[width=0.8\textwidth]{"../Week 5 -8 summary slides_artifacts/image_000001_c0b418ec6568e31b12f0849016af18cc36da4da0559a7e1a875097e9d8a230b2.png"}
+                \end{center}
+            \end{column}
+            \begin{column}{0.5\textwidth}
+            %\begin{center}
+            %    \includegraphics[width=0.8\textwidth]{"../Week 1 - 4 summary slides_artifacts/image_000003_2aefff404847755573f33d6efcdea386620b49eb4f4893d9c8d121a517cd37d9.png"}
+            %\end{center}
+        \end{column}
+        \end{columns}
+    }
+\end{frame}
+
+\begin{frame}{2NF: Second Normal Form}
+    \begin{itemize}[<+->]
+        \item Relation $R$ is in \textbf{Second Normal Form (2NF)} only iff :
+        \begin{itemize}
+            \item[$\triangleright$] $R$ is in 1NF and
+            \item[$\triangleright$] $R$ contains \textbf{no Partial Dependency}
+        \end{itemize}
+        \item \textbf{Partial Dependency}:
+        \item Let $R$ be a relational Schema and $X, Y, A$ be the attribute sets over $R$ where $X$: Any Candidate Key, $Y$: Proper Subset of Candidate Key, and $A$: Non Prime Attribute
+        \item If $Y \rightarrow A$ exists in $R$, then $R$ is not in 2NF.
+        \item $(Y \rightarrow A)$ is a Partial dependency only if
+        \begin{itemize}
+            \item[$\triangleright$] $Y$: Proper subset of Candidate Key
+            \item[$\triangleright$] $A$: Non Prime Attribute
+        \end{itemize}
+        \item A \textbf{prime attribute} of a relation is an attribute that is a part of a candidate key of the relation
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF: Third Normal Form}
+    \begin{itemize}[<+->]
+        \item Let $R$ be the relational schema.
+        \item \textbf{[E. F. Codd,1971]} $R$ is in 3NF only if:
+        \begin{itemize}
+            \item[$\triangleright$] $R$ should be in 2NF
+            \item[$\triangleright$] $R$ should not contain transitive dependencies (OR, Every non-prime attribute of $R$ is non-transitively dependent on every key of $R$)
+        \end{itemize}
+        \item \textbf{[Carlo Zaniolo, 1982]} Alternately, $R$ is in 3NF iff for each of its functional dependencies $X \rightarrow A$, at least one of the following conditions holds:
+        \begin{itemize}
+            \item[$\triangleright$] $X$ contains $A$ (that is, $A$ is a subset of $X$, meaning $X \rightarrow A$ is trivial functional dependency), or
+            \item[$\triangleright$] $X$ is a superkey, or
+            \item[$\triangleright$] Every element of $A - X$, the set difference between $A$ and $X$, is a prime attribute (i.e., each attribute in $A - X$ is contained in some candidate key)
+        \end{itemize}
+        \item \textbf{[Simple Statement]} A relational schema $R$ is in 3NF if for every FD $X \rightarrow A$ associated with $R$ either
+        \begin{itemize}
+            \item[$\triangleright$] $A \subseteq X$ (that is, the FD is trivial) or
+            \item[$\triangleright$] $X$ is a superkey of $R$ or
+            \item[$\triangleright$] $A$ is part of some candidate key (not just superkey!)
+        \end{itemize}
+        \item A relation in 3NF is naturally in 2NF
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF Decomposition: Motivation}
+    \begin{itemize}[<+->]
+        \item There are some situations where
+        \begin{itemize}
+            \item[$\triangleright$] BCNF is not dependency preserving, and
+            \item[$\triangleright$] Efficient checking for FD violation on updates is important
+        \end{itemize}
+        \item \textbf{Solution}: define a weaker normal form, called \textbf{Third Normal Form (3NF)}
+        \begin{itemize}
+            \item[$\triangleright$] Allows some redundancy (with resultant problems; as seen above)
+            \item[$\triangleright$] But functional dependencies can be checked on individual relations without computing a join
+            \item[$\triangleright$] There is always a lossless-join, dependency-preserving decomposition into 3NF
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF Decomposition : Testing for 3NF}
+    \begin{itemize}[<+->]
+        \item \textbf{Optimization}: Need to check only FDs in $F$, need not check all FDs in $F^+$.
+        \item Use attribute closure to check for each dependency $\alpha \rightarrow \beta$, if $\alpha$ is a superkey.
+        \item If $\alpha$ is not a superkey, we have to verify if each attribute in $\beta$ is contained in a candidate key of $R$
+        \item This test is rather more expensive, since it involve finding candidate keys
+        \item Testing for 3NF has been shown to be NP-hard
+        \item Decomposition into 3NF can be done in polynomial time
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF Decomposition : Algorithm}
+    \begin{itemize}[<+->]
+        \item \textbf{Given}: relation $R$, set $F$ of functional dependencies
+        \item \textbf{Find}: decomposition of $R$ into a set of 3NF relation $R_i$
+        \item \textbf{Algorithm}:
+        \begin{itemize}
+            \item[$\triangleright$] 1. Eliminate redundant FDs, resulting in a canonical cover $F_c$ of $F$
+            \item[$\triangleright$] 2. Create a relation $R_i = XY$ for each FD $X \rightarrow Y$ in $F_c$
+            \item[$\triangleright$] 3. If the key $K$ of $R$ does not occur in any relation $R_i$, create one more relation $R_i = K$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF Decomposition : Example}
+    \begin{itemize}[<+->]
+        \item Relation schema:
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{cust\_banker\_branch = (customer\_id, employee\_id, branch\_name, type)}
+        \end{itemize}
+        \item The functional dependencies for this relation schema are:
+        \begin{itemize}
+            \item[$\triangleright$] 1. \texttt{customer\_id, employee\_id $\rightarrow$ branch\_name, type}
+            \item[$\triangleright$] 2. \texttt{employee\_id $\rightarrow$ branch\_name}
+            \item[$\triangleright$] 3. \texttt{customer\_id, branch\_name $\rightarrow$ employee\_id}
+        \end{itemize}
+        \item We first compute a canonical cover
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{branch\_name} is extraneous in the RHS of the $1^{\text{st}}$ dependency
+            \item[$\triangleright$] No other attribute is extraneous, so we get $F_c =$
+            \begin{itemize}
+                \item[$\star$] \texttt{customer\_id, employee\_id $\rightarrow$ type}
+                \item[$\star$] \texttt{employee\_id $\rightarrow$ branch\_name}
+                \item[$\star$] \texttt{customer\_id, branch\_name $\rightarrow$ employee\_id}
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF Decomposition : Example (Cont.)}
+    \begin{itemize}[<+->]
+        \item The \texttt{for} loop generates following 3NF schema:
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{(customer\_id, employee\_id, type)}
+            \item[$\triangleright$] \texttt{(employee\_id, branch\_name)}
+            \item[$\triangleright$] \texttt{(customer\_id, branch\_name, employee\_id)}
+        \end{itemize}
+        \item Observe that \texttt{(customer\_id, employee\_id, type)} contains a candidate key of the original schema, so no further relation schema needs be added
+        \item At end of \texttt{for} loop, detect and delete schemas, such as \texttt{(employee\_id, branch\_name)}, which are subsets of other schemas
+        \begin{itemize}
+            \item[$\triangleright$] result will not depend on the order in which FDs are considered
+        \end{itemize}
+        \item The resultant simplified 3NF schema is:
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{(customer\_id, employee\_id, type)}
+            \item[$\triangleright$] \texttt{(customer\_id, branch\_name, employee\_id)}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF Decomposition: BCNF Definition}
+    \begin{itemize}[<+->]
+        \item A relation schema $R$ is in \textbf{BCNF} with respect to a set $F$ of FDs if for all FDs in $F^+$ of the form
+        \item $\alpha \rightarrow \beta$, where $\alpha \subseteq R$ and $\beta \subseteq R$ at least one of the following holds:
+        \begin{itemize}
+            \item[$\triangleright$] $\alpha \rightarrow \beta$ is trivial (that is, $\beta \subseteq \alpha$)
+            \item[$\triangleright$] $\alpha$ is a superkey for $R$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF Decomposition : Algorithm}
+    \begin{itemize}[<+->]
+        \item 1. For all dependencies $A \rightarrow B$ in $F^+$, check if $A$ is a superkey
+        \begin{itemize}
+            \item[$\triangleright$] By using attribute closure
+        \end{itemize}
+        \item 2. If not, then
+        \begin{itemize}
+            \item[$\triangleright$] Choose a dependency in $F^+$ that breaks the BCNF rules, say $A \rightarrow B$
+            \item[$\triangleright$] Create $R_1 = AB$
+            \item[$\triangleright$] Create $R_2 = (R - (B - A))$
+            \item[$\triangleright$] \textbf{Note that}: $R_1 \cap R_2 = A$ and $A \rightarrow AB\ (= R_1)$, so this is lossless decomposition
+        \end{itemize}
+        \item 3. Repeat for $R_1$, and $R_2$
+        \begin{itemize}
+            \item[$\triangleright$] By defining $F_1^+$ to be all dependencies in $F^+$ that contain only attributes in $R_1$
+            \item[$\triangleright$] Similarly $F_2^+$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\end{document}

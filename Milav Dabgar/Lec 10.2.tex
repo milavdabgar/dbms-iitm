@@ -1,0 +1,322 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 47}
+\subtitle{Transactions/2: Serializability}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}[<+->]
+        \item A task in a database is done as a transaction that passes through several states
+        \item Transactions are executed in concurrent fashion for better throughput
+        \item Concurrent execution of transactions raise serializability issues that need to be addressed
+        \item All schedules may not satisfy ACID properties
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item To understand the issues that arise when two or more transactions work concurrently
+            \item To introduce the notions of Serializability that ensure schedules for transactions that may run in concurrent fashion but still guarantee and serial behavior
+            \item To analyze the conditions, called conflicts, that need to be honored to attain Serializable schedules
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Serializability
+            \item Conflict Serializability
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Serializability}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Serializability\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Serializability}
+    \begin{itemize}[<+->]
+        \item \textbf{Assumption}: Each transaction preserves database consistency
+        \item Thus, serial execution of a set of transactions preserves database consistency
+        \item A (possibly concurrent) schedule is serializable if it is equivalent to a serial schedule
+        \item Different forms of schedule equivalence give rise to the notions of:
+        \begin{itemize}[<+->]
+            \item a) Conflict Serializability
+            \item b) View Serializability
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recap Schedule 3: Serializable}
+    \begin{itemize}[<+->]
+        \item Let T1 and T2 be the transactions defined previously. The following schedule is not a serial schedule, but it is equivalent to Schedule 1
+    \end{itemize}
+    \begin{center}
+        \includegraphics[height=0.45\textheight]{"../Lecture 10.2_artifacts/image_000007_31ec13f00a65955ee7b00026d3ac4352d4bc17c5fca53f7556418b0b6cda088f.png"}
+    \end{center}
+    \vspace{0.5em}
+    Note: In schedules 1, 2 and 3, the sum 'A + B' is preserved
+\end{frame}
+
+\begin{frame}{Recap Schedule 4: Not Serializable}
+    \begin{itemize}[<+->]
+        \item The following concurrent schedule does not preserve the sum of 'A + B'
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Simplified View of Transactions}
+    \begin{itemize}[<+->]
+        \item We ignore operations other than \texttt{read} and \texttt{write} instructions
+        \item Other operations happen in memory (are temporary in nature) and (mostly) do not affect the state of the database
+        \item This is a simplifying assumption for analysis
+        \item We assume that transactions may perform arbitrary computations on data in local buffers in between reads and writes
+        \item Our simplified schedules consist of only \texttt{read} and \texttt{write} instructions
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conflicting Instructions}
+    \begin{itemize}[<+->]
+        \item Let $l_i$ and $l_j$ be two Instructions from transactions $T_i$ and $T_j$ respectively
+        \item Instructions $l_i$ and $l_j$ \textbf{conflict} if and only if there exists some item Q accessed by both $l_i$ and $l_j$, and at least one of these instructions write to Q
+        \begin{itemize}[<+->]
+            \item a) $l_i = \text{read}(Q)$, $l_j = \text{read}(Q)$. $l_i$ and $l_j$ \textbf{don't conflict}
+            \item b) $l_i = \text{read}(Q)$, $l_j = \text{write}(Q)$. They \textbf{conflict}
+            \item c) $l_i = \text{write}(Q)$, $l_j = \text{read}(Q)$. They \textbf{conflict}
+            \item d) $l_i = \text{write}(Q)$, $l_j = \text{write}(Q)$. They \textbf{conflict}
+        \end{itemize}
+        \item Intuitively, a conflict between $l_i$ and $l_j$ forces a (logical) temporal order between them
+        \item If $l_i$ and $l_j$ are consecutive in a schedule and they do not conflict, their results would remain the same even if they had been interchanged in the schedule
+    \end{itemize}
+\end{frame}
+
+\section{Conflict Serializability}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Conflict Serializability\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Conflict Serializability}
+    \begin{itemize}[<+->]
+        \item If a schedule S can be transformed into a schedule S' by a series of swaps of non-conflicting instructions, we say that S and S' are \textbf{conflict equivalent}
+        \item We say that a schedule S is \textbf{conflict serializable} if it is conflict equivalent to a serial schedule
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conflict Serializability (2)}
+    \begin{itemize}[<+->]
+        \item Schedule 3 can be transformed into Schedule 6, a serial schedule where $T_2$ follows $T_1$, by a series of swaps of non-conflicting instructions:
+        \begin{itemize}[<+->]
+            \item Swap $T_1.\text{read}(B)$ and $T_2.\text{write}(A)$
+            \item Swap $T_1.\text{read}(B)$ and $T_2.\text{read}(A)$
+            \item Swap $T_1.\text{write}(B)$ and $T_2.\text{write}(A)$
+            \item Swap $T_1.\text{write}(B)$ and $T_2.\text{read}(A)$
+        \end{itemize}
+        \item These swaps do not conflict as they work with different items (A or B) in different transactions
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conflict Serializability (3)}
+    \begin{itemize}[<+->]
+        \item Example of a schedule that is \textbf{not} conflict serializable:
+    \end{itemize}
+    \begin{center}
+        \begin{tabular}{cc}
+            $T_3$ & $T_4$ \\
+            \midrule
+            \texttt{read(Q)} & \\
+             & \texttt{write(Q)} \\
+            \texttt{write(Q)} & \\
+        \end{tabular}
+    \end{center}
+    \begin{itemize}[<+->]
+        \item We are unable to swap instructions in the above schedule to obtain either the serial schedule $\langle T_3, T_4 \rangle$, or the serial schedule $\langle T_4, T_3 \rangle$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example: Bad Schedule}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Consider two transactions updating account balances:
+            \item Schedule S: \texttt{r1(A), r2(A), w1(A), w2(A), r2(B), w2(B)}
+            \item Suppose: A starts with \$200, and account B starts with \$100
+        \end{itemize}
+    \end{exampleblock}
+    \begin{itemize}[<+->]
+        \item Schedule S is very bad! We withdrew \$100 from account A, but somehow the database has recorded that our account now holds \$201!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example: Bad Schedule (2)}
+    \begin{itemize}[<+->]
+        \item Ideal schedule is serial:
+        \begin{itemize}[<+->]
+            \item Serial schedule 1: \texttt{r1(A), w1(A), r2(A), w2(A), r2(B), w2(B)}
+            \item Serial schedule 2: \texttt{r2(A), w2(A), r2(B), w2(B), r1(A), w1(A)}
+        \end{itemize}
+        \item We call a schedule serializable if it has the same effect as some serial schedule regardless of the specific information in the database.
+        \item As an example, consider Schedule T, which has swapped the third and fourth operations from S:
+        \begin{itemize}[<+->]
+            \item Schedule S: \texttt{r1(A), r2(A), w1(A), w2(A), r2(B), w2(B)}
+            \item Schedule T: \texttt{r1(A), r2(A), w2(A), w1(A), r2(B), w2(B)}
+        \end{itemize}
+        \item By first example, the outcome is the same as Serial schedule 1. But that's just a peculiarity of the data. 
+        \item So neither S nor T are serializable.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example: Good Schedule}
+    \begin{exampleblock}{Example: Schedule U}
+        \begin{itemize}[<+->]
+            \item What's a non-serial example of a serializable schedule? We could credit interest to A first, then withdraw the money, then credit interest to B:
+            \item Schedule U: \texttt{r2(A), w2(A), r1(A), w1(A), r2(B), w2(B)}
+            \item $$\triangleright$$ Initial: A = 200, B = 100
+            \item $$\triangleright$$ Final: A = 101, B = 100.50
+        \end{itemize}
+    \end{exampleblock}
+    \begin{itemize}[<+->]
+        \item Schedule U is conflict serializable to Schedule 2 by swapping non-conflicting pairs:
+        \begin{itemize}[<+->]
+            \item swap \texttt{w1(A)} and \texttt{r2(B)}
+            \item swap \texttt{w1(A)} and \texttt{w2(B)}
+            \item swap \texttt{r1(A)} and \texttt{r2(B)}
+            \item swap \texttt{r1(A)} and \texttt{w2(B)}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Serializability Examples}
+    \begin{itemize}[<+->]
+        \item Are all serializable schedules conflict-serializable? No.
+        \item Consider the following schedule for a set of three transactions:
+        \item \texttt{w1(A), w2(A), w2(B), w1(B), w3(B)}
+        \item We can perform no swaps to this schedule due to writes conflicting on A and B. So this schedule is not conflict-equivalent to any serial schedule.
+        \item However, since nobody ever reads the values written by the \texttt{w1(A)}, \texttt{w2(B)}, and \texttt{w1(B)} operations, the schedule has the same outcome as the serial schedule:
+        \begin{itemize}[<+->]
+            \item \texttt{w1(A), w1(B), w2(A), w2(B), w3(B)}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Precedence Graph}
+    \begin{itemize}[<+->]
+        \item Consider some schedule of a set of transactions $T_1$, $T_2$, $\dots$, $T_n$
+        \item \textbf{Precedence Graph}
+        \begin{itemize}[<+->]
+            \item A directed graph where the vertices are the transactions (names)
+            \item We draw an arc from $T_i$ to $T_j$ if the two transactions conflict, and $T_i$ accessed the data item on which the conflict arose earlier
+            \item We may label the arc by the item that was accessed
+        \end{itemize}
+    \end{itemize}
+    \begin{center}
+        \includegraphics[height=0.3\textheight]{"../Lecture 10.2_artifacts/image_000021_b11763862d5197333c2f8016ababb76dee16d7d7600a9773e09467647e41308c.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Testing for Conflict Serializability}
+    \begin{itemize}[<+->]
+        \item A schedule is conflict serializable if and only if its precedence graph is \textbf{acyclic}
+        \item Cycle-detection algorithms exist which take $\mathcal{O}(n^2)$ time, where $n$ is the number of vertices in the graph
+        \item (Better algorithms take $\mathcal{O}(n + e)$ where $e$ is the number of edges)
+        \item If precedence graph is acyclic, the serializability order can be obtained by a \textbf{topological sorting} of the graph
+        \begin{itemize}[<+->]
+            \item That is, a linear order consistent with the partial order of the graph.
+        \end{itemize}
+        \item For example, a serializability order for the schedule (a) would be one of either (b) or (c)
+    \end{itemize}
+    \begin{center}
+        \includegraphics[height=0.25\textheight]{"../Lecture 10.2_artifacts/image_000023_09842ebfbd495eccaf088fc49902ed4414a7b5e8e6572d3ff00d210cd23b5753.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Testing for Conflict Serializability (2)}
+    \begin{itemize}[<+->]
+        \item Build a directed graph, with a vertex for each transaction.
+        \item Go through each operation of the schedule.
+        \item If the operation is $w_i(X)$, find each subsequent operation $r_j(X)$ or $w_j(X)$. Add a directed edge from $T_i$ to $T_j$.
+        \item If the operation is $r_i(X)$, find each subsequent write $w_j(X)$. Add a directed edge from $T_i$ to $T_j$.
+        \item The schedule is conflict-serializable if and only if the resulting directed graph is acyclic.
+        \item Moreover, we can perform a topological sort on the graph to discover the serial schedule to which the schedule is conflict-equivalent.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Testing for Conflict Serializability (3)}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Consider schedule: \texttt{w1(A), r2(A), w1(B), w3(C), r2(C), r4(B), w2(D), w4(E), r5(D), w5(E)}
+            \item Edges:
+            \begin{itemize}[<+->]
+                \item \texttt{w1(A)} $\rightarrow$ \texttt{r2(A)} $\Rightarrow T_1 \to T_2$
+                \item \texttt{w1(B)} $\rightarrow$ \texttt{r4(B)} $\Rightarrow T_1 \to T_4$
+                \item \texttt{w3(C)} $\rightarrow$ \texttt{r2(C)} $\Rightarrow T_3 \to T_2$
+                \item \texttt{w2(D)} $\rightarrow$ \texttt{r5(D)} $\Rightarrow T_2 \to T_5$
+                \item \texttt{w4(E)} $\rightarrow$ \texttt{w5(E)} $\Rightarrow T_4 \to T_5$
+            \end{itemize}
+        \end{itemize}
+    \end{exampleblock}
+    \begin{itemize}[<+->]
+        \item This graph has no cycles. One way to topologically sort is $T_3-T_1-T_4-T_2-T_5$. Serial schedule equivalent: \texttt{w3(C), w1(A), w1(B), r4(B), w4(E), r2(A), r2(C), w2(D), r5(D), w5(E)}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Understood the issues that arise when two or more transactions work concurrently
+            \item Learnt the forms of serializability in terms of conflict and view serializability
+            \item Acyclic precedence graph can ensure conflict serializability
+        \end{itemize}
+    \end{block}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

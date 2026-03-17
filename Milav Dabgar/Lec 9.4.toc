@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Static Hashing}{11}{0}{1}
+\beamer@sectionintoc {2}{Dynamic Hashing}{47}{0}{2}
+\beamer@sectionintoc {3}{Comparison Schemes}{82}{0}{3}
+\beamer@sectionintoc {4}{Bitmap Indices}{105}{0}{4}

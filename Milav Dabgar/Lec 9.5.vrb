@@ -1,0 +1,10 @@
+\frametitle{Guidelines for Indexing: Rule 4}
+\begin{alertblock}{Rule 4 : Choose the Order of Columns in Composite Indexes}
+        \begin{itemize}[<+->]
+            \item The order of columns in the \texttt{CREATE INDEX} statement can affect performance
+            \item $\triangleright$ Put the column used most often first in the index
+            \item $\triangleright$ You can create a composite index (using several columns), and the same index can be used for queries that reference all of these columns, or just some of them
+            \item Create a composite index with the most selective (with most values) column first
+            \item Composite indexes speed up queries that use the leading portion of the index
+        \end{itemize}
+    \end{alertblock}

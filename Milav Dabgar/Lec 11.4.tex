@@ -1,0 +1,374 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+% --- Title Information ---
+\title{Module 54}
+\subtitle{Backup \& Recovery/4: Recovery/3}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}[<+->]
+        \item Learnt how Hot backup of transaction log helps in recovering consistent database
+        \item Studied the recovery algorithms for concurrent transactions
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}[<+->]
+        \item To understand Recovery with Early Lock Release
+        \item To understand how to plan for backup and recovery
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}[<+->]
+        \item Recovery with Early Lock Release
+        \item Planning Backup and Recovery
+    \end{itemize}
+    \vspace{2em}
+    \uncover<3->{
+        \textbf{References:}
+        \begin{itemize}
+            \item Enterprise Systems Backup and Recovery: A Corporate Insurance Policy by Preston De Guise
+            \item \url{https://www.veritas.com/information-center/data-backup-and-recovery} (Accessed 19-Aug-2021)
+            \item \url{https://www.sqlshack.com} (Accessed 19-Aug-2021)
+        \end{itemize}
+    }
+\end{frame}
+
+\section{Recovery with Early Lock Release}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Recovery with Early Lock Release\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Recovery with Early Lock Release}
+    \begin{itemize}[<+->]
+        \item Any index used in processing a transaction, such as a B$^+$-tree, can be treated as normal data
+        \item To increase concurrency, the B$^+$-tree concurrency control algorithm often allow locks to be released early, in a non-two-phase manner
+        \item As a result of early lock release, it is possible that
+        \begin{itemize}
+            \item[$\triangleright$] a value in a B$^+$-tree node is updated by one transaction $T_1$, which inserts an entry ($V_1$, $R_1$), and subsequently
+            \item[$\triangleright$] by another transaction $T_2$, which inserts an entry ($V_2$, $R_2$) in the same node, moving the entry ($V_1$, $R_1$) even before $T_1$ completes execution
+        \end{itemize}
+        \item At this point, we cannot undo transaction $T_1$ by replacing the contents of the node with the old value prior to $T_1$ performing its insert, since that would also undo the insert performed by $T_2$; transaction $T_2$ may still commit (or may have already committed)
+        \item Hence, the only way to undo the effect of insertion of ($V_1$, $R_1$) is to execute a corresponding delete operation
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recovery with Early Lock Release (2)}
+    \begin{itemize}[<+->]
+        \item Support for high-concurrency locking techniques, such as those used for B$^+$-tree concurrency control, which release locks early
+        \item Supports '\textbf{logical undo}'
+        \item Recovery based on '\textbf{repeating history}', whereby recovery executes exactly the same actions as normal processing
+        \begin{itemize}
+            \item[$\triangleright$] including redo of log records of incomplete transactions, followed by subsequent undo
+        \end{itemize}
+        \item \textbf{Key benefits:}
+        \begin{itemize}
+            \item[$\triangleright$] supports logical undo
+            \item[$\triangleright$] easier to understand/show correctness
+        \end{itemize}
+        \item Early lock release is important not only for indices, but also for operations on other system data structures that are accessed and updated very frequently like:
+        \begin{itemize}
+            \item[$\triangleright$] data structures that track the blocks containing records of a relation
+            \item[$\triangleright$] the free space in a block
+            \item[$\triangleright$] the free blocks
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Operation Logging}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Operation Logging\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Logical Undo Logging}
+    \begin{itemize}[<+->]
+        \item Operations like B$^+$-tree insertions and deletions release locks early
+        \item They cannot be undone by restoring old values (\textbf{physical undo}), since once a lock is released, other transactions may have updated the B$^+$-tree
+        \item Instead, insertions (deletions) are undone by executing a deletion (insertion) operation (known as \textbf{logical undo})
+        \item For such operations, undo log records should contain the undo operation to be executed
+        \item Such logging is called \textbf{logical undo logging}, in contrast to physical undo logging. Operations are called \textbf{logical operations}
+        \item \textbf{Other examples:}
+        \begin{itemize}
+            \item[$\triangleright$] delete of tuple, to undo insert of tuple (allows early lock release on space allocation information)
+            \item[$\triangleright$] subtract amount deposited, to undo deposit (allows early lock release on bank balance)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Physical Redo}
+    \begin{itemize}[<+->]
+        \item Redo information is logged physically (that is, new value for each write) even for operations with logical undo
+        \item Logical redo is very complicated since database state on disk may not be 'operation consistent' when recovery starts
+        \item Physical redo logging does not conflict with early lock release
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Operation Logging: Process}
+    \begin{itemize}[<+->]
+        \item When operation starts, log \texttt{<$T_i$, $O_j$, operation-begin>}. Here $O_j$ is a unique identifier of the operation instance
+        \item While the system is executing the operation, it creates update log records in the normal fashion for all updates performed by the operation
+        \begin{itemize}
+            \item[$\triangleright$] the usual old-value (\textbf{physical undo information}) and new-value (\textbf{physical redo information}) is written out as usual for each update performed by the operation;
+            \item[$\triangleright$] the old-value information is required in case the transaction needs to be rolled back before the operation completes
+        \end{itemize}
+        \item When operation completes, \texttt{<$T_i$, $O_j$, operation-end, U>} is logged, where U contains information needed to perform a logical undo information
+        \begin{itemize}
+            \item[$\triangleright$] For example, if the operation inserted an entry in a B$^+$-tree, the undo information U would indicate that a deletion operation is to be performed, and would identify the B$^+$-tree and what entry to delete from the tree. This is called \textbf{logical logging}
+            \item[$\triangleright$] In contrast, logging of old-value and new-value information is called \textbf{physical logging}, and the corresponding log records are called \textbf{physical log records}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Operation Logging (2): Example}
+    \begin{itemize}[<+->]
+        \item Insert of (key, record-id) pair (K5, RID7) into index I9
+    \end{itemize}
+    \pause
+    \begin{exampleblock}{Log Output Example}
+        \begin{verbatim}
+<T1, O1, operation-begin>
+<T1, X, 10, K5>                 \
+                       Physical redo of steps in insert
+<T1, Y, 45, RID7>               /
+<T1, O1, operation-end, (delete I9, K5, RID7)>
+        \end{verbatim}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Operation Logging (3)}
+    \begin{itemize}[<+->]
+        \item If crash/rollback occurs before operation completes:
+        \begin{itemize}
+            \item[$\triangleright$] the operation-end log record is not found, and
+            \item[$\triangleright$] the physical undo information is used to undo operation
+        \end{itemize}
+        \item If crash/rollback occurs after the operation completes:
+        \begin{itemize}
+            \item[$\triangleright$] the operation-end log record is found, and in this case
+            \item[$\triangleright$] logical undo is performed using U; the physical undo information for the operation is ignored
+        \end{itemize}
+        \item Redo of operation (after crash) still uses physical redo information
+    \end{itemize}
+\end{frame}
+
+\section{Transaction Rollback}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Transaction Rollback\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Transaction Rollback with Logical Undo}
+    \begin{itemize}[<+->]
+        \item Rollback of transaction $T_i$, scan the log backwards
+        \item[a)] If a log record \texttt{<$T_i$, X, $V_1$, $V_2$>} is found, perform the undo and log \texttt{<$T_i$, X, $V_1$>}
+        \item[b)] If a \texttt{<$T_i$, $O_j$, operation-end, U>} record is found
+        \begin{itemize}
+            \item[$\triangleright$] Rollback the operation logically using the undo information U
+            \item[$\triangleright$] Updates performed during roll back are logged just like during normal operation execution
+            \item[$\triangleright$] At the end of the operation rollback, instead of logging an operation-end record, generate a record \texttt{<$T_i$, $O_j$, operation-abort>}
+            \item[$\triangleright$] Skip all preceding log records for $T_i$ until the record \texttt{<$T_i$, $O_j$, operation-begin>} is found
+        \end{itemize}
+        \item[c)] If a redo-only record is found ignore it
+        \item[d)] If a \texttt{<$T_i$, $O_j$, operation-abort>} record is found: skip all preceding log records for $T_i$ until the record \texttt{<$T_i$, $O_j$, operation-begin>} is found
+        \item[e)] Stop the scan when the record \texttt{<$T_i$ start>} is found
+        \item[f)] Add a \texttt{<$T_i$ abort>} record to the log
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Transaction Rollback with Logical Undo (cont.)}
+    \begin{block}{Note:}
+        \begin{itemize}
+            \item Cases (c) and (d) above can occur only if the database crashes while a transaction is being rolled back
+            \item Skipping of log records as in case (d) is important to prevent multiple rollback of the same operation
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Transaction Rollback with Logical Undo (Diagram)}
+    \uncover<1->{
+        \begin{center}
+            \includegraphics[height=0.7\textheight]{"../Lecture 11.4_artifacts/image_000014_3f4d063c78f7674e49bbf2ec79b5a1e9743271186d46d275cc5cbc612dc7e974.png"}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Failure Recovery with Logical Undo (Diagram)}
+    \uncover<1->{
+        \begin{center}
+            \includegraphics[height=0.7\textheight]{"../Lecture 11.4_artifacts/image_000016_419ee79bb2592aa15fd1896bc41c59ff95eb19c1d0c9395a2ecbbd1b46d87ee6.png"}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Transaction Rollback: Another Example}
+    \begin{itemize}[<+->]
+        \item Example with a complete and an incomplete operation
+    \end{itemize}
+    \pause
+    \small
+    \begin{verbatim}
+<T1, start>
+<T1, O1, operation-begin>
+...
+<T1, X, 10, K5>
+<T1, Y, 45, RID7>
+<T1, O1, operation-end, (delete I9, K5, RID7)>
+<T1, O2, operation-begin>
+<T1, Z, 45, 70>
+    <- T1 Rollback begins here
+<T1, Z, 45>               <- Redo-only log record during physical undo
+                               (of incomplete O2)
+<T1, Y, ..., ...>         <- Normal redo records for logical undo of O1
+...
+<T1, O1, operation-abort> <- What if crash occurred immediately after this? 
+<T1, abort>
+    \end{verbatim}
+\end{frame}
+
+\section{Recovery Algorithm}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Recovery Algorithm\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Recovery Algorithm with Logical Undo}
+    \textbf{Basically same as earlier algorithm, except for changes described earlier for transaction rollback}
+    \begin{itemize}[<+->]
+        \item \textbf{(Redo phase):} Scan log forward from last \texttt{<checkpoint L>} record till end of log
+        \begin{itemize}
+            \item[$\triangleright$] Repeat history by physically redoing all updates of all transactions,
+            \item[$\triangleright$] Create an undo-list during the scan as follows:
+            \item[$\bullet$] \texttt{undo-list} is set to L initially
+            \item[$\bullet$] Whenever \texttt{<$T_i$ start>} is found $T_i$ is added to \texttt{undo-list}
+            \item[$\bullet$] Whenever \texttt{<$T_i$ commit>} or \texttt{<$T_i$ abort>} is found, $T_i$ is deleted from \texttt{undo-list}
+        \end{itemize}
+        \item This brings database to state as of crash, with committed as well as uncommitted transactions having been redone
+        \item Now \texttt{undo-list} contains transactions that are \textbf{incomplete}, that is, have neither committed nor been fully rolled back
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recovery Algorithm with Logical Undo (2)}
+    \textbf{Recovery from system crash (cont.)}
+    \begin{itemize}[<+->]
+        \item \textbf{(Undo phase):} Scan log backwards, performing undo on log records of transactions found in \texttt{undo-list}
+        \begin{itemize}
+            \item[$\triangleright$] Log records of transactions being rolled back are processed as described earlier, as they are found
+            \item[$\triangleright$] Single shared scan for all transactions being undone
+        \end{itemize}
+        \item When \texttt{<$T_i$ start>} is found for a transaction $T_i$ in \texttt{undo-list}, write a \texttt{<$T_i$ abort>} log record.
+        \item Stop scan when \texttt{<$T_i$ start>} records have been found for all $T_i$ in \texttt{undo-list}
+        \item This undoes the effects of incomplete transactions (those with neither commit nor abort log records). Recovery is now complete.
+    \end{itemize}
+\end{frame}
+
+\section{Plan for Backup and Recovery}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Plan for Backup and Recovery\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Plan for Backup and Recovery}
+    \textbf{Deciding factors for having a Backup \& Recovery setup.}
+    \begin{itemize}[<+->]
+        \item \textbf{Data Importance:}
+        \begin{itemize}
+            \item[$\triangleright$] How important is the information in your database for your company? For business-critical data you will create a plan that involves making extra copies of your database over the same period and ensuring that the copies can be easily restored when required
+        \end{itemize}
+        \item \textbf{Frequency of Change:}
+        \begin{itemize}
+            \item[$\triangleright$] How often does your database get updated? For instance, if critical data is modified daily then you should make a daily backup schedule.
+        \end{itemize}
+        \item \textbf{Speed:}
+        \begin{itemize}
+            \item[$\triangleright$] How much time do you need to back up or recover your files? Recovery speed is an important factor that determines the maximum possible time period that could be spent on database backup and recovery.
+        \end{itemize}
+    \end{itemize}
+    \uncover<4->{
+        \vspace{1em}
+        \footnotesize Source: http://www.centriqs.com/database/database-backup-and-recovery.php
+    }
+\end{frame}
+
+\begin{frame}{Plan for Backup and Recovery (2)}
+    \textbf{Deciding factors for having a Backup \& Recovery setup (cont.).}
+    \begin{itemize}[<+->]
+        \item \textbf{Equipment:}
+        \begin{itemize}
+            \item[$\triangleright$] Do you have necessary equipment to make backups? To perform timely backups and recoveries, you need to have proper software and hardware resources.
+        \end{itemize}
+        \item \textbf{Employees:}
+        \begin{itemize}
+            \item[$\triangleright$] Who will be responsible for implementing your database backup and recovery plan? Ideally, one person should be appointed for controlling and supervising the plan, and several IT specialists (e.g. system administrators) should be responsible for performing the actual backup and recovery of data.
+        \end{itemize}
+        \item \textbf{Storing:}
+        \begin{itemize}
+            \item[$\triangleright$] Where do you plan to store database duplicates? In case of Online/Offsite storage you can recover your systems in case of a natural disaster. Storing backups on-site is essential to quick restore. But onsite storage has capacity bottlenecks and high maintenance costs.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}[<+->]
+        \item Recovery based on operation logging supplements log-based recovery
+        \item Planning for Backup
+    \end{itemize}
+    \vspace{2em}
+    \uncover<3->{
+        \begin{center}
+        \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+        \small \textit{Edited and new slides are marked with 'PPD'.}
+        \end{center}
+    }
+\end{frame}
+
+\end{document}

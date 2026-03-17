@@ -1,0 +1,23 @@
+\frametitle{Transaction Rollback: Another Example}
+\begin{itemize}[<+->]
+        \item Example with a complete and an incomplete operation
+    \end{itemize}
+    \pause
+    \small
+    \begin{verbatim}
+<T1, start>
+<T1, O1, operation-begin>
+...
+<T1, X, 10, K5>
+<T1, Y, 45, RID7>
+<T1, O1, operation-end, (delete I9, K5, RID7)>
+<T1, O2, operation-begin>
+<T1, Z, 45, 70>
+    <- T1 Rollback begins here
+<T1, Z, 45>               <- Redo-only log record during physical undo
+                               (of incomplete O2)
+<T1, Y, ..., ...>         <- Normal redo records for logical undo of O1
+...
+<T1, O1, operation-abort> <- What if crash occurred immediately after this?
+<T1, abort>
+    \end{verbatim}

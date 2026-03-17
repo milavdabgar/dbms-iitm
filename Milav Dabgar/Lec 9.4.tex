@@ -1,0 +1,367 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 44}
+\subtitle{Indexing and Hashing/4: Hashing}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Understood the design of B+ Tree Index Files in depth for database persistent store
+            \item Familiarized with B-Tree Index Files
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item To explore various hashing schemes - Static and Dynamic Hashing
+            \item To compare Ordered Indexing and Hashing
+            \item To understand the Bitmap Indices
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Static Hashing
+            \item Dynamic Hashing
+            \item Comparison of Ordered Indexing and Hashing
+            \item Bitmap Indices
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Static Hashing}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Static Hashing\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Hash Function}
+    \begin{itemize}[<+->]
+        \item A hash function $h$ maps data of arbitrary size (from domain $D$) to fixed-size values (say, integers from 0 to $N > 0$) $h: D \rightarrow [0 \dots N]$
+        \item Given key $k$, $h(k)$ is called hash values, hash codes, digests, or simply hashes
+        \item If for two keys $k_1 \neq k_2$, we have $h(k_1) = h(k_2)$, we say a \textbf{collision} has occurred
+        \item A hash function should be \textbf{Collision Free} and \textbf{Fast}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Static Hashing}
+    \begin{itemize}[<+->]
+        \item A \textbf{bucket} is a unit of storage containing one or more records (a bucket is typically a disk block)
+        \item In a hash file organization we obtain the bucket of a record directly from its search-key value using a hash function
+        \item Hash function $h$ is a function from the set of all search-key values $K$ to the set of all bucket addresses $B$
+        \item Hash function is used to locate records for access, insertion as well as deletion
+        \item Records with different search-key values may be mapped to the same bucket; thus entire bucket has to be searched sequentially to locate a record
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Hash Functions}
+    \begin{itemize}[<+->]
+        \item Worst hash function maps all search-key values to the same bucket; this makes access time proportional to the number of search-key values in the file
+        \item An ideal hash function is \textbf{uniform}, i.e., each bucket is assigned the same number of search-key values from the set of all possible values
+        \item Ideal hash function is \textbf{random}, so each bucket will have the same number of records assigned to it irrespective of the actual distribution of search-key values in the file
+        \item Typical hash functions perform computation on the internal binary representation of the search-key
+        \item For example, for a string search-key, the binary representations of all the characters in the string could be added and the sum modulo the number of buckets could be returned
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Handling of Bucket Overflows}
+    \begin{itemize}[<+->]
+        \item Bucket overflow can occur because of
+        \begin{itemize}[<+->]
+            \item Insufficient buckets
+            \item Skew in distribution of records. This can occur due to two reasons:
+            \begin{itemize}[<+->]
+                \item $\triangleright$ multiple records have same search-key value
+                \item $\triangleright$ chosen hash function produces non-uniform distribution of key values
+            \end{itemize}
+        \end{itemize}
+        \item Although the probability of bucket overflow can be reduced, it cannot be eliminated
+        \item it is handled by using \textbf{overflow buckets}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Handling of Bucket Overflows (2)}
+    \begin{itemize}[<+->]
+        \item \textbf{Overflow chaining} - the overflow buckets of a given bucket are chained together in a linked list
+        \item Above scheme is called \textbf{closed hashing}
+        \item An alternative, called \textbf{open hashing}, which does not use overflow buckets, is not suitable for database applications
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Hash Indices}
+    \begin{itemize}[<+->]
+        \item Hashing can be used not only for file organization, but also for index-structure creation
+        \item A \textbf{hash index} organizes the search keys, with their associated record pointers, into a hash file structure
+        \item Strictly speaking, hash indices are always secondary indices
+        \item if the file itself is organized using hashing, a separate primary hash index on it using the same search-key is unnecessary
+        \item However, we use the term hash index to refer to both secondary index structures and hash organized files
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Deficiencies of Static Hashing}
+    \begin{alertblock}{Important}
+        \begin{itemize}[<+->]
+            \item In static hashing, function $h$ maps search-key values to a fixed set of $B$ of bucket addresses. Databases grow or shrink with time
+            \item If initial number of buckets is too small, and file grows, performance will degrade due to too much overflows
+            \item If space is allocated for anticipated growth, a significant amount of space will be wasted initially (and buckets will be underfull).
+            \item If database shrinks, again space will be wasted
+            \item One solution: periodic re-organization of the file with a new hash function (Expensive, disrupts normal operations)
+            \item Better solution: allow the number of buckets to be modified dynamically
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\section{Dynamic Hashing}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Dynamic Hashing\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Dynamic Hashing}
+    \begin{itemize}[<+->]
+        \item Good for database that grows and shrinks in size
+        \item Allows the hash function to be modified dynamically
+        \item \textbf{Extendable hashing} - one form of dynamic hashing
+        \item Hash function generates values over a large range - typically $b$-bit integers, with $b = 32$
+        \item At any time use only a prefix of the hash function to index into a table of bucket addresses
+        \item Let the length of the prefix be $i$ bits, $0 \le i \le 32$
+        \begin{itemize}[<+->]
+            \item $\triangleright$ Bucket address table size = $2^i$. Initially $i = 0$
+            \item $\triangleright$ Value of $i$ grows and shrinks as the size of the database grows and shrinks
+        \end{itemize}
+        \item Multiple entries in the bucket address table may point to a bucket
+        \item Thus, actual number of buckets is $< 2^i$ (number of buckets changes dynamically due to coalescing and splitting of buckets)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Use of Extendable Hash Structure}
+    \begin{itemize}[<+->]
+        \item Each bucket $j$ stores a value $i_j$
+        \item All the entries that point to the same bucket have the same values on the first $i_j$ bits
+        \item To locate the bucket containing search-key $K_j$
+        \begin{itemize}[<+->]
+            \item Compute $h(K_j) = X$
+            \item Use the first $i$ high order bits of $X$ as a displacement into bucket address table, and follow the pointer to appropriate bucket
+        \end{itemize}
+        \item To insert a record with search-key value $K_j$
+        \begin{itemize}[<+->]
+            \item Follow same procedure as look-up and locate the bucket, say $j$
+            \item If there is room in the bucket $j$ insert record in the bucket
+            \item Else the bucket must be split and insertion re-attempted
+            \item $\triangleright$ Overflow buckets used instead in some cases
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Insertion in Extendable Hash Structure}
+    \begin{itemize}[<+->]
+        \item If $i > i_j$ (more than one pointer to bucket $j$)
+        \begin{itemize}[<+->]
+            \item Allocate a new bucket $z$, and set $i_j = i_z = (i_j + 1)$
+            \item Update the second half of the bucket address table entries originally pointing to $j$, to point to $z$
+            \item Remove each record in bucket $j$ and reinsert (in $j$ or $z$)
+            \item Recompute new bucket for $K_j$ and insert record in the bucket (further splitting is required if the bucket is still full)
+        \end{itemize}
+        \item If $i = i_j$ (only one pointer to bucket $j$)
+        \begin{itemize}[<+->]
+            \item If $i$ reaches some limit $b$, or too many splits have happened in this insertion, create an overflow bucket
+            \item Else: Increment $i$ and double the size of the bucket address table. Replace each entry in the table by two entries that point to the same bucket. Recompute new bucket address table entry for $K_j$. Now $i > i_j$ so use the first case above.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Deletion in Extendable Hash Structure}
+    \begin{itemize}[<+->]
+        \item To delete a key value:
+        \begin{itemize}[<+->]
+            \item locate it in its bucket and remove it
+            \item The bucket itself can be removed if it becomes empty (with appropriate updates to the bucket address table)
+        \end{itemize}
+        \item Coalescing of buckets can be done (can coalesce only with a 'buddy' bucket having same value of $i_j$ and same $i_{j-1}$ prefix, if it is present)
+        \item Decreasing bucket address table size is also possible
+        \item $\triangleright$ Note: decreasing bucket address table size is an expensive operation and should be done only if number of buckets becomes much smaller than the size of the table
+    \end{itemize}
+\end{frame}
+
+\section{Comparison Schemes}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Comparison Schemes\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Extendable Hashing vs. Other Schemes}
+    \begin{itemize}[<+->]
+        \item \textbf{Benefits of extendable hashing}:
+        \begin{itemize}[<+->]
+            \item Hash performance does not degrade with growth of file
+            \item Minimal space overhead
+        \end{itemize}
+        \item \textbf{Disadvantages of extendable hashing}
+        \begin{itemize}[<+->]
+            \item Extra level of indirection to find desired record
+            \item Bucket address table may itself become very big (larger than memory)
+            \item $\triangleright$ Cannot allocate very large contiguous areas on disk either
+            \item $\triangleright$ Solution: B+ -tree structure to locate desired record in bucket address table
+            \item Changing size of bucket address table is an expensive operation
+        \end{itemize}
+        \item \textbf{Linear hashing is an alternative mechanism}
+        \begin{itemize}[<+->]
+            \item Allows incremental growth of its directory (equivalent to bucket address table)
+            \item At the cost of more bucket overflows
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Comparison of Ordered Indexing and Hashing}
+    \begin{itemize}[<+->]
+        \item Cost of periodic re-organization
+        \item Relative frequency of insertions and deletions
+        \item Is it desirable to optimize average access time at the expense of worst-case access time?
+        \item Expected type of queries:
+        \begin{itemize}[<+->]
+            \item Hashing is generally better at retrieving records having a specified value of the key
+            \item If range queries are common, ordered indices are to be preferred
+        \end{itemize}
+        \item In practice:
+        \begin{itemize}[<+->]
+            \item PostgreSQL supports hash indices, but discourages use due to poor performance
+            \item Oracle supports static hash organization, but not hash indices
+            \item SQLServer supports only B+ -trees
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Bitmap Indices}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Bitmap Indices\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Bitmap Indices}
+    \begin{itemize}[<+->]
+        \item Bitmap indices are a special type of index designed for efficient querying on multiple keys
+        \item Records in a relation are assumed to be numbered sequentially from, say, 0
+        \item Given a number $n$ it must be easy to retrieve record $n$
+        \item $\triangleright$ Particularly easy if records are of fixed size
+        \item Applicable on attributes that take on a relatively small number of distinct values
+        \begin{itemize}[<+->]
+            \item For example: gender, country, state, \dots
+            \item For example: income-level (income broken up into a small number of levels such as 0-9999, 10000-19999, 20000-50000, 50000-infinity)
+        \end{itemize}
+        \item A bitmap is simply an array of bits
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Bitmap Indices (2)}
+    \begin{itemize}[<+->]
+        \item In its simplest form a bitmap index on an attribute has a bitmap for each value of the attribute
+        \item Bitmap has as many bits as records
+        \item In a bitmap for value $v$, the bit for a record is 1 if the record has the value $v$ for the attribute, and is 0 otherwise
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Bitmap Indices (3)}
+    \begin{itemize}[<+->]
+        \item Bitmap indices are useful for queries on multiple attributes
+        \item not particularly useful for single attribute queries
+        \item Queries are answered using bitmap operations
+        \begin{itemize}[<+->]
+            \item Intersection (and)
+            \item Union (or)
+            \item Complementation (not)
+        \end{itemize}
+        \item Each operation takes two bitmaps of the same size and applies the operation on corresponding bits to get the result bitmap
+        \item For example: 100110 AND 110011 = 100010, 100110 OR 110011 = 110111, NOT 100110 = 011001
+        \item Males with income level L1: 10010 AND 10100 = 10000
+        \begin{itemize}[<+->]
+            \item $\triangleright$ Can then retrieve required tuples
+            \item $\triangleright$ Counting number of matching tuples is even faster
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Bitmap Indices (4)}
+    \begin{itemize}[<+->]
+        \item Bitmap indices generally very small compared with relation size
+        \item For example, if record is 100 bytes, space for a single bitmap is 1/800 of space used by relation
+        \item $\triangleright$ If number of distinct attribute values is 8, bitmap is only 1\% of relation size
+        \item Deletion needs to be handled properly
+        \item \textbf{Existence bitmap} to note if there is a valid record at a record location (Needed for complementation)
+        \item $\triangleright$ not($A=v$): (NOT bitmap-A-v) AND ExistenceBitmap
+        \item Should keep bitmaps for all values, even null value
+        \item To correctly handle SQL null semantics for NOT($A=v$):
+        \item $\triangleright$ intersect above result with (NOT bitmap-A-Null)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Explored various hashing schemes - Static and Dynamic Hashing
+            \item Compared Ordered Indexing and Hashing
+            \item Understood Bitmap Indices
+        \end{itemize}
+    \end{block}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

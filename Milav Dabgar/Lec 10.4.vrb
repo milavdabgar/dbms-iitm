@@ -1,0 +1,20 @@
+\frametitle{Automatic Acquisition of Locks: Write}
+\begin{itemize}[<+->]
+        \item The operation \texttt{write(D)} is processed as:
+    \end{itemize}
+    \begin{onlyenv}<2->
+        \begin{lstlisting}[language=SQL]
+if Ti has a lock-X on D
+   then write(D)
+else begin
+   if necessary, wait until no other transaction has any lock on D,
+   if Ti has a lock-S on D
+       then upgrade lock on D to lock-X
+       else grant Ti a lock-X on D
+   write(D)
+end;
+        \end{lstlisting}
+    \end{onlyenv}
+    \begin{itemize}[<+->]
+        \item<3-> All locks are released after commit or abort
+    \end{itemize}

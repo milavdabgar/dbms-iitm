@@ -1,0 +1,3 @@
+\beamer@sectionintoc {1}{Transaction Concept}{18}{0}{1}
+\beamer@sectionintoc {2}{Transaction States}{59}{0}{2}
+\beamer@sectionintoc {3}{Concurrent Executions}{76}{0}{3}

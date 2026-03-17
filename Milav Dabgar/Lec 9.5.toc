@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{Index Definition in SQL}{9}{0}{1}
+\beamer@sectionintoc {2}{Guidelines for Indexing}{48}{0}{2}

@@ -1,0 +1,417 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 42}
+\subtitle{Indexing and Hashing/2: Indexing/2}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Appreciated the reasons for indexing database tables
+            \item Understood the ordered indexes
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item To recap Balanced Binary Search Trees as options for optimal in-memory search data structures
+            \item To understand the issues relating to external search data structures for persistent data
+            \item To study 2-3-4 Tree as a precursor to B/B+-Tree for an efficient external data structure for database and index tables
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Balanced Binary Search Trees
+            \item 2-3-4 Tree
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Balanced Binary Search Trees}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Balanced Binary Search Trees\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Search Data Structures}
+    \begin{itemize}[<+->]
+        \item How to search a key in a list of $n$ data items?
+        \item \textbf{Linear Search}: $\mathcal{O}(n)$: Find 28 $\Rightarrow$ 16 comparisons
+        \begin{itemize}[<+->]
+            \item $\triangleright$ Unordered items in an array - search sequentially
+            \item $\triangleright$ Unordered / Ordered items in a list - search sequentially
+        \end{itemize}
+        \item \texttt{22 50 20 36 40 15 08 01 45 48 30 10 38 12 25 28 05 END}
+        \item \textbf{Binary Search}: $\mathcal{O}(\log n)$: Find 28 $\Rightarrow$ 4 comparisons - 25, 36, 30, 28
+        \begin{itemize}[<+->]
+            \item $\triangleright$ Ordered items in an array - search by divide-and-conquer
+        \end{itemize}
+        \item \texttt{01 05 08 10 12 15 20 22 25 28 30 36 38 40 45 48 50 END}
+        \item $\triangleright$ \textbf{Binary Search Tree} - recursively on left / right
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Search Data Structures (2)}
+    \begin{itemize}[<+->]
+        \item \textbf{Worst case time} ($n$ data items in the data structure):
+        \item Between an array and a list, there is a trade-off between search and insert/delete complexity
+        \item For a BST of $n$ nodes, $\log n \le h < n$, where $h$ is the height of the tree
+        \item A BST is balanced if $h \sim \mathcal{O}(\log n)$: this what we desire
+    \end{itemize}
+    \vspace{-0.5em}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{lllll}
+    \toprule
+    Data Structure & Search & Insert & Delete & Remarks \\
+    \midrule
+    Unordered Array & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & Time after location is ascertained by Search \\
+    Ordered Array & $\mathcal{O}(\log n)$ & $\mathcal{O}(n)$ & $\mathcal{O}(n)$ & Time after location is ascertained by Search \\
+    Unordered List & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ & Time after location is ascertained by Search \\
+    Ordered List & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & Time after location is ascertained by Search \\
+    Binary Search Tree & $\mathcal{O}(h)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & Time after location is ascertained by Search \\
+    \bottomrule
+    \end{tabular}
+    }
+\end{frame}
+
+\begin{frame}{Search Data Structures (3): BST}
+    \begin{itemize}[<+->]
+        \item In the worst case, searching a key in a BST is $\mathcal{O}(h)$, where $h$ is the height of the key
+        \item \textbf{Bad Tree}: $h \sim \mathcal{O}(n)$
+        \begin{itemize}[<+->]
+            \item The BST is a skewed binary search tree (all the nodes except the leaf would have only one child)
+            \item This can happen if keys are inserted in sorted order
+            \item Height ($h$) of the BST having $n$ elements becomes $n - 1$
+            \item Time complexity of search in BST becomes $\mathcal{O}(n)$
+        \end{itemize}
+        \item \textbf{Good Tree}: $h \sim \mathcal{O}(\log n)$
+        \begin{itemize}[<+->]
+            \item The BST is a balanced binary search tree
+            \item This is possible if
+            \item $\triangleright$ keys are inserted in purely randomized order, Or
+            \item $\triangleright$ the tree is explicitly balanced after every insertion
+            \item Height ($h$) of the binary search tree becomes $\log n$
+            \item Time complexity of search in BST becomes $\mathcal{O}(\log n)$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Balanced Binary Search Trees}
+    \begin{itemize}[<+->]
+        \item A BST is balanced if $h \sim \mathcal{O}(\log n)$
+        \item Balancing Guarantees may be of various types:
+        \item \textbf{Worst-case}
+        \begin{itemize}[<+->]
+            \item $\triangleright$ \textbf{AVL Tree}: Self-balancing BST
+            \item - Named after inventors Adelson-Velsky-Landis
+            \item - Heights of the two child subtrees of any node differ by at most one: $| h_L - h_R | \le 1$
+            \item - If they differ by more than one, rebalancing is done via rotation
+        \end{itemize}
+        \item \textbf{Randomized}
+        \begin{itemize}[<+->]
+            \item $\triangleright$ \textbf{Randomized BST}
+            \item - A BST on $n$ keys is random if either it is empty ($n = 0$), or the probability that a given key is at the root is $1/n$, and the left and right subtrees are random
+            \item $\triangleright$ \textbf{Skip List}
+            \item - A skip list is built (probabilistically) in layers of ordered linked lists
+        \end{itemize}
+        \item \textbf{Amortized}
+        \begin{itemize}[<+->]
+            \item $\triangleright$ \textbf{Splay Tree}
+            \item - A BST where recently accessed elements are quick to access again
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Balanced Binary Search Trees (2)}
+    \begin{itemize}[<+->]
+        \item These data structures have optimal complexity for the required operations:
+        \begin{itemize}[<+->]
+            \item Search: $\mathcal{O}(\log n)$
+            \item Insert: Search + $\mathcal{O}(1) \sim \mathcal{O}(\log n)$
+            \item Delete: Search + $\mathcal{O}(1) \sim \mathcal{O}(\log n)$
+        \end{itemize}
+        \item And they are:
+        \begin{itemize}[<+->]
+            \item Good for in-memory operations
+            \item Work well for small volume of data
+            \item Has complex rotation and / or similar operations
+            \item Do not scale for external data structures
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{2-3-4 Tree}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}2-3-4 Tree\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{2-3-4 Trees}
+    \begin{itemize}[<+->]
+        \item All leaves are at the same depth (the bottom level).
+        \item Height, $h$, of all leaf nodes are same
+        \begin{itemize}[<+->]
+            \item $\triangleright$ $h \sim \mathcal{O}(\log n)$
+            \item $\triangleright$ Complexity of search, insert and delete: $\mathcal{O}(h) \sim \mathcal{O}(\log n)$
+        \end{itemize}
+        \item All data is kept in sorted order
+        \item Every node (leaf or internal) is a 2-node, 3-node or a 4-node (based on the number of links or children), and holds one, two, or three data elements, respectively
+        \item Generalizes easily to larger nodes
+        \item Extends to external data structures
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees (2)}
+    \begin{itemize}[<+->]
+        \item Uses 3 kinds of nodes satisfying key relationships as shown below:
+        \begin{itemize}[<+->]
+            \item A \textbf{2-node} must contain a single data item (S) and two links
+            \item A \textbf{3-node} must contain two data items (S, L) and three links
+            \item A \textbf{4-node} must contain three data items (S, M, L) and four links
+        \end{itemize}
+        \item A leaf may contain either one, two, or three data items
+    \end{itemize}
+    \begin{center}
+        \includegraphics[height=0.3\textheight]{"../Lecture 9.2_artifacts/image_000015_af1c807b40ec4a361f2fc404d946f81d53f406be357b04c4b98f3c7a1d85745d.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Search}
+    \begin{itemize}[<+->]
+        \item \textbf{Search}
+        \begin{itemize}[<+->]
+            \item Simple and natural extension of search in BST
+        \end{itemize}
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert}
+    \begin{itemize}[<+->]
+        \item \textbf{Insert}
+        \begin{itemize}[<+->]
+            \item Search to find expected location
+            \item $\triangleright$ If it is a 2-node, change to 3-node and insert
+            \item $\triangleright$ If it is a 3-node, change to 4-node and insert
+            \item $\triangleright$ If it is a 4-node, split the node by moving the middle item to parent node, then insert
+        \end{itemize}
+        \item \textbf{Node Splitting}
+        \begin{itemize}[<+->]
+            \item $\triangleright$ A 4-node is split as soon as it is encountered during a search from the root to a leaf
+            \item $\triangleright$ The 4-node that is split will
+            \item - Be the root, or
+            \item - Have a 2-node parent, or
+            \item - Have a 3-node parent
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert - Splitting at Root}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{"../Lecture 9.2_artifacts/image_000019_0075678837b391b3973004c06668b5d499be13eaad296b84be5df3288dd9c571.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert - Splitting with 2 Node parent}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{"../Lecture 9.2_artifacts/image_000021_2adc53c16efad464d5c9c4314ef4a541a1b72e8a95423247e2ccda85a0e9be47.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert - Splitting with 3 Node parent}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{"../Lecture 9.2_artifacts/image_000023_835bd2cad382e4ebc295d40443f009cd9f11f234cb03c4e90eb4e7a4591425de.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert Strategies}
+    \begin{itemize}[<+->]
+        \item \textbf{Node Splitting}: There are two strategies:
+        \begin{itemize}[<+->]
+            \item \textbf{Early}: Split a 4-node as soon as you cross one in traversal. It ensures that the tree does not have a path with multiple 4-nodes at any point
+            \item \textbf{Late}: Split a 4-node only when you need to insert an item in it. This might lead to cases where for one insert we may need to perform $\mathcal{O}(h)$ splits going till up to the root
+        \end{itemize}
+        \item Both are valid and has the same complexity $\mathcal{O}(h)$. However, they lead to different results. Different texts and sites follow different strategies.
+        \item Here we are following \textbf{early strategy}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert: Example}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Insert: 10, 30, 60, 20
+            \item Insert: 50
+        \end{itemize}
+    \end{exampleblock}
+    \begin{center}
+        \includegraphics[height=0.4\textheight]{"../Lecture 9.2_artifacts/image_000028_3337102f1c6957cc73ae9320bdedb6d339c18ad7d09e3059745ea0d410b4e705.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert: Example (Continued)}
+    \begin{center}
+        \includegraphics[height=0.6\textheight]{"../Lecture 9.2_artifacts/image_000030_ba6841599c4baacb3de1660b0c028ef4507a4ef3659e31890877dc969e0a8cd5.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert: Example (Continued)}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Insert: 40, 70
+            \item Insert: 80
+        \end{itemize}
+    \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert: Example (Continued)}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Insert: 15
+            \item Split for 90
+        \end{itemize}
+    \end{exampleblock}
+    \begin{center}
+        \includegraphics[height=0.4\textheight]{"../Lecture 9.2_artifacts/image_000035_516c9c0ef7a681a40fba72bfb95ffb92fb0ccd683a7f051faf37f545713bb039.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert: Example (Continued)}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Insert: 90
+            \item Split for 100
+        \end{itemize}
+    \end{exampleblock}
+    \begin{center}
+        \includegraphics[height=0.4\textheight]{"../Lecture 9.2_artifacts/image_000037_201568fd9263cd0f98296aa9887db6632b99142c22868c79f2ef0e5ce6a51676.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Insert: Example (Continued)}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Insert: 100
+        \end{itemize}
+    \end{exampleblock}
+    \begin{center}
+        \includegraphics[height=0.4\textheight]{"../Lecture 9.2_artifacts/image_000039_b6540fd365960838f372b68821b40b1594a03d003719db1a63c73a29b4249523.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees: Delete}
+    \begin{itemize}[<+->]
+        \item \textbf{Delete}
+        \begin{itemize}[<+->]
+            \item Locate the node $n$ that contains the item \texttt{theItem}
+            \item Find \texttt{theItem}'s inorder successor and swap it with \texttt{theItem} (deletion will always be at a leaf)
+            \item If that leaf is a 3-node or a 4-node, remove \texttt{theItem}
+            \item To ensure that \texttt{theItem} does not occur in a 2-node
+            \item $\triangleright$ Transform each 2-node encountered into a 3-node or a 4-node
+            \item $\triangleright$ Reverse different cases illustrated for splitting
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{2-3-4 Tree Observations}
+    \begin{itemize}[<+->]
+        \item All leaves are at the same depth (the bottom level): Height, $h \sim \mathcal{O}(\log n)$
+        \item Complexity of search, insert and delete: $\mathcal{O}(h) \sim \mathcal{O}(\log n)$
+        \item All data is kept in sorted order
+        \item Generalizes easily to larger nodes
+        \item Extends to external data structures
+    \end{itemize}
+    \begin{alertblock}{Disadvantages}
+        \begin{itemize}[<+->]
+            \item Uses variety of node types - need to destruct and construct multiple nodes for converting a 2 Node to 3 Node, a 3 Node to 4 Node, for splitting etc.
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{2-3-4 Trees (continued)}
+    \begin{itemize}[<+->]
+        \item Consider only one node type with space for 3 items and 4 links
+        \item Internal node (non-root) has 2 to 4 children (links)
+        \item Leaf node has 1 to 3 items
+        \item Wastes some space, but has several advantages for external data structure
+        \item Generalizes easily to larger nodes
+        \item All paths from root to leaf are of the same length
+        \item Each node that is not a root or a leaf has between $\lceil n/2 \rceil$ and $n$ children.
+        \item A leaf node has between $\lceil (n-1)/2 \rceil$ and $n-1$ values
+        \item Special cases:
+        \begin{itemize}[<+->]
+            \item $\triangleright$ If the root is not a leaf, it has at least 2 children.
+            \item $\triangleright$ If the root is a leaf, it can have between 0 and $(n-1)$ values.
+        \end{itemize}
+        \item Extends to external data structures
+        \begin{itemize}[<+->]
+            \item \textbf{B-Tree}
+            \item 2-3-4 Tree is a B-Tree where $n = 4$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Module Summary}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Recapitulated the notions of Balanced Binary Search Trees as options for optimal in-memory search data structures
+            \item Understood the issues relating to external data structures for persistent data
+            \item Explored 2-3-4 Tree in depth as a precursor to B/B+-Tree for an efficient external data structure for database and index tables
+        \end{itemize}
+    \end{block}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

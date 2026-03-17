@@ -1,0 +1,3 @@
+\beamer@sectionintoc {1}{Concurrency Control}{9}{0}{1}
+\beamer@sectionintoc {2}{Lock-Based Protocols}{22}{0}{2}
+\beamer@sectionintoc {3}{Implementation of Locking}{99}{0}{3}

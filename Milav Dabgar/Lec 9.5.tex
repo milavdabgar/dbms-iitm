@@ -1,0 +1,370 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 45}
+\subtitle{Indexing and Hashing/5: Index Design}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Explored various hashing schemes - Static and Dynamic Hashing
+            \item Compared Ordered Indexing and Hashing
+            \item Studied the use of Bitmap Indices for fast access of columns with limited number of distinct values
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item To discuss how Indexes can be created in SQL
+            \item To deliberate on good index designs in terms of Guidelines for Indexing
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Index Definition in SQL
+            \item Guidelines for Indexing
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Index Definition in SQL}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Index Definition in SQL\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Index in SQL}
+    \begin{itemize}[<+->]
+        \item \textbf{Create an index}:
+        \begin{lstlisting}[language=SQL]
+create index <index-name> on <relation-name> (<attribute-list>)
+        \end{lstlisting}
+        For example: \texttt{create index b-index on branch (branch\_name)}
+        \item Use \texttt{create unique index} to indirectly specify and enforce the condition that the search key is a candidate key (Not really required if SQL unique integrity constraint is supported - it is preferred)
+        \item \textbf{To drop an index}:
+        \begin{lstlisting}[language=SQL]
+drop index <index-name>
+        \end{lstlisting}
+        \item Most database systems allow specification of type of index, and clustering
+        \item You can also create an index for a cluster
+        \item You can create a composite index on multiple columns up to a maximum of 32 columns
+        \item $\triangleright$ A composite index key cannot exceed roughly one-half (minus some overhead) of the available space in the data block
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Index in SQL: Examples}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Create an index for a single column, to speed up queries that test that column:
+            \verb|CREATE INDEX emp_ename ON emp_tab(ename);|
+            \item Specify several storage settings explicitly for the index:
+            \begin{lstlisting}[language=SQL]
+CREATE INDEX emp_ename ON emp_tab(ename)
+TABLESPACE users STORAGE (INITIAL 20K NEXT 20K
+PCTINCREASE 75) PCTFREE 0 COMPUTE STATISTICS;
+            \end{lstlisting}
+            \item Create index on two columns, to speed up queries that test either the first column or both columns:
+            \verb|CREATE INDEX emp_ename ON emp_tab(ename, empno) COMPUTE STATISTICS;|
+            \item A function-based index precomputes the result of the function for each column value, speeding up queries that use the function for searching or sorting:
+            \verb|CREATE INDEX emp_upper_ename ON emp_tab(UPPER(ename)) COMPUTE STATISTICS;|
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{Index in SQL: Bitmap}
+    \begin{itemize}[<+->]
+        \item \verb|create bitmap index <index-name> on <relation-name> (<attribute-list>)|
+        \item Example:
+        \begin{lstlisting}[language=SQL]
+Student (Student_ID, Name, Address, Age, Gender, Semester)
+CREATE BITMAP INDEX Idx_Gender ON Student (Gender);
+CREATE BITMAP INDEX Idx_Semester ON Student (Semester);
+SELECT * FROM Student WHERE Gender = 'F' AND Semester =4;
+        \end{lstlisting}
+        \item AND \texttt{0 1 1 1} with \texttt{0 0 0 1} to get the result
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Multiple-Key Access}
+    \begin{itemize}[<+->]
+        \item Use multiple indices for certain types of queries
+        \item Example:
+        \begin{lstlisting}[language=SQL]
+select ID
+from instructor where dept_name = 'Finance' and salary = 80000
+        \end{lstlisting}
+        \item Possible strategies for processing query using indices on single attributes:
+        \begin{itemize}[<+->]
+            \item Use index on \texttt{dept\_name} to find instructors with department name Finance; test \texttt{salary = 80000}
+            \item Use index on \texttt{salary} to find instructors with a salary of 80000; test \texttt{dept\_name = 'Finance'}
+            \item Use \texttt{dept\_name} index to find pointers to all records pertaining to the 'Finance' department. Similarly use index on \texttt{salary}. Take intersection of both sets of pointers obtained
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Multiple-Key Access (2): Indices}
+    \begin{itemize}[<+->]
+        \item Composite Search Keys are search keys containing more than one attribute
+        \item For example, \verb|(dept_name, salary)|
+        \item Lexicographic ordering: $(a_1, a_2) < (b_1, b_2)$ if either
+        \begin{itemize}[<+->]
+            \item $a_1 < b_1$, or
+            \item $a_1 = b_1$ and $a_2 < b_2$
+        \end{itemize}
+        \item Hence, the order is important
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Multiple-Key Access (3): Indices on Multiple Attributes}
+    \begin{itemize}[<+->]
+        \item Suppose we have an index on combined search-key: \verb|(dept_name, salary)|
+        \item With the where clause
+        \verb|where dept_name = 'Finance' and salary = 80000|
+        the index on \verb|(dept_name, salary)| can be used to fetch only records that satisfy both conditions.
+        \item Using separate indices in less efficient - we may fetch many records (or pointers) that satisfy only one of the conditions
+        \item Can also efficiently handle
+        \verb|where dept_name = 'Finance' and salary < 80000|
+        \item But cannot efficiently handle
+        \verb|where dept_name < 'Finance' and balance = 80000|
+        \begin{itemize}
+            \item $\triangleright$ May fetch many records that satisfy the first but not the second condition
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Privileges Required to Create an Index}
+    \begin{itemize}[<+->]
+        \item When using indexes in an application, you might need to request that the DBA grant privileges or make changes to initialization parameters
+        \item To create a new index:
+        \begin{itemize}[<+->]
+            \item You must own, or have the \texttt{INDEX} object privilege for the corresponding table
+            \item The schema that contains the index must also have a quota for the tablespace intended to contain the index, or the \texttt{UNLIMITED TABLESPACE} system privilege
+        \end{itemize}
+        \item To create an index in another user's schema, you must have the \texttt{CREATE ANY INDEX} system privilege
+        \item Function-based indexes also require the \texttt{QUERY REWRITE} privilege, and that the \texttt{QUERY\_REWRITE\_ENABLED} initialization parameter to be set to TRUE
+    \end{itemize}
+\end{frame}
+
+\section{Guidelines for Indexing}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Guidelines for Indexing\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Guidelines for Indexing}
+    \begin{itemize}[<+->]
+        \item In Modules 16 to 20 (Week 4), we have studied various issues for a proper design of a relational database system. This focused on:
+        \item Normalization of Tables leading to:
+        \begin{itemize}[<+->]
+            \item $\triangleright$ Reduction of Redundancy to minimize possibilities of Anomaly
+            \item $\triangleright$ Easier adherence to constraints (various dependencies)
+            \item $\triangleright$ Efficiency of access and update - a better normalized design often gives better performance
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Guidelines for Indexing (2)}
+    \begin{itemize}[<+->]
+        \item The performance of a database system, however, is also significantly impacted by the way the data is physically organized and managed. These are done through Indexing and Hashing.
+        \item While normalization and design are startup time activities that are usually performed once at the beginning (and rarely changed later), the performance behavior continues to evolve as the database is used over time. 
+        \item Hence we need to continually:
+        \begin{itemize}[<+->]
+            \item Collect Statistics about data (of various tables) to learn of the patterns, and
+            \item Adjust the Indexes on the tables to optimize performance
+        \end{itemize}
+        \item There is no sound theory that determines optimal performance. Rather, we take a quick look into a few common guidelines that can help you keep your database agile in its behavior.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Guidelines for Indexing: Ground Rules}
+    \begin{alertblock}{Important}
+        \begin{itemize}[<+->]
+            \item Some guidelines - heuristic and common sense, but time-tested - are summarized here as a set of Ground Rules for Indexing
+            \item \textbf{Rule 0}: Indexes lead to Access - Update Tradeoff
+            \item \textbf{Rule 1}: Index the Correct Tables
+            \item \textbf{Rule 2}: Index the Correct Columns
+            \item \textbf{Rule 3}: Limit the Number of Indexes for Each Table
+            \item \textbf{Rule 4}: Choose the Order of Columns in Composite Indexes
+            \item \textbf{Rule 5}: Gather Statistics to Make Index Usage More Accurate
+            \item \textbf{Rule 6}: Drop Indexes That Are No Longer Required
+            \item These rules are explained in the following slides
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Guidelines for Indexing: Rule 0}
+    \begin{alertblock}{Rule 0 : Indexes lead to Access - Update Tradeoff}
+        \begin{itemize}[<+->]
+            \item Every query (access) results in a 'search' on the underlying physical data structures
+            \begin{itemize}
+                \item $\triangleright$ Having specific index on search field can significantly improve performance
+            \end{itemize}
+            \item Every update (insert / delete / values update) results in update of the index files an overhead or penalty for quicker access
+            \begin{itemize}[<+->]
+                \item $\triangleright$ Having unnecessary indexes can cause significant degradation of performance of various operations
+                \item $\triangleright$ Index files may also occupy significant space on your disk and / or
+                \item $\triangleright$ Cause slow behavior due to memory limitations during index computations
+            \end{itemize}
+            \item Use informed judgment to index!
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Guidelines for Indexing: Rule 1}
+    \begin{alertblock}{Rule 1 : Index the Correct Tables}
+        \begin{itemize}[<+->]
+            \item Create an index if you frequently want to retrieve less than 15\% of the rows in a large table
+            \begin{itemize}[<+->]
+                \item $\triangleright$ The percentage varies greatly according to the relative speed of a table scan and how clustered the row data is about the index key
+                \item - The faster the table scan, the lower the percentage
+                \item - More clustered the row data, the higher the percentage
+            \end{itemize}
+            \item Index columns used for joins to improve performance on joins of multiple tables
+            \item Primary and unique keys automatically have indexes, but you might want to create an index on a foreign key
+            \item Small tables do not require indexes
+            \item If a query is taking too long, then the table might have grown from small to large
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Guidelines for Indexing: Rule 2}
+    \begin{alertblock}{Rule 2 : Index the Correct Columns}
+        \begin{itemize}[<+->]
+            \item \textbf{Columns with the following characteristics are candidates for indexing:}
+            \begin{itemize}
+                \item $\triangleright$ Values are relatively unique in the column
+                \item $\triangleright$ There is a wide range of values (good for regular indexes)
+                \item $\triangleright$ There is a small range of values (good for bitmap indexes)
+                \item $\triangleright$ The column contains many nulls, but queries often select all rows having a value.
+            \end{itemize}
+            \item \textbf{Columns with the following characteristics are less suitable for indexing:}
+            \begin{itemize}
+                \item $\triangleright$ There are many nulls in the column and you do not search on the non-null values
+                \item $\triangleright$ LONG and LONG RAW columns cannot be indexed
+            \end{itemize}
+            \item The size of a single index entry cannot exceed roughly one-half (minus some overhead) of the available space in the data block
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Guidelines for Indexing: Rule 3}
+    \begin{alertblock}{Rule 3 : Limit the Number of Indexes for Each Table}
+        \begin{itemize}[<+->]
+            \item The more indexes, the more overhead is incurred as the table is altered
+            \begin{itemize}[<+->]
+                \item $\triangleright$ When rows are inserted or deleted, all indexes on the table must be updated
+                \item $\triangleright$ When a column is updated, all indexes on the column must be updated
+            \end{itemize}
+            \item You must weigh the performance benefit of indexes for queries against the performance overhead of updates
+            \begin{itemize}[<+->]
+                \item $\triangleright$ If a table is primarily read-only, you might use more indexes; but, if a table is heavily updated, you might use fewer indexes
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{Guidelines for Indexing: Rule 4}
+    \begin{alertblock}{Rule 4 : Choose the Order of Columns in Composite Indexes}
+        \begin{itemize}[<+->]
+            \item The order of columns in the \texttt{CREATE INDEX} statement can affect performance
+            \item $\triangleright$ Put the column used most often first in the index
+            \item $\triangleright$ You can create a composite index (using several columns), and the same index can be used for queries that reference all of these columns, or just some of them
+            \item Create a composite index with the most selective (with most values) column first
+            \item Composite indexes speed up queries that use the leading portion of the index
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Guidelines for Indexing: Rule 5}
+    \begin{alertblock}{Rule 5 : Gather Statistics to Make Index Usage More Accurate}
+        \begin{itemize}[<+->]
+            \item The database can use indexes more effectively when it has statistical information about the tables involved in the queries
+            \item $\triangleright$ Gather statistics when the indexes are created by including the keywords \texttt{COMPUTE STATISTICS} in the \texttt{CREATE INDEX} statement
+            \item $\triangleright$ As data is updated and the distribution of values changes, periodically refresh the statistics by calling procedures like (in Oracle):
+            \begin{itemize}
+                \item - \texttt{DBMS\_STATS.GATHER\_TABLE\_STATISTICS} and
+                \item - \texttt{DBMS\_STATS.GATHER\_SCHEMA\_STATISTICS}
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Guidelines for Indexing: Rule 6}
+    \begin{alertblock}{Rule 6 : Drop Indexes That Are No Longer Required}
+        \begin{itemize}[<+->]
+            \item You might drop an index if:
+            \begin{itemize}
+                \item $\triangleright$ It does not speed up queries. The table might be very small, or there might be many rows in the table but very few index entries
+                \item $\triangleright$ The queries in your applications do not use the index
+                \item $\triangleright$ The index must be dropped before being rebuilt
+            \end{itemize}
+            \item When you drop an index, all extents of the index's segment are returned to the containing tablespace and become available for other objects in the tablespace
+            \item Use the SQL command \texttt{DROP INDEX} to drop an index.
+            \item If you drop a table, then all associated indexes are dropped
+            \item To drop an index, the index must be contained in your schema or you must have the \texttt{DROP ANY INDEX} system privilege
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Learnt to create Indexes in SQL
+            \item Introduced the set of Ground Rules for Indexing
+        \end{itemize}
+    \end{block}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

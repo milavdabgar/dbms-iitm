@@ -1,0 +1,375 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 43}
+\subtitle{Indexing and Hashing/3: Indexing/3}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Recapitulated the notions of Balanced Binary Search Trees as options for optimal in-memory search data structures
+            \item Understood the issues relating to external data structures for persistent data
+            \item Explored 2-3-4 Tree in depth as a precursor to B/B+-Tree for an efficient external data structure for database and index tables
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item To understand the design of B+ Tree Index Files as a generalization of 2-3-4 Tree
+            \item To understand the fundamentals of B-Tree Index Files
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item B+ Tree Index Files
+            \item B-Tree Index Files
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{B+ Tree Index Files}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}B+ Tree Index Files\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{The B+ Tree}
+    \begin{itemize}[<+->]
+        \item Is a balanced binary search tree
+        \item Follows a multi-level index format like 2-3-4 Tree
+        \item Has the leaf nodes denoting actual data pointers
+        \item Ensures that all leaf nodes remain at the same height (like 2-3-4 Tree)
+        \item Has the leaf nodes linked using a link list
+        \item Can support random access as well as sequential access
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{The B+ Tree (2)}
+    \begin{itemize}[<+->]
+        \item \textbf{Internal node contains}
+        \begin{itemize}[<+->]
+            \item At least $\lceil n/2 \rceil$ child pointers, except the root node
+            \item At most $n$ pointers
+        \end{itemize}
+        \item \textbf{Leaf node contains}
+        \begin{itemize}[<+->]
+            \item At least $\lceil n/2 \rceil$ record pointers and $\lceil n/2 \rceil$ key values
+            \item At most $n$ record pointer and $n$ key values
+            \item One block pointer $P$ to point to next leaf node
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree (3): Search}
+    \begin{itemize}[<+->]
+        \item Suppose we have to search 55 in the B+ tree below
+        \item First, we will fetch for the intermediary node which will direct to the leaf node that can contain a record for 55
+        \item So, in the intermediary node, we will find a branch between 50 and 75 nodes
+        \item Then at the end, we will be redirected to the third leaf node
+        \item Here DBMS will perform a sequential search to find 55
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree: Insert}
+    \begin{itemize}[<+->]
+        \item Suppose we want to insert a record 60 that goes to 3rd leaf node after 55
+        \item The leaf node of this tree is already full, so we cannot insert 60 there
+        \item So we have to split the leaf node, so that it can be inserted into tree without affecting the fill factor, balance and order
+        \item The 3rd leaf node has the values (50, 55, 60, 65, 70) and its current root node is 50
+        \item We will split the leaf node of the tree in the middle so that its balance is not altered
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree: Insert (2)}
+    \begin{itemize}[<+->]
+        \item So we can group (50, 55) and (60, 65, 70) into 2 leaf nodes
+        \item If these two has to be leaf nodes, the intermediate node cannot branch from 50
+        \item It should have 60 added to it, and then we can have pointers to a new leaf node
+        \item This is how we can insert an entry when there is overflow. In a normal scenario, it is very easy to find the node where it fits and then place it in that leaf node
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree: Delete}
+    \begin{itemize}[<+->]
+        \item To delete 60, we have to remove 60 from intermediate node as well as 4th leaf node
+        \item If we remove it from the intermediate node, then the tree will not remain a B+ tree
+        \item So with deleting 60 we re-arranging the nodes
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree Index Files: Advantages \& Disadvantages}
+    \begin{alertblock}{Important}
+        \begin{itemize}[<+->]
+            \item B+ tree indices are an alternative to indexed-sequential files
+            \item \textbf{Disadvantage of ISAM files}: Performance degrades as file grows, since many overflow blocks get created. Periodic reorganization of entire file is required
+            \item \textbf{Advantage of B+ tree index files}: Automatically reorganizes itself with small, local, changes, in the face of insertions and deletions. Reorganization of entire file is not required to maintain performance
+            \item \textbf{(Minor) disadvantage of B+ trees}: Extra insertion and deletion overhead, space overhead
+            \item Advantages of B+ trees outweigh disadvantages; B+ trees are used extensively
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{B+ Tree Index Files: Structure}
+    \begin{itemize}[<+->]
+        \item All paths from root to leaf are of the same length
+        \item Each node that is not a root or a leaf has between $\lceil n/2 \rceil$ and $n$ children
+        \item A leaf node has between $\lceil (n-1)/2 \rceil$ and $n-1$ values
+        \item \textbf{Special cases}:
+        \begin{itemize}[<+->]
+            \item If the root is not a leaf, it has at least 2 children.
+            \item If the root is a leaf (that is, there are no other nodes in the tree), it can have between 0 and $(n-1)$ values.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree Index Files: Node Structure}
+    \begin{itemize}[<+->]
+        \item $K_i$ are the search-key values
+        \item $P_i$ are pointers to children (for non-leaf nodes) or pointers to records or buckets of records (for leaf nodes).
+        \item The search-keys in a node are ordered
+        \item $K_1 < K_2 < K_3 < \dots < K_{n-1}$ (Initially assume no duplicate keys, address duplicates later)
+    \end{itemize}
+    \begin{center}
+        $P_1, K_1, P_2, \dots, P_{n-1}, K_{n-1}, P_n$
+    \end{center}
+\end{frame}
+
+\begin{frame}{B+ Tree Index Files: Leaf Nodes}
+    \begin{itemize}[<+->]
+        \item For $i = 1, 2, \dots, n-1$, pointer $P_i$ points to a file record with search-key value $K_i$
+        \item If $L_i, L_j$ are leaf nodes and $i < j$, $L_i$'s search-key values are less than or equal to $L_j$'s search-key values
+        \item $P_n$ points to next leaf node in search-key order
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree Index Files: Non-Leaf Nodes}
+    \begin{itemize}[<+->]
+        \item Non leaf nodes form a multi-level sparse index on the leaf nodes. For a non-leaf node with $m$ pointers:
+        \item All the search-keys in the subtree to which $P_1$ points are less than $K_1$
+        \item For $2 \le i \le n-1$, all the search-keys in the subtree to which $P_i$ points have values greater than or equal to $K_{i-1}$ and less than $K_i$
+        \item All the search-keys in the subtree to which $P_n$ points have values greater than or equal to $K_{n-1}$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree Index Files: Observations}
+    \begin{itemize}[<+->]
+        \item Since the inter-node connections are done by pointers, logically close blocks need not be physically close
+        \item The non-leaf levels of the B+ tree form a hierarchy of sparse indices
+        \item The B+ tree contains a relatively small number of levels
+        \item Level below root has at least $2 \times \lceil n \rceil$ values
+        \item Next level has at least $2 \times \lceil n \rceil \times \lceil n/2 \rceil$ values, etc.
+        \item If there are $K$ search-key values in the file, the tree height is no more than $\lceil \log_{\lceil n/2 \rceil} (K) \rceil$
+        \item thus searches can be conducted efficiently
+        \item Insertions and deletions to the main file can be handled efficiently, as the index can be restructured in logarithmic time
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree Index Files: Queries}
+    \begin{itemize}[<+->]
+        \item \textbf{Find record with search-key value V}
+        \item \textbf{a)} $C$ = root
+        \item \textbf{b)} While $C$ is not a leaf node
+        \begin{itemize}
+            \item i) Let $i$ be least value such that $V \le K_i$
+            \item ii) If no such exists, set $C$ = last non-null pointer in $C$
+            \item iii) Else \{ if ($V = K_i$) Set $C = P_{i+1}$ else set $C = P_i$ \}
+        \end{itemize}
+        \item \textbf{c)} Let $i$ be least value s.t. $K_i = V$
+        \item \textbf{d)} If there is such a value $i$, follow pointer $P_i$ to the desired record
+        \item \textbf{e)} Else no record with search-key value $k$ exists
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree Index Files: Queries (2)}
+    \begin{itemize}[<+->]
+        \item If there are $K$ search-key values in the file, the height of the tree is no more than $\lceil \log_{\lceil n/2 \rceil} (K) \rceil$
+        \item A node is generally the same size as a disk block, typically 4 kilobytes
+        \item and $n$ is typically around 100 (40 bytes per index entry)
+        \item With 1 million search key values and $n = 100$: at most $\log_{50}(1,000,000) = 4$ nodes are accessed in a lookup
+        \item Contrast this with a balanced binary tree with 1 million search key values - around 20 nodes are accessed in a lookup
+        \item above difference is significant since every node access may need a disk I/O, costing around 20 milliseconds
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree Index Files: Handling Duplicates}
+    \begin{itemize}[<+->]
+        \item With duplicate search keys
+        \item In both leaf and internal nodes: we cannot guarantee that $K_1 < K_2 < \dots < K_{n-1}$, but can guarantee $K_1 \le K_2 \le \dots \le K_{n-1}$
+        \item Search-keys in the subtree to which $P_i$ points
+        \begin{itemize}
+            \item $\triangleright$ are $\le K_i$, but not necessarily $< K_i$
+            \item $\triangleright$ To see why, suppose same search key value $V$ is present in two leaf node $L_i$ and $L_{i+1}$. Then in parent node $K_i$ must be equal to $V$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Updates on B+ Trees: Insertion}
+    \begin{itemize}[<+->]
+        \item Find the leaf node in which the search-key value would appear
+        \item If the search-key value is already present in the leaf node
+        \begin{itemize}
+            \item Add record to the file
+            \item If necessary add a pointer to the bucket
+        \end{itemize}
+        \item If the search-key value is not present, then
+        \begin{itemize}
+            \item Add the record to the main file (and create a bucket if necessary)
+            \item If there is room in the leaf node, insert (key-value, pointer) pair in the leaf node
+            \item Otherwise, split the node (along with the new (key-value, pointer) entry)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Updates on B+ Trees: Insertion (2)}
+    \begin{itemize}[<+->]
+        \item \textbf{Splitting a leaf node}:
+        \item take the $n$ (search-key value, pointer) pairs (including the one being inserted) in sorted order. Place the first $\lceil n/2 \rceil$ in the original node, and the rest in a new node
+        \item let the new node be $p$, and let $k$ be the least key value in $p$. Insert $(k, p)$ in the parent of the node being split
+        \item If the parent is full, split it and propagate the split further up
+        \item Splitting of nodes proceeds upwards till a node that is not full is found
+        \item In the worst case the root node may be split increasing the height of the tree by 1
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Updates on B+ Trees: Deletion}
+    \begin{itemize}[<+->]
+        \item Find the record to be deleted, and remove it from the main file and from the bucket
+        \item Remove (search-key value, pointer) from the leaf node if there is no bucket or if the bucket has become empty
+        \item If the node has too few entries due to the removal, and the entries in the node and a sibling fit into a single node, then \textbf{merge siblings}:
+        \begin{itemize}
+            \item Insert all the search-key values in the two nodes into a single node (the one on the left), and delete the other node.
+            \item Delete the pair $(K_{i-1}, P_i)$, where $P_i$ is the pointer to the deleted node, from its parent, recursively.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Updates on B+ Trees: Deletion (2)}
+    \begin{itemize}[<+->]
+        \item Otherwise, if the node has too few entries due to the removal, but the entries in the node and a sibling do not fit into a single node, then \textbf{redistribute pointers}:
+        \begin{itemize}
+            \item Redistribute the pointers between the node and a sibling such that both have more than the minimum number of entries
+            \item Update the corresponding search-key value in the parent of the node
+        \end{itemize}
+        \item The node deletions may cascade upwards till a node which has $\lceil n/2 \rceil$ or more pointers is found
+        \item If the root node has only one pointer after deletion, it is deleted and the sole child becomes the root
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{B+ Tree File Organization}
+    \begin{itemize}[<+->]
+        \item Index file degradation problem is solved by using B+ Tree indices
+        \item Data file degradation problem is solved by using B+ Tree File Organization
+        \item The leaf nodes in a B+ tree file organization store records, instead of pointers
+        \item Leaf nodes are still required to be half full
+        \item Since records are larger than pointers, the maximum number of records that can be stored in a leaf node is less than the number of pointers in a non-leaf node
+        \item Insertion and deletion are handled in the same way as insertion and deletion of entries in a B+ tree index
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Non-Unique Search Keys \& Relocation}
+    \begin{itemize}[<+->]
+        \item Alternatives to scheme described earlier
+        \begin{itemize}
+            \item Buckets on separate block (bad idea)
+            \item List of tuple pointers with each key
+            \item Make search key unique by adding a record-identifier (widely used)
+        \end{itemize}
+        \item \textbf{Record Relocation and Secondary Indices}
+        \begin{itemize}
+            \item If a record moves, all secondary indices that store record pointers have to be updated
+            \item Solution: Use primary-index search key instead of record pointer in secondary index
+            \item Extra traversal of primary index to locate record, but node splits are cheap
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Indexing Strings}
+    \begin{itemize}[<+->]
+        \item Variable length strings as keys
+        \item Variable fanout
+        \item Use space utilization as criterion for splitting, not number of pointers
+        \item \textbf{Prefix compression}
+        \begin{itemize}[<+->]
+            \item Key values at internal nodes can be prefixes of full key
+            \item $\triangleright$ Keep enough characters to distinguish entries in the subtrees separated by the key value
+            \item - For example, 'Silas' and 'Silberschatz' can be separated by 'Silb'
+            \item Keys in leaf node can be compressed by sharing common prefixes
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{B-Tree Index Files}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}B-Tree Index Files\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{B-Tree Index Files}
+    \begin{itemize}[<+->]
+        \item Similar to B+ tree, but B-tree allows search-key values to appear only once; eliminates redundant storage of search keys
+        \item Search keys in non-leaf nodes appear nowhere else in the B-tree; an additional pointer field for each search key in a non-leaf node must be included
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Understood the design of B+ Tree Index Files as a generalization of 2-3-4 Tree
+            \item Investigated the fundamentals of B-Tree Index Files
+        \end{itemize}
+    \end{block}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

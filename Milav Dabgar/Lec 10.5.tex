@@ -1,0 +1,264 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 50}
+\subtitle{Concurrency Control/2}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}[<+->]
+        \item Understood the locking mechanism and protocols
+        \item Realized that deadlock is a peril of locking and needs to be handled through rollback
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}[<+->]
+        \item Deadlocks are perils of locking. We need to understand how to detect, prevent and recover from deadlock
+        \item Introduce a simple time-based protocol that avoids deadlocks
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}[<+->]
+        \item Deadlock Handling
+        \item Timestamp-Based Protocols
+    \end{itemize}
+\end{frame}
+
+\section{Deadlock Handling}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Deadlock Handling\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Deadlock Handling}
+    \begin{itemize}[<+->]
+        \item System is \textbf{deadlocked} if there is a set of transactions such that every transaction in the set is waiting for another transaction in the set
+        \item \textbf{Deadlock Prevention} protocols ensure that the system will never enter into a deadlock state. Some prevention strategies:
+        \begin{itemize}
+            \item[$\triangleright$] Require that each transaction locks all its data items before it begins execution (pre-declaration)
+            \item[$\triangleright$] Impose partial ordering of all data items and require that a transaction can lock data items only in the order specified by the partial order
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Deadlock Prevention}
+    \begin{block}{Transaction Timestamp}
+        Timestamp is a unique identifier created by the DBMS to identify the relative starting time of a transaction. Timestamping is a method of concurrency control in which each transaction is assigned a transaction timestamp.
+    \end{block}
+    \begin{itemize}[<+->]
+        \item Following schemes use transaction timestamps for the sake of deadlock prevention alone:
+        \item \textbf{wait-die scheme}: non-preemptive
+        \begin{itemize}
+            \item[$\triangleright$] Older transaction may wait for younger one to release data item. (older means smaller timestamp)
+            \item[$\triangleright$] Younger transactions never wait for older ones; they are rolled back instead
+            \item[$\triangleright$] A transaction may die several times before acquiring needed data item
+        \end{itemize}
+        \item \textbf{wound-wait scheme}: preemptive
+        \begin{itemize}
+            \item[$\triangleright$] Older transaction wounds (forces rollback) of younger transaction instead of waiting for it
+            \item[$\triangleright$] Younger transactions may wait for older ones
+            \item[$\triangleright$] May be fewer rollbacks than wait-die scheme
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Deadlock Prevention (2): Wait-Die Scheme}
+    \begin{itemize}[<+->]
+        \item It is a \textbf{non-preemptive} technique for deadlock prevention
+        \item When transaction $T_n$ requests a data item currently held by $T_k$, $T_n$ is allowed to wait only if it has a timestamp smaller than that of $T_k$ (That is, $T_n$ is older than $T_k$), otherwise $T_n$ is killed ('die')
+        \item If a transaction requests to lock a resource (data item), which is already held with a conflicting lock by another transaction, then one of the two possibilities may occur:
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Timestamp($T_n$) $<$ Timestamp($T_k$)} : $T_n$, which is requesting a conflicting lock, is older than $T_k$, then $T_n$ is allowed to 'wait' until the data-item is available.
+            \item[$\triangleright$] \textbf{Timestamp($T_n$) $>$ Timestamp($T_k$)} : $T_n$ is younger than $T_k$, then $T_n$ is killed ('dies'). $T_n$ is restarted later with a random delay but with the same timestamp(n)
+        \end{itemize}
+        \item This scheme allows the older transaction to 'wait' but kills the younger one ('die')
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Deadlock Prevention (2): Wait-Die Scheme Example}
+    \begin{exampleblock}{Example}
+        Suppose that transactions $T_5$, $T_{10}$, $T_{15}$ have time-stamps 5, 10 and 15 respectively.
+        \begin{itemize}
+            \item If $T_5$ requests a data item held by $T_{10}$ then $T_5$ will 'wait'
+            \item If $T_{15}$ requests a data item held by $T_{10}$, then $T_{15}$ will be killed ('die')
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Deadlock Prevention (3): Wound-Wait Scheme}
+    \begin{itemize}[<+->]
+        \item It is a \textbf{preemptive} technique for deadlock prevention
+        \item When transaction $T_n$ requests a data item currently held by $T_k$, $T_n$ is allowed to wait only if it has a timestamp larger than that of $T_k$, otherwise $T_k$ is killed (wounded by $T_n$)
+        \item If a transaction requests to lock a resource (data item), which is already held with a conflicting lock by another transaction, then one of the two possibilities may occur:
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Timestamp($T_n$) $<$ Timestamp($T_k$)} : $T_n$ forces $T_k$ to be killed ('wounds'). $T_k$ is restarted later with a random delay but with the same timestamp(k)
+            \item[$\triangleright$] \textbf{Timestamp($T_n$) $>$ Timestamp($T_k$)} : $T_n$ 'wait's until the resource is free
+        \end{itemize}
+        \item This scheme allows the younger transaction requesting a lock to 'wait' if the older transaction already holds a lock, but forces the younger one to be suspended ('wound') if the older transaction requests a lock on an item already held by the younger one
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Deadlock Prevention (3): Wound-Wait Scheme Example}
+    \begin{exampleblock}{Example}
+        Suppose that transactions $T_5$, $T_{10}$, $T_{15}$ have time-stamps 5, 10 and 15 respectively.
+        \begin{itemize}
+            \item If $T_5$ requests a data item held by $T_{10}$, then it will be preempted from $T_{10}$ and $T_{10}$ will be suspended ('wounded')
+            \item If $T_{15}$ requests a data item held by $T_{10}$, then $T_{15}$ will 'wait'
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Deadlock Prevention}
+    \begin{itemize}[<+->]
+        \item Both in wait-die and in wound-wait schemes, a rolled back transaction is restarted with its original timestamp. Older transactions thus have precedence over newer ones, and starvation is hence avoided
+    \end{itemize}
+    \uncover<2->{
+        \begin{block}{Timeout-Based Schemes}
+            \begin{itemize}[<+->]
+                \item A transaction waits for a lock only for a specified amount of time. If the lock has not been granted within that time, the transaction is rolled back and restarted
+                \item Thus, deadlocks are not possible
+                \item Simple to implement; but starvation is possible. Also difficult to determine good value of the timeout interval
+            \end{itemize}
+        \end{block}
+    }
+\end{frame}
+
+\begin{frame}{Deadlock Detection}
+    \begin{itemize}[<+->]
+        \item Deadlocks can be described as a \textbf{wait-for graph}, which consists of a pair $G = (V, E)$
+        \begin{itemize}
+            \item[$\triangleright$] $V$ is a set of vertices (all the transactions in the system)
+            \item[$\triangleright$] $E$ is a set of edges; each element is an ordered pair $T_i \rightarrow T_j$
+        \end{itemize}
+        \item If $T_i \rightarrow T_j$ is in $E$, then there is a directed edge from $T_i$ to $T_j$, implying that $T_i$ is waiting for $T_j$ to release a data item
+        \item When $T_i$ requests a data item currently being held by $T_j$, then the edge $T_i \rightarrow T_j$ is inserted in the wait-for graph. This edge is removed only when $T_j$ is no longer holding a data item needed by $T_i$
+        \item The system is in a deadlock state if and only if the wait-for graph has a \textbf{cycle}
+        \item Must invoke a deadlock-detection algorithm periodically to look for cycles
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Deadlock Recovery}
+    \begin{itemize}[<+->]
+        \item When deadlock is detected:
+        \item \textbf{Some transaction will have to be rolled back (made a victim)} to break deadlock. Select that transaction as victim that will incur minimum cost
+        \item \textbf{Rollback} - determine how far to roll back transaction
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Total rollback}: Abort the transaction and then restart it
+            \item[$\triangleright$] \textbf{Partial rollback}: More effective to roll back transaction only as far as necessary to break deadlock
+        \end{itemize}
+        \item \textbf{Starvation} happens if same transaction is always chosen as victim. Include the number of rollbacks in the cost factor to avoid starvation
+    \end{itemize}
+\end{frame}
+
+\section{Timestamp-Based Protocols}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Timestamp-Based Protocols\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Timestamp-Based Protocols}
+    \begin{itemize}[<+->]
+        \item Each transaction is issued a timestamp when it enters the system. If an old transaction $T_i$ has time-stamp $TS(T_i)$, a new transaction $T_j$ is assigned time-stamp $TS(T_j)$ such that $TS(T_i) < TS(T_j)$.
+        \item The protocol manages concurrent execution such that the time-stamps determine the serializability order
+        \item In order to assure such behavior, the protocol maintains for each data $Q$ two timestamp values:
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{W-timestamp(Q)} is the largest time-stamp of any transaction that executed \texttt{write(Q)} successfully
+            \item[$\triangleright$] \textbf{R-timestamp(Q)} is the largest time-stamp of any transaction that executed \texttt{read(Q)} successfully
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Timestamp-Based Protocols (2)}
+    \begin{itemize}[<+->]
+        \item The timestamp ordering protocol ensures that any conflicting read and write operations are executed in timestamp order
+        \item Suppose a transaction $T_i$ issues a \texttt{read(Q)}:
+        \begin{itemize}
+            \item[$\triangleright$] a) If $TS(T_i) \le \text{W-timestamp}(Q)$, then $T_i$ needs to read a value of $Q$ that was already overwritten. Hence, the read operation is rejected, and $T_i$ is rolled back.
+            \item[$\triangleright$] b) If $TS(T_i) \ge \text{W-timestamp}(Q)$, then the read operation is executed, and \text{R-timestamp}(Q) is set to $\max(\text{R-timestamp}(Q), TS(T_i))$.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Timestamp-Based Protocols (3)}
+    \begin{itemize}[<+->]
+        \item Suppose that transaction $T_i$ issues \texttt{write(Q)}:
+        \begin{itemize}
+            \item[$\triangleright$] If $TS(T_i) < \text{R-timestamp}(Q)$, then the value of $Q$ that $T_i$ is producing was needed previously, and the system assumed that that value would never be produced. Hence, the write operation is rejected, and $T_i$ is rolled back
+            \item[$\triangleright$] If $TS(T_i) < \text{W-timestamp}(Q)$, then $T_i$ is attempting to write an obsolete value of $Q$. Hence, this write operation is rejected, and $T_i$ is rolled back
+            \item[$\triangleright$] Otherwise, the write operation is executed, and \text{W-timestamp}(Q) is set to $TS(T_i)$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Correctness of Timestamp-Ordering Protocol}
+    \begin{itemize}[<+->]
+        \item The timestamp-ordering protocol guarantees serializability since all the arcs in the precedence graph are of the form:
+        \begin{itemize}
+            \item[$\triangleright$] $T_i \rightarrow T_j$ implies $TS(T_i) < TS(T_j)$
+        \end{itemize}
+        \item Thus, there will be no cycles in the precedence graph
+        \item Timestamp protocol ensures freedom from deadlock as no transaction ever waits
+        \item But the schedule may not be cascade-free, and may not even be recoverable
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}[<+->]
+        \item Explained how to detect, prevent and recover from deadlock
+        \item Introduced a time-based protocol that avoids deadlocks
+    \end{itemize}
+    \vspace{2em}
+    \uncover<3->{
+        \begin{center}
+        \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+        \small \textit{Edited and new slides are marked with 'PPD'.}
+        \end{center}
+    }
+\end{frame}
+
+\end{document}

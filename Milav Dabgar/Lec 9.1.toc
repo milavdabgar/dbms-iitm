@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{Basic Concepts of Indexing}{16}{0}{1}
+\beamer@sectionintoc {2}{Ordered Indices}{43}{0}{2}

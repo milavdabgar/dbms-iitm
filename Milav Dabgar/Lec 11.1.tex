@@ -1,0 +1,375 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+% --- Title Information ---
+\title{Module 51}
+\subtitle{Backup \& Recovery/1: Backup/1}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Week Recap}
+    \begin{itemize}[<+->]
+        \item Concurrent transactions, serializability issues, and ACID properties are discussed
+        \item Learnt the forms of serializability - conflict and view
+        \item Conflict serializability can be ensured by acyclic precedence graph
+        \item View Serializability is a weaker serializability system providing better concurrency. However, testing for view serializability is NP complete
+        \item With proper planning, a database can be recovered back to a consistent state from inconsistent state in the face of system failures. Such a recovery is done via cascaded or cascadeless rollback
+        \item Understood the locking mechanism and protocols
+        \item Realized that deadlock is a peril of locking and needs to be handled through rollback
+        \item Explained how to detect, prevent and recover from deadlock
+        \item Introduced a time-based protocol that avoids deadlocks
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}[<+->]
+        \item To understand need for having backup
+        \item To learn about different strategies of backup and their suitability
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}[<+->]
+        \item Need for backup and recovery
+        \item Different strategies of backup with examples
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+    \begin{itemize}[<+->]
+        \item Enterprise Systems Backup and Recovery: A Corporate Insurance Policy by Preston De Guise (Accessed 21-Aug-2021)
+        \item Data Backup Recovery: The Essential Guide for Businesses (Accessed 19-Aug-2021)
+    \end{itemize}
+\end{frame}
+
+\section{What is Backup and Recovery?}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}What is Backup and Recovery?\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{What is Backup and Recovery?}
+    \begin{itemize}[<+->]
+        \item A Backup of a database is a representative copy of data containing all necessary contents of a database such as data files and control files
+        \item Unexpected database failures, especially those due to factors beyond our control, are unavoidable. Hence, it is important to keep a backup of the entire database
+        \item There are two major types of backup:
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Physical Backup}: A copy of physical database files such as data, control files, log files, and archived redo logs.
+            \item[$\triangleright$] \textbf{Logical Backup}: A copy of logical data that is extracted from a database consisting of tables, procedures, views, functions, etc.
+        \end{itemize}
+        \item Recovery is the process of restoring the database to its latest known consistent state after a system failure occurs.
+        \item A Database Log records all transactions in a sequence. Recovery using logs is quite popular in databases
+        \item A typical log file contains information about transactions to execute, transaction states, and modified values
+    \end{itemize}
+\end{frame}
+
+\section{Why Backup?}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Why Backup?\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Why is backup necessary?}
+    \begin{itemize}[<+->]
+        \item \textbf{Disaster Recovery}: Data loss can occur due to various reasons like hardware failures, malware attacks, environmental \& physical factors or a simple human error
+        \item \textbf{Client Side Changes}: Clients may want to modify the existing application to serve their business's dynamic needs. Developers might need to restore a previous version of the database in order to such address such requirements
+        \item \textbf{Auditing}: From an auditing perspective, you need to know what your data or schema looked like at some point in the past. For instance, if your organization happens to get involved in a lawsuit, it may want to have a look at an earlier snapshot of the database.
+        \item \textbf{Downtime}: Without backup, system failures lead to data loss, which in turn results in application downtime. This leads to bad business reputation
+    \end{itemize}
+\end{frame}
+
+\section{Backup Data: Types}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Backup Data: Types\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Types of Backup Data}
+    \begin{itemize}[<+->]
+        \item \textbf{Business Data} includes personal information of clients, employees, contractors etc. along with details about places, things, events and rules related to the business.
+        \item \textbf{System Data} includes specific environment/configuration of the system used for specialised development purposes, log files, software dependency data, disk images.
+        \item \textbf{Media files} like photographs, videos, sounds, graphics etc. need backing up. Media files are typically much larger in size.
+    \end{itemize}
+\end{frame}
+
+\section{Backup Strategies}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Backup Strategies\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Types of Backup Strategies: Full Backup}
+    \begin{block}{Full Backup}
+        Full Backup backs up everything. This is a complete copy, which stores all the objects of the database: tables, procedures, functions, views, indexes etc. Full backup can restore all components of the database system as it was at the time of crash.
+    \end{block}
+    \begin{itemize}[<+->]
+        \item A full backup must be done at least once before any of the other type of backup
+        \item The frequency of a full backup depends on the type of application. For instance, a full backup is done on a daily basis for applications in which one or more of the following is/are true:
+        \begin{itemize}
+            \item[$\triangleright$] Either 24/7 availability is not a requirement, or system availability is not affected as a consequence of backups.
+            \item[$\triangleright$] A complete backup takes a minimum amount of media, i.e. the backup data is not too large.
+            \item[$\triangleright$] Backup/system administrators may not be available on a daily basis, and therefore a primary goal is to reduce to a bare minimum the amount of media required to complete a restore.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Types of Backup Strategies: Full Backup (2)}
+    \begin{itemize}[<+->]
+        \item \textbf{Full Backup: Advantages}
+        \begin{itemize}
+            \item[$\triangleright$] Recovery from a full backup involves a consolidated read from a single backup
+            \item[$\triangleright$] Generally, there will not be any dependency between two consecutive backups.
+            \item[$\triangleright$] Effectively, the loss of a single day's backup does not affect the ability to recover other backups
+            \item[$\triangleright$] It is relatively easy to setup, configure and maintain
+        \end{itemize}
+        \item \textbf{Full Backup: Disadvantages}
+        \begin{itemize}
+            \item[$\triangleright$] The backup takes largest amount of time among all types of backups
+            \item[$\triangleright$] This results in longest system downtime during the backup process
+            \item[$\triangleright$] It uses largest amount of storage media per backup
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Types of Backup Strategies: Incremental Backup}
+    \begin{block}{Incremental Backup}
+        Incremental backup targets only those files or items that have changed since the last backup. This often results in smaller backups and needs shorter duration to complete the backup process.
+    \end{block}
+    \begin{itemize}[<+->]
+        \item For instance, a 2 TB database may only have a 5\% change during the day. With incremental database backups, the amount backed up is typically only a little more than the actual amount of changed data in the database.
+        \item For most organizations, a full backup is done once a week, and incremental backups are done for the rest of the time. This might mean a backup schedule as shown below
+        \item This ensures a minimum backup window during peak activity times, with a longer backup window during non-peak activity times.
+    \end{itemize}
+    \uncover<4->{
+        \begin{center}
+            \begin{tabular}{|l|l|l|l|l|l|l|}
+            \hline
+            \textbf{Friday} & \textbf{Saturday} & \textbf{Sunday} & \textbf{Monday} & \textbf{Tuesday} & \textbf{Wednesday} & \textbf{Thursday} \\ \hline
+            Full & Incremental & Incremental & Incremental & Incremental & Incremental & Incremental \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Types of Backup Strategies: Incremental Backup (2)}
+    \begin{itemize}[<+->]
+        \item \textbf{Incremental Backup: Advantages}
+        \begin{itemize}
+            \item[$\triangleright$] Less storage is used per backup
+            \item[$\triangleright$] The downtime due to backup is minimized
+            \item[$\triangleright$] It provides considerable cost reductions over full backups
+        \end{itemize}
+        \item \textbf{Incremental Backup: Disadvantages}
+        \begin{itemize}
+            \item[$\triangleright$] It requires more effort and time during recovery
+            \item[$\triangleright$] A complete system recovery needs a full backup to start with
+            \item[$\triangleright$] It cannot be done without the full backups and all incremental backups in between
+            \item[$\triangleright$] If any of the intermediate incremental backups are lost, then the recovery cannot be 100\%
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Types of Backup Strategies: Differential Backup}
+    \begin{block}{Differential Backup}
+        Differential backup backs up all the changes that have occurred since the most recent full backup regardless of what backups have occurred in between
+    \end{block}
+    \begin{itemize}[<+->]
+        \item This 'rolls up' multiple changes into a single backup job which sets the basis for the next incremental backup
+        \item As a differential backup does not back up everything, this backup process usually runs quicker than a full backup
+        \item The longer the age of a differential backup, the larger the size of its backup window
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Types of Backup Strategies: Differential Backup (2)}
+    \begin{itemize}[<+->]
+        \item To evaluate how differential backups might work within an environment, consider the sample backup schedule shown in the figure below.
+        \item a) The incremental backup on Saturday backs up all files that have changed since the full backup on Friday. Likewise all changes since Saturday and Sunday is backed up on Sunday and Monday's incremental backup respectively.
+        \item b) On Tuesday, a differential backup is performed. This backs up all files that have changed since the full backup on Friday. A recovery on Wednesday should only require data from the full and differential backups, skipping the Saturday/Sunday/Monday incremental backups.
+    \end{itemize}
+    \uncover<4->{
+        \begin{center}
+            \begin{adjustbox}{max width=\textwidth}
+            \begin{tabular}{|l|l|l|l|l|l|l|}
+            \hline
+            \textbf{Friday} & \textbf{Saturday} & \textbf{Sunday} & \textbf{Monday} & \textbf{Tuesday} & \textbf{Wednesday} & \textbf{Thursday} \\ \hline
+            Full & Incremental & Incremental & Incremental & Differential & Incremental & Incremental \\ \hline
+            \end{tabular}
+            \end{adjustbox}
+        \end{center}
+        \vspace{1em}
+        Recovery on any given day only needs the data from the full backup and the most recent differential backup
+    }
+\end{frame}
+
+\begin{frame}{Types of Backup strategies: Differential Backup (3)}
+    \begin{itemize}[<+->]
+        \item \textbf{Differential Backup: Advantages}
+        \begin{itemize}
+            \item[$\triangleright$] Recoveries require fewer backup sets.
+            \item[$\triangleright$] Provide better recovery options when full backups are run rarely (for example, only monthly)
+        \end{itemize}
+        \item \textbf{Differential Backup: Disadvantages}
+        \begin{itemize}
+            \item[$\triangleright$] Although the number of backup sets required for recovery is less but in differential backups the amount of storage media required may exceed the storage media required for incremental backups
+            \item[$\triangleright$] If done after quite a long time, differential backups can even reach the size of a full backup
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Types of Backup Strategies: Illustrative Example}
+    \begin{itemize}[<+->]
+        \item The figure below depicts which of the updated files of the database will be backed up in each respective type of backup throughout a span of 5 days as indicated.
+    \end{itemize}
+    \uncover<2->{
+        \begin{center}
+            \includegraphics[height=0.6\textheight]{"../Lecture 11.1_artifacts/image_000020_e2ce00ff0e8df3afb9414df9489eca19ddcaf5741aeb90b41031534773bbf8bf.png"}
+        \end{center}
+    }
+\end{frame}
+
+\section{Case: Monthly Schedule}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Case: Monthly Schedule\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Case: Monthly Data Backup Schedule}
+    \begin{itemize}[<+->]
+        \item Consider the following backup schedule for a month:
+    \end{itemize}
+    \uncover<2->{
+        \begin{center}
+            \begin{adjustbox}{max width=\textwidth}
+            \begin{tabular}{|l|l|l|l|l|l|l|}
+            \hline
+            \textbf{Sunday} & \textbf{Monday} & \textbf{Tuesday} & \textbf{Wednesday} & \textbf{Thursday} & \textbf{Friday} & \textbf{Saturday} \\ \hline
+            & 2/Incr & 3/Incr & & & 6/Incr & \\ \hline
+            8/Diff & & 10/Incr & & 12/Incr & & \\ \hline
+            15/Diff & 16/Incr & 17/Incr & & 19/Incr & 20/Incr & 21/Incr \\ \hline
+            22/Diff & 23/Incr & & 25/Incr & 26/Incr & 27/Incr & 28/Incr \\ \hline
+            29/Diff & & 31/Incr & & & & \\ \hline
+            \end{tabular}
+            \end{adjustbox}
+        \end{center}
+    }
+    \begin{itemize}[<+->]
+        \item[<3->] \textbf{Inference}
+        \begin{itemize}
+            \item[$\triangleright$] Here full backups are performed once per month, but with differentials being performed weekly, the maximum number of backups required for a complete system recovery at any point will be one full backup, one differential backup, and six incremental backups
+            \item[$\triangleright$] A full system recovery will never need more than the full backup from the start of the month, the differential backup at the start of the relevant week, and the incremental backups performed during the week
+            \item[$\triangleright$] If a policy were used whereby full backups were done on the first of the month, and incrementals for the rest of the month, a complete system recovery on last day of month will need as many as 31 backup sets
+            \item[$\triangleright$] Thus differential backups can improve efficiency of recovery when planned properly
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Hot Backup}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Hot Backup\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Hot Backup}
+    \begin{itemize}[<+->]
+        \item Till now we have learnt about backup strategies which can not happen simultaneously with a running application
+        \item In systems where high availability is a requirement Hot backup is preferable wherever possible
+        \item Hot backup refers to keeping a database up and running while the backup is performed concurrently
+        \item Such a system usually has a module or plug-in that allows the database to be backed up while staying available to end users
+        \item Databases which stores transactions of asset management companies, hedge funds, high frequency trading companies etc. try to implement Hot backups as these data are highly dynamic and the operations run 24x7
+        \item Real time systems like sensor and actuator data in embedded devices, satellite transmissions etc. also use Hot backup
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Hot Backup (2)}
+    \begin{itemize}[<+->]
+        \item \textbf{Hot Backup: Advantages}
+        \begin{itemize}
+            \item[$\triangleright$] The database is always available to the end user.
+            \item[$\triangleright$] Point-in-time recovery is easier to achieve in Hot backup systems.
+            \item[$\triangleright$] Most efficient while dealing with dynamic and modularized data.
+        \end{itemize}
+        \item \textbf{Hot Backup: Disadvantages}
+        \begin{itemize}
+            \item[$\triangleright$] May not be feasible when the data set is huge and monolithic.
+            \item[$\triangleright$] Fault tolerance is less. Occurrence of any error on the fly can terminate the whole backup process.
+            \item[$\triangleright$] Maintenance and setup cost is high.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Transactional Logging as Hot Backup}
+    \begin{itemize}[<+->]
+        \item In regular database systems, hot backup is mainly used for Transaction Log Backup.
+        \item Cold backup strategies like Differential, Incremental are preferred for Data backup. The reason is evident from the disadvantages of Hot backup.
+        \item Transactional Logging is used in circumstances where a possibly inconsistent backup is taken, but another file generated and backed up (after the database file has been fully backed up) can be used to restore consistency.
+        \item The information regarding data backup versions while recovery at a given point can be inferred from the Transactional Log backup set.
+        \item Thus they play a vital role in database recovery.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}[<+->]
+        \item Learnt why having backup is essential
+        \item Analysed different backup strategies and respective schedules
+        \item Learnt how Hot backup of transaction log helps in recovering consistent database
+    \end{itemize}
+    \vspace{2em}
+    \uncover<4->{
+        \begin{center}
+        \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+        \small \textit{Edited and new slides are marked with 'PPD'.}
+        \end{center}
+    }
+\end{frame}
+
+\end{document}

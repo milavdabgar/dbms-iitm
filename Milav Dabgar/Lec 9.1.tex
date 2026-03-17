@@ -1,0 +1,316 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 41}
+\subtitle{Indexing and Hashing/1: Indexing/1}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Week Recap}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Need for algorithm analysis, Asymptotic complexity, and Worst-case, average-case and best-case analysis
+            \item Reviewed Linear Data Structures; array, list, stack, queue; and linear and binary search
+            \item Reviewed Non-linear Data Structures - graph, tree, hash table; Binary Search Tree; and compared Linear and Non-Linear Data Structures
+            \item Understood the range of Physical Storage Media
+            \item Studied about Magnetic Disks and Magnetic Tape
+            \item Glimpsed through Other Storage and the Future of Storage
+            \item Familiarized with the organization for database files
+            \item Understood how records and relations are organized in files
+            \item Learnt how databases keep their own information in Data-Dictionary Storage - the metadata database of a database
+            \item Understood the mechanisms for fast access of a database store
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item To understand the reasons for which we need to index database table
+            \item To learn about the ordered indexes and Indexed Sequential Access Mechanism
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Basic Concepts of Indexing
+            \item Ordered Indices
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Basic Concepts of Indexing}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Concepts of Indexing\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Search Records}
+    \begin{itemize}[<+->]
+        \item Consider a table: \texttt{Faculty(Name, Phone)}
+        \item How to search on Name?
+        \item Get the phone number for 'Pabitra Mitra'
+        \item Use 'Name' Index - sorted on 'Name', search 'Pabitra Mitra' and navigate on pointer (rec \#)
+        \item How to search on Phone?
+        \item Get the name of the faculty having phone number = 84772
+        \item Use 'Phone' Index - sorted on 'Phone', search '84772' and navigate on pointer (rec \#)
+        \item We can keep the records sorted on 'Name' or on 'Phone' (called the primary index), but not on both
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Search Records (Example)}
+    \begin{exampleblock}{Index on 'Name'}
+        \resizebox{\textwidth}{!}{
+        \begin{tabular}{ll|ll|ll}
+        \toprule
+        Name & Pointer & Rec\# Name & Phone & Pointer & Phone \\
+        \midrule
+        Anupam Basu & & 1 Partha Pratim Das & 81998 & & 81664 \\
+        Pabitra Mitra & & 2 Anupam Basu & 82404 & & 81998 \\
+        Partha Pratim Das & & 3 Ranjan Sen & 84624 & & 82404 \\
+        Prabir Kumar Biswas & & 4 Sudeshna Sarkar & 82432 & & 82432 \\
+        Rajib Mall & & 5 Rajib Mall & 83668 & & 83668 \\
+        Ranjan Sen & & 6 Pabitra Mitra & 81664 & & 84624 \\
+        Sudeshna Sarkar & & & & & 84772 \\
+        \bottomrule
+        \end{tabular}
+        }
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Basic Concepts}
+    \begin{itemize}[<+->]
+        \item Indexing mechanisms used to speed up access to desired data.
+        \item For example:
+        \begin{itemize}[<+->]
+             \item $\triangleright$ Name in a faculty table
+             \item $\triangleright$ author catalog in library
+        \end{itemize}
+        \item \textbf{Search Key} - attribute to set of attributes used to look up records in a file
+        \item An index file consists of records (called \textbf{index entries}) of the form
+        \item Index files are typically much smaller than the original file
+        \item Two basic kinds of indices:
+        \begin{itemize}[<+->]
+            \item \textbf{Ordered indices}: search keys are stored in sorted order
+            \item \textbf{Hash indices}: search keys are distributed uniformly across buckets using a hash function
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Index Evaluation Metrics}
+    \begin{itemize}[<+->]
+        \item Access types supported efficiently. For example,
+        \begin{itemize}[<+->]
+            \item records with a specified value in the attribute, or
+            \item records with an attribute value falling in a specified range of values
+        \end{itemize}
+        \item Access time
+        \item Insertion time
+        \item Deletion time
+        \item Space overhead
+    \end{itemize}
+\end{frame}
+
+\section{Ordered Indices}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Ordered Indices\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Ordered Indices}
+    \begin{itemize}[<+->]
+        \item In an \textbf{ordered index}, index entries are stored sorted on the search key value. For example, author catalog in library
+        \item \textbf{Primary index}: in a sequentially ordered file, the index whose search key specifies the sequential order of the file
+        \begin{itemize}[<+->]
+            \item Also called \textbf{clustering index}
+            \item The search key of a primary index is usually but not necessarily the primary key
+        \end{itemize}
+        \item \textbf{Secondary index}: an index whose search key specifies an order different from the sequential order of the file
+        \begin{itemize}[<+->]
+            \item Also called \textbf{non-clustering index}
+        \end{itemize}
+        \item \textbf{Index-sequential file}: ordered sequential file with a primary index
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dense Index Files}
+    \begin{itemize}[<+->]
+        \item \textbf{Dense index} - Index record appears for every search-key value in the file.
+        \item For example, index on ID attribute of instructor relation
+    \end{itemize}
+    \begin{center}
+        \includegraphics[height=0.5\textheight]{"../Lecture 9.1_artifacts/image_000012_ccaa0e7dd6b83d02be0b3a45827f8bbd4556e260258fcb50bf2f3499c3f035d3.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Dense Index Files (2)}
+    \begin{itemize}[<+->]
+        \item Dense index on \texttt{dept name}, with instructor file sorted on \texttt{dept name}
+    \end{itemize}
+    
+    \begin{center}
+        \includegraphics[height=0.6\textheight]{"../Lecture 9.1_artifacts/image_000014_d08e883b56e5ebede24c7f49ba7d0cc4dc29c134177bb1e2e32d6aa6110ad0b7.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Sparse Index Files}
+    \begin{itemize}[<+->]
+        \item \textbf{Sparse Index}: contains index records for only some search-key values.
+        \item Applicable when records are sequentially ordered on search-key
+        \item To locate a record with search-key value K we:
+        \begin{itemize}[<+->]
+            \item Find index record with largest search-key value $\le$ K
+            \item Search file sequentially starting at the record to which the index record points
+        \end{itemize}
+    \end{itemize}
+    \begin{center}
+        \includegraphics[height=0.3\textheight]{"../Lecture 9.1_artifacts/image_000016_236d8f184448ca180331190b09c1983f1059efbc799b7048ff7e912561242200.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Sparse Index Files (2)}
+    \begin{itemize}[<+->]
+        \item Compared to dense indices:
+        \begin{itemize}[<+->]
+            \item Less space and less maintenance overhead for insertions and deletions
+            \item Generally slower than dense index for locating records
+        \end{itemize}
+        \item \textbf{Good tradeoff}: sparse index with an index entry for every block in file, corresponding to least search-key value in the block
+    \end{itemize}
+    \begin{center}
+        \includegraphics[height=0.3\textheight]{"../Lecture 9.1_artifacts/image_000018_bba5e5e4f70e932f1d11ff82a3ef33436b7a418157fec2882f04c51592fd31a1.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Secondary Indices Example}
+    \begin{center}
+        \includegraphics[height=0.7\textheight]{"../Lecture 9.1_artifacts/image_000020_42cd2bf3ef9560f31251c956daa747d78f6c07b58b4b2a85d14dbfb762ed4c84.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Primary and Secondary Indices}
+    \begin{itemize}[<+->]
+        \item Indices offer substantial benefits when searching for records
+        \item \textbf{BUT}: Updating indices imposes overhead on database modification - when a file is modified, every index on the file must be updated
+        \item Sequential scan using primary index is efficient, but a sequential scan using a secondary index is expensive
+        \begin{itemize}[<+->]
+            \item Each record access may fetch a new block from disk
+            \item Block fetch requires about 5 to 10 milliseconds, versus about 100 nanoseconds for memory access
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Multilevel Index}
+    \begin{itemize}[<+->]
+        \item If primary index does not fit in memory, access becomes expensive
+        \item \textbf{Solution}: treat primary index kept on disk as a sequential file and construct a sparse index on it
+        \begin{itemize}[<+->]
+            \item \textbf{outer index} - a sparse index of primary index
+            \item \textbf{inner index} - the primary index file
+        \end{itemize}
+        \item If even outer index is too large to fit in main memory, yet another level of index can be created, and so on
+        \item Indices at all levels must be updated on insertion or deletion from the file
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Multilevel Index (Example)}
+    \begin{center}
+        \includegraphics[height=0.7\textheight]{"../Lecture 9.1_artifacts/image_000025_ff079708b8618ebf0a8a3ad3f1c206ec2c2ca07ff9b82b9c9fe89663a41596ba.png"}    \end{center}
+\end{frame}
+
+
+\begin{frame}{Index Update: Deletion}
+    \begin{itemize}[<+->]
+        \item If deleted record was the only record in the file with its particular search-key value, the search-key is deleted from the index also.
+        \item \textbf{Single-level index entry deletion}:
+        \begin{itemize}[<+->]
+            \item Dense indices - deletion of search-key is similar to file record deletion
+            \item Sparse indices -
+            \begin{itemize}[<+->]
+                \item $\triangleright$ If an entry for the search key exists in the index, it is deleted by replacing the entry in the index with the next search-key value in the file (in search-key order)
+                \item $\triangleright$ If the next search-key value already has an index entry, the entry is deleted instead of being replaced
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Index Update: Insertion}
+    \begin{itemize}[<+->]
+        \item \textbf{Single-level index insertion}:
+        \begin{itemize}[<+->]
+            \item Perform a lookup using the search-key value appearing in the record to be inserted
+            \item Dense indices - if the search-key value does not appear in the index, insert it
+            \item Sparse indices - if index stores an entry for each block of the file, no change needs to be made to the index unless a new block is created
+            \item $\triangleright$ If a new block is created, the first search-key value appearing in the new block is inserted into the index
+        \end{itemize}
+        \item \textbf{Multilevel insertion and deletion}: algorithms are simple extensions of the single-level algorithms
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Secondary Indices}
+    \begin{itemize}[<+->]
+        \item Frequently, one wants to find all the records whose values in a certain field (which is not the search-key of the primary index) satisfy some condition
+        \item \textbf{Example 1}: In the \texttt{instructor} relation stored sequentially by ID, we may want to find all instructors in a particular department
+        \item \textbf{Example 2}: as above, but where we want to find all instructors with a specified salary or with salary in a specified range of values
+        \item We can have a secondary index with an index record for each search-key value
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Module Summary}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Appreciated the reasons for indexing database tables
+            \item Understood the ordered indexes
+        \end{itemize}
+    \end{block}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

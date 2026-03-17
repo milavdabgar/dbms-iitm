@@ -1,0 +1,634 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 48}
+\subtitle{Transactions/3: Recoverability}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}[<+->]
+        \item Understood the issues that arise when two or more transactions work concurrently
+        \item Learnt the forms of serializability in terms of conflict and view serializability
+        \item Acyclic precedence graph can ensure conflict serializability
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}[<+->]
+        \item What happens if system fails while a transaction is in execution? Can a consistent state be reached for the database? Recoverability attempts to answer issues in state and transaction recovery in the face of system failures
+        \item Conflict serializability is a crisp concept for concurrent execution that guarantees ACID properties and has a simple detection algorithm. Yet only few schedules are Conflict serializable in practice. There is a need to explore - View Serializability - a weaker system for better concurrency
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}[<+->]
+        \item Recoverability
+        \item Transaction Definition in SQL
+        \item View Serializability
+        \item Complex Notions of Serializability
+    \end{itemize}
+\end{frame}
+
+\section{Recovery}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Recovery\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{What is Recovery?}
+    \begin{itemize}[<+->]
+        \item Serializability helps to ensure Isolation and Consistency of a schedule
+        \item Yet, the Atomicity and Consistency may be compromised in the face of system failures
+        \item Consider a schedule comprising a single transaction (obviously serial):
+        \begin{enumerate}
+            \item \texttt{read(A)}
+            \item \texttt{A := A - 50}
+            \item \texttt{write(A)}
+            \item \texttt{read(B)}
+            \item \texttt{B := B + 50}
+            \item \texttt{write(B)}
+            \item \texttt{commit} // Make the changes permanent; show the results to the user
+        \end{enumerate}
+        \item What if system fails after Step 3 and before Step 6?
+        \item Leads to inconsistent state
+        \item Need to rollback update of A
+        \item This is known as Recovery
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Recoverable Schedules}
+    \begin{itemize}[<+->]
+        \item If a transaction $T_j$ reads a data item previously written by a transaction $T_i$, then the commit operation of $T_i$ must appear before the commit operation of $T_j$.
+        \item The following schedule is not recoverable if $T_9$ commits immediately after the \texttt{read(A)} operation:
+    \end{itemize}
+    \vspace{0.5em}
+    \uncover<3->{
+        \begin{center}
+            \begin{tabular}{|l|l|}
+            \hline
+            \textbf{$T_8$} & \textbf{$T_9$} \\ \hline
+            \texttt{read(A)} & \\ 
+            \texttt{write(A)} & \\ 
+            & \texttt{read(A)} \\ 
+            & \texttt{commit} \\ 
+            \texttt{read(B)} & \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+    \begin{itemize}[<+->]
+        \item If $T_8$ should abort, $T_9$ would have read (and possibly shown to the user) an inconsistent database state. Hence, database must ensure that schedules are recoverable.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Cascading Rollbacks}
+    \begin{block}{Cascading Rollback}
+        A single transaction failure leads to a series of transaction rollbacks.
+    \end{block}
+    \begin{itemize}[<+->]
+        \item Consider the following schedule where none of the transactions has yet committed (so the schedule is recoverable):
+    \end{itemize}
+    \uncover<3->{
+        \begin{center}
+            \begin{tabular}{|l|l|l|}
+            \hline
+            \textbf{$T_{10}$} & \textbf{$T_{11}$} & \textbf{$T_{12}$} \\ \hline
+            \texttt{read(A)} & & \\ 
+            \texttt{read(B)} & & \\ 
+            \texttt{write(A)} & & \\ 
+            & \texttt{read(A)} & \\ 
+            & \texttt{write(A)} & \\ 
+            & & \texttt{read(A)} \\ 
+            \texttt{abort} & & \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+    \begin{itemize}[<+->]
+        \item If $T_{10}$ fails, $T_{11}$ and $T_{12}$ must also be rolled back
+        \item Can lead to the undoing of a significant amount of work
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Cascadeless Schedules}
+    \begin{block}{Cascadeless Schedules}
+        For each pair of transactions $T_i$ and $T_j$ such that $T_j$ reads a data item previously written by $T_i$, the commit operation of $T_i$ appears before the read operation of $T_j$.
+    \end{block}
+    \begin{itemize}[<+->]
+        \item Every cascadeless schedule is also recoverable
+        \item It is desirable to restrict the schedules to those that are cascadeless
+        \item Example of a schedule that is NOT cascadeless (same as previous slide):
+    \end{itemize}
+    \uncover<4->{
+        \begin{center}
+            \begin{tabular}{|l|l|l|}
+            \hline
+            \textbf{$T_{10}$} & \textbf{$T_{11}$} & \textbf{$T_{12}$} \\ \hline
+            \texttt{read(A)} &  & \\ 
+            \texttt{read(B)} &  & \\ 
+            \texttt{write(A)} &  & \\ 
+            \texttt{abort} & \texttt{read(A)} & \\ 
+            & \texttt{write(A)} & \texttt{read(A)} \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Example: Irrecoverable Schedule}
+    \begin{center}
+        \begin{adjustbox}{max width=0.9\textwidth}
+        \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{T1} & \textbf{T2} & \textbf{T2's Buffer} & \textbf{Database} \\ \hline
+        & & & A = 5000 \\ \hline
+        \texttt{R(A);} & A = 5000 & & A = 5000 \\ \hline
+        \texttt{A = A - 1000;} & A = 4000 & & A = 5000 \\ \hline
+        \texttt{W(A);} & A = 4000 & & A = 4000 \\ \hline
+        & \texttt{R(A);} & A = 4000 & A = 4000 \\ \hline
+        & & A = 4500 & A = 4000 \\ \hline
+        & \texttt{W(A);} & A = 4500 & A = 4500 \\ \hline
+        & \texttt{Commit;} & & \\ \hline
+        Failure Point & & & \\ \hline
+        \texttt{Commit;} & & & \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+    \vspace{1em}
+    \uncover<2->{
+        Rollback is possible only till the end (commit) of T2. So the computation of A (4000) and write in T1 is lost.
+    }
+\end{frame}
+
+\begin{frame}{Example: Recoverable Schedule with Cascading Rollback}
+    \begin{center}
+        \begin{adjustbox}{max width=0.9\textwidth}
+        \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{T1} & \textbf{T2} & \textbf{T2's Buffer} & \textbf{Database} \\ \hline
+        & & & A = 5000 \\ \hline
+        \texttt{R(A);} & A = 5000 & & A = 5000 \\ \hline
+        \texttt{A = A - 1000;} & A = 4000 & & A = 5000 \\ \hline
+        \texttt{W(A);} & A = 4000 & & A = 4000 \\ \hline
+        & \texttt{R(A);} & A = 4000 & A = 4000 \\ \hline
+        & & A = 4500 & A = 4000 \\ \hline
+        & \texttt{W(A);} & A = 4500 & A = 4500 \\ \hline
+        Failure Point & & & \\ \hline
+        \texttt{Commit;} & & & \\ \hline
+        & \texttt{Commit;} & & \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+    \vspace{1em}
+    \uncover<2->{
+        Rollback is possible as T2 has not committed yet. But T2 also needs to be rolled back for rolling back T1.
+    }
+\end{frame}
+
+\begin{frame}{Example: Recoverable Schedule without Cascading Rollback}
+    \begin{center}
+        \begin{adjustbox}{max width=0.9\textwidth}
+        \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{T1} & \textbf{T2} & \textbf{T2's Buffer} & \textbf{Database} \\ \hline
+        & & & A = 5000 \\ \hline
+        \texttt{R(A);} & & & A = 5000 \\ \hline
+        \texttt{A = 4000;} & & & A = 5000 \\ \hline
+        \texttt{W(A);} & & & A = 4000 \\ \hline
+        \texttt{Commit;} & & & \\ \hline
+        & \texttt{R(A);} & A = 4000 & A = 4000 \\ \hline
+        & \texttt{A = A + 500;} & A = 4500 & A = 4000 \\ \hline
+        & \texttt{W(A);} & A = 4500 & A = 4500 \\ \hline
+        & \texttt{Commit;} & & \\ \hline
+        \end{tabular}
+        \end{adjustbox}
+    \end{center}
+    \vspace{1em}
+    \uncover<2->{
+        Rollback is possible without cascading - wherever failure occurs.
+    }
+\end{frame}
+
+\section{Transaction Definition in SQL}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Transaction Definition in SQL\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Transaction Definition in SQL}
+    \begin{itemize}[<+->]
+        \item Data manipulation language must include a construct for specifying the set of actions that comprise a transaction
+        \item In SQL, a transaction begins implicitly
+        \item A transaction in SQL ends by:
+        \begin{itemize}
+            \item \textbf{Commit work}
+            \begin{itemize}
+                \item[$\triangleright$] Commits the current transaction and begins a new one
+            \end{itemize}
+            \item \textbf{Rollback work}
+            \begin{itemize}
+                \item[$\triangleright$] Causes current transaction to abort
+            \end{itemize}
+        \end{itemize}
+        \item In almost all database systems, by default, every SQL statement also commits implicitly if it executes successfully
+        \begin{itemize}
+            \item[$\triangleright$] Implicit commit can be turned off by a database directive
+            \item[$\triangleright$] For example in JDBC, \texttt{connection.setAutoCommit(false);}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Transaction Control Language (TCL)}
+    \begin{itemize}[<+->]
+        \item The following commands are used to control transactions
+        \begin{itemize}
+            \item \textbf{COMMIT}
+            \begin{itemize}
+                \item[$\triangleright$] To save the changes
+            \end{itemize}
+            \item \textbf{ROLLBACK}
+            \begin{itemize}
+                \item[$\triangleright$] To roll back the changes
+            \end{itemize}
+            \item \textbf{SAVEPOINT}
+            \begin{itemize}
+                \item[$\triangleright$] Creates points within the groups of transactions in which to ROLLBACK
+            \end{itemize}
+            \item \textbf{SET TRANSACTION}
+            \begin{itemize}
+                \item[$\triangleright$] Places a name on a transaction
+            \end{itemize}
+        \end{itemize}
+        \item Transactional control commands are only used with the DML Commands such as \texttt{INSERT}, \texttt{UPDATE} and \texttt{DELETE} only
+        \item They cannot be used while creating tables or dropping them because these operations are automatically committed in the database
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{TCL: COMMIT Command}
+    \begin{itemize}[<+->]
+        \item \texttt{COMMIT} is the transactional command used to save changes invoked by a transaction to the database
+        \item \texttt{COMMIT} saves all the transactions to the database since the last \texttt{COMMIT} or \texttt{ROLLBACK} command
+        \item The syntax for the \texttt{COMMIT} command is as follows:
+        \begin{itemize}
+            \item \texttt{SQL> DELETE FROM Customers WHERE AGE = 25;}
+            \item \texttt{SQL> COMMIT;}
+        \end{itemize}
+    \end{itemize}
+    \vspace{0.5em}
+    \uncover<5->{
+        \textbf{\texttt{SQL> SELECT * FROM Customers;}}
+        \begin{center}
+            \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            \textbf{ID} & \textbf{NAME} & \textbf{AGE} & \textbf{ADDRESS} & \textbf{SALARY} \\ \hline
+            1 & Ramesh & 32 & Ahmedabad & 2000 \\ \hline
+            3 & kaushik & 23 & Kota & 2000 \\ \hline
+            5 & Hardik & 27 & Bhopal & 8500 \\ \hline
+            6 & Komal & 22 & MP & 4500 \\ \hline
+            7 & Muffy & 24 & Indore & 10000 \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}[fragile]{TCL: ROLLBACK Command}
+    \begin{itemize}[<+->]
+        \item The \texttt{ROLLBACK} is the command used to undo transactions that have not already been saved to the database
+        \item This can only be used to undo transactions since the last \texttt{COMMIT} or \texttt{ROLLBACK} command was issued
+        \item The syntax for a \texttt{ROLLBACK} command is as follows:
+        \begin{itemize}
+            \item \texttt{SQL> DELETE FROM Customers WHERE AGE = 25;}
+            \item \texttt{SQL> ROLLBACK;}
+        \end{itemize}
+    \end{itemize}
+    \vspace{0.5em}
+    \uncover<5->{
+        \textbf{\texttt{SQL> SELECT * FROM Customers;}}
+        \begin{center}
+            \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            \textbf{ID} & \textbf{NAME} & \textbf{AGE} & \textbf{ADDRESS} & \textbf{SALARY} \\ \hline
+            1 & Ramesh & 32 & Ahmedabad & 2000 \\ \hline
+            2 & Khilan & 25 & Delhi & 1500 \\ \hline
+            3 & kaushik & 23 & Kota & 2000 \\ \hline
+            4 & Chaitali & 25 & Mumbai & 6500 \\ \hline
+            5 & Hardik & 27 & Bhopal & 8500 \\ \hline
+            6 & Komal & 22 & MP & 4500 \\ \hline
+            7 & Muffy & 24 & Indore & 10000 \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}[fragile]{TCL: SAVEPOINT / ROLLBACK Command}
+    \begin{itemize}[<+->]
+        \item A \texttt{SAVEPOINT} is a point in a transaction when you can roll the transaction back to a certain point without rolling back the entire transaction
+        \item The syntax for a \texttt{SAVEPOINT} command is:
+        \begin{itemize}
+            \item \texttt{SAVEPOINT SAVEPOINT\_NAME;}
+        \end{itemize}
+        \item This command serves only in the creation of a SAVEPOINT among all the transactional statements.
+        \item The \texttt{ROLLBACK} command is used to undo a group of transactions
+        \item The syntax for rolling back to a \texttt{SAVEPOINT} is:
+        \begin{itemize}
+            \item \texttt{ROLLBACK TO SAVEPOINT\_NAME;}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{TCL: SAVEPOINT / ROLLBACK Command Example}
+    \begin{exampleblock}{Example}
+\begin{verbatim}
+SQL> SAVEPOINT SP1;
+Savepoint created.
+SQL> DELETE FROM Customers WHERE ID=1;
+1 row deleted.
+SQL> SAVEPOINT SP2;
+Savepoint created.
+SQL> DELETE FROM Customers WHERE ID=2;
+1 row deleted.
+SQL> SAVEPOINT SP3;
+Savepoint created.
+SQL> DELETE FROM Customers WHERE ID=3;
+1 row deleted.
+\end{verbatim}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{TCL: SAVEPOINT / ROLLBACK Command Example (cont.)}
+    \begin{itemize}[<+->]
+        \item Three records deleted
+        \item Undo the deletion of last two:
+        \begin{itemize}
+            \item \texttt{SQL> ROLLBACK TO SP2;}
+            \item \texttt{Rollback complete}
+        \end{itemize}
+    \end{itemize}
+    \vspace{0.5em}
+    \uncover<4->{
+        \textbf{\texttt{SQL> SELECT * FROM Customers;}}
+        \begin{center}
+            \begin{tabular}{|l|l|l|l|l|}
+            \hline
+            \textbf{ID} & \textbf{NAME} & \textbf{AGE} & \textbf{ADDRESS} & \textbf{SALARY} \\ \hline
+            2 & Khilan & 25 & Delhi & 1500 \\ \hline
+            3 & kaushik & 23 & Kota & 2000 \\ \hline
+            4 & Chaitali & 25 & Mumbai & 6500 \\ \hline
+            5 & Hardik & 27 & Bhopal & 8500 \\ \hline
+            6 & Komal & 22 & MP & 4500 \\ \hline
+            7 & Muffy & 24 & Indore & 10000 \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{TCL: RELEASE SAVEPOINT Command}
+    \begin{itemize}[<+->]
+        \item The \texttt{RELEASE SAVEPOINT} command is used to remove a \texttt{SAVEPOINT} that you have created
+        \item The syntax for a \texttt{RELEASE SAVEPOINT} command is as follows:
+        \begin{itemize}
+            \item \texttt{RELEASE SAVEPOINT SAVEPOINT\_NAME;}
+        \end{itemize}
+        \item Once a \texttt{SAVEPOINT} has been released, you can no longer use the \texttt{ROLLBACK} command to undo transactions performed since the last \texttt{SAVEPOINT}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{TCL: SET TRANSACTION Command}
+    \begin{itemize}[<+->]
+        \item The \texttt{SET TRANSACTION} command can be used to initiate a database transaction
+        \item This command is used to specify characteristics for the transaction that follows
+        \item For example, you can specify a transaction to be read only or read write
+        \item The syntax for a \texttt{SET TRANSACTION} command is as follows:
+        \begin{itemize}
+            \item \texttt{SET TRANSACTION [ READ WRITE | READ ONLY ];}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{View Serializability}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}View Serializability\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{View Serializability}
+    \begin{itemize}[<+->]
+        \item Let S and S$'$ be two schedules with the same set of transactions. S and S$'$ are \textbf{view equivalent} if the following three conditions are met, for each data item Q:
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Initial Read}: If in schedule S, transaction $T_i$ reads the initial value of Q, then in schedule S$'$ also transaction $T_i$ must read the initial value of Q
+            \item[$\triangleright$] \textbf{Write-Read Pair}: If in schedule S transaction $T_i$ executes \texttt{read(Q)}, and that value was produced by transaction $T_j$ (if any), then in schedule S$'$ also transaction $T_i$ must read the value of Q that was produced by the same \texttt{write(Q)} operation of transaction $T_j$
+            \item[$\triangleright$] \textbf{Final Write}: The transaction (if any) that performs the final \texttt{write(Q)} operation in schedule S must also perform the final \texttt{write(Q)} operation in schedule S$'$
+        \end{itemize}
+        \item As can be seen, view equivalence is also based purely on reads and writes alone
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{View Serializability (2)}
+    \begin{itemize}[<+->]
+        \item A schedule S is \textbf{view serializable} if it is view equivalent to a serial schedule
+        \item Every conflict serializable schedule is also view serializable
+        \item Below is a schedule which is view-serializable but not conflict serializable:
+    \end{itemize}
+    \uncover<4->{
+        \begin{center}
+            \begin{tabular}{|l|l|l|}
+            \hline
+            \textbf{$T_{27}$} & \textbf{$T_{28}$} & \textbf{$T_{29}$} \\ \hline
+            \texttt{read(Q)} & & \\ \hline
+            \texttt{write(Q)} & & \\ \hline
+            & \texttt{write(Q)} & \\ \hline
+            & & \texttt{write(Q)} \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+    \begin{itemize}[<+->]
+        \item What serial schedule is above equivalent to?
+        \begin{itemize}
+            \item[$\triangleright$] $T_{27} \rightarrow T_{28} \rightarrow T_{29}$
+        \end{itemize}
+        \item The one \texttt{read(Q)} instruction reads the initial value of Q in both schedules and $T_{29}$ performs the final write of Q in both schedules
+        \item $T_{28}$ and $T_{29}$ perform \texttt{write(Q)} operations called \textbf{blind writes}, without having performed a \texttt{read(Q)} operation
+        \item Every view serializable schedule that is not conflict serializable has blind writes
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Test for View Serializability}
+    \begin{itemize}[<+->]
+        \item The precedence graph test for conflict serializability cannot be used directly to test for view serializability
+        \item Extension to test for view serializability has cost exponential in the size of the precedence graph
+        \item The problem of checking if a schedule is view serializable falls in the class of NP-complete problems
+        \item Thus, existence of an efficient algorithm is extremely unlikely
+        \item However, practical algorithms that just check some sufficient conditions for view serializability can still be used
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{View Serializability: Example 1}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Check whether the schedule is view serializable or not?
+            \item S : \texttt{R2(B); R2(A); R1(A); R3(A); W1(B); W2(B); W3(B);}
+        \end{itemize}
+    \end{exampleblock}
+    \uncover<3->{
+        \textbf{Solution:}
+        \begin{itemize}[<+->]
+            \item With 3 transactions, total number of schedules possible = 3! = 6
+            \begin{itemize}
+                \item[$\triangleright$] $< T_1 T_2 T_3 >$
+                \item[$\triangleright$] $< T_1 T_3 T_2 >$
+                \item[$\triangleright$] $< T_2 T_3 T_1 >$
+                \item[$\triangleright$] $< T_2 T_1 T_3 >$
+                \item[$\triangleright$] $< T_3 T_1 T_2 >$
+                \item[$\triangleright$] $< T_3 T_2 T_1 >$
+            \end{itemize}
+        \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}{View Serializability: Example 1 (2)}
+    \textbf{Solution:}
+    \begin{itemize}[<+->]
+        \item Final update on data items:
+        \begin{itemize}
+            \item[$\triangleright$] A : (No write on A)
+            \item[$\triangleright$] B : $T_1$, $T_2$, $T_3$ (All 3 transactions write B)
+            \item[$\triangleright$] As the final update on B is made by $T_3$, ($T_1$, $T_2$) $\rightarrow$ $T_3$. Now, Removing those schedules in which $T_3$ is not executing at last:
+            \begin{itemize}
+                \item $< T_1 T_2 T_3 >$
+                \item $< T_2 T_1 T_3 >$
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{View Serializability: Example 1 (3)}
+    \textbf{Solution:}
+    \begin{itemize}[<+->]
+        \item Initial Read + Which transaction updates after read?
+        \begin{itemize}
+            \item[$\triangleright$] A : $T_2$, $T_1$, $T_3$ (initial read)
+            \item[$\triangleright$] B : $T_2$ (initial read); $T_1$ (update after read)
+            \item[$\triangleright$] The transaction $T_2$ reads B initially which is updated by $T_1$. So $T_2$ must execute before $T_1$. Hence, $T_2 \rightarrow T_1$. So only one schedule survives:
+            \begin{itemize}
+                \item $< T_2 T_1 T_3 >$
+            \end{itemize}
+        \end{itemize}
+        \item Write Read Sequence (WR)
+        \begin{itemize}
+            \item[$\triangleright$] No need to check here
+        \end{itemize}
+        \item Hence, view equivalent serial schedule is:
+        \begin{itemize}
+            \item[$\triangleright$] $T_2 \rightarrow T_1 \rightarrow T_3$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{View Serializability: Example 2}
+    \begin{exampleblock}{Example}
+        \begin{itemize}[<+->]
+            \item Check whether S is conflict serializable and/or view serializable or not?
+            \item S : \texttt{R1(A); R2(A); R3(A); R4(A); W1(B); W2(B); W3(B); W4(B)}
+            \item Solution is given in the next slide (hidden). First try to solve this and then check the solution.
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+\section{Complex Notions of Serializability}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Complex Notions of Serializability\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{More Complex Notions of Serializability}
+    \begin{itemize}[<+->]
+        \item The schedule below produces the same outcome as the serial schedule $< T_1, T_5 >$, yet is not conflict equivalent or view equivalent to it
+        \item If we start with A = 1000 and B = 2000, the final result is 960 and 2040
+        \item Determining such equivalence requires analysis of operations other than read and write
+    \end{itemize}
+    \uncover<4->{
+        \begin{center}
+            \begin{tabular}{|l|l|}
+            \hline
+            \textbf{$T_1$} & \textbf{$T_5$} \\ \hline
+            \texttt{read(A)} & \\ 
+            \texttt{write(A)} & \\ 
+            & \texttt{read(B)} \\ 
+            & \texttt{B := B - 10} \\ 
+            & \texttt{write(B)} \\ 
+            \texttt{read(B)} & \\ 
+            \texttt{B := B + 50} & \\ 
+            \texttt{write(B)} & \\ 
+            & \texttt{read(A)} \\ 
+            & \texttt{A := A + 10} \\ 
+            & \texttt{write(A)} \\ \hline
+            \end{tabular}
+        \end{center}
+    }
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}[<+->]
+        \item With proper planning, a database can be recovered back to a consistent state from inconsistent state in the face of system failures. Such a recovery is done via cascaded or cascadeless rollback
+        \item View Serializability is a weaker serializability system for better concurrency. However, testing for view serializability is NP complete
+    \end{itemize}
+    \vspace{2em}
+    \uncover<3->{
+        \begin{center}
+        \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+        \small \textit{Edited and new slides are marked with 'PPD'.}
+        \end{center}
+    }
+\end{frame}
+
+\end{document}

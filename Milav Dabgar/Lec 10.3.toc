@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Recovery}{11}{0}{1}
+\beamer@sectionintoc {2}{Transaction Definition in SQL}{42}{0}{2}
+\beamer@sectionintoc {3}{View Serializability}{95}{0}{3}
+\beamer@sectionintoc {4}{Complex Notions of Serializability}{141}{0}{4}

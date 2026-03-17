@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{Recovery with Early Lock Release}{9}{0}{1}
+\beamer@sectionintoc {2}{Operation Logging}{28}{0}{2}
+\beamer@sectionintoc {3}{Transaction Rollback}{57}{0}{3}
+\beamer@sectionintoc {4}{Recovery Algorithm}{75}{0}{4}
+\beamer@sectionintoc {5}{Plan for Backup and Recovery}{90}{0}{5}

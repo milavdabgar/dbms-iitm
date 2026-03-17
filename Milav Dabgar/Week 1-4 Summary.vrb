@@ -1,0 +1,17 @@
+\frametitle{Module 9 Recap (Cont.)}
+\begin{itemize}[<+->]
+        \item \textbf{Select top/ Fetch} : The \texttt{Select Top} clause is used to specify the number of records to return.
+        \begin{exampleblock}{SQL Server Example}
+            \begin{verbatim}select top 10 distinct name from instructor\end{verbatim}
+        \end{exampleblock}
+        \uncover<2->{
+            Oracle uses \texttt{fetch first n rows only} and \texttt{rownum}
+        }
+        \begin{exampleblock}{Oracle Example}
+            \begin{verbatim}select distinct name from instructor order by name
+fetch first 10 rows only\end{verbatim}
+        \end{exampleblock}
+        \item \textbf{Where Clause Predicate} : SQL includes a \texttt{between} comparison operator, Tuple comparison.
+        \item \textbf{IN operator} : The \texttt{in} operator allows you to specify multiple values in a where clause.
+        \item \textbf{Duplicates} : In relations with duplicates, SQL can define how many copies of tuples appear in the result. Multiset versions of some relational algebra operators.
+    \end{itemize}

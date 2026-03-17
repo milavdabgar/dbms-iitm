@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Week 1}{2}{0}{1}
+\beamer@sectionintoc {2}{Week 2}{17}{0}{2}
+\beamer@sectionintoc {3}{Week 3}{76}{0}{3}
+\beamer@sectionintoc {4}{Week 4}{148}{0}{4}

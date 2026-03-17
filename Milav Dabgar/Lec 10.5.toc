@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{Deadlock Handling}{8}{0}{1}
+\beamer@sectionintoc {2}{Timestamp-Based Protocols}{53}{0}{2}

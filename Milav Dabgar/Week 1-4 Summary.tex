@@ -1,0 +1,573 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{float}
+
+% --- Title Information ---
+\title{Database Management Systems}
+\subtitle{Summary: Week 1 - 4}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{January 26, 2022}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\section{Week 1}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Week 1 Summary\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Comparison}
+    \begin{table}[H]
+        \centering
+        \resizebox{\textwidth}{!}{
+            \begin{tabular}{|p{0.25\textwidth}|p{0.375\textwidth}|p{0.375\textwidth}|}
+                \hline
+                \textbf{Parameter} & \textbf{File Handling via Python} & \textbf{DBMS} \\ \hline
+                Scalability with respect to amount of data & Very difficult to handle insert, update and querying of records & In-built features to provide high scalability for a large number of records \\ \hline
+                Scalability with respect to changes in structure & Extremely difficult to change the structure of records as in the case of adding or removing attributes & Adding or removing attributes can be done seamlessly using simple SQL queries \\ \hline
+                Time of execution & In seconds & In milliseconds \\ \hline
+                Persistence & Data processed using temporary data structures have to be manually updated to the file & Data persistence is ensured via automatic, system induced mechanisms \\ \hline
+                Robustness & Ensuring robustness of data has to be done manually & Backup, recovery and restore need minimum manual intervention \\ \hline
+                Security & Difficult to implement in Python (Security at OS level) & User-specific access at database level \\ \hline
+                Programmer's productivity & Most file access operations involve extensive coding to ensure persistence, robustness and security of data & Standard and simple built-in queries reduce the effort involved in coding thereby increasing a programmer's throughput \\ \hline
+                Arithmetic operations & Easy to do arithmetic computations & Limited set of arithmetic operations are available \\ \hline
+                Costs & Low costs for hardware, software and human resources & High costs for hardware, software and human resources \\ \hline
+            \end{tabular}
+        }
+    \end{table}
+\end{frame}
+
+\begin{frame}{Levels of Abstraction}
+    \begin{columns}
+        \begin{column}{0.6\textwidth}
+            \begin{itemize}[<+->]
+                \item \textbf{Physical level}: Describes how a record is stored (e.g. blocks of storage)
+                \item \textbf{Logical level}: Describes data stored in a database, and the relationships among the data fields (attributes, data types of attributes etc.)
+                \item \textbf{View level}: Application programs hide details of data types; it also hides information for security purposes (user interfaces)
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \uncover<1->{
+                \begin{center}
+                    \includegraphics[width=\textwidth]{"../Week 1 - 4 summary slides_artifacts/image_000000_00473880f10d3de8550139a6ec55e6007a58f5d0002e51acd6e0b2948b9b3b74.png"}
+                \end{center}
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Database Engine}
+    \begin{columns}
+        \begin{column}{0.6\textwidth}
+            \begin{itemize}[<+->]
+                \item \textbf{Storage manager}
+                \begin{itemize}
+                    \item[$\triangleright$] Provides the interface between the low-level data stored in the database and the application programs and queries submitted to the system
+                    \item[$\triangleright$] Interact with the OS file manager
+                    \item[$\triangleright$] Efficient storing, retrieving and updating of data
+                \end{itemize}
+                \item \textbf{Query Processing}
+                \begin{itemize}
+                    \item[$\triangleright$] Parsing and translation $\rightarrow$ Optimization $\rightarrow$ Evaluation
+                \end{itemize}
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \uncover<1->{
+                \begin{center}
+                    \includegraphics[width=\textwidth]{"../Week 1 - 4 summary slides_artifacts/image_000001_80791218a801ee9a8d18d6d5273a38254f9a7477a5dfa01bfa091849ea05f4f7.png"}
+                    \\ Figure: Query Processing
+                \end{center}
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Database Engine (cont..)}
+    \begin{itemize}[<+->]
+        \item \textbf{Transaction Management}
+        \begin{itemize}
+            \item[$\triangleright$] A transaction is a collection of operations that performs a single logical function in a database application
+            \item[$\triangleright$] Transaction-management component - ensures that the database remains in a consistent state despite system failures and transaction failures.
+            \item[$\triangleright$] Concurrency-control manager - controls the interaction among the concurrent transactions
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Week 2}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Week 2 Summary\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Module 6 Recap}
+    \begin{itemize}[<+->]
+        \item \textbf{Attribute Types} - The set of allowed values for each attribute is called the domain of the attribute. (i.e. Alphanumeric string, Alpha string, Date, number etc.)
+        \item \textbf{Schema} - $R = (A_1, A_2, \cdots, A_n)$ is a relation schema where $A_1, A_2, \cdots, A_n$ are attributes.
+        \item \textbf{Instances} : The collection of information stored in the database at a particular moment is called an instance of the database.
+        \item Let $K \subseteq R$, where $R$ is the set of attributes in the relation.
+        \item $K$ is a \textbf{super key} of $R$ if values for $K$ are sufficient to identify a unique tuple of each possible relation $r(R)$.
+        \item Super key $K$ is a \textbf{candidate key} if $K$ is minimal.
+        \item One of the candidate keys is selected to be the \textbf{primary key}.
+        \item A \textbf{surrogate key} (or synthetic key) in a database is a unique identifier for either an entity in the modeled world or an object in the database.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 6 Recap (Cont.)}
+    \begin{itemize}[<+->]
+        \item \textbf{Secondary / Alternate Key} : candidate keys other than primary key.
+        \item \textbf{Simple key} : Consists of a single attribute.
+        \item \textbf{Composite key} : Consists of more than one attribute to uniquely identify each tuples in a relation.
+        \item \textbf{Foreign key} : Value in one relation must appear in another.
+        \item \textbf{Compound key} : consists of more than one attribute to uniquely identify an entity occurrence.
+        \item \textbf{Relational Query language} :
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Procedural programming} : requires that the programmer tell the computer what to do. That is, how to get the output for the range of required inputs.
+            \item[$\triangleright$] \textbf{Declarative programming} : requires a more descriptive style. The programmer must know what relationships hold between various entities
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 7 Recap}
+    \begin{itemize}[<+->]
+        \item \textbf{select operation} : selection of rows(tuples). i.e: $\sigma_{D > 5}(r)$
+        \item \textbf{Project operation} : selection of columns (Attributes). i.e. $\pi_{A,C}(r)$
+        \item \textbf{Union} : union of two relations. i.e. $r \cup s$
+        \item \textbf{Difference} : Set difference of two relations. i.e. $r - s$
+        \item \textbf{Intersection} : Set intersection of two relations. i.e. $r \cap s$
+        \item \textbf{Cartesian Product} : Joining two relations - Cartesian-product. i.e. $r \times s$
+        \item \textbf{Natural Join} : natural join operation on two relations matches tuples whose values are the same on all attribute names that are common to both relations. i.e. $r \bowtie s$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 8 Recap}
+    \begin{itemize}[<+->]
+        \item History of SQL
+        \item \textbf{Data Definition Language (DDL)} : The SQL DDL provides commands for defining relation schemas, deleting relations, and modifying relation schema. (i.e. \texttt{CREATE TABLE}, \texttt{DROP TABLE}, \texttt{ALTER} etc.)
+        \item \textbf{Data Manipulation Language (DML)} : The SQL DML provides the ability to query information from the database and to insert tuples into, delete tuples from, and modify tuples in the database. (i.e. \texttt{UPDATE}, \texttt{INSERT}, \texttt{DELETE} etc.)
+        \item \textbf{Basic SQL structure}: \texttt{SELECT $A_1, A_2, \dots , A_n$ FROM $r_1, r_2, \dots , r_m$ WHERE $P$}
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Select clause}: lists the attributes desired in the result of a query.
+            \item[$\triangleright$] \textbf{Where clause} : specifies conditions that the result must satisfy.
+            \item[$\triangleright$] \textbf{From clause} : lists the relations involved in the query.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Module 9 Recap}
+    \begin{itemize}[<+->]
+        \item \textbf{Cartesian Product} : The Cartesian product instructor X teaches. It generates every possible instructor-teaches pair, with all attributes from both relations. 
+        \begin{exampleblock}{SQL query}
+            \begin{verbatim}select * from instructor, teaches\end{verbatim}
+        \end{exampleblock}
+        \item \textbf{Rename AS Operation} : The SQL allows renaming relations and attributes using the \texttt{as} clause. (i.e. \texttt{old\_name as new\_name})
+        \item \textbf{String Operation} : SQL includes a string-matching operator for comparisons on character strings. The operator \texttt{like} uses patterns that are described using two special characters:
+        \begin{itemize}
+            \item[$\triangleright$] percent (\texttt{\%}). The \texttt{\%} character matches any substring
+            \item[$\triangleright$] underscore (\texttt{\_}). The \texttt{\_} character matches any single character
+        \end{itemize}
+        \item \textbf{Order By} : We may specify \texttt{desc} for descending order or \texttt{asc} for ascending order, for each attribute; ascending order is the default. (i.e. \texttt{order by name desc})
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Module 9 Recap (Cont.)}
+    \begin{itemize}[<+->]
+        \item \textbf{Select top/ Fetch} : The \texttt{Select Top} clause is used to specify the number of records to return. 
+        \begin{exampleblock}{SQL Server Example}
+            \begin{verbatim}select top 10 distinct name from instructor\end{verbatim}
+        \end{exampleblock}
+        \uncover<2->{
+            Oracle uses \texttt{fetch first n rows only} and \texttt{rownum}
+        }
+        \begin{exampleblock}{Oracle Example}
+            \begin{verbatim}select distinct name from instructor order by name 
+fetch first 10 rows only\end{verbatim}
+        \end{exampleblock}
+        \item \textbf{Where Clause Predicate} : SQL includes a \texttt{between} comparison operator, Tuple comparison.
+        \item \textbf{IN operator} : The \texttt{in} operator allows you to specify multiple values in a where clause.
+        \item \textbf{Duplicates} : In relations with duplicates, SQL can define how many copies of tuples appear in the result. Multiset versions of some relational algebra operators.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 10 Recap}
+    \begin{itemize}[<+->]
+        \item \textbf{Set Operations} : \texttt{union}, \texttt{intersect}, \texttt{except}
+        \begin{itemize}
+            \item[$\triangleright$] Each of the above operations automatically eliminates duplicates.
+            \item[$\triangleright$] To retain all duplicates use the corresponding multiset versions \texttt{union all}, \texttt{intersect all}, and \texttt{except all}.
+        \end{itemize}
+        \item \textbf{Null Values} : \texttt{null} signifies an unknown value or that a value does not exist.
+        \item \textbf{Aggregate Functions} :
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{avg}: return average value
+            \item[$\triangleright$] \texttt{min}: return min value
+            \item[$\triangleright$] \texttt{max}: return max value
+            \item[$\triangleright$] \texttt{sum}: return sum of values
+            \item[$\triangleright$] \texttt{count}: return number of values
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 10 Recap (Cont.)}
+    \begin{itemize}[<+->]
+        \item \textbf{Group By} :
+        \begin{itemize}
+            \item[$\triangleright$] The attribute or attributes given in the \texttt{group by} clause are used to form groups.
+            \item[$\triangleright$] Tuples with the same value on all attributes in the \texttt{group by} clause are placed in one group.
+        \end{itemize}
+        \item \textbf{Having} : predicates in the \texttt{having} clause are applied after the formation of groups.
+        \item \textbf{Null Values} : All aggregate operations except \texttt{count(*)} ignore tuples with null values on the aggregated attributes.
+    \end{itemize}
+\end{frame}
+
+\section{Week 3}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Week 3 Summary\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Module 11}
+    \begin{itemize}[<+->]
+        \item \textbf{Various basic SQL features through example workout}
+        \item \texttt{select distinct} - removing the duplicates
+        \item \texttt{select all} - (duplicate retention is the default)
+        \item Cartesian Product
+        \item Rename AS Operation
+        \item \texttt{where} : \texttt{AND} and \texttt{OR}
+        \item String Operations \texttt{like} with \texttt{\%} and \texttt{\_}
+        \item \texttt{order by} - \texttt{ASC} and \texttt{DESC}
+        \item \texttt{in} Operator
+        \item \textbf{Set Operations}
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{union} - union removes all duplicates.
+            \item[$\triangleright$] Use \texttt{union all} instead of \texttt{union} to retain the duplicates.
+            \item[$\triangleright$] \texttt{intersect}
+            \item[$\triangleright$] \texttt{except}
+        \end{itemize}
+        \item \textbf{Aggregate functions} \texttt{avg}, \texttt{min}, \texttt{max}, \texttt{count}, \texttt{sum}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 12}
+    \begin{itemize}[<+->]
+        \item \textbf{Nested Subqueries}: A subquery is a \texttt{select-from-where} expression that is nested within another query
+        \item \textbf{Subqueries in the where clause}
+        \begin{itemize}
+            \item[$\triangleright$] Typical use of subqueries is to perform tests:
+            \item[$\triangleright$] For set membership - using \texttt{in}
+            \item[$\triangleright$] For set comparisons - using \texttt{some}, \texttt{any}, \texttt{all}, \texttt{exists}, \texttt{not exists} and \texttt{unique}
+        \end{itemize}
+        \item \textbf{Subqueries in the from clause}
+        \begin{itemize}
+            \item[$\triangleright$] The \texttt{with} clause provides a way of defining a temporary relation whose definition is available only to the query in which the \texttt{with} clause occurs.
+        \end{itemize}
+        \item \textbf{Subqueries in the select clause}
+        \begin{itemize}
+            \item[$\triangleright$] Using scalar subquery - one which is used where a single value is expected.
+        \end{itemize}
+        \item \textbf{Modification of the Database}
+        \begin{itemize}
+            \item[$\triangleright$] Deletion of tuples from a given relation: \texttt{delete from}
+            \item[$\triangleright$] Insertion of new tuples into a given relation: \texttt{insert into}
+            \item[$\triangleright$] Updating of values in some tuples in a given relation: \texttt{update}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 13}
+    \begin{itemize}[<+->]
+        \item \textbf{Join Operations}: take two relations and return as a result another relation
+        \item \textbf{Types of Join between Relations}:
+        \begin{itemize}
+            \item[$\triangleright$] \textbf{Cross Join} - returns the Cartesian product of rows from tables in the join
+            \item[$\triangleright$] \textbf{Inner join} - joins two table on the basis of the column which is explicitly specified in the \texttt{ON} clause with a given condition using a comparison operator
+            \item[$\triangleright$] \textbf{Equi-join} - condition containing an equality (\texttt{=}) operator
+            \item[$\triangleright$] \textbf{Natural join} - joins two tables based on same attribute name and compatible datatypes
+            \item[$\triangleright$] \textbf{Outer join} - computes the join and then adds tuples from one relation that does not match tuples in the other relation to the result of the join - uses null values
+            \begin{itemize}
+                \item[$\star$] Left outer join
+                \item[$\star$] Right outer join
+                \item[$\star$] Full outer join
+            \end{itemize}
+            \item[$\triangleright$] \textbf{Self-join} - a table is joined with itself
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 13 (Cont.)}
+    \begin{itemize}[<+->]
+        \item \textbf{Views}
+        \begin{itemize}
+            \item[$\triangleright$] A view provides a mechanism to hide certain data from the view of certain users
+            \item[$\triangleright$] Any relation that is not of the conceptual model but is made visible to a user as a 'virtual relation' is called a view.
+            \item[$\triangleright$] Defining a view using the \texttt{create view} statement
+            \item[$\triangleright$] Views defined using other views
+            \item[$\triangleright$] \textbf{Materializing a view} - create a physical table containing all the tuples in the result of the query defining the view
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 14}
+    \begin{itemize}[<+->]
+        \item \textbf{Integrity Constraints} - Guard against accidental damage to the database, by ensuring that authorized changes to the database do not result in a loss of data consistency
+        \item \textbf{Integrity Constraints on a Single Relation}
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{not null}
+            \item[$\triangleright$] \texttt{primary key}
+            \item[$\triangleright$] \texttt{unique}
+            \item[$\triangleright$] \texttt{check(P)}, where $P$ is a predicate
+        \end{itemize}
+        \item \textbf{Referential Integrity} - Ensures that a value that appears in one relation for a given set of attributes also appears for a certain set of attributes in another relation
+        \item \textbf{Cascading actions} in referential integrity:
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{on delete cascade}, \texttt{on update cascade}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 14 (Cont.)}
+    \begin{itemize}[<+->]
+        \item \textbf{Built-in Data Types in SQL} - such as \texttt{date}, \texttt{time}, \texttt{timestamp}, \texttt{interval}
+        \item \textbf{Index creation} - using \texttt{create index} statement
+        \item \textbf{User-Defined Types} - using \texttt{create type} statement
+        \item \textbf{Domains} - using \texttt{create domain} statement
+        \begin{itemize}
+            \item[$\triangleright$] Types and domains are similar
+            \item[$\triangleright$] Domains can have constraints, such as \texttt{not null}
+        \end{itemize}
+        \item \textbf{Authorization} - using \texttt{grant} and \texttt{revoke} statement
+        \item \textbf{Roles} - using \texttt{create role} statement
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module 15}
+    \begin{itemize}[<+->]
+        \item \textbf{SQL functions} - using \texttt{create function} statement
+        \item \textbf{Table-valued functions} - can return a relation as a result
+        \item \textbf{SQL procedures} - using \texttt{create procedure} statement
+        \item \textbf{Language constructs for procedures and functions} - \texttt{while} loop, \texttt{repeat} loop, \texttt{for} loop, \texttt{if-then-else}, \texttt{case}
+        \item \textbf{Trigger} - a set of actions that are performed in response to an \texttt{insert}, \texttt{update}, or \texttt{delete} operation on a specified table
+        \begin{itemize}
+            \item[$\triangleright$] \texttt{Before} triggers and \texttt{After} triggers
+            \item[$\triangleright$] \texttt{Row level} and \texttt{statement level} triggers
+        \end{itemize}
+        \item \textbf{Triggering events and actions in SQL}
+        \begin{itemize}
+            \item[$\triangleright$] Triggering event can be an \texttt{insert}, \texttt{delete} or \texttt{update}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Week 4}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Week 4 Summary\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Tuple Relational Calculus (TRC)}
+    \begin{itemize}[<+->]
+        \item TRC is a nonprocedural query language, where each query is of the form
+        \item[] $\{ t \mid P(t) \}$
+        \item \textbf{where} $t$ = resulting tuples,
+        \item $P(t)$ = known as predicate and these are the conditions that are used to fetch $t$.
+        \item $P(t)$ may have various conditions logically combined with OR ($\lor$), AND ($\land$), NOT($\neg$).
+        \item It also uses \textbf{quantifiers}:
+        \begin{itemize}
+            \item[$\triangleright$] $\exists\ t \in r\ (Q(t))$ = `there exists' a tuple in $t$ in relation $r$ such that predicate $Q(t)$ is true.
+            \item[$\triangleright$] $\forall\ t \in r\ (Q(t))$ = $Q(t)$ is true `for all' tuples in relation $r$.
+        \end{itemize}
+        \item Example: $\{ P \mid \exists\ S \in \text{Students}\ (S.\text{CGPA} > 8 \land P.\text{name} = S.\text{sname} \land P.\text{age} = S.\text{age}) \}$
+        \begin{itemize}
+            \item[$\triangleright$] Returns the name and age of students with a CGPA above 8.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Domain Relational Calculus (DRC)}
+    \begin{itemize}[<+->]
+        \item $\{ \langle x_1, x_2, \dots, x_n \rangle \mid P(x_1, x_2, \dots, x_n) \}$
+        \item $x_1, x_2, \dots, x_n$ represent domain variables
+        \item $P$ represents a formula similar to that of the predicate calculus
+        \item Example Relation Students (Name, Age, Marks, Subject)
+        \item Example Query: $\{ \langle a, b \rangle \mid \exists\ a,b,c,d (\langle a,b,c,d \rangle \in \text{students} \land c > 75) \}$
+        \begin{itemize}
+            \item[$\triangleright$] Returns the name and age of students having marks above 75.
+        \end{itemize}
+        \item \textbf{Note}: You have to mention the domain variables in the same order as given in the table.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example Problem Q1}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \textbf{Relation Students}
+            \begin{table}[H]
+                \centering
+                \resizebox{\textwidth}{!}{
+                    \begin{tabular}{|l|l|l|l|}
+                        \hline
+                        \textbf{Name} & \textbf{Age} & \textbf{Marks} & \textbf{Subject} \\ \hline
+                        David & 23 & 78 & Maths \\ \hline
+                        Matthew & 29 & 54 & English \\ \hline
+                        Anand & 22 & 89 & JAVA \\ \hline
+                        Mitchel & 21 & 56 & Maths \\ \hline
+                        Shaun & 26 & 92 & Maths \\ \hline
+                    \end{tabular}
+                }
+            \end{table}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{Relation Activity}
+            \begin{table}[H]
+                \centering
+                \resizebox{\textwidth}{!}{
+                    \begin{tabular}{|l|l|l|l|}
+                        \hline
+                        \textbf{Name} & \textbf{Sports} & \textbf{Awards} & \textbf{Points} \\ \hline
+                        David & Cricket & 2 & 67 \\ \hline
+                        Matthew & Football & 4 & 90 \\ \hline
+                        Anand & Cricket & 5 & 80 \\ \hline
+                        Mitchel & Tennis & 8 & 70 \\ \hline
+                        Shaun & Hockey & 3 & 75 \\ \hline
+                    \end{tabular}
+                }
+            \end{table}
+        \end{column}
+    \end{columns}
+    \vspace{0.5em}
+    \uncover<2->{
+        \begin{block}{Q). Return the names of students whose age is greater than 25, or who are enrolled in Maths.}
+            \begin{itemize}
+                \item \textbf{RA}: $\Pi_{\text{Name}} (\sigma_{\text{age} > 25 \lor \text{subject} = \text{'Maths'}} (\text{Students}))$
+                \item \textbf{TRC}: $\{ t \mid \exists\ s \in \text{students} (s.\text{age} > 25 \lor s.\text{subject} = \text{'Maths'} \land t.\text{name} = s.\text{name}) \}$
+                \item \textbf{DRC}: $\{ \langle a \rangle \mid \exists\ b,c,d (\langle a,b,c,d \rangle \in \text{students} \land b > 25 \lor d = \text{'Maths'}) \}$
+            \end{itemize}
+        \end{block}
+    }
+\end{frame}
+
+\begin{frame}{Example Problem Q2}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \textbf{Relation Students}
+            \begin{table}[H]
+                \centering
+                \resizebox{\textwidth}{!}{
+                    \begin{tabular}{|l|l|l|l|}
+                        \hline
+                        \textbf{Name} & \textbf{Age} & \textbf{Marks} & \textbf{Subject} \\ \hline
+                        David & 23 & 78 & Maths \\ \hline
+                        Matthew & 29 & 54 & English \\ \hline
+                        ... & ... & ... & ... \\ \hline
+                    \end{tabular}
+                }
+            \end{table}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \textbf{Relation Activity}
+            \begin{table}[H]
+                \centering
+                \resizebox{\textwidth}{!}{
+                    \begin{tabular}{|l|l|l|l|}
+                        \hline
+                        \textbf{Name} & \textbf{Sports} & \textbf{Awards} & \textbf{Points} \\ \hline
+                        David & Cricket & 2 & 67 \\ \hline
+                        Matthew & Football & 4 & 90 \\ \hline
+                        ... & ... & ... & ... \\ \hline
+                    \end{tabular}
+                }
+            \end{table}
+        \end{column}
+    \end{columns}
+    \vspace{0.5em}
+    \uncover<2->{
+        \begin{block}{Q). Return the names of students along with sports, whose age is less than 25 and who have secured more than 75 marks.}
+            \begin{itemize}
+                \item \textbf{RA}: $\Pi_{\text{Name}, \text{Sports}} (\sigma_{\text{age} < 25 \land \text{Marks} > 75} (\text{Students} \bowtie \text{Activity}))$
+                \item \textbf{TRC}: $\{ t \mid \exists\ s \in \text{students} \exists\ a \in \text{activity} (s.\text{name} = a.\text{name} \land s.\text{age} < 25 \land s.\text{marks} > 75 \land t.\text{name} = s.\text{name} \land t.\text{sports} = a.\text{sports}) \}$
+                \item \textbf{DRC}: $\{ \langle a,f \rangle \mid \exists\ b,c,d (\langle a,b,c,d \rangle \in \text{students} \land b < 25 \land c > 75) \land \exists\ e,g,h (\langle e,f,g,h \rangle \in \text{activity} \land a = e) \}$
+            \end{itemize}
+        \end{block}
+    }
+\end{frame}
+
+\begin{frame}{E-R Diagram and Mapping Constraints}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}[<+->]
+                \item Please go through the tutorials.
+            \end{itemize}
+            \uncover<2->{
+                \begin{center}
+                    \includegraphics[width=\textwidth]{"../Week 1 - 4 summary slides_artifacts/image_000002_b66e9bb5210f6bfe5635577ad8e3e2d1ebc989442da19a0e18cc2257d36fa585.png"}
+                \end{center}
+            }
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            %\uncover<3->{
+            %    \begin{center}
+            %        \includegraphics[width=\textwidth]{"../Week 1 - 4 summary slides_artifacts/image_000003_2aefff404847755573f33d6efcdea386620b49eb4f4893d9c8d121a517cd37d9.png"}
+            %    \end{center}
+            %}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{E-R diagrams symbols}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \uncover<1->{
+                \begin{center}
+                    \includegraphics[width=\textwidth]{"../Week 1 - 4 summary slides_artifacts/image_000004_40fb0ffb6b18e0fd606a1b286cb38cbf55b531f5d63f5373143c746f55d70f17.png"}
+                \end{center}
+            }
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            %\uncover<1->{
+            %    \begin{center}
+            %        \includegraphics[width=\textwidth]{"../Week 1 - 4 summary slides_artifacts/image_000005_72f40ee3424f5967a26b4461aaabf1f8b02935ee95d11e3189a234f2839770e3.png"}
+            %    \end{center}
+            %}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\end{document}
