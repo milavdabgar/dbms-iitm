@@ -1,0 +1,458 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 36}
+\subtitle{Algorithms and Data Structures/1: Algorithms and Complexity Analysis}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Week Recap}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Had a glimpse of Application Programs across various sectors
+            \item Understood the architectures for an application and their classification and evolution
+            \item Glimpsed at architecture for a few sample applications
+            \item Familiarized with the Fundamentals notions and technologies of Web
+            \item Learnt about Scripting and the notions of Servlets
+            \item Learnt to use SQL from a programming language
+            \item Learnt to build Python Web Applications with PostgreSQL using psycopg2 and Flask
+            \item Understood the steps in the Rapid Application Development Process
+            \item Exposed to the issues in Application Performance and Security
+            \item Learnt the distinctive features of Mobile Apps
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Define Algorithms and its difference with Programs
+            \item Analyze algorithms for performance of time, space, power, etc.
+            \item Introduce Asymptotic notation for representation of complexity
+            \item Consider complexity of common algorithms
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Algorithms and Programs
+            \item Analysis of Algorithms
+            \item Complexity Chart
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Algorithms and Programs}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Algorithms and Programs\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Algorithms and Programs}
+    \begin{block}{Algorithm}
+        \begin{itemize}[<+->]
+            \item An algorithm is a finite sequence of well-defined , computer-implementable (optional) instructions, typically to solve a class of specific problems or to perform a computation.
+            \item Algorithms are always unambiguous and are used as specifications for performing calculations, data processing, automated reasoning, and other tasks.
+            \item An algorithm must terminate
+        \end{itemize}
+    \end{block}
+    \begin{alertblock}{Program}
+        \begin{itemize}[<+->]
+            \item A computer program is a collection of instructions that can be executed by a computer to perform a specific task
+            \item A computer program is usually written by a computer programmer in a programming language.
+            \item A programs implements an algorithm
+            \item A program may or may not terminate. For example, an OS
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\section{Analysis of Algorithms}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Analysis of Algorithms\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Analysis of Algorithms}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item \textbf{Why?} 
+            \begin{itemize}[<+->]
+                \item Set the motivation for algorithm analysis: Why analyze?
+            \end{itemize}
+            \item \textbf{What?} 
+            \begin{itemize}[<+->]
+                \item Identify what all need to be analyzed: What to analyze?
+            \end{itemize}
+            \item \textbf{How?} 
+            \begin{itemize}[<+->]
+                \item Learn the techniques for analysis: How to analyze?
+            \end{itemize}
+            \item \textbf{Where?} 
+            \begin{itemize}[<+->]
+                \item Understand the scenarios for application: Where to analyze?
+            \end{itemize}
+            \item \textbf{When?} 
+            \begin{itemize}[<+->]
+                \item Realize your position for seeking the analysis: When to analyze?
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Why analyze?}
+    \begin{block}{Practical reasons:}
+        \begin{itemize}[<+->]
+            \item Resources are scarce
+            \item Greed to do more with less
+            \item Avoid performance bugs
+        \end{itemize}
+    \end{block}
+    \begin{alertblock}{Core Issues:}
+        \begin{itemize}[<+->]
+            \item Predict performance
+            \begin{itemize}[<+->]
+                \item How much time does binary search take?
+            \end{itemize}
+            \item Compare algorithms
+            \begin{itemize}[<+->]
+                \item How quick is Quicksort?
+            \end{itemize}
+            \item Provide guarantees
+            \begin{itemize}[<+->]
+                \item Size notwithstanding, Red-Black tree inserts in $\mathcal{O}(\log n)$
+            \end{itemize}
+            \item Understand theoretical basis
+            \begin{itemize}[<+->]
+                \item Sorting by comparison cannot do better than $\Omega(n \log n)$
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{What to analyze?}
+    \textbf{Core Issue: Cannot control what we cannot measure}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item \textbf{Time}
+            \begin{itemize}[<+->]
+                \item Story starts here with Analytical Engine
+                \item Most common analysis factor
+                \item Representative of various related analysis factors like Power, Bandwidth, Processors
+                \item Supported by Complexity Classes
+            \end{itemize}
+            \item \textbf{Space}
+            \begin{itemize}[<+->]
+                \item Widely explored
+                \item Important for hand-held devices
+                \item Supported by Complexity Classes
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{What to analyze? (2)}
+    \begin{exampleblock}{Sum of Natural Numbers}
+\begin{lstlisting}[language=C++]
+int sum(int n) {
+    int s = 0;
+    for(; n > 0; --n)
+        s = s + n;
+    return s;
+}
+\end{lstlisting}
+    \end{exampleblock}
+    \begin{alertblock}{Analysis}
+        \begin{itemize}[<+->]
+            \item Time $T(n) = n$ (additions)
+            \item Space $S(n) = 2$ ($n, s$)
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{What to analyze? (3)}
+    \begin{exampleblock}{Find a character in a string}
+\begin{lstlisting}[language=C++]
+int find(char *str, char c) { 
+    for(int i = 0; i < strlen(str); ++i) 
+        if (str[i] == c) 
+            return i; 
+    return 0;
+}
+\end{lstlisting}
+        $n = \text{strlen}(str)$
+    \end{exampleblock}
+    \begin{alertblock}{Analysis}
+        \begin{itemize}[<+->]
+            \item Time $T(n) = n \text{ (compare)} + n * T(\text{strlen}(str)) \approx n + n^2 \approx n^2$
+            \item Space $S(n) = 3$ ($str, c, i$)
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{What to analyze? (4)}
+    \begin{exampleblock}{Minimum of a Sequence of Numbers}
+\begin{lstlisting}[language=C++]
+int min(int a[], int n) { 
+    for(int i = 0; i < n; ++i) cin >> a[i];
+    int t = a[--n];
+    for(; n > 0; --n)
+        if (t < a[--n])
+            t = a[n];
+    return t;
+}
+\end{lstlisting}
+    \end{exampleblock}
+    \begin{alertblock}{Analysis}
+        \begin{itemize}[<+->]
+            \item Time $T(n) = n - 1$ (comparison of value)
+            \item Space $S(n) = n + 3$ ($a[]$'s, $n, i, t$)
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{What to analyze? (5)}
+    \begin{exampleblock}{Minimum of a Sequence of Numbers 2}
+\begin{lstlisting}[language=C++]
+int min(int n) {
+    int x;
+    cin >> x;
+    int t = x;
+    for(; n > 1; --n) {
+        cin >> x;
+        if (t < x)
+            t = x;
+    }
+    return t;
+}
+\end{lstlisting}
+    \end{exampleblock}
+    \begin{alertblock}{Analysis}
+        \begin{itemize}[<+->]
+            \item Time $T(n) = n - 1$ (comparison of value)
+            \item Space $S(n) = 3$ ($n, x, t$)
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{How to analyze?}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Counting Models
+            \item Asymptotic Analysis
+            \item Generating Functions
+            \item Master Theorem
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{How to analyze?: Counting Models}
+    \begin{block}{Counting Models}
+        \begin{itemize}[<+->]
+            \item \textbf{Core Idea:} Total running time = Sum of cost $\times$ frequency for all operations
+            \item Need to analyze program to determine set of operations
+            \item Cost depends on machine, compiler
+            \item Frequency depends on algorithm, input data
+            \item Machine Model: Random Access Machine (RAM) Computing Model
+            \item Input data \& size
+            \item Operations
+            \item Intermediate Stages
+            \item Output data \& size
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{How to analyze?: Counting Models (2)}
+    \begin{exampleblock}{Factorial (Recursive)}
+\begin{lstlisting}[language=C++]
+int fact(int n) {
+    if (0 != n) return n*fact(n-1);
+    return 1;
+}
+\end{lstlisting}
+        \begin{itemize}[<+->]
+            \item Time $T(n) = n - 1$ (multiplication)
+            \item Space $S(n) = n + 1$ ($n$'s in recursive calls)
+        \end{itemize}
+    \end{exampleblock}
+    \begin{exampleblock}{Factorial (Iterative)}
+\begin{lstlisting}[language=C++]
+int fact(int n) {
+    int t = 1;
+    for(; n > 0; --n)
+        t = t * n;
+    return t;
+}
+\end{lstlisting}
+        \begin{itemize}[<+->]
+            \item Time $T(n) = n$ (multiplication)
+            \item Space $S(n) = 2$ ($n, t$)
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{How to analyze?: Asymptotic Analysis}
+    \begin{block}{Asymptotic Analysis}
+        \begin{itemize}[<+->]
+            \item \textbf{Core Idea:} Cannot compare actual times; hence compare Growth or how time increases with input size
+            \item Function Approximation (tilde ($\sim$) notation)
+            \item Common Growth Functions
+            \item Big-Oh ($\mathcal{O}(.)$), Big-Omega ($\Omega(.)$), and Big-Theta ($\Theta(.)$) Notations
+            \item Solve recurrence with Growth Functions
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{How to analyze?: Asymptotic Analysis (2)}
+\begin{lstlisting}[language=C++]
+int count = 0; 
+for (int i = 0; i < N; i++) 
+    for (int j = i+1; j < N; j++) 
+        if (a[i] + a[j] == 0) 
+            count++;
+\end{lstlisting}
+    \begin{block}{Function Approximation (tilde ($\sim$) notation)}
+        \resizebox{\textwidth}{!}{
+        \begin{tabular}{lll}
+        \toprule
+        Operation & Frequency & Approximation \\
+        \midrule
+        variable declaration & $N + 2$ & $\sim N$ \\
+        assignment statement & $N + 2$ & $\sim N$ \\
+        less than compare & $\frac{1}{2}(N+1)(N+2)$ & $\sim \frac{1}{2}N^2$ \\
+        equal to compare & $\frac{1}{2}N(N-1)$ & $\sim \frac{1}{2}N^2$ \\
+        array access & $N(N-1)$ & $\sim N^2$ \\
+        increment & $\frac{1}{2}N(N-1)$ to $N(N-1)$ & $\sim \frac{1}{2}N^2$ to $\sim N^2$ \\
+        \bottomrule
+        \end{tabular}
+        }
+        \begin{itemize}[<+->]
+            \item Estimate running time (or memory) as a function of input size N. Ignore lower order terms
+            \begin{itemize}[<+->]
+                \item when N is large, terms are negligible
+                \item when N is small, we don't care
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{How to analyze?: Asymptotic Analysis (3)}
+    \begin{block}{Common order-of-growth classifications}
+        \resizebox{\textwidth}{!}{
+        \begin{tabular}{llll}
+        \toprule
+        order of growth & name & typical code framework & description \\
+        \midrule
+        $1$ & constant & \texttt{a = b + c;} & statement \\
+        $\log N$ & logarithmic & \texttt{while (N > 1) N = N / 2;} & divide in half \\
+        $N$ & linear & \texttt{for (int i=0; i<N; i++)} & loop \\
+        $N \log N$ & linearithmic & mergesort & divide and conquer \\
+        $N^2$ & quadratic & \texttt{for (i=0; i<N; i++) for (j=0; j<N; j++)} & double loop \\
+        $N^3$ & cubic & \texttt{for (i=0; i<N; i++) for (j=0; j<N; j++) for (k=0; k<N; k++)} & triple loop\\
+        $2^N$ & exponential & combinatorial search & exhaustive search \\
+        \bottomrule
+        \end{tabular}
+        }
+    \end{block}
+\end{frame}
+
+\begin{frame}{Asymptotic notation}
+    \begin{block}{}
+        For a given function $g(n)$, we denote by $\mathcal{O}(g(n))$ the set of functions:
+        \begin{center}
+        $\mathcal{O}(g(n)) = \{ f(n) : \text{there exist positive constants } c \text{ and } n_0 \text{ such that } 0 \le f(n) \le cg(n) \text{, for all } n > n_0 \}$
+        \end{center}
+        \begin{itemize}[<+->]
+            \item We use $\mathcal{O}$-notation to give an upper bound on a function, to within a constant factor.
+            \item When we say that the running time of A is $\mathcal{O}(n^2)$, we mean that there is a function $f(n)$ that is $\mathcal{O}(n^2)$ such that for any value of $n$, no matter what particular input of size $n$ is chosen, the running time on that input is bounded from above by the value $f(n)$.
+            \item Equivalently, we mean that the worst-case running time is $\mathcal{O}(n^2)$.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Where to analyze?}
+    \begin{block}{Algorithmic Situation}
+        \textbf{Core Idea:} Identify data configurations or scenarios for analysis
+        \begin{itemize}[<+->]
+            \item \textbf{Best Case} $\triangleright$ Minimum running time on an input
+            \item \textbf{Worst Case} $\triangleright$ Running time guarantee for any input of size $n$
+            \item \textbf{Average Case} $\triangleright$ Expected running time for a random input of size $n$
+            \item \textbf{Probabilistic Case} $\triangleright$ Expected running time of a randomized algorithm
+            \item \textbf{Amortized Case} $\triangleright$ Worst case running time for any sequence of $n$ operations
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Big-O Algorithm Complexity Cheat Sheet}
+    \begin{block}{Common Data Structure Operations}
+        \begin{center}
+            \includegraphics[width=\textwidth]{"../Lecture 8.1_artifacts/image_000029_7c2b7819e83d51d5b50d064e614f841af0bcb70a1b378bca2affa37f73f282fd.png"}
+        \end{center}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Big-O Algorithm Complexity Cheat Sheet (2)}
+    \begin{block}{Array Sorting Algorithms}
+        \begin{center}
+            \includegraphics[height=0.7\textheight]{"../Lecture 8.1_artifacts/image_000031_7d23172ad49e840b6c488526dc0fc805d8b58e659c70594cdd3ff903f02fb6b4.png"}
+        \end{center}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Need for analyzing the running-time and space requirements of a program
+            \item Asymptotic growth rate or order of the complexity of different algorithms
+            \item Worst-case, average-case and best-case analysis
+        \end{itemize}
+    \end{block}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Data Structure}{5}{0}{1}
+\beamer@sectionintoc {2}{Non-linear Data Structures}{7}{0}{2}
+\beamer@sectionintoc {3}{Binary Search Tree}{17}{0}{3}
+\beamer@sectionintoc {4}{Comparison}{25}{0}{4}

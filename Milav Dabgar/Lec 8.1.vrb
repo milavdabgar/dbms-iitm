@@ -1,0 +1,31 @@
+\frametitle{How to analyze?: Asymptotic Analysis (2)}
+\begin{lstlisting}[language=C++]
+int count = 0;
+for (int i = 0; i < N; i++)
+    for (int j = i+1; j < N; j++)
+        if (a[i] + a[j] == 0)
+            count++;
+\end{lstlisting}
+    \begin{block}{Function Approximation (tilde ($\sim$) notation)}
+        \resizebox{\textwidth}{!}{
+        \begin{tabular}{lll}
+        \toprule
+        Operation & Frequency & Approximation \\
+        \midrule
+        variable declaration & $N + 2$ & $\sim N$ \\
+        assignment statement & $N + 2$ & $\sim N$ \\
+        less than compare & $\frac{1}{2}(N+1)(N+2)$ & $\sim \frac{1}{2}N^2$ \\
+        equal to compare & $\frac{1}{2}N(N-1)$ & $\sim \frac{1}{2}N^2$ \\
+        array access & $N(N-1)$ & $\sim N^2$ \\
+        increment & $\frac{1}{2}N(N-1)$ to $N(N-1)$ & $\sim \frac{1}{2}N^2$ to $\sim N^2$ \\
+        \bottomrule
+        \end{tabular}
+        }
+        \begin{itemize}
+            \item Estimate running time (or memory) as a function of input size N. Ignore lower order terms
+            \begin{itemize}
+                \item when N is large, terms are negligible
+                \item when N is small, we don't care
+            \end{itemize}
+        \end{itemize}
+    \end{block}

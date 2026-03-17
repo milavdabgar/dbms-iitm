@@ -1,0 +1,25 @@
+\frametitle{Binary Search (2)}
+\begin{exampleblock}{Python Code for Binary Search}
+\begin{lstlisting}[language=Python]
+def binSearch(inputArr, k):
+    low = 0
+    high = len(inputArr) - 1
+    while low <= high:
+        mid = (high + low) // 2  # Division(floor)
+        if inputArr[mid] < k:    # new list is to the right of k
+            low = mid + 1
+        elif inputArr[mid] > k:  # new list is to the left of k
+            high = mid - 1
+        else:                    # means k is present at mid
+            return mid
+    return -1                    # The element is not present
+
+inputArr = ['a','a','c','c','d','e','i','m','s']
+k = 'i'
+index = binSearch(inputArr, k)
+if index != -1:
+    print("Element found at position " + str(index+1))
+else:
+    print("Not found ")
+\end{lstlisting}
+    \end{exampleblock}

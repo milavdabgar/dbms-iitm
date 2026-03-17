@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{Algorithms and Programs}{5}{0}{1}
+\beamer@sectionintoc {2}{Analysis of Algorithms}{7}{0}{2}

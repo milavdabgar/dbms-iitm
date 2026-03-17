@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{File Organization}{5}{0}{1}
+\beamer@sectionintoc {2}{Variable-Length Records}{11}{0}{2}
+\beamer@sectionintoc {3}{Organization of Records in Files}{13}{0}{3}
+\beamer@sectionintoc {4}{Data Dictionary Storage}{19}{0}{4}
+\beamer@sectionintoc {5}{Storage Access}{22}{0}{5}

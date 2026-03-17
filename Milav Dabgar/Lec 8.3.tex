@@ -1,0 +1,432 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 38}
+\subtitle{Algorithms and Data Structures/3: Data Structures}
+\author{Partha Pratim Das}
+\institute{Department of Computer Science and Engineering\\Indian Institute of Technology, Kharagpur\\ppd@cse.iitkgp.ac.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Introduced Data Structures
+            \item Defined Linear Data Structure
+            \item Reviewed array, list, stack, queue
+            \item Reviewed linear and binary search
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Introducing Non-linear Data Structures - graph, tree, hash table
+            \item Exploring Binary Search Tree
+            \item Comparing Linear and Non-Linear Data Structures
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Non-linear Data Structures
+            \item Binary Search Trees
+            \item Comparison of Linear and Non-Linear Data Structures
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Data Structure}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Data Structure\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Data Structure}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item \textbf{Data structure} : A data structure specifies the way of organizing and storing in-memory data that enables efficient access and modification of the data.
+            \item Linear Data Structures vs Non-linear Data Structures
+            \item Most data structure has a container for the data and typical operations that its needs to perform
+            \item For applications relating to data management, the key operations are:
+            \begin{itemize}[<+->]
+                \item Create
+                \item Insert
+                \item Delete
+                \item Find / Search
+                \item Close
+            \end{itemize}
+            \item Efficiency is measured in terms of time and space taken for these operations
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\section{Non-linear Data Structures}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Non-linear Data Structures\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Non-linear Data Structures: Why?}
+    \begin{block}{Summary observations for linear structures:}
+        \begin{itemize}[<+->]
+            \item All of them have the space complexity $\mathcal{O}(n)$, which optimal. However, the actual used space may be lower in array while linked list has an overhead of 100\% (double)
+            \item All of them offer satisfactory complexity for some operations while being unsatisfactory on the others.
+        \end{itemize}
+    \end{block}
+    \begin{table}[]
+        \centering
+        \begin{tabular}{lllll}
+        \toprule
+                & \textbf{Array} & \textbf{Array} & \textbf{Linked List} & \textbf{Linked List} \\
+                & \textit{Unordered} & \textit{Ordered} & \textit{Unordered}   & \textit{Ordered}     \\ \midrule
+        Access  & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$       & $\mathcal{O}(n)$       \\
+        Insert  & $\mathcal{O}(n)$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$       & $\mathcal{O}(1)$       \\
+        Delete  & $\mathcal{O}(n)$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$       & $\mathcal{O}(1)$       \\
+        Search  & $\mathcal{O}(n)$ & $\mathcal{O}(\log n)$ & $\mathcal{O}(n)$       & $\mathcal{O}(n)$       \\ \bottomrule
+        \end{tabular}
+    \end{table}
+    \begin{alertblock}{Non-Linear data structures \dots}
+        can be used to trade-off between extremes and achieve a balanced good performance for all.
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Non-linear Data Structures (2)}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Nonlinear data structures are those data structures in which data items are not arranged in a sequence and each element may have multiple paths to connect to other elements.
+            \item Traversing through the elements is not possible in one run as the data is non-linearly arranged.
+            \item Common Non-Linear Data Structures include:
+            \begin{itemize}[<+->]
+                \item \textbf{Graph} : Undirected or Directed, Unweighted or Weighted, and variants
+                \item \textbf{Tree} : Rooted or Unrooted, Binary or n-ary, Balanced or Unbalanced, and variants
+                \item \textbf{Hash Table} : Array with lists (coalesced chains) and one or more hash functions
+                \item \textbf{Skip List} : Multi-layered interconnected linked lists
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Non-linear Data Structures (3): Graph}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item \textbf{Graphs} : Graph $G$ is a collection of vertices $V$ (store the elements) and connecting edges (links) $E$ between vertices: $G = \langle V, E \rangle$ where $E \subseteq V \times V$
+            \item A graph may be: Undirected or Directed, Unweighted or Weighted, Cyclic or Acyclic, Disconnected or Connected.
+            \item Examples of a graph include: ER Diagram, Networks (Electrical, Water), Friendships in Facebook, Knowledge Graph.
+        \end{itemize}
+    \end{block}
+    \begin{center}
+        \includegraphics[height=0.4\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000010_9b77edcc3fa4a9874a2f9170a4334048aa4ada5f1288076fe917b25423df68a3.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Non-linear Data Structures (4): Tree}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item \textbf{Tree} : Is a connected acyclic graph representing hierarchical relationship
+            \item A tree may be: Rooted or Unrooted, Binary or n-ary, Balanced or Unbalanced, Disconnected (forest) or Connected.
+            \item Examples of a tree include: Composite Attributes, Family Genealogy, Search Trees, etc.
+        \end{itemize}
+    \end{block}
+    \begin{center}
+        \includegraphics[height=0.4\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000012_f9671ad3eeb1accfb0da3e9dd746ac0d7b78eadbc1d6676b5f7e665b49d9b9f4.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Non-linear Data Structures (5): Tree}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{block}{}
+                \begin{itemize}[<+->]
+                    \item \textbf{Root} : The node at the top of the tree is called root.
+                    \item \textbf{Parent} : The node which is a predecessor of any node. Every node, except Root, has a unique parent.
+                    \item \textbf{Child} : A node which is the descendant of a node.
+                    \item \textbf{Leaf} : A node which does not have any child node.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{center}
+                \includegraphics[height=0.7\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000014_b4d036c98bc82847090e14bbf413a3a791acc0b1d48a14a5a07ec131663a66b9.png"}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Non-linear Data Structures (6): Tree}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{block}{}
+                \begin{itemize}[<+->]
+                    \item \textbf{Internal Nodes} : The node which has at least one child.
+                    \item \textbf{Subtree} : Subtree represents the tree rooted at that node.
+                    \item \textbf{Path} : Sequence of nodes along the edges of a tree.
+                    \item \textbf{Siblings} : Nodes having the same parent.
+                    \item \textbf{Arity} : Number of children of a node. Maximum arity of a node is defined as the arity of the tree.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{center}
+                \includegraphics[height=0.7\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000016_7d711acc99807c3cede514def7235dff7c6c9b47b72951fb283f302be3a5f7e0.png"}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Non-linear Data Structures (7): Tree}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{block}{}
+                \begin{itemize}[<+->]
+                    \item \textbf{Levels} : The root node is said to be at Level 0, children at Level 1, etc.
+                    \item \textbf{Level} is the length of the path or distance of a node from the root node.
+                    \item \textbf{Height} : Maximum level in a tree.
+                    \item \textbf{Binary Tree} : a tree where each node can have at most 2 children (arity 2).
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{center}
+                \includegraphics[height=0.7\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000018_37ebc9076da1fda93529eb933a097fdcbcdd9f31e90862f46218f2a56a41e143.png"}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Non-linear Data Structures (8): Tree}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{block}{}
+                \begin{itemize}[<+->]
+                    \item \textbf{Fact 1} : A tree with $n$ nodes has $n - 1$ edges
+                    \item \textbf{Fact 2} : The maximum number of nodes at level $l$ of a binary tree is $2^l$.
+                    \item \textbf{Fact 3} : If $h$ is the height of a binary tree of $n$ nodes, then:
+                    \begin{itemize}[<+->]
+                        \item $h + 1 \leq n \leq 2^{h + 1} - 1$
+                        \item $\lceil \lg(n + 1) \rceil - 1 \leq h \leq n - 1$
+                        \item $\mathcal{O}(\log n) \leq h \leq \mathcal{O}(n)$
+                    \end{itemize}
+                    \item For a $k$-ary tree, $\mathcal{O}(\log_k n) \leq h \leq \mathcal{O}(n)$
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{center}
+                \includegraphics[height=0.7\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000020_37ebc9076da1fda93529eb933a097fdcbcdd9f31e90862f46218f2a56a41e143.png"}
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Non-linear Data Structures (9): Hash Table}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item \textbf{Hash Table (Hash Map)} : implements an associative array abstract data type, a structure that can map keys to values by using a hash function to compute an index (hash code), into an array of buckets or slots, from which the desired value can be found.
+            \item A hash table may be using Static or Dynamic Schemes, Open Addressing, 2-Choice Hashing, etc.
+            \item Examples include Associative arrays, Database indexing, Caches, etc.
+        \end{itemize}
+    \end{block}
+    \begin{center}
+        \includegraphics[height=0.3\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000022_6e2902764ffa9bf7a15dceb0d4926a9e5bfed2607504037b5b8ca55c421e60ce.png"}
+    \end{center}
+\end{frame}
+
+\section{Binary Search Tree}
+
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Binary Search Tree\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Binary Search and Binary Search Tree}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item During the study of linear data structure, we observed that:
+            \begin{itemize}[<+->]
+                \item Binary search is efficient in search of a key: $\mathcal{O}(\log n)$. However, it needs to be performed on a sorted array, and the array makes insertion and deletion expensive at $\mathcal{O}(n)$.
+                \item The linked list is efficient in insertion and deletion at $\mathcal{O}(1)$, while it makes the search expensive at $\mathcal{O}(n)$.
+            \end{itemize}
+            \item Using non-linearity, specifically (binary) trees, we can combine the benefits of both.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Binary Search and Binary Search Tree (2)}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Note that once an array is sorted, we know the order in which its elements may be checked (for any key) during a search.
+            \item As the binary search splits the array, we can conceptually consider the Middle Element to be the Root of a tree and the left/right sub-array to be its left/right sub-tree.
+            \item Progressing recursively, we have a Binary Search Tree.
+        \end{itemize}
+    \end{block}
+    \begin{center}
+        \includegraphics[height=0.3\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000027_ae3cb3965e1f2fe25272a09ab1c46410e97e5395d595117516823a3bc83765e5.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Binary Search Tree}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item \textbf{Binary Search Tree (BST)} : Is a tree in which all the nodes hold the following:
+            \begin{itemize}[<+->]
+                \item The value of each node in the left sub-tree is less than the value of its root.
+                \item The value of each node in the right sub-tree is greater than the value of its root.
+            \end{itemize}
+            \item \textbf{Structure of BST node} : Each node consists of an element, a link to the left child or the left subtree, and a link to the right child or the right subtree.
+        \end{itemize}
+    \end{block}
+    \begin{center}
+        \includegraphics[height=0.35\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000029_81267e4f3b30ea8615f88d3684d106e7d98b8311cf170b50c9acf8392fb13ae8.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Binary Search Tree (2)}
+    \begin{center}
+        \includegraphics[height=0.8\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000031_14115268466ef8ba335ef338b85122fbfc34f340cd9c6da043f9333922c8a5a3.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Binary Search Tree (3)}
+    \begin{block}{Example}
+        Obtain the BST by inserting the following values E, L, P, H, A, N, T.
+    \end{block}
+    \begin{center}
+        \includegraphics[height=0.6\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000033_9a13e46dd26f2b48c124132540ece6ff8432b2c0cf8988c649e66ca34a4bf6c2.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Searching a key in BST}
+    \begin{block}{search(root, key)}
+        \begin{enumerate}
+            \item Compare the key with the element at root.
+            \item If the key is equal to root's element then Element found and return
+            \item else if the key is lesser than the root's element, \texttt{search(root.lc)} \#search on the left subtree
+            \item else: \texttt{search(root.rc)} \#search on the right subtree
+        \end{enumerate}
+    \end{block}
+    \begin{center}
+        \includegraphics[height=0.3\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000035_6183bd0bbe870e66bd5355275895f317e993c762fd21dd4f7e4aa81b6335836d.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Searching a key in BST (2)}
+    \begin{block}{}
+        Searching a key in a BST is $\mathcal{O}(h)$, where $h$ is the height of the tree.
+    \end{block}
+    \begin{alertblock}{Worst Case}
+        \begin{itemize}[<+->]
+            \item The BST is a skewed binary search tree (can happen if keys are inserted in sorted order).
+            \item Height ($h$) of the BST having $n$ elements becomes $n - 1$.
+            \item Time complexity of search in BST becomes $\mathcal{O}(n)$.
+        \end{itemize}
+    \end{alertblock}
+    \begin{exampleblock}{Best Case}
+        \begin{itemize}[<+->]
+            \item The BST is a balanced binary search tree (possible if keys are inserted in purely randomized order, or the tree is explicitly balanced).
+            \item Height ($h$) of the binary search tree becomes $\log n$.
+            \item Time complexity of search in BST becomes $\mathcal{O}(\log n)$.
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+\section{Comparison}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Comparison of Linear and Non-Linear Data Structures\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Linear and Non-Linear Data Structures}
+    \begin{center}
+        \includegraphics[height=0.7\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000040_2bf87d9febce8222f64e5c8045e987c9c375e8063249ce99fd5243bb8c5cbcd7.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Comparison of Linear and Non-Linear Data Structures}
+    \begin{table}[]
+        \centering
+        \resizebox{\textwidth}{!}{
+            \begin{tabular}{p{0.45\textwidth} | p{0.45\textwidth}}
+            \toprule
+            \textbf{Linear Data Structure} & \textbf{Non-Linear Data Structure} \\ \midrule
+            Data elements are arranged in a linear order where each element is attached to its previous and next adjacent. & Data elements are arranged in hierarchical or networked manner. \\ \addlinespace
+            Single level is involved. & Multiple levels are involved. \\ \addlinespace
+            Implementation is easy in comparison to non-linear data structure. & Implementation is complex in comparison to linear data structure. \\ \addlinespace
+            Data elements can be traversed in one way only. & Data elements can be traversed in multiple ways (e.g., Depth-First, Breadth-First, Inorder, Preorder, Postorder). \\ \addlinespace
+            \textbf{Examples} : array, stack, queue, linked list, and their variants. & \textbf{Examples} : trees, graphs, skip list, hash map, and several variants. \\ \bottomrule
+            \end{tabular}
+        }
+    \end{table}
+\end{frame}
+
+\begin{frame}{Complexity of Common Data Structure Operations}
+    \begin{center}
+        \includegraphics[height=0.8\textheight, width=\textwidth, keepaspectratio]{"../Lecture 8.3_artifacts/image_000043_16c554bf10c2efe1fb27fe1105244d49b860c8e041836bace727911cc09959ed.png"}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{block}{}
+        \begin{itemize}[<+->]
+            \item Introduced Non-linear Data Structures - graph, tree, hash table
+            \item Studied Binary Search Tree as an adaptation of binary search
+            \item Compared Linear and Non-Linear Data Structures
+        \end{itemize}
+    \end{block}
+    \vspace{2em}
+    \begin{center}
+        \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+        \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

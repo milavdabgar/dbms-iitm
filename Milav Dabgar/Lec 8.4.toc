@@ -1,0 +1,6 @@
+\beamer@sectionintoc {1}{Physical Storage Media}{5}{0}{1}
+\beamer@sectionintoc {2}{Magnetic Disk}{13}{0}{2}
+\beamer@sectionintoc {3}{Magnetic Tapes}{18}{0}{3}
+\beamer@sectionintoc {4}{Cloud Storage}{20}{0}{4}
+\beamer@sectionintoc {5}{Other Storage}{23}{0}{5}
+\beamer@sectionintoc {6}{Future of Storage}{30}{0}{6}
