@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{Multivalued Dependency}{5}{0}{1}
+\beamer@sectionintoc {2}{Decomposition to 4NF}{16}{0}{2}

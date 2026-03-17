@@ -1,0 +1,16 @@
+\frametitle{4NF Decomposition Algorithm (2)}
+\begin{verbatim}
+result := { R };
+done := false;
+compute D+;
+Let Di denote the restriction of D+ to Ri
+while ( not done )
+    if (there is a schema Ri in result that is not in 4NF) then begin
+        let alpha ->> beta be a nontrivial multivalued dependency
+        that holds on Ri such that alpha -> Ri is not in Di,
+        and alpha intersect beta = phi;
+        result := ( result - Ri ) union ( Ri - beta ) union ( alpha, beta );
+    end
+    else done := true;
+\end{verbatim}
+    \textbf{Note:} each $R_i$ is in 4NF, and decomposition is lossless-join.

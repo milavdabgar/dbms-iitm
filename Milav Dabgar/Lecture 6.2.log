@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2025.12.30)  17 MAR 2026 17:06
+This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2025.12.30)  17 MAR 2026 17:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**"./Lecture 6.1.tex"
-(Lecture 6.1.tex
+**"./Lecture 6.2.tex"
+(Lecture 6.2.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
 (C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamer.cls
@@ -987,8 +987,8 @@ File: l3backend-xetex.def 2025-10-09 L3 backend support: XeTeX
 \g__graphics_track_int=\count383
 \g__pdfannot_backend_int=\count384
 \g__pdfannot_backend_link_int=\count385
-) (Lecture 6.1.aux)
-\openout1 = `"Lecture 6.1.aux"'.
+) (Lecture 6.2.aux)
+\openout1 = `"Lecture 6.2.aux"'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
@@ -1046,9 +1046,9 @@ LaTeX Font Info:    ... okay on input line 34.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring OFF on input line 34.
-(Lecture 6.1.out) (Lecture 6.1.out)
+(Lecture 6.2.out) (Lecture 6.2.out)
 \@outlinefile=\write5
-\openout5 = `"Lecture 6.1.out"'.
+\openout5 = `"Lecture 6.2.out"'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 34.
@@ -1120,7 +1120,7 @@ Dictionary: translator-theorem-dictionary, Language: English
 \c@lstlisting=\count386
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
- (Lecture 6.1.nav) [1
+ (Lecture 6.2.nav) [1
 
 ] [2
 
@@ -1133,53 +1133,64 @@ Package caption Info: End \AtBeginDocument code.
 ] [6
 
 ]
+LaTeX Font Info:    Trying to load font information for U+msa on input line 95.
+
+
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 95.
+
+
+(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 95.
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 95.
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <6> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 95.
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 95.
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <7> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 95.
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 95.
+
 [7
 
 ] [8
 
 ] [9
 
-] [10
-
-] [11
-
 ]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 204
-.
+\openout4 = `"Lecture 6.2.vrb"'.
 
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 204
-.
-
-(C:\Users\milav\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 204.
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 204.
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <6> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 204.
-
-Overfull \vbox (18.69014pt too high) detected at line 204
+ (Lecture 6.2.vrb
+Overfull \hbox (26.55582pt too wide) in paragraph at lines 21--21
+[]\TU/lmtt/m/n/10.95 if none of the schemas Rj, 1 <= j <= i contains a candidat
+e key for R then begin[] 
  []
 
-[12
+)
+Overfull \vbox (53.40547pt too high) detected at line 142
+ []
+
+[10
+
+]
+LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <9> not available
+(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 157.
+ [11
+
+] [12
 
 ] [13
 
 ] [14
 
-]
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 262.
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <7> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 262.
-LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5> not available
-(Font)              Font shape `TU/lmss/m/sl' tried instead on input line 262.
- [15
+] [15
 
 ] [16
 
@@ -1188,14 +1199,17 @@ LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <5> not available
 ] [18
 
 ]
-Overfull \vbox (206.19112pt too high) detected at line 347
+Overfull \vbox (6.12381pt too high) detected at line 299
  []
 
 [19
 
 ] [20
 
-] [21
+]
+\openout4 = `"Lecture 6.2.vrb"'.
+
+ (Lecture 6.2.vrb) [21
 
 ] [22
 
@@ -1207,31 +1221,36 @@ Overfull \vbox (206.19112pt too high) detected at line 347
 
 ] [26
 
+] [27
+
+] [28
+
 ]
 \tf@nav=\write6
-\openout6 = `"Lecture 6.1.nav"'.
+\openout6 = `"Lecture 6.2.nav"'.
 
 \tf@toc=\write7
-\openout7 = `"Lecture 6.1.toc"'.
+\openout7 = `"Lecture 6.2.toc"'.
 
 \tf@snm=\write8
-\openout8 = `"Lecture 6.1.snm"'.
+\openout8 = `"Lecture 6.2.snm"'.
 
- (Lecture 6.1.aux)
+
+(Lecture 6.2.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
-Package rerunfilecheck Info: File `"Lecture 6.1".out' has not changed.
+Package rerunfilecheck Info: File `"Lecture 6.2".out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
  ) 
 Here is how much of TeX's memory you used:
- 28278 strings out of 402987
- 547425 string characters out of 5448523
- 934296 words of memory out of 5000000
- 56466 multiletter control sequences out of 15000+600000
- 635498 words of font info for 90 fonts, out of 8000000 for 9000
+ 28316 strings out of 402987
+ 548277 string characters out of 5448523
+ 934389 words of memory out of 5000000
+ 56491 multiletter control sequences out of 15000+600000
+ 637066 words of font info for 98 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 128i,15n,123p,428b,677s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,15n,123p,428b,625s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Lecture 6.1.pdf (26 pages).
+Output written on Lecture 6.2.pdf (28 pages).

@@ -1,0 +1,17 @@
+\frametitle{LIS Schema Refinement (9): Query}
+\begin{itemize}
+        \item Consider the access query again:
+        \item Get the name of the member who has issued the book having accession number = 162715
+    \end{itemize}
+\begin{lstlisting}[language=SQL]
+SELECT
+  ((SELECT faculty_fname as First Name, faculty_lname as Last Name
+    FROM faculty
+    WHERE member_class = 'faculty' AND members.id = faculty.id)
+  UNION
+  (SELECT student_fname as First Name, student_lname as Last Name
+   FROM students
+   WHERE member_class = 'student' AND members.roll_no = students.roll_no))
+FROM members, book_issue
+WHERE accession_no = 162715 AND book_issue.member_no = members.member_no;
+\end{lstlisting}

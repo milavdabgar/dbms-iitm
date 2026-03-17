@@ -1,0 +1,409 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 29}
+\subtitle{Relational Database Design/9: MVD and 4NF}
+\author{Milav Dabgar}
+\institute{www.milav.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item Using the specification for a Library Information System, we have illustrated how a schema can be designed and then refined for finalization
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To understand multi-valued dependencies arising out of attributes that can have multiple values
+        \item To define Fourth Normal Form and learn the decomposition algorithm to 4NF
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Multivalued Dependencies
+        \item Decomposition to 4NF
+    \end{itemize}
+\end{frame}
+
+\section{Multivalued Dependency}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Multivalued Dependency\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{MVD: Multivalued Dependency}
+    \textbf{Persons(Man, Phones, Dog\_Like)}
+    \begin{table}
+    \centering
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{llll}
+    \toprule
+    \textbf{Person} & \textbf{Person} & \textbf{Person} & \textbf{Meaning of the tuples} \\
+    \textbf{Man(M)} & \textbf{Phones(P)} & \textbf{Dogs\_Like(D)} & \\
+    \midrule
+    M1 & P1, P2 & D1, D2 & Man M1 have phones P1 and P2, and likes the dogs D1 and D2. \\
+    M2 & P3 & D2 & M2 have phones P3, and likes the dog D2. \\
+    \bottomrule
+    \multicolumn{4}{l}{\footnotesize Key MPD}
+    \end{tabular}
+    }
+    \end{table}
+    \begin{itemize}
+        \item There are no non trivial FDs because all attributes are combined forming Candidate Key, that is, MPD.
+        \item In the above relation, two multivalued dependencies exist:
+        \begin{itemize}
+            \item Man $\twoheadrightarrow$ Phones
+            \item Man $\twoheadrightarrow$ Dogs\_Like
+        \end{itemize}
+        \item A man's phones are independent of the dogs they like. But after converting the above relation in Single Valued Attribute, each of a man's phones appears with each of the dogs they like in all combinations.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Post 1NF Normalization}
+    \begin{table}
+    \centering
+    \begin{tabular}{lll}
+    \toprule
+    \textbf{Man(M)} & \textbf{Phones(P)} & \textbf{Dogs\_Likes(D)} \\
+    \midrule
+    M1 & P1 & D1 \\
+    M1 & P1 & D2 \\
+    M1 & P2 & D1 \\
+    M1 & P2 & D2 \\
+    M2 & P3 & D2 \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+    \begin{itemize}
+        \item If two or more independent relations are kept in a single relation, then Multivalued Dependency is possible. For example, Let there are two relations:
+        \begin{itemize}
+            \item \texttt{Student(SID, Sname)} where \texttt{SID $\rightarrow$ Sname}
+            \item \texttt{Course(CID, Cname)} where \texttt{CID $\rightarrow$ Cname}
+        \end{itemize}
+        \item There is no relation defined between Student and Course. If we kept them in a single relation named \texttt{Student\_Course}, then MVD will exist because of m:n Cardinality.
+        \item If two or more MVDs exist in a relation, then while converting into SVAs, MVD exists.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{MVD (3)}
+    \begin{itemize}
+        \item Suppose we record names of children, and phone numbers for instructors:
+        \begin{itemize}
+            \item \texttt{inst\_child(ID, child\_name)}
+            \item \texttt{inst\_phone(ID, phone\_number)}
+        \end{itemize}
+        \item If we were to combine these schema to get
+        \begin{itemize}
+            \item \texttt{inst\_info(ID, child\_name, phone\_number)}
+        \end{itemize}
+        \item Example data:
+        \begin{itemize}
+            \item \texttt{(99999, David, 512-555-1234)}
+            \item \texttt{(99999, David, 512-555-4321)}
+            \item \texttt{(99999, William, 512-555-1234)}
+            \item \texttt{(99999, William, 512-555-4321)}
+        \end{itemize}
+        \item This relation is in BCNF
+        \item Why?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{MVD: Definition}
+    \begin{itemize}
+        \item Let $R$ be a relation schema and let $\alpha \subseteq R$ and $\beta \subseteq R$. The multivalued dependency
+        \[ \alpha \twoheadrightarrow \beta \]
+        holds on $R$ if in any legal relation $r(R)$, for all pairs for tuples $t_1$ and $t_2$ in $r$ such that $t_1[\alpha] = t_2[\alpha]$, there exist tuples $t_3$ and $t_4$ in $r$ such that:
+        \begin{align*}
+            t_1[\alpha] &= t_2[\alpha] = t_3[\alpha] = t_4[\alpha] \\
+            t_3[\beta] &= t_1[\beta] \\
+            t_3[R - \beta] &= t_2[R - \beta] \\
+            t_4[\beta] &= t_2[\beta] \\
+            t_4[R - \beta] &= t_1[R - \beta]
+        \end{align*}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{MVD: Definition (Example)}
+    \textbf{Example:} A relation of university courses, the books recommended for the course, and the lecturers who will be teaching the course:
+    \begin{table}
+    \centering
+    \begin{tabular}{lll}
+    \toprule
+    \textbf{Course} & \textbf{Book} & \textbf{Lecturer} \\
+    \midrule
+    AHA & Silberschatz & John D \\
+    AHA & Nederpelt & William M \\
+    AHA & Silberschatz & William M \\
+    AHA & Nederpelt & John D \\
+    AHA & Silberschatz & Christian G \\
+    AHA & Nederpelt & Christian G \\
+    OSO & Silberschatz & John D \\
+    OSO & Silberschatz & William M \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+    \begin{itemize}
+        \item course $\twoheadrightarrow$ book
+        \item course $\twoheadrightarrow$ lecturer
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{MVD: Example}
+    \begin{itemize}
+        \item Let $R$ be a relation schema with a set of attributes that are partitioned into 3 nonempty subsets $Y, Z, W$
+        \item We say that $Y \twoheadrightarrow Z$ ($Y$ multidetermines $Z$) if and only if for all possible relations $r(R)$:
+        \begin{itemize}
+            \item $< y_1, z_1, w_1 > \in r$ and $< y_1, z_2, w_2 > \in r$ then
+            \item $< y_1, z_1, w_2 > \in r$ and $< y_1, z_2, w_1 > \in r$
+        \end{itemize}
+        \item Note that since the behavior of $Z$ and $W$ are identical it follows that $Y \twoheadrightarrow Z$ if $Y \twoheadrightarrow W$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{MVD: Example (2)}
+    \begin{itemize}
+        \item In our example:
+        \begin{itemize}
+            \item \texttt{ID $\twoheadrightarrow$ child\_name}
+            \item \texttt{ID $\twoheadrightarrow$ phone\_number}
+        \end{itemize}
+        \item The above formal definition is supposed to formalize the notion that given a particular value of $Y$ (ID) it has associated with it a set of values of $Z$ (child\_name) and a set of values of $W$ (phone\_number), and these two sets are in some sense independent of each other.
+        \item \textbf{Note:}
+        \begin{itemize}
+            \item If $Y \rightarrow Z$ then $Y \twoheadrightarrow Z$
+            \item Indeed we have (in above notation) $Z_1 = Z_2$. The claim follows.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{MVD: Use}
+    \begin{itemize}
+        \item We use multivalued dependencies in two ways:
+        \begin{itemize}
+            \item a) To test relations to determine whether they are legal under a given set of functional and multivalued dependencies
+            \item b) To specify constraints on the set of legal relations. We shall thus concern ourselves only with relations that satisfy a given set of functional and multivalued dependencies.
+        \end{itemize}
+        \item If a relation $r$ fails to satisfy a given multivalued dependency, we can construct a relation $r'$ that does satisfy the multivalued dependency by adding tuples to $r$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{MVD: Theory}
+    \begin{table}
+    \centering
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{lp{3cm}p{10cm}}
+    \toprule
+    & \textbf{Name} & \textbf{Rule} \\
+    \midrule
+    C- & Complementation & If $X \twoheadrightarrow Y$, then $X \twoheadrightarrow (R - (X \cup Y))$. \\
+    A- & Augmentation & If $X \twoheadrightarrow Y$ and $W \supseteq Z$, then $WZ \twoheadrightarrow YZ$. \\
+    T- & Transitivity & If $X \twoheadrightarrow Y$ and $Y \twoheadrightarrow Z$, then $X \twoheadrightarrow (Z - Y)$. \\
+    & Replication & If $X \rightarrow Y$, then $X \twoheadrightarrow Y$ but the reverse is not true. \\
+    & Coalescence & If $X \twoheadrightarrow Y$ and there is a $W$ such that $W \cap Y$ is empty, $W \rightarrow Z$ and $Y \supseteq Z$, then $X \rightarrow Z$. \\
+    \bottomrule
+    \end{tabular}
+    }
+    \end{table}
+    \begin{itemize}
+        \item A MVD $X \twoheadrightarrow Y$ in $R$ is called a \textbf{trivial} MVD if
+        \begin{itemize}
+            \item $Y \subseteq X$ or
+            \item $X \cup Y = R$.
+        \end{itemize}
+        \item Otherwise, it is a non trivial MVD and we have to repeat values redundantly in the tuples.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{MVD: Theory (2)}
+    \begin{itemize}
+        \item From the definition of multivalued dependency, we can derive the following rule:
+        \begin{itemize}
+            \item If $\alpha \rightarrow \beta$, then $\alpha \twoheadrightarrow \beta$
+        \end{itemize}
+        \item That is, every functional dependency is also a multivalued dependency
+        \item The closure $D^+$ of $D$ is the set of all functional and multivalued dependencies logically implied by $D$.
+        \item We can compute $D^+$ from $D$, using the formal definitions of functional dependencies and multivalued dependencies.
+        \item We can manage with such reasoning for very simple multivalued dependencies, which seem to be most common in practice
+        \item For complex dependencies, it is better to reason about sets of dependencies using a system of inference rules
+    \end{itemize}
+\end{frame}
+
+\section{Decomposition to 4NF}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Decomposition to 4NF\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Fourth Normal Form}
+    \begin{itemize}
+        \item A relation schema $R$ is in 4NF with respect to a set $D$ of functional and multivalued dependencies if for all multivalued dependencies in $D^+$ of the form $\alpha \twoheadrightarrow \beta$, where $\alpha \subseteq R$ and $\beta \subseteq R$, at least one of the following hold:
+        \begin{itemize}
+            \item $\alpha \twoheadrightarrow \beta$ is trivial (that is, $\beta \subseteq \alpha$ or $\alpha \cup \beta = R$)
+            \item $\alpha$ is a superkey for schema $R$
+        \end{itemize}
+        \item If a relation is in 4NF it is in BCNF
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Restriction of Multivalued Dependencies}
+    \begin{itemize}
+        \item The restriction of $D$ to $R_i$ is the set $D_i$ consisting of
+        \begin{itemize}
+            \item All functional dependencies in $D^+$ that include only attributes of $R_i$
+            \item All multivalued dependencies of the form
+            \begin{itemize}
+                \item $\alpha \twoheadrightarrow (\beta \cap R_i)$ where $\alpha \subseteq R_i$ and $\alpha \twoheadrightarrow \beta$ is in $D^+$
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{4NF Decomposition Algorithm}
+    \begin{itemize}
+        \item a) For all dependencies $A \twoheadrightarrow B$ in $D^+$, check if $A$ is a superkey
+        \begin{itemize}
+            \item By using attribute closure
+        \end{itemize}
+        \item b) If not, then
+        \begin{itemize}
+            \item Choose a dependency in $D^+$ that breaks the 4NF rules, say $A \twoheadrightarrow B$
+            \item Create $R_1 = AB$
+            \item Create $R_2 = (R - (B - A))$
+            \item Note that: $R_1 \cap R_2 = A$ and $A \twoheadrightarrow AB \, (= R_1)$, so this is lossless decomposition
+        \end{itemize}
+        \item c) Repeat for $R_1$, and $R_2$
+        \begin{itemize}
+            \item By defining $D_1^+$ to be all dependencies in $D$ that contain only attributes in $R_1$
+            \item Similarly $D_2^+$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{4NF Decomposition Algorithm (2)}
+\begin{verbatim}
+result := { R };
+done := false; 
+compute D+; 
+Let Di denote the restriction of D+ to Ri
+while ( not done ) 
+    if (there is a schema Ri in result that is not in 4NF) then begin 
+        let alpha ->> beta be a nontrivial multivalued dependency 
+        that holds on Ri such that alpha -> Ri is not in Di, 
+        and alpha intersect beta = phi; 
+        result := ( result - Ri ) union ( Ri - beta ) union ( alpha, beta ); 
+    end 
+    else done := true;
+\end{verbatim}
+    \textbf{Note:} each $R_i$ is in 4NF, and decomposition is lossless-join.
+\end{frame}
+
+\begin{frame}{Example of 4NF Decomposition}
+    \begin{itemize}
+        \item \textbf{Example:}
+        \item \texttt{Person\_Modify(Man(M), Phones(P), Dog\_Likes(D), Address(A))}
+        \item FDs:
+        \begin{itemize}
+            \item $\triangleright$ FD1: Man $\twoheadrightarrow$ Phones
+            \item $\triangleright$ FD2: Man $\twoheadrightarrow$ Dogs\_Like
+            \item $\triangleright$ FD3: Man $\rightarrow$ Address
+        \end{itemize}
+        \item Key = \texttt{MPD}
+        \item All dependencies violate 4NF
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example of 4NF Decomposition (2)}
+    \begin{table}
+    \centering
+    \begin{tabular}{llll}
+    \toprule
+    \textbf{Man(M)} & \textbf{Phones(P)} & \textbf{Dogs\_Likes(D)} & \textbf{Address(A)} \\
+    \midrule
+    M1 & P1 & D1 & 49-ABC, Bhiwani(HR) \\
+    M1 & P2 & D2 & 49-ABC, Bhiwani(HR) \\
+    M2 & P3 & D2 & 36-XYZ, Rohtak(HR) \\
+    M1 & P1 & D2 & 49-ABC, Bhiwani(HR) \\
+    M1 & P2 & D1 & 49-ABC, Bhiwani(HR) \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+    \begin{itemize}
+        \item In the above relations for both the MVD's 'X' is Man, which is again not the super key, but as $X \cup Y = R_i$ (Man \& Phones) together make the relation. So the above MVD's are trivial and in FD 3, Address is functionally dependent on Man where Man is the key in Person Address. Hence all the three relations are in 4NF.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example of 4NF Decomposition (3)}
+    \begin{itemize}
+        \item $R = (A, B, C, G, H, I)$
+        \item $F = \{A \twoheadrightarrow B, B \twoheadrightarrow HI, CG \twoheadrightarrow H\}$
+        \item $R$ is not in 4NF since $A \twoheadrightarrow B$ and $A$ is not a superkey for $R$
+        \item \textbf{Decomposition}
+        \begin{itemize}
+            \item a) $R_1 = (A, B)$ ($R_1$ is in 4NF)
+            \item b) $R_2 = (A, C, G, H, I)$ ($R_2$ is not in 4NF, decompose into $R_3$ and $R_4$)
+            \item c) $R_3 = (C, G, H)$ ($R_3$ is in 4NF)
+            \item d) $R_4 = (A, C, G, I)$ ($R_4$ is not in 4NF, decompose into $R_5$ and $R_6$)
+            \begin{itemize}
+                \item $A \twoheadrightarrow B$ and $B \twoheadrightarrow HI \Rightarrow A \twoheadrightarrow HI$ (MVD transitivity), and
+                \item hence $A \twoheadrightarrow I$ (MVD restriction to $R_4$)
+            \end{itemize}
+            \item e) $R_5 = (A, I)$ ($R_5$ is in 4NF)
+            \item f) $R_6 = (A, C, G)$ ($R_6$ is in 4NF)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Understood multi-valued dependencies to handle attributes that can have multiple values
+        \item Learnt Fourth Normal Form and decomposition to 4NF
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

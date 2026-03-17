@@ -1,0 +1,16 @@
+\frametitle{BCNF Decomposition (5): Algorithm}
+\begin{verbatim}
+result := {R};
+done := false;
+compute F+;
+while (not done) do
+    if (there is a schema Ri in result that is not in BCNF) then begin
+        let alpha -> beta be a nontrivial functional dependency
+        that holds on Ri such that alpha -> beta is not in F+,
+        and alpha intersect beta = phi;
+        result := (result - Ri) union (Ri - beta) union (alpha, beta);
+    end
+else done := true;
+    \end{verbatim}
+    \vspace{1em}
+    \textbf{Note:} each $R_i$ is in BCNF, and decomposition is lossless-join.

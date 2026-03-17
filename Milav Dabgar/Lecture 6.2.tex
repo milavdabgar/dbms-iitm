@@ -1,0 +1,458 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 27}
+\subtitle{Relational Database Design/7: Normal Forms}
+\author{Milav Dabgar}
+\institute{www.milav.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item Studied the Normal Forms and their Importance in Relational Design - how progressive increase of constraints can minimize redundancy in a schema
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To Learn the Decomposition Algorithm for a Relation to 3NF
+        \item To Learn the Decomposition Algorithm for a Relation to BCNF
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Decomposition to 3NF
+        \item Decomposition to BCNF
+    \end{itemize}
+\end{frame}
+
+\section{Decomposition to 3NF}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Decomposition to 3NF\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{3NF Decomposition: Motivation}
+    \begin{itemize}
+        \item There are some situations where
+        \begin{itemize}
+            \item BCNF is not dependency preserving, and
+            \item Efficient checking for FD violation on updates is important
+        \end{itemize}
+        \item Solution: define a weaker normal form, called Third Normal Form (3NF)
+        \item Allows some redundancy (with resultant problems; as seen above)
+        \item But functional dependencies can be checked on individual relations without computing a join
+        \item There is always a lossless-join, dependency-preserving decomposition into 3NF
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF Decomposition (2): 3NF Definition}
+    \begin{itemize}
+        \item A relational schema $R$ is in 3NF if for every FD $X \rightarrow A$ associated with $R$ either
+        \begin{itemize}
+            \item $A \subseteq X$ (that is, the FD is trivial) or
+            \item $X$ is a superkey of $R$ or
+            \item $A$ is part of some candidate key (not just superkey!)
+        \end{itemize}
+        \item A relation in 3NF is naturally in 2NF
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF Decomposition (3): Testing for 3NF}
+    \begin{itemize}
+        \item Optimization: Need to check only FDs in $F$, need not check all FDs in $F^+$.
+        \item Use attribute closure to check for each dependency $\alpha \rightarrow \beta$, if $\alpha$ is a superkey.
+        \item If $\alpha$ is not a superkey, we have to verify if each attribute in $\beta$ is contained in a candidate key of $R$
+        \item This test is rather more expensive, since it involve finding candidate keys
+        \item Testing for 3NF has been shown to be NP-hard
+        \item Decomposition into 3NF can be done in polynomial time
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF Decomposition (4): Algorithm}
+    \begin{itemize}
+        \item \textbf{Given}: relation $R$, set $F$ of functional dependencies
+        \item \textbf{Find}: decomposition of $R$ into a set of 3NF relation $R_i$
+        \item \textbf{Algorithm}:
+        \begin{itemize}
+            \item a) Eliminate redundant FDs, resulting in a canonical cover $F_c$ of $F$
+            \item b) Create a relation $R_i = XY$ for each FD $X \rightarrow Y$ in $F_c$
+            \item c) If the key $K$ of $R$ does not occur in any relation $R_i$, create one more relation $R_i = K$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{3NF Decomposition (5): Algorithm}
+    \begin{verbatim}
+Let Fc be a canonical cover for F;
+i := 0;
+for each functional dependency alpha -> beta in Fc do 
+    if none of the schemas Rj, 1 <= j <= i contains alpha beta then begin 
+        i := i +1; 
+        Ri := alpha beta 
+    end 
+if none of the schemas Rj, 1 <= j <= i contains a candidate key for R then begin 
+    i := i +1; 
+    Ri := any candidate key for R; 
+end 
+/* Optionally, remove redundant relations */ 
+repeat 
+    if any schema Rj is contained in another schema Rk then 
+        /* delete Rj */ 
+        Rj = R; 
+        i = i -1; 
+return (R1, R2, ..., Ri)
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}{3NF Decomposition (6): Algorithm Properties}
+    \begin{itemize}
+        \item Upon decomposition:
+        \begin{itemize}
+            \item Each relation schema $R_i$ is in 3NF
+            \item Decomposition is
+            \begin{itemize}
+                \item $\triangleright$ Dependency Preserving
+                \item $\triangleright$ Lossless Join
+            \end{itemize}
+            \item Prove these properties
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF Decomposition (7): Example}
+    \begin{itemize}
+        \item Relation schema:
+        \begin{itemize}
+            \item \texttt{cust\_banker\_branch = (customer\_id, employee\_id, branch\_name, type)}
+        \end{itemize}
+        \item The functional dependencies for this relation schema are:
+        \begin{itemize}
+            \item a) \texttt{customer\_id, employee\_id $\rightarrow$ branch\_name, type}
+            \item b) \texttt{employee\_id $\rightarrow$ branch\_name}
+            \item c) \texttt{customer\_id, branch\_name $\rightarrow$ employee\_id}
+        \end{itemize}
+        \item We first compute a canonical cover
+        \begin{itemize}
+            \item \texttt{branch\_name} is extraneous in the RHS of the $1^{st}$ dependency
+            \item No other attribute is extraneous, so we get $F_c = $
+            \begin{itemize}
+                \item \texttt{customer\_id, employee\_id $\rightarrow$ type}
+                \item \texttt{employee\_id $\rightarrow$ branch\_name}
+                \item \texttt{customer\_id, branch\_name $\rightarrow$ employee\_id}
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{3NF Decomposition (8): Example}
+    \begin{itemize}
+        \item The \texttt{for} loop generates following 3NF schema:
+        \begin{itemize}
+            \item \texttt{(customer\_id, employee\_id, type)}
+            \item \texttt{(employee\_id, branch\_name)}
+            \item \texttt{(customer\_id, branch\_name, employee\_id)}
+        \end{itemize}
+        \item Observe that \texttt{(customer\_id, branch\_name, employee\_id)} contains a candidate key of the original schema, so no further relation schema needs be added
+        \item At end of \texttt{for} loop, detect and delete schemas, such as \texttt{(employee\_id, branch\_name)}, which are subsets of other schemas
+        \begin{itemize}
+            \item result will not depend on the order in which FDs are considered
+        \end{itemize}
+        \item The resultant simplified 3NF schema is:
+        \begin{itemize}
+            \item \texttt{(customer\_id, employee\_id, type)}
+            \item \texttt{(customer\_id, branch\_name, employee\_id)}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Practice Problem for 3NF Decomposition (3)}
+    \textbf{Decompose the following schema to 3NF in the following steps}
+    \begin{itemize}
+        \item Compute all keys for $R$
+        \item Compute a Canonical Cover $F_c$ for $F$. Put the FDs into alphabetical order.
+        \item Using $F_c$, employ the $3NFdecom$ algorithm to obtain a lossless and dependency preserving decomposition of relation $R$ into a collection of relations that are in 3NF
+        \item Does your schema allow redundancy?
+        \item $R(ABCDEFGH): F = \{A \rightarrow CD, ACF \rightarrow G, AD \rightarrow BEF, BCG \rightarrow D, CF \rightarrow AH, CH \rightarrow G, D \rightarrow B, H \rightarrow DEG\}$
+        \item $R(ABCDE): F = \{A \rightarrow B, A \rightarrow C, C \rightarrow D, A \rightarrow E\}$
+        \item $R(ABCDE): F = \{A \rightarrow BC, CD \rightarrow E, B \rightarrow D, E \rightarrow A\}$
+        \item $R(ABCD): F = \{A \rightarrow D, AB \rightarrow C, AD \rightarrow C, B \rightarrow C, D \rightarrow AB\}$
+    \end{itemize}
+\end{frame}
+
+\section{Decomposition to BCNF}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Decomposition to BCNF\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{BCNF Decomposition: BCNF Definition}
+    \begin{itemize}
+        \item A relation schema $R$ is in BCNF with respect to a set $F$ of FDs if for all FDs in $F^+$ of the form
+        \[ \alpha \rightarrow \beta \text{, where } \alpha \subseteq R \text{ and } \beta \subseteq R \]
+        at least one of the following holds:
+        \begin{itemize}
+            \item $\alpha \rightarrow \beta$ is trivial (that is, $\beta \subseteq \alpha$)
+            \item $\alpha$ is a superkey for $R$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF Decomposition (2): Testing for BCNF}
+    \begin{itemize}
+        \item To check if a non-trivial dependency $\alpha \rightarrow \beta$ causes a violation of BCNF
+        \begin{itemize}
+            \item a) Compute $\alpha^+$ (the attribute closure of $\alpha$), and
+            \item b) Verify that it includes all attributes of $R$, that is, it is a superkey of $R$.
+        \end{itemize}
+        \item \textbf{Simplified test:} To check if a relation schema $R$ is in BCNF, it suffices to check only the dependencies in the given set $F$ for violation of BCNF, rather than checking all dependencies in $F^+$.
+        \begin{itemize}
+            \item If none of the dependencies in $F$ causes a violation of BCNF, then none of the dependencies in $F^+$ will cause a violation of BCNF either.
+        \end{itemize}
+        \item However, simplified test using only $F$ is \textbf{incorrect} when testing a relation in a decomposition of $R$
+        \begin{itemize}
+            \item Consider $R = (A, B, C, D, E)$, with $F = \{A \rightarrow B, BC \rightarrow D\}$
+            \item $\triangleright$ Decompose $R$ into $R_1 = (A, B)$ and $R_2 = (A, C, D, E)$
+            \item $\triangleright$ Neither of the dependencies in $F$ contain only attributes from $(A, C, D, E)$ so we might be mislead into thinking $R_2$ satisfies BCNF.
+            \item $\triangleright$ In fact, dependency $AC \rightarrow D$ in $F^+$ shows $R_2$ is not in BCNF.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF Decomposition (3): Testing for BCNF Decomposition}
+    \begin{itemize}
+        \item To check if a relation $R_i$ in a decomposition of $R$ is in BCNF,
+        \begin{itemize}
+            \item Either test $R_i$ for BCNF with respect to the restriction of $F$ to $R_i$ (that is, all FDs in $F^+$ that contain only attributes from $R_i$)
+            \item Or use the original set of dependencies $F$ that hold on $R$, but with the following test:
+            \begin{itemize}
+                \item $\triangleright$ for every set of attributes $\alpha \subseteq R_i$, check that $\alpha^+$ (the attribute closure of $\alpha$) either includes no attribute of $R_i - \alpha$, or includes all attributes of $R_i$.
+                \item $\triangleright$ If the condition is violated by some $\alpha \rightarrow \beta$ in $F$, the dependency $\alpha \rightarrow (\alpha^+ - \alpha) \cap R_i$ can be shown to hold on $R_i$, and $R_i$ violates BCNF.
+                \item $\triangleright$ We use above dependency to decompose $R_i$
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF Decomposition (4): Testing Dependency Preservation}
+    \textbf{Using Closure of Attributes (Poly. Algo.)}
+    \begin{itemize}
+        \item $R (ABCD)$: $F = \{A \rightarrow B, B \rightarrow C, C \rightarrow D, D \rightarrow A\}$
+        \item Decomp = $\{AB, BC, CD\}$
+        \item On projections:
+        \begin{table}
+        \centering
+        \begin{tabular}{lll}
+        \toprule
+        \textbf{R1} & \textbf{R2} & \textbf{R3} \\
+        \midrule
+        F1 & F2 & F3 \\
+        A $\rightarrow$ B & & \\
+        \bottomrule
+        \end{tabular}
+        \end{table}
+        \textit{In this algo F1, F2, F3 are not the closure sets, rather the set of dependencies directly applicable on R1, R2, R3 respectively.}
+        \item Need to check for: $A \rightarrow B, B \rightarrow C, C \rightarrow D, D \rightarrow A$
+        \item $(D)^+ / F_1 = D$. $(D)^+ / F_2 = D$. $(D)^+ / F_3 = D$. So, $D \rightarrow A$ could not be preserved.
+        \item In the previous method we saw the dependency was preserved. In reality also it is preserved. Therefore the polynomial time algorithm may not work in case of all examples. To prove preservation Algo 2 is sufficient but not necessary whereas Algo 1 is both sufficient as well as necessary.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF Decomposition (4): Algorithm}
+    \begin{itemize}
+        \item a) For all dependencies $A \rightarrow B$ in $F^+$, check if $A$ is a superkey
+        \begin{itemize}
+            \item By using attribute closure
+        \end{itemize}
+        \item b) If not, then
+        \begin{itemize}
+            \item Choose a dependency in $F^+$ that breaks the BCNF rules, say $A \rightarrow B$
+            \item Create $R_1 = AB$
+            \item Create $R_2 = (R - (B - A))$
+            \item Note that: $R_1 \cap R_2 = A$ and $A \rightarrow AB \, (= R_1)$, so this is lossless decomposition
+        \end{itemize}
+        \item c) Repeat for $R_1$, and $R_2$
+        \begin{itemize}
+            \item By defining $F_1^+$ to be all dependencies in $F$ that contain only attributes in $R_1$
+            \item Similarly $F_2^+$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{BCNF Decomposition (5): Algorithm}
+    \begin{verbatim}
+result := {R}; 
+done := false; 
+compute F+; 
+while (not done) do 
+    if (there is a schema Ri in result that is not in BCNF) then begin 
+        let alpha -> beta be a nontrivial functional dependency 
+        that holds on Ri such that alpha -> beta is not in F+, 
+        and alpha intersect beta = phi; 
+        result := (result - Ri) union (Ri - beta) union (alpha, beta); 
+    end
+else done := true;
+    \end{verbatim}
+    \vspace{1em}
+    \textbf{Note:} each $R_i$ is in BCNF, and decomposition is lossless-join.
+\end{frame}
+
+\begin{frame}{BCNF Decomposition (6): Example}
+    \begin{itemize}
+        \item $R = (A, B, C)$, $F = \{A \rightarrow B, B \rightarrow C\}$, Key = $\{A\}$
+        \item $R$ is not in BCNF ($B \rightarrow C$ but $B$ is not superkey)
+        \item Decomposition
+        \begin{itemize}
+            \item $R_1 = (B, C)$
+            \item $R_2 = (A, B)$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF Decomposition (7): Example}
+    \begin{itemize}
+        \item \texttt{class(course\_id, title, dept\_name, credits, sec\_id, semester, year, building, room\_number, capacity, time\_slot\_id)}
+        \item Functional dependencies:
+        \begin{itemize}
+            \item \texttt{course\_id $\rightarrow$ title, dept\_name, credits}
+            \item \texttt{building, room\_number $\rightarrow$ capacity}
+            \item \texttt{course\_id, sec\_id, semester, year $\rightarrow$ building, room\_number, time\_slot\_id}
+        \end{itemize}
+        \item A candidate key: \texttt{course\_id, sec\_id, semester, year}
+        \item BCNF Decomposition:
+        \begin{itemize}
+            \item \texttt{course\_id $\rightarrow$ title, dept\_name, credits} holds
+            \item $\triangleright$ but \texttt{course\_id} is not a superkey
+        \end{itemize}
+        \item We replace \texttt{class} by:
+        \begin{itemize}
+            \item $\triangleright$ \texttt{course(course\_id, title, dept\_name, credits)}
+            \item $\triangleright$ \texttt{class-1(course\_id, sec\_id, semester, year, building, room\_number, capacity, time\_slot\_id)}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF Decomposition (8): Example}
+    \begin{itemize}
+        \item \texttt{course} is in BCNF
+        \item How do we know this?
+        \item \texttt{building, room\_number $\rightarrow$ capacity} holds on
+        \begin{itemize}
+            \item \texttt{class-1(course\_id, sec\_id, semester, year, building, room\_number, capacity, time\_slot\_id)}
+        \end{itemize}
+        \item But \texttt{\{building, room\_number\}} is not a superkey for \texttt{class-1}.
+        \item We replace \texttt{class-1} by:
+        \begin{itemize}
+            \item $\triangleright$ \texttt{classroom(building, room\_number, capacity)}
+            \item $\triangleright$ \texttt{section(course\_id, sec\_id, semester, year, building, room\_number, time\_slot\_id)}
+        \end{itemize}
+        \item \texttt{classroom} and \texttt{section} are in BCNF.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{BCNF Decomposition (8): Dependency Preservation}
+    \begin{itemize}
+        \item It is not always possible to get a BCNF decomposition that is dependency preserving
+        \item $R = (J, K, L)$
+        \item $F = \{JK \rightarrow L, L \rightarrow K\}$
+        \item Two candidate keys = $JK$ and $JL$
+        \item $R$ is not in BCNF
+        \item Any decomposition of $R$ will fail to preserve $JK \rightarrow L$
+        \item This implies that testing for $JK \rightarrow L$ requires a join
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Practice Problem for BCNF Decomposition}
+    \textbf{Decompose the following schema to BCNF}
+    \begin{itemize}
+        \item $R = ABCDE$. $F = \{A \rightarrow B, BC \rightarrow D\}$
+        \item $R = ABCDEH$. $F = \{A \rightarrow BC, E \rightarrow HA\}$
+        \item $R = CSJDPQV$. $F = \{C \rightarrow CSJDPQV, SD \rightarrow P, JP \rightarrow C, J \rightarrow S\}$
+        \item $R = ABCD$. $F = \{C \rightarrow D, C \rightarrow A, B \rightarrow C\}$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Comparison of BCNF and 3NF}
+    \begin{itemize}
+        \item It is always possible to decompose a relation into a set of relations that are in 3NF such that:
+        \begin{itemize}
+            \item the decomposition is lossless
+            \item the dependencies are preserved
+        \end{itemize}
+        \item It is always possible to decompose a relation into a set of relations that are in BCNF such that:
+        \begin{itemize}
+            \item the decomposition is lossless
+            \item it may not be possible to preserve dependencies.
+        \end{itemize}
+    \end{itemize}
+    \begin{table}
+    \centering
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{lll}
+    \toprule
+    \textbf{S\#} & \textbf{3NF} & \textbf{BCNF} \\
+    \midrule
+    1 & It concentrates on Primary Key & It concentrates on Candidate Key \\
+    2 & Redundancy is high as compared to BCNF & 0\% redundancy \\
+    3 & It preserves all the dependencies & It may not preserve the dependencies \\
+    4 & A dependency X $\rightarrow$ Y is allowed in 3NF if X is a super key & A dependency X $\rightarrow$ Y is allowed if X is a super key \\
+      & or Y is a part of some key & \\
+    \bottomrule
+    \end{tabular}
+    }
+    \end{table}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Learnt how to decompose a schema into 3NF while preserving dependency and lossless join
+        \item Learnt how to decompose a schema into BCNF with lossless join
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}

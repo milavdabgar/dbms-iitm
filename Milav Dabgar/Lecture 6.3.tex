@@ -1,0 +1,601 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% --- Theme Setup ---
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Packages ---
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true
+}
+
+% --- Title Information ---
+\title{Module 28}
+\subtitle{Relational Database Design/8: Case Study}
+\author{Milav Dabgar}
+\institute{www.milav.in}
+\date{\today}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Module Recap}
+    \begin{itemize}
+        \item Learnt how to decompose a schema into 3NF while preserving dependency and lossless join
+        \item Learnt how to decompose a schema into BCNF with lossless join
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Objectives}
+    \begin{itemize}
+        \item To design the schema for a Library Information System
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Outline}
+    \begin{itemize}
+        \item Library Information System
+    \end{itemize}
+\end{frame}
+
+\section{Library Information System Specification}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Library Information System\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{Library Information System (LIS)}
+    We are given to design a relational database schema for a Library Information System (LIS) of an Institute
+    \begin{itemize}
+        \item The specification document of the LIS has already been shared with you
+        \item In this presentation, we include the key points from the Specs; but the actual document must be referred to
+        \item We carry out the following tasks in the module:
+        \begin{itemize}
+            \item Identify the Entity Sets with attributes
+            \item Identify the Relationships
+            \item Build the initial set of relational schema
+            \item Refine the set of schema with FDs that hold on them
+            \item Finalize the design of the schema
+        \end{itemize}
+        \item The coding of various queries in SQL, based on these schema are left as exercises
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Specs Excerpts}
+    \begin{itemize}
+        \item An institute library has 200000+ books and 10000+ members
+        \item Books are regularly issued by members on loan and returned after a period.
+        \item The library needs an LIS to manage the books, the members and the issue-return process
+        \item Every book has
+        \begin{itemize}
+            \item title
+            \item author (in case of multiple authors, only the first author is maintained)
+            \item publisher
+            \item year of publication
+            \item ISBN number (which is unique for the publication), and
+            \item accession number (which is the unique number of the copy of the book in the library)
+        \end{itemize}
+        \item There may be multiple copies of the same book in the library
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Specs Excerpts (2)}
+    \begin{itemize}
+        \item There are four categories of members of the library:
+        \begin{itemize}
+            \item undergraduate students
+            \item post graduate students
+            \item research scholars, and
+            \item faculty members
+        \end{itemize}
+        \item Every student has
+        \begin{itemize}
+            \item $\triangleright$ name
+            \item $\triangleright$ roll number
+            \item $\triangleright$ department
+            \item $\triangleright$ gender
+            \item $\triangleright$ mobile number
+            \item $\triangleright$ date of birth, and
+            \item $\triangleright$ degree
+            \begin{itemize}
+                \item undergrad
+                \item grad
+                \item doctoral
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Specs Excerpts (3)}
+    \begin{itemize}
+        \item Every faculty has
+        \begin{itemize}
+            \item name
+            \item employee id
+            \item department
+            \item gender
+            \item mobile number, and
+            \item date of joining
+        \end{itemize}
+        \item Library also issues a unique \textbf{membership number} to every member. Every member has a maximum quota for the number of books she/he can issue for the maximum duration allowed to her/him. Currently these are set as:
+        \begin{itemize}
+            \item Each undergraduate student can issue up to 2 books for 1 month duration
+            \item Each postgraduate student can issue up to 4 books for 1 month duration
+            \item Each research scholar can issue up to 6 books for 3 months duration
+            \item Each faculty member can issue up to 10 books for six months duration
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Specs Excerpts (4)}
+    \begin{itemize}
+        \item The library has the following rules for issue:
+        \begin{itemize}
+            \item A book may be issued to a member if it is not already issued to someone else (trivial)
+            \item A book may not be issued to a member if another copy of the same book is already issued to the same member
+            \item No issue will be done to a member if at the time of issue one or more of the books issued by the member has already exceeded its duration of issue
+            \item No issue will be allowed also if the quota is exceeded for the member
+        \end{itemize}
+        \item It is assumed that the name of every author or member has two parts
+        \begin{itemize}
+            \item $\triangleright$ first name
+            \item $\triangleright$ last name
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Specs Excerpts (5): Queries}
+    LIS should support the following operations/query:
+    \begin{itemize}
+        \item Add/Remove members, categories of members, books.
+        \item Add/Remove/Edit quota for a category of member, duration for a category of member.
+        \item Check if the library has a book given its title (part of title should match). If yes: title, author, publisher, year and ISBN should be listed.
+        \item Check if the library has a book given its author. If yes: title, author, publisher, year and ISBN should be listed.
+        \item Check if a copy of a book (given its ISBN) is available with the library for issue. All accession numbers should be listed with issued or available information.
+        \item Check the available (free) quota of a member.
+        \item Issue a book to a member. This should check for the rules of the library.
+        \item Return a book from a member.
+        \item and so on
+    \end{itemize}
+\end{frame}
+
+\section{Entity Sets}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Entity Sets\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{LIS Entity Sets: books}
+    \begin{itemize}
+        \item Every book has title, author (in case of multiple authors, only the first author is maintained), publisher, year of publication, ISBN number (which is unique for the publication), and accession number (which is the unique number of the copy of the book in the library). There may be multiple copies of the same book in the library
+        \item \textbf{Entity Set}: \texttt{books}
+        \item \textbf{Attributes}:
+        \begin{itemize}
+            \item title
+            \item author name (composite)
+            \item publisher
+            \item year
+            \item ISBN no
+            \item accession no
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Entity Sets (2): students}
+    \begin{itemize}
+        \item Every student has name, roll number, department, gender, mobile number, date of birth, and degree (undergrad, grad, doctoral)
+        \item \textbf{Entity Set}: \texttt{students}
+        \item \textbf{Attributes}:
+        \begin{itemize}
+            \item member no - is unique
+            \item name (composite)
+            \item roll no - is unique
+            \item department
+            \item gender
+            \item mobile no - may be null
+            \item dob
+            \item degree
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Entity Sets (3): faculty}
+    \begin{itemize}
+        \item Every faculty has name, employee id, department, gender, mobile number, and date of joining
+        \item \textbf{Entity Set}: \texttt{faculty}
+        \item \textbf{Attributes}:
+        \begin{itemize}
+            \item member no - is unique
+            \item name (composite)
+            \item id - is unique
+            \item department
+            \item gender
+            \item mobile no - may be null
+            \item doj
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Entity Sets (4): members}
+    \begin{itemize}
+        \item Library also issues a unique membership number to every member. There are four categories of members of the library: undergraduate students, post graduate students, research scholars, and faculty members
+        \item \textbf{Entity Set}: \texttt{members}
+        \item \textbf{Attributes}:
+        \begin{itemize}
+            \item member no
+            \item member type (takes a value in \texttt{ug}, \texttt{pg}, \texttt{rs} or \texttt{fc})
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Entity Sets (5): quota}
+    \begin{itemize}
+        \item Every member has a maximum quota for the number of books she/he can issue for the maximum duration allowed to her/him. Currently these are set as:
+        \begin{itemize}
+            \item Each undergraduate student can issue up to 2 books for 1 month duration
+            \item Each postgraduate student can issue up to 4 books for 1 month duration
+            \item Each research scholar can issue up to 6 books for 3 months duration
+            \item Each faculty member can issue up to 10 books for six months duration
+        \end{itemize}
+        \item \textbf{Entity Set}: \texttt{quota}
+        \item \textbf{Attributes}:
+        \begin{itemize}
+            \item member type
+            \item max books
+            \item max duration
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Entity Sets (6): staff}
+    \begin{itemize}
+        \item Though not explicitly stated, library would have staffs to manage the LIS
+        \item \textbf{Entity Set}: \texttt{staff}
+        \item \textbf{Attributes}: (speculated - to ratify from customer)
+        \begin{itemize}
+            \item name (composite)
+            \item id - is unique
+            \item gender
+            \item mobile no
+            \item doj
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Relationships}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Relationships\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{LIS Relationships}
+    \begin{itemize}
+        \item Books are regularly issued by members on loan and returned after a period. The library needs an LIS to manage the books, the members and the issue-return process
+        \item \textbf{Relationship}: \texttt{book issue}
+        \item \textbf{Involved Entity Sets}
+        \begin{itemize}
+            \item \texttt{students / faculty / members}
+            \begin{itemize}
+                \item $\triangleright$ member no
+            \end{itemize}
+            \item \texttt{books}
+            \begin{itemize}
+                \item $\triangleright$ accession no
+            \end{itemize}
+        \end{itemize}
+        \item \textbf{Relationship Attribute}
+        \begin{itemize}
+            \item doi - date of issue
+        \end{itemize}
+        \item \textbf{Type of relationship}
+        \begin{itemize}
+            \item Many-to-one from \texttt{books}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Relational Schema}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Relational Schema\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{LIS Relational Schema}
+    \begin{itemize}
+        \item \texttt{books (title, author\_fname, author\_lname, publisher, year, ISBN\_no, accession\_no)}
+        \item \texttt{book\_issue (members, accession\_no, doi)}
+        \item \texttt{members (member\_no, member\_type)}
+        \item \texttt{quota (member\_type, max\_books, max\_duration)}
+        \item \texttt{students (member\_no, student\_fname, student\_lname, roll\_no, department, gender, mobile\_no, dob, degree)}
+        \item \texttt{faculty (member\_no, faculty\_fname, faculty\_lname, id, department, gender, mobile\_no, doj)}
+        \item \texttt{staff (staff\_fname, staff\_lname, id, gender, mobile\_no, doj)}
+    \end{itemize}
+\end{frame}
+
+\section{Schema Refinement}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Schema Refinement\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement: books}
+    \begin{itemize}
+        \item \texttt{books (title, author\_fname, author\_lname, publisher, year, ISBN\_no, accession\_no)}
+        \begin{itemize}
+            \item \texttt{ISBN\_no $\rightarrow$ title, author\_fname, author\_lname, publisher, year}
+            \item \texttt{accession\_no $\rightarrow$ ISBN\_no}
+            \item Key: \texttt{accession\_no}
+        \end{itemize}
+        \item Redundancy of book information across copies
+        \item Good to normalize:
+        \begin{itemize}
+            \item \texttt{book\_catalogue (title, author\_fname, author\_lname, publisher, year, ISBN\_no)}
+            \begin{itemize}
+                \item $\triangleright$ \texttt{ISBN\_no $\rightarrow$ title, author\_fname, author\_lname, publisher, year}
+                \item $\triangleright$ Key: \texttt{ISBN\_no}
+            \end{itemize}
+            \item \texttt{book\_copies (ISBN\_no, accession\_no)}
+            \begin{itemize}
+                \item $\triangleright$ \texttt{accession\_no $\rightarrow$ ISBN\_no}
+                \item $\triangleright$ Key: \texttt{accession\_no}
+            \end{itemize}
+        \end{itemize}
+        \item Both in BCNF. Decomposition is lossless join and dependency preserving
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement (2): book issue}
+    \begin{itemize}
+        \item \texttt{book\_issue (member\_no, accession\_no, doi)}
+        \begin{itemize}
+            \item \texttt{member\_no, accession\_no $\rightarrow$ doi}
+            \item Key: \texttt{member\_no, accession\_no}
+            \item In BCNF
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement (3): quota}
+    \begin{itemize}
+        \item \texttt{quota (member\_type, max\_books, max\_duration)}
+        \begin{itemize}
+            \item \texttt{member\_type $\rightarrow$ max\_books, max\_duration}
+            \item Key: \texttt{member\_type}
+            \item In BCNF
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement (4): members}
+    \begin{itemize}
+        \item \texttt{members (member\_no, member\_type)}
+        \begin{itemize}
+            \item \texttt{member\_no $\rightarrow$ member\_type}
+            \item Key: \texttt{member\_no}
+            \item Value constraint on \texttt{member\_type}
+            \begin{itemize}
+                \item $\triangleright$ \texttt{ug}, \texttt{pg}, or \texttt{rs}: if the member is a student
+                \item $\triangleright$ \texttt{fc}: if the member is a faculty
+            \end{itemize}
+            \item In BCNF
+        \end{itemize}
+        \item How to determine the \texttt{member\_type}?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement (5): students}
+    \begin{itemize}
+        \item \texttt{students (member\_no, student\_fname, student\_lname, roll\_no, department, gender, mobile\_no, dob, degree)}
+        \begin{itemize}
+            \item \texttt{roll\_no $\rightarrow$ student\_fname, student\_lname, department, gender, mobile\_no, dob, degree}
+            \item \texttt{member\_no $\rightarrow$ roll\_no}
+            \item \texttt{roll\_no $\rightarrow$ member\_no}
+            \item 2 Keys: \texttt{roll\_no} | \texttt{member\_no}
+            \item In BCNF
+        \end{itemize}
+        \item Issues:
+        \begin{itemize}
+            \item \texttt{member\_no} is needed for issue/return queries. It is unnecessary to have student's details with that.
+            \item \texttt{member\_no} may also come from faculty relation.
+            \item \texttt{member\_type} is needed for issue/return queries. This is implicit in \texttt{degree} - not explicitly given.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement (6): faculty}
+    \begin{itemize}
+        \item \texttt{faculty (member\_no, faculty\_fname, faculty\_lname, id, department, gender, mobile\_no, doj)}
+        \begin{itemize}
+            \item \texttt{id $\rightarrow$ faculty\_fname, faculty\_lname, department, gender, mobile\_no, doj}
+            \item \texttt{id $\rightarrow$ member\_no}
+            \item \texttt{member\_no $\rightarrow$ id}
+            \item 2 Keys: \texttt{id} | \texttt{member\_no}
+            \item In BCNF
+        \end{itemize}
+        \item Issues:
+        \begin{itemize}
+            \item \texttt{member\_no} is needed for issue/return queries. It is unnecessary to have faculty details with that.
+            \item \texttt{member\_no} may also come from students relation.
+            \item \texttt{member\_type} is needed for issue/return queries. This is implicit by the fact that we are in \texttt{faculty} relation.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{LIS Schema Refinement (7): Query}
+    \begin{itemize}
+        \item Consider a query:
+        \item Get the name of the member who has issued the book having accession number = 162715
+        \begin{itemize}
+            \item $\triangleright$ If the member is a student,
+\begin{lstlisting}[language=SQL]
+SELECT student_fname as First Name, student_lname as Last Name
+FROM students, book_issue
+WHERE accession_no = 162715 AND book_issue.member_no = students.member_no;
+\end{lstlisting}
+            \item $\triangleright$ If the member is a faculty,
+\begin{lstlisting}[language=SQL]
+SELECT faculty_fname as First Name, faculty_lname as Last Name
+FROM faculty, book_issue
+WHERE accession_no = 162715 AND book_issue.member_no = faculty.member_no;
+\end{lstlisting}
+        \end{itemize}
+        \item \textbf{Which query to fire!}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement (8): members}
+    There are 4 categories of members: ug students, grad students, research scholars, and faculty members. This leads to the following specialization relationships:
+    \begin{itemize}
+        \item Consider the entity set \texttt{members} of a library and refine:
+        \item Attributes:
+        \begin{itemize}
+            \item $\triangleright$ \texttt{member\_no}
+            \item $\triangleright$ \texttt{member\_class} - 'student' or 'faculty', used to choose table
+            \item $\triangleright$ \texttt{member\_type} - \texttt{ug}, \texttt{pg}, \texttt{rs}, \texttt{fc}, ...
+            \item $\triangleright$ \texttt{roll\_no} (if member\_class = 'student'. Else null)
+            \item $\triangleright$ \texttt{id} (if member\_class = 'faculty'. Else null)
+        \end{itemize}
+        \item We can then exploit some hidden relationship:
+        \begin{itemize}
+            \item \texttt{students IS A members}
+            \item \texttt{faculty IS A members}
+        \end{itemize}
+        \item Type of relationship: One-to-one
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{LIS Schema Refinement (9): Query}
+    \begin{itemize}
+        \item Consider the access query again:
+        \item Get the name of the member who has issued the book having accession number = 162715
+    \end{itemize}
+\begin{lstlisting}[language=SQL]
+SELECT 
+  ((SELECT faculty_fname as First Name, faculty_lname as Last Name 
+    FROM faculty 
+    WHERE member_class = 'faculty' AND members.id = faculty.id) 
+  UNION 
+  (SELECT student_fname as First Name, student_lname as Last Name 
+   FROM students 
+   WHERE member_class = 'student' AND members.roll_no = students.roll_no)) 
+FROM members, book_issue
+WHERE accession_no = 162715 AND book_issue.member_no = members.member_no;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement (10): members}
+    \begin{itemize}
+        \item \texttt{members (member\_no, member\_class, member\_type, roll\_no, id)}
+        \begin{itemize}
+            \item \texttt{member\_no $\rightarrow$ member\_type, member\_class, roll\_no, id}
+            \item \texttt{member\_type $\rightarrow$ member\_class}
+            \item Key: \texttt{member\_no}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement (11): students}
+    \begin{itemize}
+        \item \texttt{students (student\_fname, student\_lname, roll\_no, department, gender, mobile\_no, dob, degree)}
+        \begin{itemize}
+            \item \texttt{roll\_no $\rightarrow$ student\_fname, student\_lname, department, gender, mobile\_no, dob, degree}
+            \item Keys: \texttt{roll\_no}
+        \end{itemize}
+        \item Note:
+        \begin{itemize}
+            \item $\triangleright$ \texttt{member\_no} is no longer used
+            \item $\triangleright$ \texttt{member\_type} and \texttt{member\_class} are set in \texttt{members} from \texttt{degree} at the time of creation of a new record.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement (12): faculty}
+    \begin{itemize}
+        \item \texttt{faculty (faculty\_fname, faculty\_lname, id, department, gender, mobile\_no, doj)}
+        \begin{itemize}
+            \item \texttt{id $\rightarrow$ faculty\_fname, faculty\_lname, department, gender, mobile\_no, doj}
+            \item Keys: \texttt{id}
+        \end{itemize}
+        \item Note:
+        \begin{itemize}
+            \item $\triangleright$ \texttt{member\_no} is no longer used
+            \item $\triangleright$ \texttt{member\_type} and \texttt{member\_class} are set in \texttt{members} at the time of creation of a new record
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Final Schema}
+\begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}Final Schema\par%
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+\begin{frame}{LIS Schema Refinement (13): Final}
+    \begin{itemize}
+        \item \texttt{book\_catalogue (title, author\_fname, author\_lname, publisher, year, ISBN\_no)}
+        \item \texttt{book\_copies (ISBN\_no, accession\_no)}
+        \item \texttt{book\_issue (member\_no, accession\_no, doi)}
+        \item \texttt{quota (member\_type, max\_books, max\_duration)}
+        \item \texttt{members (member\_no, member\_class, member\_type, roll\_no, id)}
+        \item \texttt{students (student\_fname, student\_lname, roll\_no, department, gender, mobile\_no, dob, degree)}
+        \item \texttt{faculty (faculty\_fname, faculty\_lname, id, department, gender, mobile\_no, doj)}
+        \item \texttt{staff (staff\_fname, staff\_lname, id, gender, mobile\_no, doj)}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Module Summary}
+    \begin{itemize}
+        \item Using the specification for a Library Information System, we have illustrated how a schema can be designed and then refined for finalization
+        \item Coding of various queries based on these schema are left as exercises
+    \end{itemize}
+    \vspace{2em}
+    \begin{center}
+    \small \textit{Slides used in this presentation are borrowed from \url{http://db-book.com/} with kind permission of the authors.} \\
+    \small \textit{Edited and new slides are marked with 'PPD'.}
+    \end{center}
+\end{frame}
+
+\end{document}
