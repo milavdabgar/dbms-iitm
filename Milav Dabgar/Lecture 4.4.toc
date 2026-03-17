@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{ER Diagram}{5}{0}{1}
+\beamer@sectionintoc {2}{ER Model to Relational Schema}{19}{0}{2}

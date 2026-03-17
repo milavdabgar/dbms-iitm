@@ -1,0 +1,10 @@
+\beamer@sectionintoc {1}{Design Process}{5}{0}{1}
+\beamer@sectionintoc {2}{Abstraction}{7}{0}{2}
+\beamer@sectionintoc {3}{Models}{9}{0}{3}
+\beamer@sectionintoc {4}{Design Approach}{11}{0}{4}
+\beamer@sectionintoc {5}{ER Model}{15}{0}{5}
+\beamer@sectionintoc {6}{Attributes}{18}{0}{6}
+\beamer@sectionintoc {7}{Entity Sets}{21}{0}{7}
+\beamer@sectionintoc {8}{Relationship}{24}{0}{8}
+\beamer@sectionintoc {9}{Cardinality}{30}{0}{9}
+\beamer@sectionintoc {10}{Weak Entity Sets}{34}{0}{10}
