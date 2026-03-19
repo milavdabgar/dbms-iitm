@@ -1,0 +1,311 @@
+I uh I actually had a bit of an existential crisis this morning.
+
+Oh, yeah. Over what?
+
+Well, I was sitting there, coffee in hand, about to pay my electric bill, and I opened the laptop, clicked a browser, typed in the bank's address, and hit enter, and then I just I just froze.
+
+Please tell me you actually paid the bill.
+
+I did eventually. Yeah. But I stopped because it hit me. I spend probably 10 hours a day inside this browser window. You know, it's my office, my entertainment center, my library, my bank. But if you ask me if really pressed me to explain what happens between the moment I click login and the moment my account balance actually appears. I got nothing. It's a total black box.
+
+That is a very common feeling though. We treat the web exactly like a utility. Right. You flip a switch, the light comes on. You don't really think about the wiring or the power plant or the grid load until the lights go out.
+
+Exactly. But today I want to rip the drywall off. I really want to see the wiring. So for you listening, we are doing a deep dive into the invisible machinery of the worldwide web. And to help us decode all this we are looking at a really fascinating source.
+
+Yes, we are relying on a technical lecture from the IIT Madras BS degree program on web application design and development.
+
+And what I love about this source is that it's not just a a web for dummies article,
+
+right? It's an actual engineering breakdown.
+
+Yeah, it peels back the interface to show us this concept of the three tier architecture. And that's what powers everything from a basic Google search to that exact electric bill payment I was hesitating over.
+
+And if you're listening. Don't let the phrase three- tier architecture scare you off.
+
+No, definitely not.
+
+Mhm.
+
+By the end of this deep dive, the mission is for you to be able to visualize exactly where your data goes when you click a button. I want us all to have that matrix moment where we stop seeing a web page and start actually seeing the code.
+
+Well, it's maybe less the matrix and more like a really efficient, really fast postal service. Yeah.
+
+But yes, the goal is to understand the magic.
+
+So, let's start at the most basic level, the address. The IIT Madras lecture makes this great point that the Web is a distributed information system, which sounds fancy, but I mean it basically just means the stuff I want isn't on my computer,
+
+right? It's scattered across millions of computers or servers all over the planet. So, if you want to find one specific page in that massive haystack, you basically need two things. An identity and a location.
+
+Which brings us to the acronym we use every single day, the URL, uniform resource locator.
+
+We type them automatically, but we rarely look at what they're actually saying. A URL is actually a set of very specific instructions for your browser.
+
+Okay, let's break that down. Take a standard address. We always start with HTTP or HTTPS. And I I used to think that was just like polite decoration like writing dear sir at the start of a letter.
+
+It's actually the most critical instruction. It's the protocol.
+
+The protocol.
+
+Yes. It tells the browser which language to speak to the server. So HTTP stands for hypertext transfer protocol. It's essentially saying, "Hey, I'm looking for a hypertext document, so please speak to me. web language
+
+as opposed to what?
+
+Well, if you typed file colon at the start instead of http colon, your browser changes its behavior completely. It stops looking at the outside world and looks inward at your own hard drive.
+
+Oh, what?
+
+Or if you typed FTP colon, it would switch to file transfer protocol.
+
+So the http is the what? Then we have the where
+
+the machine name. That's the www.google.com or the www.iam.ac in part and set. that identifies the unique computer sitting in a server rack somewhere in Virginia or Mumbai or London that physically holds the information
+
+and then everything after the slash
+
+that's the path just like on your own laptop you have folders inside folders the path tells that specific server okay I'm at your house now look in the third cabinet top drawer for this specific file
+
+so we have protocol which is how to talk machine name which is which building and path which is which file simple enough but the lecture points out something I hadn't realized the address bar isn't just for finding things. It's also for sending things.
+
+Yes, this is the concept of the query.
+
+I see this all the time actually. I search for something on Amazon and suddenly the URL becomes 500 characters long with a bunch of question marks and equal signs. I usually just assume the computer is glitching out or speaking alien.
+
+It's not alien. It's a command. The lecture uses a simpler example for this. It uses Q equals silver shots.
+
+Silvershots. Okay.
+
+Yeah. So, the Q usually stands for query. When you hit enter on that URL, You aren't just knocking on the door. You're slipping a note under the door that says, "Hey, run a program. Search for the word sober shots and hand me the results."
+
+So, I'm sending data inside the address itself.
+
+Exactly. That question mark in the URL is the separator. Everything before it is the location. Everything after it is the data you are feeding to the server.
+
+It really changes how you look at the address bar. It's a two-way street. Now, before we move on to what the web actually looks like, there was a bit of alphabet soup in the source material I wanted to clear up. URI versus URL versus URN.
+
+Ah, yes, the pedantic side of web engineering.
+
+I usually just say URL for everything and just hope no one corrects me.
+
+And honestly, you're 99% safe doing that.
+
+Yeah,
+
+but the distinction helps with the mental model. Think of it like a person. A URN uniform resource name is like your name. It identifies who you are, but it doesn't tell me where you are.
+
+Right. My name is the same whether I'm at home or at the grocery store.
+
+Exactly. A URL uniform resource locator is your physical address. 1 2 3 Main Street, it tells me where to find you. Both of those fall under the umbrella of URI, uniform resource identifier.
+
+So on the web, since we are usually trying to fetch things, we almost exclusively deal with URLs. We need the address, not just the name.
+
+Precisely.
+
+Okay. So we've typed the URL, we found the server. Now the server sends something back. And that something is HTML,
+
+the skeleton of the web.
+
+I know HTML stands for hypertext markup language. The markup part makes sense. It's formatting. But why Hypertext is it just because super text was taken?
+
+It's hyper because it's nonlinear. Think about a standard book. You read page one then page two. It's a straight line. Hypertext breaks that line. You can click a word on page one and instantly be transported to page 50 or to a completely different book entire.
+
+Well, the link is the hyper part.
+
+Correct. And the markup is the instruction set. The lecture walks through this with some specific code examples. When your browser receives HTML, it's acting like an artist receiving a description of a painting. It doesn't get a picture. It gets a set of rules.
+
+Draw a box here. Make this text bold. Put a table here.
+
+Yes. And he uses tags to do that. Those words in the little corner brackets. So, bracket table bracket starts the table and bracket/t bracket ends it.
+
+It's like Lego blocks. You have to open the block, put content inside, and close the block. The lecture showed how to build a table row with try table data with TD. It seems incredibly tedious to write by hand.
+
+It is, which is why almost no one writes raw HTML for massive sites anymore. But we'll get to that. The really important part for the user is the form tag. This is the tag that lets us talk back.
+
+Oh, this is every login screen, every search bar, every credit card entry field.
+
+Yes, the form tag creates the input box. And crucially, it tells the browser where to send that info. The lecture mentions the action attribute. If you type your username and hit submit, the action tells the browser, package this text up and send it to the login program on the server.
+
+It really strips the mystery away. A drop-own menu isn't a complex machine. It's just a line of text saying option student end option.
+
+Simple but effective. However, this simple system has a massive glaring flaw. A flaw so big that technically things like online banking shouldn't even be possible.
+
+I love a good fatal flaw. What is it?
+
+The web has amnesia.
+
+Amnesia.
+
+The technical term is statelessness. The source material compares HTTP to a connectionless interaction.
+
+They use the WhatsApp analogy, right?
+
+They did. But let's look at a coffee shop analogy to make it really stick. Imagine you walk into a busy cafe, you order a latte, you pay, the barista makes it, you sit down,
+
+10 minutes later, you decide you want a muffin, you go back to the same barista. In the real world, the barista recognizes you.
+
+But in the HTTP world, that barista has absolutely no memory of you. You are a complete stranger. You have to reintroduce yourself, prove you already paid, and start from scratch
+
+because the connection dropped the exact second I got my latte.
+
+Exactly. HTTP connects grabs the file, and disconnects. It saves bandwidth, but it means the server keeps no record of who is talking to it.
+
+I see where this gets dangerous for banking. If I log in, the server knows I'm me, but then I click transfer funds. That's a new request,
+
+which connects to a server that has already forgotten you.
+
+So, to make it work, I'd have to type my username and password again
+
+for every single click. Want to see your balance? Password. Want to see recent transactions? Password. Want to log out? Password.
+
+That sounds like a user experience nightmare. and a security nightmare, too. I'd be broadcasting my password constantly.
+
+It would be entirely unworkable. So, the engineers needed a way to give the server a memory. They invented the cookie.
+
+The misunderstood hero of the internet
+
+in this context. Absolutely. Think of the cookie like a wristband at a concert. When you first log in or enter the venue, the bouncer checks your ID once. He verifies that you are who you say you are. Then, he slaps a wristband on you.
+
+The cookie.
+
+Right now, when you go to the bar for a drink or click transfer funds, you don't show your ID again. You just flash the wristband. The server sees the valid cookie and says, "Oh, right. That's the person from 10 minutes ago. Go right ahead."
+
+And this creates what the lecture calls a session.
+
+Yes, it's a virtual connection. Even though the technical line is cutting in and out, the cookie bridges the gap, creating a continuous session.
+
+But this explains something that always gives me anxiety. The timeout. I'll be on a banking site, maybe looking for a tax document, and suddenly a timer pops up. Session expiring in 2 minutes. I always feel like I'm diffusing a bomb. I have to frantically wiggle the mouse or click something.
+
+That panic is actually keeping you safe. Well, two reasons. First, server hygiene. If the server tracked everyone forever, it would literally run out of memory. But mainly, it's security. Imagine you're at a public library computer.
+
+Okay.
+
+You check your bank balance, then you get a phone call and walk away without clicking log out.
+
+My cookie is still active.
+
+Exactly. The next person sits down, hits back, and Boom. They're in your account because the server sees the wristband is still valid. The timeout is a server saying, "I haven't heard from this person in 10 minutes. I'm cutting the wristband off."
+
+So, it's protecting me from my own negligence. I can appreciate that.
+
+It's a crucial safety net.
+
+Okay. So, we've got the address, the page structure, and the memory. But modern websites aren't just static brochures anymore. They do things. They calculate mortgages. They play videos. They validate forms. This is where scripting comes in.
+
+And this is where the lecture splits the world into two halves. the client side and the server side.
+
+The client is me or my browser.
+
+Correct? Sometimes we want your browser to do the work. The best example from the lecture is validation. Let's say you're typing in a credit card number
+
+which is 16 digits.
+
+Right now imagine you accidentally type a letter or you only type 15 digits. If we didn't have client side scripting, you would hit submit. That bad data would have to travel all the way to the server. The server would check it, realize it's wrong, and send a message all the way back saying error.
+
+That's slow. And if I'm on a bad connection, it's infuriating.
+
+Exactly. So instead, we send a little script, usually JavaScript, down to your browser along with the page. As you type, that script is watching. If you type a letter in a number field, it pops up a red box instantly.
+
+Invalid character.
+
+It happens on your machine. Zero travel time. It's faster for you, and it saves the server from dealing with jump data.
+
+But wait, if I'm downloading a script from a website and letting it run on my computer, That sounds incredibly risky. What's to stop a malicious site from sending a script that says delete C drive?
+
+That is the nightmare scenario and that is why browsers have a sandbox.
+
+A sandbox.
+
+Think of it like a hazmat suit or a glass box. The script is allowed to run, but it's trapped inside the browser environment. It can change colors, do math, animate buttons, but it generally cannot reach outside the browser to touch your hard drive, your webcam, or your system files.
+
+So, it can play in the sandbox, but it can't leave the playground.
+
+Exactly. The lecture emphasizes that client side scripts are restricted for this exact reason.
+
+Okay. But for the heavy stuff, checking my actual bank balance, searching a massive library database, we can't do that on my laptop. We need the big iron, the server side.
+
+But this is where the real work happens. And the lecture introduces a couple of key technologies here. Serlets and JSP.
+
+I found the distinction here really interesting. They're both doing the same job generating a web page, but they go about it in completely opposite ways,
+
+right? Let's start with a serlet. A serlet is a small Java program running on the server. Its job is to take a request and build a response.
+
+But the response is a web page. It's HTML.
+
+Yes. So imagine you were writing a Java program. And you have to tell it to print the HTML code line by line.
+
+Print HTML. Print body. Print H1. Hello plus username plus end H1.
+
+That sounds miserable. You're basically writing code to write code.
+
+It's incredibly tedious. It's great for logic like the actual bounce but terrible for design. If you want to change the background color, you have to recompile the Java code.
+
+So they invented JSP Java server pages to basically flip the script.
+
+Literally JSP is like a mail merge or a form letter. You write standard HTML page so it looks like a normal web page, but you leave little holes in it.
+
+Holes where the data goes.
+
+Exactly. You write the HTML for the welcome banner and then you insert a tiny tag that says insert name here. The server takes that template, fills in the holes with the data from the database and then sends the finished page to you.
+
+So with a serlet, the code creates the HTML. With JSP, the HTML contains the code.
+
+That's the perfect way to summarize it. JSP allows web designers to build the look while programmers just plug in the logic.
+
+The lexer also mentioned PHP and Python here, which I've definitely heard of.
+
+Yes, PHP and Python are just other languages that do this exact same thing. Serverside scripting. They are the engines that take your request, talk to the database, and build the page you see.
+
+So, we've covered all the pieces. Now, we have have the browser which is the client, the server logic which is the serlets or JSP and the data. I really want to bring this back to that mission we set at the start, the three tier architecture.
+
+This is the grand map.
+
+Let's walk through one single action. Let's say transferring $50 to a friend. Let's trace it through these tiers. I click submit on the transfer form. Go.
+
+Okay. Tier one, the presentation layer. That's your browser. The JavaScript on the client side checks if you actually typed 50 in the box and that you didn't type a negative number.
+
+The sandbox check, it looks good.
+
+The browser wraps that request into a URL or a form, attaches your cookie, your wristband, and fires it across the internet via HTTP.
+
+And it arrives at tier 2,
+
+the business logic layer. The web server receives it. It checks the cookie to make sure you're actually logged in.
+
+Then it wakes up the specific serlet. Let's call it the transfer fund serlet,
+
+worker beef,
+
+right? This serlet knows the rules. It knows it needs to subtract from you and add to your friend. but doesn't have the money. The money is in the vault.
+
+Tier three,
+
+the data access layer,
+
+the database,
+
+the serlet talks to the database and says, "Update record A minus 50, update record B + 50." The database commits the change and reports back success.
+
+Now we have to tell me it worked.
+
+The serlet gets the success message. It passes that data to a JSP page. The JSP fills in the transaction successful template with the details
+
+and sends that HTML back to tier one
+
+and your browser renders the text transfer. complete
+
+and all of that happened in what 200 milliseconds
+
+less usually
+
+it is honestly mind-blowing we get so frustrated when a page takes 3 seconds to load but when you look at the relay race that just happened crossing oceans authenticating identities waking up programs writing to databases building custom HTML
+
+it is a modern miracle of engineering we are standing on top of decades of problem solving URLs for location HTML for structure cookies for memory scripting for action. It's a machine with a million moving parts that works 99% of the time.
+
+I think that's the biggest takeaway for me. Next time I see that little spinning wheel on the tab, I'm not going to be annoyed. I'm going to give it a second of grace. It's working hard.
+
+It really is. And hopefully for you listening, next time you look at a URL, you won't just see gibberish. You'll see a command you're sending to a machine halfway across the world.
+
+I'll definitely never look at a query string the same way again. But, you know, thinking about all this architecture, it leaves me with one final thought. We talk about the cloud and the web. web as these invisible virtual things. But every time we trigger that three tier relay race, we are firing lasers through actual fiber optic cables sitting at the bottom of the ocean. Those cookies, those scripts, they live on physical hard drives in massive aironditioned warehouses that consume enough electricity to power small cities. The virtual web has a very real, very heavy physical footprint. Something to mull over next time you idly click refresh.
+
+That is a great perspective. Well, that is all the time we have for this deep dive. Huge thanks to the IIT Modris program material for giving us the blueprint to the web today.
+
+It was a pleasure unpacking it.

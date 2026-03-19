@@ -1,0 +1,295 @@
+Welcome back to the deep dive. Today we are stripping everything away. We're going to look at the absolute bedrock of the digital world.
+
+I mean, just look at the device you're listening on right now. A smartphone, a laptop, whatever it is, it feels so incredibly complex.
+
+Oh, absolutely. You've got video, AI, apps talking to satellites. It's wild.
+
+But if you drill down, and I mean really drill down past all the software right to the metal, it's all just two options. Zero and one.
+
+That's it. Two options.
+
+It is the language of machines. And you know, I think most people have this vague awareness that computers speak binary,
+
+right?
+
+It's kind of like knowing E= MC² is a thing, but not what it actually, you know, means. It's just this abstract cloud of ones and zeros from the movies.
+
+Exactly. And the mission for this deep dive is to dispel that fog. We want to move from just knowing binary exists to really understanding how it works, why do we use it, and uh the part I'm most excited about, how do you actually translate between our numbers and machine numbers?
+
+It's a fascinating translation process and to guide us, we're digging into a really solid technical breakdown from the IIT Madras BS degree program.
+
+Okay,
+
+specifically their lecture on binary numbers and character encoding. So, we're not just, you know, skimming an article here. We're getting the proper engineering view,
+
+which is great because I think we need to start with the most obvious question. The lecture defines binary as a base 2 number system and ours is base 10. But why? No, I mean really, why? Base 10 feels so much better. We've got 10 digits 0 through 9. It's efficient. Writing 1 million is easy. In binary, it's this huge long string. It feels like we're making it harder on the computers.
+
+It's a great question and it's the first thing the lecture tackles. It's not about math efficiency. It's about hardware reality. You have to remember a computer isn't a brain.
+
+Okay?
+
+It's basically a rock that we tricked into thinking by putting lightning inside it.
+
+A rock with lightning inside it. I like that.
+
+I mean, it is. Computers are made of transistors and And electronics are really good at one specific thing. Switching.
+
+Like a light switch.
+
+Exactly like a light switch. It has two reliable states. Up is on in, down is off. OF.
+
+Okay.
+
+There's no ambiguity. Okay.
+
+Now, what if I give you a dimmer switch and said, "Okay, slide this to exactly position seven. Not 6.9, not 7.1, exactly seven."
+
+That would be a nightmare. Everyone would be slightly off.
+
+Exactly. Voltage fluctuates. Interference happens. If we tried to build a computer where like 0.1 volts is one and 02 volts is two, the margin for error would be almost zero. A tiny power spike and suddenly your three becomes a four
+
+and your bank account balance is all wrong.
+
+Precisely. In engineering, it's so much safer to just ask is there current? Yes. Is there no current? No. State one is on end, state zero is off f.
+
+So we sacrifice a bit of uh brevity,
+
+a lot of brevity sometimes,
+
+but we gain certainty.
+
+And in computing, certainty is everything. Plus, it maps perfectly to logic. True or false, yes or no, one or zero. It's the perfect bridge between physical electricity and logical reasoning.
+
+Okay, I'm sold on the why. Now, let's talk about the what. The source material brings up some vocabulary we hear all the time. Bits and byes. I feel like we use those words interchangeably, but they're very specific.
+
+They are. The bit is the atom. Stands for binary digit. It's the smallest possible unit. A single zero or a single one.
+
+And a bite.
+
+A bite is a molecule. It's a string of exactly eight bits all clumped together. So 0 1 0 1 0 1 0 1 that whole thing is one bite.
+
+And this is where the math starts to really scale up because one bit isn't very useful on its own.
+
+It's just a light switch.
+
+But if you have two bits now, you have combinations. The formula is 2 to the^ of n.
+
+So one bit, two to the one, two possibilities. 0 or one,
+
+right? Two bits, two squared, that's four possibilities. 0 0 1 10 11.
+
+And three bits gives you eight possibilities.
+
+Yes. But here is the trap. The lecture points this out and it's a nuance that trips up be ers constantly. It's the zero index.
+
+Ah, this is the classic off by one error in programming.
+
+It is. So, let's say you have three bits, you have eight possible combinations, but if you were to count them in decimal, what's the highest number you can actually reach?
+
+Well, if there are eight combinations, I'd assume eight.
+
+And that's where you'd be wrong because the computer starts counting at zero. The first combination thousand is zero. So, the eighth combination is actually the number seven.
+
+Oh, right. Right. So, the range is 0 to 7, not 1 to 8.
+
+Exactly. The formula for The maximum number you can represent is 2 to the n minus one. Now apply that to a bite. That's 8 bits. So 2 to the eth is 256.
+
+But the max number is
+
+255.
+
+Boom.
+
+You know that actually answers a question I've had since I was a kid playing video games. Your stats would always max out at 255. Yep.
+
+Or in Photoshop the color values for red, green, and blue, they go from 0 to 255. I always thought, why such a random number?
+
+It wasn't random at all. It was the physical limit of the container. The The developers only gave one bite of memory to that stat. Once you hit 1111 1111, which is 255, the bucket is full. You physically can't count any higher without adding another bite.
+
+That is such a cool realization. Okay, so we get the container. Now I want to get to the meat of this. The translation algorithm.
+
+Yes. The source walks us through how to take a normal human number, an integer, and turn it into machine code. And they use a very specific, very famous number for the example 1729.
+
+The Hardy Roman huge number. I love that they chose this one.
+
+For those who don't know the story, you have to set the scene. This isn't just some random number.
+
+No, it's legendary. It's around 1917. You have GH Hardy, this brilliant kind of reserved British mathematician,
+
+right?
+
+And he's visiting Sinavasa Ramanujan, the Indian mathematical genius who was sick in a hospital bed in London.
+
+And Rammenujan was just famous for seeing patterns nobody else could
+
+instantly. So Hardy walks in trying to make small talk and he says something like, "I came over in a taxi cab with the number 17. 29. It seemed like a rather dull number.
+
+He apologizes for the boring number.
+
+Exactly. And Rammenujan without even a pause looks up and says, "No, Hardy, it is a very interesting number. It is the smallest number expressable as the sum of two cubes in two different ways
+
+in his head while he's sick
+
+in an instant. It's 1 cubed + 12 cubed. And it's also 9 cubed + 10 cubed. It's just mathematical poetry.
+
+I love that. Okay, so we have this poetic number 1729. How do we explain that to a computer?
+
+We have to break it down. The method is called repeated division.
+
+Walk us through it and let's go slow because live math on a on a deep dive is a highwire act.
+
+It is. So you take 1729 and you divide it by two.
+
+Okay. So that's 864 and a half,
+
+right? But we're only dealing with whole numbers. Yeah.
+
+So we say it's 864 with a remainder of one. That remainder, that's your first bit. Write down the one.
+
+Got it. Remainder is one.
+
+Now take the result, the 864, and divide that by Okay, that's 432 even. No remainder.
+
+So the remainder is zero. Write that down. Now take 432 and divide by two.
+
+216 remainder zero.
+
+Exactly. And you just keep doing this loop. Divide by two. Write down the remainder. Take the result. Divide by two again until your result hits zero.
+
+Okay. So eventually we have this list of ones and zeros that we've written down. But here's the gotcha that the lecture stressed. If I just read them in the order I wrote them down,
+
+you'll be wrong. Completely backwards. The rule for integers is you read the remainders from bottom to top. The very last one you calculated is actually the first bit of the binding. ary number.
+
+That feels so counterintuitive. Why?
+
+Just think of it like this. The first division gives you the least important bit, whether the number is odd or even. The last division tells you about the biggest power of two that fits inside it. So, you have to flip it. For integers, just remember bottom to top.
+
+Bottom to top. Okay. So, for our magic number 1729, if we do all that and stack the remainders correctly, we get uh let me see here. 11100 0 001.
+
+That is 1729 in the language of machines.
+
+It doesn't quite roll off the tongue like 1729, does it?
+
+No, it's a bit of a mouthful.
+
+So that handles the clean world of integers. But the real world is messy. We have fractions, decimals. The lecture then shifts to how we handle a stuff after the decimal point. And they use another famous number, 2.718.
+
+Oilers's number or an approximation of it. Anyway, the number E.
+
+Another math celebrity. So for 2.718, I assume we just convert the two the same way.
+
+Yep. Two is easy. Divide by two, you get one remainder zero. So two in binary is just 10.
+
+But the 718, we can't divide that by two, can we?
+
+Yeah. And this is where it gets weird. For the fractional part, you don't divide. You multiply by two.
+
+Wait, hang on. Why? Why do we suddenly flip the logic?
+
+Think about what you're doing with integers. You're breaking a big pile down. With fractions, you're trying to see what smaller pieces can build it up. You're asking, does half fit in here? Does a quarter fit in here?
+
+Okay, I'm trying to follow.
+
+So you take your fraction 718, you multiply by two.
+
+That's 1.436.
+
+Okay. The number in front of the decimal point is a one. So we record a one is our first bit. That's our overflow. Now we throw away that one and just keep the fractional part. The 436.
+
+I see. So you stem off the whole number.
+
+Exactly. Now take that leftover 436 and double it again.
+
+That's 872.
+
+And what's the number in front of the decimal?
+
+A zero.
+
+So you record a zero. Now take the 872 and double that.
+
+That's 1.744.
+
+So you record a one and you keep going. But here's the question. question with 1729 we eventually hit zero. We ran out of number. Does this ever hit zero? Sometimes if you start with.5, you multiply by two, you get 1.0, you record the one, and you're done. But for a number like 718, no, it can go on forever.
+
+So when do you stop?
+
+When when you run out of memory or when the engineer decides, you know what, that's close enough. You stop when you hit your desired level of precision.
+
+And just to make it even more confusing, the direction flips, too, right, for reading the bits.
+
+Yes. That's the crucial part. Integers were bottom to top. For fractions, you read the overflow bits from top to bottom.
+
+That's just mean. Bottom to top on the left of the dot, top to bottom on the right.
+
+Keeps you on your toes.
+
+So, we've approximately turned Oilers's number into binary. But this brings us to the final and maybe most important part. Can we go back?
+
+The verification,
+
+reverse engineering.
+
+If I hand you a string of ones and zeros, how do you prove to me that it's actually 1729?
+
+We use what's called the weighted position method, right?
+
+It's actually pretty intuitive if you think about how we read normal numbers. In the number 345, the five is in the onees place, the four is in the 10's place, the three is in the hundreds place.
+
+Powers of 10. 10 to the 0, 10 to the 1, 10 to the two.
+
+Exactly. Binary is the same, just with powers of two. Reading from right to left, the positions are ones, twos, fours, 8, 16s, and so on.
+
+So, wherever there's a one in the binary string, you just add that position's value to your total.
+
+That's all it is. For our 1729 string, if we add up the values for all the positions that have a one, we get 134 plus 512 plus 128 plus 64 + 1.
+
+Let me just Okay. 124 and 512 is 436 plus 128 is 1664 plus 64 is 1728 + 1.1729.
+
+It works. It's mathematically perfect
+
+for integers. Yeah. But what about our friend Oiler? We said we stopped the calculation early. We approximated the binary for 718. If we convert that approximation back to decimal, do we get 718 back?
+
+And this is where it gets a little haunting. No, you don't.
+
+So, how does the math work for going back with fraction? Well, if the positions to the left of the dot are positive powers of two, the positions to the right are negative powers. 2 theus1, 2 - 2, 2 theus 3, halves, quarters, 8, 16. You're trying to build your number out of these very specific chunks.
+
+And for 718, you just can't quite do it perfectly.
+
+You can't. And the example from the lecture, when they added up the halves and quarters and eighs from their binary string, the result wasn't 718. It was 7148.
+
+7148. So we lost what about 3 thousands of value.
+
+It's just Spanish lost in translation.
+
+We just gloss over this. You know, we think of computers as these machines of perfect logic. I calculated it on the computer, so it must be right. But what you're saying is that for a huge number of values, the computer's basically lying to us.
+
+It's giving us a close enough version. That's the so what of this whole deep dive,
+
+computers are finite machines. They have finite memory. But the universe is continuous. A computer can't represent the number pi can't even represent 1/3 perfectly. It has to chop it off somewhere.
+
+I mean, 7148 versus 718 doesn't matter much if I'm just resizing a photo. But what if I'm calculating the trajectory for a spacecraft?
+
+That's where this stuff keeps engineers awake at night. There was a famous incident with a Patriot missile system where a tiny tiny rounding error fractions of a second accumulated over a 100 hours.
+
+Oh wow.
+
+It caused the system to drift and the missile failed to intercept. to target. Lives were lost all because of how binary handles fractions.
+
+That is terrifying. It really changes how you look at the digital world. It's not a world of perfection. It's a world of really, really good approximations.
+
+It is. We are building skyscrapers out of Lego bricks.
+
+From a distance, it looks like a smooth curve.
+
+But if you get close enough, like we just did, you see the jagged edges. You see the ones and zeros.
+
+I think that's the perfect place to leave it. We started with switches, went through Remenujan's taxi, and ended up realizing our digital reality is just little bit fuzzy,
+
+just a little bit.
+
+I want to leave our listeners with a thought. We talked about finite memory. If we had a computer the size of the universe, could we finally represent these numbers perfectly? Or is there something fundamentally untransatable between the analog world we live in and the digital world we've built?
+
+That's the ultimate question, isn't it?
+
+Something to think about. That's it for this deep dive into the language of machines. Thanks for listening and we'll catch you on the next one.

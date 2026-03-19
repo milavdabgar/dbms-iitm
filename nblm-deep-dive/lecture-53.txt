@@ -1,0 +1,177 @@
+Welcome back to the deep dive. Uh today we are looking at the invisible highwire act that keeps the modern world running.
+
+It really is a highwire act.
+
+It is. And I want you to just uh look at your phone for a second. Imagine you open a banking app, you transfer 50 rupees to a friend, you hit send, little spinner appears.
+
+Yeah.
+
+And then
+
+the battery dies or the cell tower just drops the signal.
+
+Right. Or the bank server trips over a power cord. Total darkness. And In that moment, you really only have one question. It's not, you know, when will the power come back?
+
+No, it's where is my 50 rupees?
+
+Exactly. Did it leave my account? Did it reach my friend or is it just gone
+
+floating in the void somewhere? It's a terrifying thought. And uh that specific anxiety is exactly what we're unpacking today,
+
+right? Because we have a set of technical lectures on database management systems. We're looking at specifically focusing on transaction recovery and advanced scheduling.
+
+And the core tension here is fascinating. We basically demand two things from our technology that are well they're fundamentally at odds with each other
+
+speed and safety. Right.
+
+Exactly. We want databases to handle thousands of things at once. Concurrency. We want instant gratification. But we also want them to be bulletproof against hardware crashes, software bugs, power outages.
+
+We basically want the speed of a Formula 1 car, but with a crash rating of a tank.
+
+That is the perfect way to put it. So today's really about how engineers reconcile that paradox. We're exploring ing two massive concepts from the source material. First, recoverability,
+
+which is how you clean up the mess when things break,
+
+right? And second, a more advanced concept called view serializability,
+
+which as we'll see is this incredibly complex way of organizing time to squeeze out maximum efficiency.
+
+But what I found interesting is that this isn't just about whether the data saved.
+
+Oh, no. It's about the ripple effects.
+
+Yeah, we're going to see how one failed transaction can trigger this huge domino effect. But let's go back to my 50 rupee panic.
+
+Let's do it. and transferring the money. Account A is debited. But before the system can credit account B, the crash happens. The source material calls this an inconsistent state.
+
+Right? Because the logic of the transaction is essentially a contract. Take from A, give to B. It's an atomic unit. It has to happen all at once or not at all.
+
+Right? You can't just stop halfway.
+
+If you stop halfway, the math literally creates money out of thin air or destroys it. Account A is lighter, but account B hasn't changed. the universe doesn't balance anymore.
+
+So when the servers reboot, the database wakes up with a massive headache. It looks at the logs, sees this halffinish job, and it can't just shrug and close enough.
+
+No, that destroys trust completely. It has to perform what's called a roll back.
+
+The ultimate undo button.
+
+Yes. The system has to identify that the transaction, let's call it transaction T1, your transfer never actually reached its commit point. And since it didn't commit, it technically legally never happened.
+
+So the database has to undo do the debit to account A and return the universe to the exact state it was in before you hit the button.
+
+Exactly. It has to return to a consistent state.
+
+That sounds pretty straightforward honestly. Just a massive C trail. But the lecture notes highlight a scenario where that throw Z actually becomes impossible. They call it the dirty read.
+
+Ah yes, the dirty read. This is where concurrency really bites you. Crol Z works fine if you are the only person using the bank.
+
+But no one is the only person using a bank,
+
+right? In the real world things overlap. Let's bring in a second character. Transaction T1 is your transfer. It writes the new balance for account A. Say it drops from 100 rupees down to 50,
+
+but it hasn't committed yet. It's in limbo.
+
+It's a rough draft, waiting for maybe a network confirmation. Now, transaction T2 enters the chat. Say T2 is an automated bill payment
+
+minding its own business.
+
+Minding its own business. Reading the balance of account A. It sees the 50 rupees. It thinks, great, I have the latest data. It pays your bill using that. 50 rupee balance. And then this is the crucial part. T2 commits.
+
+It saves its work permanently.
+
+It saves its work permanently.
+
+Okay, I see the trap. T2 locked in a reality based on T1's work, but T1 is still unconfirmed.
+
+And then T1 crashes.
+
+The power goes out. So the database wakes up, tries to roll back T1 because it failed, wants to put the 50 rupees back into account A, but it can't.
+
+It can't. Transaction T2 already spent that money and finalized the record. You have a total paradox. Because T2 is official, but it's based on a lie. The data it read never officially existed.
+
+That is the dirty read danger. You read data that hadn't been approved yet. And if the writer aborts, but the reader has already committed, the database is permanently broken. It's a non-reoverable schedule.
+
+So, how do we fix it? The source gives a hard rule, right?
+
+Yes. For a schedule to be recoverable, if transaction B reads what transaction A wrote, transaction Absolutely must commit before transaction B commit
+
+the hierarchy of trust. I can't sign off on my work if it's based on your rough draft. Have to wait until you publish.
+
+Ideally, yes, but strict waiting slows things down. So, systems do allow reading uncommitted data sometimes, but that risk is always hovering right there.
+
+Which brings us to another level of pain. Even if we avoid breaking the database entirely, the source describes this thing called cascading roll back.
+
+Oh, this one is painful to watch.
+
+It felt less like a broken system and more like just a tragedy. the wasted effort.
+
+Think of it like a bucket brigade. The lecture uses the example of transactions T10, T11, and T12.
+
+Right? So T10 writes a value. T11 reads that value. T12 reads what T11 wrote. They're all linked in a chain.
+
+Now suppose T10, the very first one, crashes. It aborts. It has to roll back.
+
+Which means T11 is holding water that doesn't exist.
+
+Exactly. T11 relied on T10's invalid data. So the database forces T11 to roll back.
+
+And T12 used T11's data.
+
+So T12 has to roll back too. One upstream failure wipes out the entire downstream lineage.
+
+You could have a chain of 50 transactions. Doing everything right, no bugs. But because they touch data from one guy who eventually failed, they all get executed. That's incredibly expensive.
+
+Massive waste of computing power and time. You spend all these CPU cycles undoing valid work.
+
+So how do we stop the domino effect?
+
+The source defines what's called a cascadeless schedule. The restriction here is much tighter. A transaction is not allowed. to read a piece of data at all until the writer has fully committed.
+
+Oh wow. So no peing whatsoever. With the dirty read we just said don't commit until the other guy commits. Here we're saying don't even look.
+
+Precisely. If T10 hasn't finished, T11 has to sit and wait. If T10 fails, T11 never saw the bad data, so T11 is safe. No dominoes fall.
+
+But the trade-off has to be performance.
+
+Always. You're intentionally slowing down the system to ensure safety. You avoid cascading rollbacks. But you pay a performance penalty because everyone is waiting in line for permission to read.
+
+It's really just traffic management keeping the cars from crashing at the intersection.
+
+So we covered the theory. I want to shift to how humans actually tell the database to handle these problems.
+
+Right. The actual implementation.
+
+The source material gets into TCL which is transaction control language.
+
+Yeah. If standard SQL is the language of asking questions, select this. Insert that TCL is the language of consequences.
+
+The two big commands are commit and roll back.
+
+Right. Commit. It makes the changes permanent. It's saving the game. Once you commit, it's on the disc. Roll back is the undo button. It takes you back to the start of the transaction.
+
+But there was a detail in the notes that actually scared me a bit. Most databases have something called implicit commit.
+
+Yes, this is a huge trap. In standard setups like JDBC, the default is often autocommit, meaning after every single line you write, the database commits it.
+
+So if I delete a row, it's instantly saved.
+
+Instantly. they saved. If you want to bundle things like our transfer where we need a debit and a credit to happen together, you have to explicitly tell the database, "Turn off autocommit, stop saving." I will tell you when the whole thing is done.
+
+That explains so many bugs I've seen. But I did love the save point feature. It feels very much like a video game checkpoint.
+
+It's a lifesaver. Imagine a massive batch process. You're updating 10,000 accounts. It takes an hour.
+
+And at count 9,999, it crashes.
+
+Without safe points, a roll back sends you back to zero. You lose an hour of work. But with save points, you can drop a marker every 100 accounts. Save point SP1, save point SP2.
+
+So if it crashes, you just roll back to the last save point. You don't restart the whole level.
+
+Exactly. You just use roll back to save point SP99. You can also use release save point to clear them out when you don't need them.
+
+But there is a massive limitation here, right? These TCL commands only work for data manipulation, DML, insert, delete, update.
+
+This is a crucial distinction. You cannot roll back a DDL command data definition language
+
+like
